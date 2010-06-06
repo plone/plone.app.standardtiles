@@ -99,17 +99,17 @@
         title="Image"
         description='A tile which displays an image'
         add_permission="zope2.View"
-        class=".tiles.ImageTile"
+        class=".image.ImageTile"
         for="*"
         permission="zope.Public"
-        schema=".tiles.IImageTile"
+        schema=".image.IImageTile"
         />
     
     <browser:page
         name="download"
-        for=".tiles.ImageTile"
+        for=".image.ImageTile"
         permission="zope2.View"
-        class=".tiles.ImageTileDownload"
+        class=".image.ImageTileDownload"
         />
 
     <plone:tile
