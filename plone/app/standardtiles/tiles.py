@@ -100,8 +100,8 @@ class TitleTile(Tile):
 
     _possible_attributes = ('title', 'Title')
     # BBB: refactor, this needs to be a proper template
-    _template = u'<h1 class="documentFirstHeading">%s</h1>'
-    _default_value = u'Insert here the content title'
+    _template = u'<html><body><h1 class="documentFirstHeading">%s</h1></body></html>'
+    _default_value = u'Insert the content title here'
 
     def retrieve_value(self):
         value = None
@@ -124,8 +124,8 @@ class DescriptionTile(TitleTile):
     """
 
     _possible_attributes = ('description', 'Description')
-    _template = u'<div class="documentDescription">%s</div>'
-    _default_value = u'Insert here the content description.'
+    _template = u'<html><body><div class="documentDescription">%s</div></body></html>'
+    _default_value = u'Insert the content description here'
 
 class DexterityFieldTile(dexterity.DisplayForm, Tile):
     """Field tile for Dexterity content
