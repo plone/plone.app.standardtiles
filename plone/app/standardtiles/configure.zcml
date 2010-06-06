@@ -24,22 +24,40 @@
 
     <plone:tile
         name="plone.app.standardtiles.title"
-        title="Description"
+        title="Title"
         description='A tile which displays the context title'
         add_permission="zope.Public"
-        class=".tiles.TitleTile"
+        class=".metadata.DefaultTitleTile"
         for="*"
         permission="zope2.View"
+        template="templates/title_tile.pt"
         />
 
     <plone:tile
         name="plone.app.standardtiles.description"
         title="Description"
-        description='A tile which displays the context descriptiob'
+        description='A tile which displays the context description'
         add_permission="zope.Public"
-        class=".tiles.DescriptionTile"
+        class=".metadata.DefaultDescriptionTile"
         for="*"
         permission="zope2.View"
+        template="templates/description_tile.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.title"
+        class=".metadata.DexterityTitleTile"
+        for="plone.dexterity.interfaces.IDexterityContent"
+        permission="zope2.View"
+        template="templates/title_tile.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.description"
+        class=".metadata.DexterityDescriptionTile"
+        for="plone.dexterity.interfaces.IDexterityContent"
+        permission="zope2.View"
+        template="templates/description_tile.pt"
         />
 
     <plone:tile
@@ -48,7 +66,7 @@
         description='A tile which displays a field'
         add_permission="zope.Public"
         class=".field.DexterityFieldTile"
-        for="*"
+        for="plone.dexterity.interfaces.IDexterityContent"
         permission="zope2.View"
         />
 

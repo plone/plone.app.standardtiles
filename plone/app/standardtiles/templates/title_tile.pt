@@ -1,0 +1,5 @@
+<html>
+  <body>
+    <h1 class="documentFirstHeading" tal:content="view/value">Title here</h1>
+  </body>
+<html>
