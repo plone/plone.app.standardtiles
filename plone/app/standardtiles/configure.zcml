@@ -7,7 +7,8 @@
     i18n_domain="plone.app.standardtiles">
 
     <!-- Include our dependencies -->
-    <include package="plone.tiles" file="meta.zcml" />
+    <include package="plone.app.tiles" />
+    <include package="plone.directives.tiles" />
 
     <!-- Grok the package to initialise schema interfaces and content classes -->
     <grok:grok package="." />
@@ -15,7 +16,7 @@
     <!-- Register an extension profile to make the product installable -->
     <genericsetup:registerProfile
         name="default"
-        title="Standard Tiles"
+        title="Standard tiles"
         description="Standard available tiles."
         directory="profiles/default"
         provides="Products.GenericSetup.interfaces.EXTENSION"
@@ -79,10 +80,9 @@
         class=".tiles.HelloNameTile"
         for="*"
         permission="zope2.View"
-	schema=".tiles.IHelloNameTile"
+        schema=".tiles.IHelloNameTile"
         />
-  
-    
+
     <plone:tile
         name="plone.app.standardtiles.youtube"
         title="Youtube movie"

@@ -25,6 +25,8 @@ setup(name='plone.app.standardtiles',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.app.tiles',
+          'plone.directives.tiles',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]
