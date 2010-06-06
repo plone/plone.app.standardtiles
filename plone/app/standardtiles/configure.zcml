@@ -47,7 +47,7 @@
         title="Field"
         description='A tile which displays a field'
         add_permission="zope.Public"
-        class=".tiles.FieldTile"
+        class=".field.DexterityFieldTile"
         for="*"
         permission="zope2.View"
         />

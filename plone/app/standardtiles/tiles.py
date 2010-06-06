@@ -127,26 +127,6 @@ class DescriptionTile(TitleTile):
     _template = u'<html><body><div class="documentDescription">%s</div></body></html>'
     _default_value = u'Insert the content description here'
 
-class DexterityFieldTile(dexterity.DisplayForm, Tile):
-    """Field tile for Dexterity content
-    """
-
-    # BBB: the double declaration seems necessary else stuff breaks, but we
-    # really want to make this better
-    grok.context(IDexterityContent)
-    grok.implements(ITile)
-    
-    def render(self):
-        return self.w[self.data['field']].render()
-
-class FieldTile(Tile):
-    """Adds tile indirection for possibly supporting Archetypes
-    """
-
-    def __call__(self):
-        implementation = getMultiAdapter((self.context, self.request), ITile)
-        return implementation()
-
 class PonyTile(Tile):
     """A silly transient tile that outputs an ASCII pony.
     """
