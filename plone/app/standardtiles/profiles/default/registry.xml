@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<registry>
+  <record interface="plone.app.deco.interfaces.IDecoSettings" field="app_tiles">
+    <value purge="False">
+      <element>plone.app.standardtiles.image|media|Image|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>
+      <element>plone.app.standardtiles.pony|media|Pony|false|true|false|false|tile-align-block|tile-align-right|tile-align-left</element>
+      <element>plone.app.standardtiles.helloworld|media|Hello World|false|true|false|false|tile-align-block|tile-align-right|tile-align-left</element>
+      <element>plone.app.standardtiles.helloname|media|Hello Name|false|true|false|false|tile-align-block|tile-align-right|tile-align-left</element>
+    </value>
+  </record>
+</registry>

@@ -1,0 +1,137 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:grok="http://namespaces.zope.org/grok"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="plone.app.standardtiles">
+
+    <!-- Include our dependencies -->
+    <include package="plone.tiles" file="meta.zcml" />
+
+    <!-- Grok the package to initialise schema interfaces and content classes -->
+    <grok:grok package="." />
+
+    <!-- Register an extension profile to make the product installable -->
+    <genericsetup:registerProfile
+        name="default"
+        title="Standard Tiles"
+        description="Standard available tiles."
+        directory="profiles/default"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.title"
+        title="Description"
+        description='A tile which displays the context title'
+        add_permission="zope.Public"
+        class=".tiles.TitleTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.description"
+        title="Description"
+        description='A tile which displays the context descriptiob'
+        add_permission="zope.Public"
+        class=".tiles.DescriptionTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.field"
+        title="Field"
+        description='A tile which displays a field'
+        add_permission="zope.Public"
+        class=".tiles.FieldTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.pony"
+        title="Pony"
+        description='A tile which displays a pony'
+        add_permission="zope.Public"
+        class=".tiles.PonyTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.helloworld"
+        title="Hello World"
+        description="A tile which displays a hello world message"
+        add_permission="zope.Public"
+        class=".tiles.HelloWorldTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.helloname"
+        title="Hello World"
+        description="A tile which greets someone"
+        add_permission="zope.Public"
+        class=".tiles.HelloNameTile"
+        for="*"
+        permission="zope2.View"
+	schema=".tiles.IHelloNameTile"
+        />
+  
+    
+    <plone:tile
+        name="plone.app.standardtiles.youtube"
+        title="Youtube movie"
+        description='A tile which displays a youtube movie'
+        add_permission="zope.Public"
+        class=".tiles.YoutubeTile"
+        for="*"
+        permission="zope2.View"
+        schema=".tiles.IYoutubeTile"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.image"
+        title="Image"
+        description='A tile which displays an image'
+        add_permission="zope2.View"
+        class=".tiles.ImageTile"
+        for="*"
+        permission="zope.Public"
+        schema=".tiles.IImageTile"
+        />
+    
+    <browser:page
+        name="download"
+        for=".tiles.ImageTile"
+        permission="zope2.View"
+        class=".tiles.ImageTileDownload"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.ViewletManagerTile"
+        title="Viewlet Manager Tile"
+        description="A tile which displays a specified viewlet manager"
+        add_permission="zope.Public"
+        class=".tiles.ViewletManagerTile"
+        for="*"
+        permission="zope2.View"
+        schema=".tiles.IViewletManagerTile"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.PortletManagerTile"
+        title="Portlet Manager Tile"
+        description="A tile which displays a specified portlet manager"
+        add_permission="zope.Public"
+        class=".tiles.PortletManagerTile"
+        for="*"
+        permission="zope2.View"
+        schema=".tiles.IPortletManagerTile"
+        />
+
+</configure>
