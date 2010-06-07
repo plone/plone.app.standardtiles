@@ -1,0 +1,41 @@
+First, we set up a browser instance::
+
+    >>> from plone.testing.z2 import Browser
+    >>> app = layer['app']
+    >>> browser = Browser(app)
+    >>> browser.handleErrors = False
+
+Transient tiles can be accessed directly using a querystring syntax::
+
+    >>> portal = layer['portal']
+    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.helloworld/tile1')
+    >>> print browser.contents
+    <html><body>Hello World</body></html>
+
+    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.helloname/tile1?name=Rob')
+    >>> print browser.contents
+    <html><body>Hello Rob!</body></html>
+
+    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.pony/tile1')
+    >>> print browser.contents
+    <html><body><pre>
+            .,,.
+         ,;;*;;;;,
+        .-'``;-');;.
+       /'  .-.  /*;;
+     .'    \d    \;;               .;;;,
+    / o      `    \;    ,__.     ,;*;;;*;,
+    \__, _.__,'   \_.-') __)--.;;;;;*;;;;,
+     `""`;;;\       /-')_) __)  `' ';;;;;;
+        ;*;;;        -') `)_)  |\ |  ;;;;*;
+        ;;;;|        `---`    O | | ;;*;;;
+        *;*;\|                 O  / ;;;;;*
+       ;;;;;/|    .-------\      / ;*;;;;;
+      ;;;*;/ \    |        '.   (`. ;;;*;;;
+      ;;;;;'. ;   |          )   \ | ;;;;;;
+      ,;*;;;;\/   |.        /   /` | ';;;*;
+       ;;;;;;/    |/       /   /__/   ';;;
+       '*jgs/     |       /    |      ;*;
+            `""""`        `""""`     ;'
+    </pre></body></html>
+
