@@ -141,7 +141,7 @@ class PortletManagerTile(Tile):
     implements(IPortletManagerTile)
 
     def __call__(self):
-        """Return the rendered contents of the portelt manager specified."""
+        """Return the rendered contents of the portlet manager specified."""
         manager = self.data.get('manager')
         managerObj = getUtility(IPortletManager, name=manager)
         rendererObj = managerObj(self.context, self.request, self)
