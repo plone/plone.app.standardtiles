@@ -28,6 +28,11 @@ setup(name='plone.app.standardtiles',
           'plone.app.tiles',
           'plone.directives.tiles',
       ],
+      extras_require={
+          'test': [
+              'plone.app.testing',
+              ]
+          },
       entry_points="""
       [z3c.autoinclude.plugin]
       target = plone
