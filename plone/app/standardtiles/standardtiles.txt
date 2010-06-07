@@ -39,3 +39,11 @@ Transient tiles can be accessed directly using a querystring syntax::
             `""""`        `""""`     ;'
     </pre></body></html>
 
+Persistent tiles require a bit more work, exercising data managers::
+
+    >>> youtube_tile = portal.restrictedTraverse('@@plone.app.standardtiles.youtube/tile1')
+    >>> from plone.tiles.interfaces import ITileDataManager
+    >>> dataManager = ITileDataManager(youtube_tile)
+    >>> dataManager.set({'youtubeURL': 'http://www.youtube.com/watch?v=ayPKvFNz8aE'})
+    >>> print youtube_tile()
+    <object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
