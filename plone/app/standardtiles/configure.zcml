@@ -131,7 +131,7 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.ViewletManagerTile"
+        name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"
         description="A tile which displays a specified viewlet manager"
         add_permission="zope.Public"
@@ -142,7 +142,7 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.PortletManagerTile"
+        name="plone.app.standardtiles.portletmanager"
         title="Portlet Manager Tile"
         description="A tile which displays a specified portlet manager"
         add_permission="zope.Public"
