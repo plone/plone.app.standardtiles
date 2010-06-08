@@ -159,4 +159,12 @@
         template="templates/colophon.pt"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.footer"
+        class=".common.FooterTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/footer.pt"
+        />
+
 </configure>
