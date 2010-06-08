@@ -50,6 +50,6 @@ Persistent tiles require a bit more work, exercising data managers::
 
 To test the portlet manager tile, we can use the mock portlet manager we registered in the testing layer::
 
-    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.PortletManagerTile/tile1?manager=mock.portletmanager')
+    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.portletmanager/tile1?manager=mock.portletmanager')
     >>> print browser.contents
     <html><body>Portlet Manager Renderer output.</body></html>
