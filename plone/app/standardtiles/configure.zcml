@@ -167,4 +167,12 @@
         template="templates/footer.pt"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.site_actions"
+        class=".common.SiteActionsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/site_actions.pt"
+        />
+
 </configure>
