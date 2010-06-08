@@ -175,4 +175,11 @@
         template="templates/site_actions.pt"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.analytics"
+        class=".common.AnalyticsTile"
+        for="*"
+        permission="zope2.View"
+        />
+
 </configure>
