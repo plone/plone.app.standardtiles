@@ -153,6 +153,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.skip_links"
+        class=".common.SkipLinksTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/skip_links.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.colophon"
         for="*"
         permission="zope2.View"

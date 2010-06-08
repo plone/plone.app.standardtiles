@@ -32,3 +32,14 @@ class AnalyticsTile(Tile):
         ptool = getToolByName(self.context, "portal_properties")
         snippet = safe_unicode(ptool.site_properties.webstats_js)
         return "<html><body>%s</body></html>" % snippet
+
+
+class SkipLinksTile(Tile):
+    """A skip links tile
+    """
+
+    @property
+    def current_page_url(self):
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_context_state')
+        return context_state.current_page_url
