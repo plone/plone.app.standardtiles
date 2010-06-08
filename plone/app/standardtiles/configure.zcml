@@ -152,4 +152,11 @@
         schema=".tiles.IPortletManagerTile"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.colophon"
+        for="*"
+        permission="zope2.View"
+        template="templates/colophon.pt"
+        />
+
 </configure>
