@@ -1,7 +1,6 @@
 <html>
   <head>
-<tal:scripts define="view context/@@resourceregistries_scripts_view"
-             repeat="script view/scripts"
+<tal:scripts repeat="script view/scripts"
   ><tal:block define="inline script/inline;
                      condcomment script/conditionalcomment"
     ><tal:wcondcomment tal:condition="condcomment">

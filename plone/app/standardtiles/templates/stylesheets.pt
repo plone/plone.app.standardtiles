@@ -1,9 +1,8 @@
 <html>
   <head>
-<tal:styles define="view context/@@resourceregistries_styles_view"
-            repeat="style view/styles"
+<tal:styles repeat="style view/styles"
   ><tal:block define="rendering style/rendering;
-                     condcomment style/conditionalcomment"
+                      condcomment style/conditionalcomment"
     ><tal:wcondcomment tal:condition="condcomment">
         <tal:opencc tal:replace="structure string:&lt;!--[if ${condcomment}]&gt;" />    
     </tal:wcondcomment
