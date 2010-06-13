@@ -192,10 +192,26 @@
 
     <plone:tile
         name="plone.app.standardtiles.resourceregistries"
-        class=".resourceregistries.ResourceRegistriesTile"
+        class=".head.ResourceRegistriesTile"
         for="*"
         permission="zope2.View"
         template="templates/resourceregistries.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.favicon"
+        class=".head.FaviconTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/favicon.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.author"
+        class=".head.AuthorTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/author.pt"
         />
 
 </configure>

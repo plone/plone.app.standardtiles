@@ -1,0 +1,6 @@
+<html>
+  <head>
+    <link rel="shortcut icon" type="image/x-icon" tal:attributes="href string:${view/site_url}/favicon.ico" />
+    <link rel="apple-touch-icon" tal:attributes="href string:${view/site_url}/touch_icon.png" />
+  </head>
+</html>

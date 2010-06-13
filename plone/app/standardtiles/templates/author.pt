@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <link rel="author"
+          href=""
+          title="Author information"
+          i18n:domain="plone"
+          i18n:attributes="title title_author_info"
+          tal:condition="view/show"
+          tal:attributes="href string:${view/site_url}/author/${context/Creator|nothing}" />
+  </head>
+</html>

@@ -3,10 +3,12 @@ from Products.PythonScripts.standard import url_quote
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from plone.tiles.tile import Tile
+from zope.component import getMultiAdapter
 
 
 class ResourceRegistriesTile(Tile):
-    """ Information for style rendering. """
+    """Information for resource registry rendering.
+    """
 
     def css_registry(self):
         return getToolByName(aq_inner(self.context), 'portal_css')
@@ -79,3 +81,36 @@ class ResourceRegistriesTile(Tile):
                         'src': src}
             result.append(data)
         return result
+
+
+class FaviconTile(Tile):
+    """Favicon tile implementation.
+    """
+
+    @property
+    def site_url(self):
+        portal_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_portal_state')
+        return portal_state.portal_url()
+
+
+class AuthorTile(Tile):
+    """Author tile implementation.
+    """
+
+    @property
+    def site_url(self):
+        portal_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_portal_state')
+        return portal_state.portal_url()
+
+    def show(self):
+        tools = getMultiAdapter((self.context, self.request),
+                                 name='plone_tools')
+        properties = tools.properties()
+        site_properties = getattr(properties, 'site_properties')
+        portal_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_portal_state')
+        anonymous = portal_state.anonymous()
+        allowAnonymousViewAbout = site_properties.getProperty('allowAnonymousViewAbout', True)
+        return not anonymous or allowAnonymousViewAbout
