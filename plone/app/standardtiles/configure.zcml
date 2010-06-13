@@ -30,7 +30,7 @@
         class=".metadata.DefaultTitleTile"
         for="*"
         permission="zope2.View"
-        template="templates/title_tile.pt"
+        template="templates/title.pt"
         />
 
     <plone:tile
@@ -41,7 +41,7 @@
         class=".metadata.DefaultDescriptionTile"
         for="*"
         permission="zope2.View"
-        template="templates/description_tile.pt"
+        template="templates/description.pt"
         />
 
     <plone:tile
@@ -49,7 +49,7 @@
         class=".metadata.DexterityTitleTile"
         for="plone.dexterity.interfaces.IDexterityContent"
         permission="zope2.View"
-        template="templates/title_tile.pt"
+        template="templates/title.pt"
         />
 
     <plone:tile
@@ -57,7 +57,7 @@
         class=".metadata.DexterityDescriptionTile"
         for="plone.dexterity.interfaces.IDexterityContent"
         permission="zope2.View"
-        template="templates/description_tile.pt"
+        template="templates/description.pt"
         />
 
     <plone:tile
