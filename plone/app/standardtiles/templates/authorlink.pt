@@ -7,6 +7,6 @@
           title="Author information"
           i18n:attributes="title title_author_info"
           tal:condition="view/show"
-          tal:attributes="href string:${view/site_url}/author/${context/Creator|nothing}" />
+          tal:attributes="href string:${view/navigation_root_url}/author/${context/Creator|nothing}" />
   </head>
 </html>
