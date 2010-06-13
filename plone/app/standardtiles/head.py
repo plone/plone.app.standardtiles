@@ -133,3 +133,29 @@ class NavigationTile(Tile):
         portal_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_portal_state')
         return portal_state.navigation_root_url()
+
+
+class SearchLinkTile(Tile):
+    """Search link tile implementation.
+    """
+
+    @property
+    def navigation_root_url(self):
+        portal_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_portal_state')
+        return portal_state.navigation_root_url()
+
+
+class RSSLinkTile(Tile):
+    """RSS link tile implementation.
+    """
+
+    def allowed(self):
+        syntool = getToolByName(self.context, 'portal_syndication')
+        return syntool.isSyndicationAllowed(self.context)
+
+    @property
+    def url(self):
+        context_state = getMultiAdapter((self.context, self.request),
+                                         name=u'plone_context_state')
+        self.url = '%s/RSS' % context_state.object_url()

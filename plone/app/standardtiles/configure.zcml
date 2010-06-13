@@ -230,4 +230,20 @@
         template="templates/navigation.pt"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.searchlink"
+        class=".head.SearchLinkTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/searchlink.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.rsslink"
+        class=".head.RSSLinkTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/rsslink.pt"
+        />
+
 </configure>

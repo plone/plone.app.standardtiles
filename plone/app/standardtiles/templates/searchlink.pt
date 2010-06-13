@@ -1,0 +1,11 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      i18n:domain="plone">
+  <head>
+    <link rel="search"
+          href=""
+          title="Search this site"
+          i18n:attributes="title title_search_this_site"
+          tal:attributes="href string:${view/navigation_root_url}/search_form" />
+  </head>
+</html>
