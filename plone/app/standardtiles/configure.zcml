@@ -191,11 +191,19 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.resourceregistries"
-        class=".head.ResourceRegistriesTile"
+        name="plone.app.standardtiles.stylesheets"
+        class=".head.StylesheetsTile"
         for="*"
         permission="zope2.View"
-        template="templates/resourceregistries.pt"
+        template="templates/stylesheets.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.javascripts"
+        class=".head.JavascriptsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/javascripts.pt"
         />
 
     <plone:tile

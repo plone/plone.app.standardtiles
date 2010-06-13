@@ -6,21 +6,18 @@ from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
 
 
-class ResourceRegistriesTile(Tile):
-    """Information for resource registry rendering.
+class StylesheetsTile(Tile):
+    """A stylesheets rendering tile
     """
 
-    def css_registry(self):
+    def registry(self):
         return getToolByName(aq_inner(self.context), 'portal_css')
-
-    def javascripts_registry(self):
-        return getToolByName(aq_inner(self.context), 'portal_javascripts')
 
     def skinname(self):
         return aq_inner(self.context).getCurrentSkinName()
 
     def styles(self):
-        registry = self.css_registry()
+        registry = self.registry()
         registry_url = registry.absolute_url()
         context = aq_inner(self.context)
 
@@ -56,8 +53,19 @@ class ResourceRegistriesTile(Tile):
             result.append(data)
         return result
 
+
+class JavascriptsTile(Tile):
+    """A javascripts rendering tile
+    """
+
+    def registry(self):
+        return getToolByName(aq_inner(self.context), 'portal_javascripts')
+
+    def skinname(self):
+        return aq_inner(self.context).getCurrentSkinName()
+
     def scripts(self):
-        registry = self.javascrips_registry()
+        registry = self.registry()
         registry_url = registry.absolute_url()
         context = aq_inner(self.context)
 
