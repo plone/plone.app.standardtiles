@@ -207,27 +207,27 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.favicon"
-        class=".head.FaviconTile"
+        name="plone.app.standardtiles.faviconlink"
+        class=".head.FaviconLinkTile"
         for="*"
         permission="zope2.View"
-        template="templates/favicon.pt"
+        template="templates/faviconlink.pt"
         />
 
     <plone:tile
-        name="plone.app.standardtiles.author"
-        class=".head.AuthorTile"
+        name="plone.app.standardtiles.authorlink"
+        class=".head.AuthorLinkTile"
         for="*"
         permission="zope2.View"
-        template="templates/author.pt"
+        template="templates/authorlink.pt"
         />
 
     <plone:tile
-        name="plone.app.standardtiles.navigation"
-        class=".head.NavigationTile"
+        name="plone.app.standardtiles.navigationlink"
+        class=".head.NavigationLinkTile"
         for="*"
         permission="zope2.View"
-        template="templates/navigation.pt"
+        template="templates/navigationlink.pt"
         />
 
     <plone:tile
