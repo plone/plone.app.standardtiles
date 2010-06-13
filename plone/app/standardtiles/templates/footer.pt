@@ -1,6 +1,8 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      i18n:domain="plone">
   <body>
-    <div i18n:domain="plone" class="row">
+    <div class="row">
       <div class="cell width-full position-0">
         <div id="portal-footer">
           <p>
