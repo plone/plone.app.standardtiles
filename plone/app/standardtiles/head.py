@@ -107,10 +107,10 @@ class AuthorTile(Tile):
     """
 
     @property
-    def site_url(self):
+    def navigation_root_url(self):
         portal_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_portal_state')
-        return portal_state.portal_url()
+        return portal_state.navigation_root_url()
 
     def show(self):
         tools = getMultiAdapter((self.context, self.request),
@@ -122,3 +122,14 @@ class AuthorTile(Tile):
         anonymous = portal_state.anonymous()
         allowAnonymousViewAbout = site_properties.getProperty('allowAnonymousViewAbout', True)
         return not anonymous or allowAnonymousViewAbout
+
+
+class NavigationTile(Tile):
+    """Navigation tile implementation.
+    """
+
+    @property
+    def navigation_root_url(self):
+        portal_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_portal_state')
+        return portal_state.navigation_root_url()

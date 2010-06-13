@@ -1,0 +1,15 @@
+<html i18n:domain="plone">
+  <head>
+    <link rel="home"
+          href=""
+          title="Front page"
+          i18n:attributes="title title_frontpage"
+          tal:attributes="href string:${view/navigation_root_url}" />
+
+    <link rel="contents"
+          href=""
+          title="Site Map"
+          i18n:attributes="title title_sitemap"
+          tal:attributes="href string:${view/navigation_root_url}/sitemap" />
+  </head>
+</html>

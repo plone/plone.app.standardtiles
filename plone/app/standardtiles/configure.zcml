@@ -222,4 +222,12 @@
         template="templates/author.pt"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.navigation"
+        class=".head.NavigationTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/navigation.pt"
+        />
+
 </configure>
