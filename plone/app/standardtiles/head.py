@@ -91,8 +91,8 @@ class JavascriptsTile(Tile):
         return result
 
 
-class FaviconTile(Tile):
-    """Favicon tile implementation.
+class FaviconLinkTile(Tile):
+    """Favicon link tile implementation.
     """
 
     @property
@@ -102,8 +102,8 @@ class FaviconTile(Tile):
         return portal_state.portal_url()
 
 
-class AuthorTile(Tile):
-    """Author tile implementation.
+class AuthorLinkTile(Tile):
+    """Author link tile implementation.
     """
 
     @property
@@ -124,8 +124,8 @@ class AuthorTile(Tile):
         return not anonymous or allowAnonymousViewAbout
 
 
-class NavigationTile(Tile):
-    """Navigation tile implementation.
+class NavigationLinkTile(Tile):
+    """Navigation link tile implementation.
     """
 
     @property
