@@ -190,4 +190,12 @@
         permission="zope2.View"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.resourceregistries"
+        class=".resourceregistries.ResourceRegistriesTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/resourceregistries.pt"
+        />
+
 </configure>
