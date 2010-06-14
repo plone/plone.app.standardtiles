@@ -130,6 +130,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.personal_bar"
+        class=".common.PersonalBarTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/personal_bar.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.colophon"
         for="*"
         permission="zope2.View"
