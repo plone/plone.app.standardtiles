@@ -170,6 +170,22 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.contentviews"
+        class=".common.ContentViewsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/contentviews.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.contentactions"
+        class=".common.ContentActionsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/contentactions.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.colophon"
         for="*"
         permission="zope2.View"
