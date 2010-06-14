@@ -103,13 +103,13 @@
 
     <plone:tile
         name="plone.app.standardtiles.youtube"
-        title="Youtube movie"
+        title="Video"
         description='A tile which displays a youtube movie'
         add_permission="zope.Public"
-        class=".tiles.YoutubeTile"
+        class=".content.VideoTile"
         for="*"
         permission="zope2.View"
-        schema=".tiles.IYoutubeTile"
+        schema=".content.IVideoTile"
         />
 
     <plone:tile
@@ -117,17 +117,17 @@
         title="Image"
         description='A tile which displays an image'
         add_permission="zope2.View"
-        class=".image.ImageTile"
+        class=".content.ImageTile"
         for="*"
         permission="zope.Public"
-        schema=".image.IImageTile"
+        schema=".content.IImageTile"
         />
     
     <browser:page
         name="download"
-        for=".image.ImageTile"
+        for=".content.ImageTile"
         permission="zope2.View"
-        class=".image.ImageTileDownload"
+        class=".content.ImageTileDownload"
         />
 
     <plone:tile
