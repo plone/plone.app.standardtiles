@@ -135,10 +135,10 @@
         title="Viewlet Manager Tile"
         description="A tile which displays a specified viewlet manager"
         add_permission="zope.Public"
-        class=".tiles.ViewletManagerTile"
+        class=".legacy.ViewletManagerTile"
         for="*"
         permission="zope2.View"
-        schema=".tiles.IViewletManagerTile"
+        schema=".legacy.IViewletManagerTile"
         />
 
     <plone:tile
@@ -146,10 +146,10 @@
         title="Portlet Manager Tile"
         description="A tile which displays a specified portlet manager"
         add_permission="zope.Public"
-        class=".tiles.PortletManagerTile"
+        class=".legacy.PortletManagerTile"
         for="*"
         permission="zope2.View"
-        schema=".tiles.IPortletManagerTile"
+        schema=".legacy.IPortletManagerTile"
         />
 
     <plone:tile

@@ -13,8 +13,6 @@ from zope.interface import Interface
 from zope.component import getMultiAdapter
 
 from five import grok
-from zope.viewlet.interfaces import IViewletManager
-from plone.portlets.interfaces import IPortletManager
 
 from zope.browser.interfaces import IBrowserView
 from zope.publisher.interfaces.browser import IBrowserRequest
@@ -109,41 +107,3 @@ class YoutubeTile(PersistentTile):
         
         # Not for production use - this should be in a template!
         return '<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/%s&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%s&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>' % (youtubeID, youtubeID)
-
-
-
-class IViewletManagerTile(Interface):
-    manager = schema.TextLine(title=u"Name of the viewlet manager to render.",
-                           required=True)
-
-
-class ViewletManagerTile(Tile):
-    """A tile that renders a viewlet manager."""
-
-    implements(IViewletManagerTile)
-
-    def __call__(self):
-        """Return the rendered contents of the viewlet manager specified."""
-        manager = self.data.get('manager')
-        managerObj = queryMultiAdapter((self.context, self.request, self), IViewletManager, manager)
-        managerObj.update()
-        return "<html><body>%s</body></html>" % managerObj.render()
-
-
-class IPortletManagerTile(Interface):
-    manager = schema.TextLine(title=u"Name of the portlet manager to render.",
-                           required=True)
-
-
-class PortletManagerTile(Tile):
-    """A tile that renders a portlet manager."""
-
-    implements(IPortletManagerTile)
-
-    def __call__(self):
-        """Return the rendered contents of the portlet manager specified."""
-        manager = self.data.get('manager')
-        managerObj = getUtility(IPortletManager, name=manager)
-        rendererObj = managerObj(self.context, self.request, self)
-        rendererObj.update()
-        return "<html><body>%s</body></html>" % rendererObj.render()
