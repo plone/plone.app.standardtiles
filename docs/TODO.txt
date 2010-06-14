@@ -1,0 +1,23 @@
+Tiles which need to be created:
+===============================
+
+common
+------
+
+poll
+rssfeed
+navigation tree
+calendar
+searchbox
+loginbox
+
+
+content
+-------
+
+image
+video
+grid
+comments
+content listing
+map
