@@ -10,7 +10,7 @@ from plone.autoform.utils import resolveDottedName
 class DexterityFieldTile(DisplayForm, Tile):
     """Field tile for Dexterity content
     """
-    
+
     def __init__(self, context, request):
         Tile.__init__(self, context, request)
         DisplayForm.__init__(self, context, request)
@@ -30,7 +30,7 @@ class DexterityFieldTile(DisplayForm, Tile):
 
     def _wrap_widget(self, render):
         return u"<html><body>%s</body></html>" % render
-    
+
     def __call__(self):
         self.update()
         return self._wrap_widget(self.widgets[self.data['field']].render())

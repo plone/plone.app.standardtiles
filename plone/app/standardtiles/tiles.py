@@ -29,39 +29,6 @@ import re
 from Products.CMFPlone.utils import log
 
 
-class TitleTile(Tile):
-    """A tile for the content title
-    """
-
-    _possible_attributes = ('title', 'Title')
-    # BBB: refactor, this needs to be a proper template
-    _template = u'<html><body><h1 class="documentFirstHeading">%s</h1></body></html>'
-    _default_value = u'Insert the content title here'
-
-    def retrieve_value(self):
-        value = None
-        for attr_name in self._possible_attributes:
-            if hasattr(self.context, attr_name):
-                value = getattr(self.context, attr_name)
-                if callable(value):
-                    value = value()
-        return value
-
-    def __call__(self):
-        if 'ignore_context' in self.data and self.data['ignore_context'].lower() == 'true':
-            value = self._default_value 
-        else:
-            value = self.retrieve_value()
-        return self._template % value
-
-class DescriptionTile(TitleTile):
-    """A tile for the content description
-    """
-
-    _possible_attributes = ('description', 'Description')
-    _template = u'<html><body><div class="documentDescription">%s</div></body></html>'
-    _default_value = u'Insert the content description here'
-
 class PonyTile(Tile):
     """A silly transient tile that outputs an ASCII pony.
     """

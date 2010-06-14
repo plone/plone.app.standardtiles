@@ -17,7 +17,7 @@ class BaseMetadataTile(Tile):
     def value(self):
         return self.get_value()
 
-    
+
 class DefaultTitleTile(BaseMetadataTile):
     """A default tile for title
     """
@@ -25,7 +25,7 @@ class DefaultTitleTile(BaseMetadataTile):
     def get_value(self):
         return u"Insert the content title here"
 
-    
+
 class DefaultDescriptionTile(BaseMetadataTile):
     """A default tile for description
     """
@@ -33,7 +33,7 @@ class DefaultDescriptionTile(BaseMetadataTile):
     def get_value(self):
         return u"Insert the content description here"
 
-    
+
 class DexterityTitleTile(BaseMetadataTile):
     """A tile for dexterity content title
     """
@@ -41,7 +41,7 @@ class DexterityTitleTile(BaseMetadataTile):
     def get_value(self):
         return self.context.title
 
-    
+
 class DexterityDescriptionTile(BaseMetadataTile):
     """A tile for dexterity content description
     """
