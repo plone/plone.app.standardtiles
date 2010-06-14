@@ -138,6 +138,38 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.searchbox"
+        class=".common.SearchBoxTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/searchbox.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.logo"
+        class=".common.LogoTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/logo.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.global_sections"
+        class=".common.GlobalSectionsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/global_sections.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.path_bar"
+        class=".common.PathBarTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/path_bar.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.colophon"
         for="*"
         permission="zope2.View"

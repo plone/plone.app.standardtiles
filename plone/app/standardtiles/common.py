@@ -91,3 +91,122 @@ class PersonalBarTile(Tile):
                 self.user_name = fullname
             else:
                 self.user_name = userid
+
+
+class SearchBoxTile(Tile):
+    """A search box tile
+    """
+
+    def __call__(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.navigation_root_url = self.portal_state.navigation_root_url()
+
+        self.update()
+        return self.index()
+
+    def update(self):
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_context_state')
+
+        props = getToolByName(self.context, 'portal_properties')
+        livesearch = props.site_properties.getProperty('enable_livesearch', False)
+        if livesearch:
+            self.search_input_id = "searchGadget"
+        else:
+            self.search_input_id = "nolivesearchGadget" # don't use "" here!
+
+        folder = context_state.folder()
+        self.folder_path = '/'.join(folder.getPhysicalPath())
+
+
+class LogoTile(Tile):
+    """A logo tile
+    """
+
+    def __call__(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.navigation_root_url = self.portal_state.navigation_root_url()
+
+        self.update()
+        return self.index()
+
+    def update(self):
+        portal = self.portal_state.portal()
+        bprops = portal.restrictedTraverse('base_properties', None) 
+        if bprops is not None:
+            logoName = bprops.logoName
+        else:
+            logoName = 'logo.jpg'
+        self.logo_tag = portal.restrictedTraverse(logoName).tag()
+
+        self.portal_title = self.portal_state.portal_title()
+
+
+class GlobalSectionsTile(Tile):
+    """A global sections tile
+    """
+
+    def __call__(self):
+        self.update()
+        return self.index()
+
+    def update(self):
+        context = aq_inner(self.context)
+        portal_tabs_view = getMultiAdapter((context, self.request),
+                                           name='portal_tabs_view')
+        self.portal_tabs = portal_tabs_view.topLevelTabs()
+
+        self.selected_tabs = self.selectedTabs(portal_tabs=self.portal_tabs)
+        self.selected_portal_tab = self.selected_tabs['portal']
+
+    def selectedTabs(self, default_tab='index_html', portal_tabs=()):
+        plone_url = getToolByName(self.context, 'portal_url')()
+        plone_url_len = len(plone_url)
+        request = self.request
+        valid_actions = []
+
+        url = request['URL']
+        path = url[plone_url_len:]
+
+        for action in portal_tabs:
+            if not action['url'].startswith(plone_url):
+                # In this case the action url is an external link. Then, we
+                # avoid issues (bad portal_tab selection) continuing with next
+                # action.
+                continue
+            action_path = action['url'][plone_url_len:]
+            if not action_path.startswith('/'):
+                action_path = '/' + action_path
+            if path.startswith(action_path):
+                # Make a list of the action ids, along with the path length
+                # for choosing the longest (most relevant) path.
+                valid_actions.append((len(action_path), action['id']))
+
+        # Sort by path length, the longest matching path wins
+        valid_actions.sort()
+        if valid_actions:
+            return {'portal' : valid_actions[-1][1]}
+
+        return {'portal' : default_tab}
+
+
+class PathBarTile(Tile):
+    """A path bar tile
+    """
+
+    def __call__(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.navigation_root_url = self.portal_state.navigation_root_url()
+
+        self.update()
+        return self.index()
+
+    def update(self):
+        self.is_rtl = self.portal_state.is_rtl()
+
+        breadcrumbs_view = getMultiAdapter((self.context, self.request),
+                                           name='breadcrumbs_view')
+        self.breadcrumbs = breadcrumbs_view.breadcrumbs()
