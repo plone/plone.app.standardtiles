@@ -2,9 +2,9 @@ from zope import schema
 from zope.interface import implements
 from zope.publisher.interfaces import NotFound
 from zope.publisher.interfaces import IPublishTraverse
+import re
 
 from plone.directives import form as directivesform
-
 from plone.tiles import PersistentTile
 
 from plone.namedfile.utils import set_headers, stream_data
