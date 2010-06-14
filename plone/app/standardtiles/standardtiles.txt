@@ -8,45 +8,16 @@ First, we set up a browser instance::
 Transient tiles can be accessed directly using a querystring syntax::
 
     >>> portal = layer['portal']
-    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.helloworld/tile1')
-    >>> print browser.contents
-    <html><body>Hello World</body></html>
-
-    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.helloname/tile1?name=Rob')
-    >>> print browser.contents
-    <html><body>Hello Rob!</body></html>
-
-    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.pony/tile1')
-    >>> print browser.contents
-    <html><body><pre>
-            .,,.
-         ,;;*;;;;,
-        .-'``;-');;.
-       /'  .-.  /*;;
-     .'    \d    \;;               .;;;,
-    / o      `    \;    ,__.     ,;*;;;*;,
-    \__, _.__,'   \_.-') __)--.;;;;;*;;;;,
-     `""`;;;\       /-')_) __)  `' ';;;;;;
-        ;*;;;        -') `)_)  |\ |  ;;;;*;
-        ;;;;|        `---`    O | | ;;*;;;
-        *;*;\|                 O  / ;;;;;*
-       ;;;;;/|    .-------\      / ;*;;;;;
-      ;;;*;/ \    |        '.   (`. ;;;*;;;
-      ;;;;;'. ;   |          )   \ | ;;;;;;
-      ,;*;;;;\/   |.        /   /` | ';;;*;
-       ;;;;;;/    |/       /   /__/   ';;;
-       '*jgs/     |       /    |      ;*;
-            `""""`        `""""`     ;'
-    </pre></body></html>
+    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.colophon/tile1')
 
 Persistent tiles require a bit more work, exercising data managers::
 
-    >>> youtube_tile = portal.restrictedTraverse('@@plone.app.standardtiles.youtube/tile1')
+    >>> video_tile = portal.restrictedTraverse('@@plone.app.standardtiles.video/tile1')
     >>> from plone.tiles.interfaces import ITileDataManager
-    >>> dataManager = ITileDataManager(youtube_tile)
+    >>> dataManager = ITileDataManager(video_tile)
     >>> dataManager.set({'youtubeURL': 'http://www.youtube.com/watch?v=ayPKvFNz8aE'})
-    >>> print youtube_tile()
-    <object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
+    >>> print video_tile()
+    <html><body><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object></body></html>
 
 To test the portlet manager tile, we can use the mock portlet manager we registered in the testing layer::
 

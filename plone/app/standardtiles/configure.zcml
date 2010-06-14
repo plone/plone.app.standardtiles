@@ -71,40 +71,9 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.pony"
-        title="Pony"
-        description='A tile which displays a pony'
-        add_permission="zope.Public"
-        class=".tiles.PonyTile"
-        for="*"
-        permission="zope2.View"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.helloworld"
-        title="Hello World"
-        description="A tile which displays a hello world message"
-        add_permission="zope.Public"
-        class=".tiles.HelloWorldTile"
-        for="*"
-        permission="zope2.View"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.helloname"
-        title="Hello World"
-        description="A tile which greets someone"
-        add_permission="zope.Public"
-        class=".tiles.HelloNameTile"
-        for="*"
-        permission="zope2.View"
-        schema=".tiles.IHelloNameTile"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.youtube"
+        name="plone.app.standardtiles.video"
         title="Video"
-        description='A tile which displays a youtube movie'
+        description='A tile which displays a video'
         add_permission="zope.Public"
         class=".content.VideoTile"
         for="*"
