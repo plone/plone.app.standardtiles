@@ -51,15 +51,19 @@ class PersonalBarTile(Tile):
     """A personal bar tile
     """
 
-    def __init__(self, context, request):
-        Tile.__init__(self, context, request)
+    def __call__(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.navigation_root_url = self.portal_state.navigation_root_url()
 
+        self.update()
+        return self.index()
+
+    def update(self):
         context = aq_inner(self.context)
 
         context_state = getMultiAdapter((context, self.request),
                                         name=u'plone_context_state')
-        self.portal_state = getMultiAdapter((context, self.request),
-                                            name=u'plone_portal_state')
 
         sm = getSecurityManager()
         self.user_actions = context_state.actions('user')
