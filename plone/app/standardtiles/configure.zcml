@@ -22,6 +22,8 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+    <adapter factory=".image.ImageTileDataManager" />
+
     <plone:tile
         name="plone.app.standardtiles.title"
         title="Title"
