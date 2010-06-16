@@ -1,61 +1,21 @@
 from zope import schema
-from zope.schema import getFields
-from zope.interface import implements, Interface
-from zope.component import adapts
+from zope.interface import implements
 from zope.publisher.interfaces import NotFound
 from zope.publisher.interfaces import IPublishTraverse
 
 from plone.directives import form as directivesform
 
 from plone.tiles import PersistentTile
-from plone.tiles.interfaces import ITileDataManager
-from plone.tiles.data import PersistentTileDataManager
+from plone.tiles.interfaces import ITile
 
 from plone.namedfile.utils import set_headers, stream_data
-from plone.namedfile.field import NamedImage as NamedImageField
-from plone.namedfile import NamedImage
-
-from persistent.dict import PersistentDict
-
-
-class IImageTileType(Interface):
-    pass
+from plone.namedfile.field import NamedImage
 
 
 class IImageTile(directivesform.Schema):
 
-    image = NamedImageField(title=u"Please upload an image", required=True)
+    image = NamedImage(title=u"Please upload an image", required=True)
     altText = schema.TextLine(title=u"Alternative text", required=False)
-
-
-class ImageTileDataManager(PersistentTileDataManager):
-    """A data manager for the image tile. It stores the image in the '/images'
-    folder of the portal, and the altText in the attributes.
-    """
-
-    implements(ITileDataManager)
-    adapts(IImageTileType)
-
-    def get(self):
-        data = dict(self.annotations.get(self.key, {}))
-        if self.tileType is not None and self.tileType.schema is not None:
-            for name, field in getFields(self.tileType.schema).items():
-                if name not in data:
-                    data[name] = field.missing_value
-        filename = data['image_name']
-        atimage = getattr(self.context.images, filename, None)
-        if atimage is not None:
-            data['image'] = NamedImage(atimage.getImage().data, filename=filename)
-        return data
-
-    def set(self, data):
-        image = data['image']
-        repo = self.context.images
-        repo.invokeFactory('Image', image.filename)
-        atimage = getattr(repo, image.filename)
-        atimage.setImage(image.data)
-        data['image_name'] = image.filename
-        self.annotations[self.key] = PersistentDict(data)
 
 
 class ImageTile(PersistentTile):
@@ -72,8 +32,6 @@ class ImageTile(PersistentTile):
     ``id`` query string parameter is still required for the tile to be able to
     access its persistent data.
     """
-
-    implements(IImageTileType)
 
     def __call__(self):
         # Not for production use - this should be in a template!
