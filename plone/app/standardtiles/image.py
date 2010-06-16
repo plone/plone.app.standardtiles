@@ -19,7 +19,7 @@ class IImageTile(directivesform.Schema):
 
 
 class ImageTile(PersistentTile):
-    """Example image tile.
+    """Image tile.
     
     This is a persistent tile which stores an image and optionally alt
     text. When rendered, the tile will output an <img /> tag like::
