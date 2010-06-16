@@ -76,10 +76,10 @@
         title="Video"
         description='A tile which displays a video'
         add_permission="zope.Public"
-        class=".content.VideoTile"
+        class=".video.VideoTile"
         for="*"
         permission="zope2.View"
-        schema=".content.IVideoTile"
+        schema=".video.IVideoTile"
         />
 
     <plone:tile
@@ -87,17 +87,17 @@
         title="Image"
         description='A tile which displays an image'
         add_permission="zope2.View"
-        class=".content.ImageTile"
+        class=".image.ImageTile"
         for="*"
         permission="zope.Public"
-        schema=".content.IImageTile"
+        schema=".image.IImageTile"
         />
     
     <browser:page
         name="download"
-        for=".content.ImageTile"
+        for=".image.ImageTile"
         permission="zope2.View"
-        class=".content.ImageTileDownload"
+        class=".image.ImageTileDownload"
         />
 
     <plone:tile
