@@ -101,6 +101,24 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.attachment"
+        title="Attachment"
+        description='A tile which displays a link to an uploaded file'
+        add_permission="zope2.View"
+        class=".attachment.AttachmentTile"
+        for="*"
+        permission="zope.Public"
+        schema=".attachment.IAttachmentTile"
+        />
+    
+    <browser:page
+        name="download"
+        for=".attachment.AttachmentTile"
+        permission="zope2.View"
+        class=".attachment.AttachmentTileDownload"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"
         description="A tile which displays a specified viewlet manager"
