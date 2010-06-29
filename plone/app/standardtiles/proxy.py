@@ -2,6 +2,7 @@ from zope import schema
 from plone.tiles import Tile
 from plone.directives import form as directivesform
 from Products.Five.browser import BrowserView
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from lxml import etree, cssselect
 
 
@@ -25,6 +26,9 @@ class ProxyTile(Tile):
 
 
 class ProxyView(BrowserView):
+
+    template = ViewPageTemplateFile('proxy_view.pt')
+    
     def __call__(self):
         layout = self.context.getLayout()
         out = self.context.restrictedTraverse([layout])()
@@ -32,4 +36,5 @@ class ProxyView(BrowserView):
         tree = etree.fromstring(out, htmlparser)
         sel = cssselect.CSSSelector('#content')
         content = sel(tree)[0]
-        return etree.tostring(content)
+        self.content_html = etree.tostring(content)
+        return self.template()

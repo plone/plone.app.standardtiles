@@ -1,0 +1,5 @@
+<html>
+  <body tal:content="structure view/content_html">
+    Content.
+  </body>
+</html>
