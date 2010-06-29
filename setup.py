@@ -25,6 +25,7 @@ setup(name='plone.app.standardtiles',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'lxml',
           'plone.app.tiles',
           'plone.directives.tiles',
       ],
