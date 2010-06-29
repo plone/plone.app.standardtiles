@@ -119,6 +119,24 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.proxy"
+        title="Proxy"
+        description='A tile which displays a content object'
+        add_permission="zope2.View"
+        class=".proxy.ProxyTile"
+        for="*"
+        permission="zope.Public"
+        schema=".proxy.IProxyTile"
+        />
+
+    <browser:page
+        name="proxy-view"
+        for="*"
+        permission="zope2.View"
+        class=".proxy.ProxyView"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"
         description="A tile which displays a specified viewlet manager"
