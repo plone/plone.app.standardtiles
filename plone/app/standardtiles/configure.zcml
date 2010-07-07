@@ -136,6 +136,20 @@
         class=".proxy.ProxyView"
         />
 
+    <!-- navtree -->
+    <plone:tile
+        name="plone.app.standardtiles.navigation"
+        title="Navigation tree"
+        add_permission="cmf.ManagePortal"
+        class="plone.app.standardtiles.navigation.NavigationTile"
+        template="templates/navigation.pt"
+        permission="zope.Public"
+        />
+
+    <adapter
+        factory=".navigation.TreeFactory" />
+
+
     <plone:tile
         name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"

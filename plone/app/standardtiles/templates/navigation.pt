@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      tal:omit-tag=""
+      tal:define="tree nothing">
+<body>
+  <ul id="navigation" class="navigation" tal:condition="view/tree" tal:define="tree view/tree"><metal:block use-macro="template/macros/showchildren"/></ul>
+  <tal:block metal:define-macro="showchildren">
+    <li tal:repeat="node tree" tal:attributes="class node/class">
+      <a tal:condition="node/title"
+        tal:attributes="title node/description; href node/url; class string:state-${node/review_state}">
+        <tal:span replace="node/title"/> <em
+          tal:attributes="class string:icon ${node/portal_type}">(<tal:span replace="node/portal_type_title"/>)</em></a>
+      <ul tal:define="tree node/children" tal:condition="python:tree"><metal:block use-macro="template/macros/showchildren"/></ul>
+    </li>
+  </tal:block>
+</body>
+</html>
