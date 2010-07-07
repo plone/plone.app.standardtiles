@@ -1,14 +1,18 @@
-from zope import schema
 from plone.tiles import Tile
 from plone.directives import form as directivesform
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from lxml import etree, cssselect
+from z3c.relationfield.schema import RelationChoice
+from plone.app.standardtiles.source import IntIdSourceBinder
+from zope.intid.interfaces import IIntIds
+from zope.component import getUtility
 
 
 class IProxyTile(directivesform.Schema):
-    contentPath = schema.TextLine(title=u"Path to the content object to show, starting from the site root.",
-                                  required=True)
+    contentId = RelationChoice(title=u"Id of the proxied content.",
+                               source=IntIdSourceBinder(),
+                               required=True)
 
 
 class ProxyTile(Tile):
@@ -19,8 +23,9 @@ class ProxyTile(Tile):
     """
 
     def __call__(self):
-        portal = self.context.restrictedTraverse('@@plone_portal_state').portal()
-        content = portal.restrictedTraverse([self.data.get('contentPath')])
+        contentId = self.data.get('contentId')
+        intids = getUtility(IIntIds)
+        content = intids.queryObject(int(contentId))
         view = content.restrictedTraverse('@@proxy-view')
         return view()
 
