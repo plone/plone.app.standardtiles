@@ -1,4 +1,4 @@
-from plone.tiles import Tile
+from plone.tiles import PersistentTile
 from plone.directives import form as directivesform
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
@@ -13,9 +13,10 @@ class IProxyTile(directivesform.Schema):
     contentId = RelationChoice(title=u"Id of the proxied content.",
                                source=IntIdSourceBinder(),
                                required=True)
+    contentId._type = int
 
 
-class ProxyTile(Tile):
+class ProxyTile(PersistentTile):
     """Proxy tile.
 
     It renders the @@proxy-view browser view on the specified content
