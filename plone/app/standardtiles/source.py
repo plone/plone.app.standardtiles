@@ -10,20 +10,22 @@ from plone.formwidget.contenttree.source import PathSourceBinder
 
 class IntIdSource(PathSource):
 
+    def __init__(self, *args, **kwargs):
+        self.intids = getUtility(IIntIds)
+        super(IntIdSource, self).__init__(*args, **kwargs)
+        
     def _path_for_value(self, value):
-        intids = getUtility(IIntIds)
-        obj = intids.getObject(value)
+        obj = self.intids.getObject(value)
         return '/'.join(obj.getPhysicalPath())
 
-    def _term_for_brain(self, brain):
+    def _term_for_brain(self, brain, real_value=False):
         path = brain.getPath()[len(self.portal_path):]
         obj = brain._unrestrictedGetObject()
-        intids = getUtility(IIntIds)
-        intid = intids.getId(obj)
-        return SimpleTerm(intid,
-                          path,
-                          brain.Title)
-        
+
+        intid = self.intids.getId(obj)
+        return SimpleTerm(value=intid,
+                          token=path,
+                          title=brain.Title)
 
 class IntIdSourceBinder(PathSourceBinder):
     path_source = IntIdSource
