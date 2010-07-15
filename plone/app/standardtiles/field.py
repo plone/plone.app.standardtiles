@@ -5,6 +5,7 @@ from plone.tiles import Tile
 from plone.supermodel.utils import mergedTaggedValueDict
 from plone.autoform.interfaces import WIDGETS_KEY
 from plone.autoform.utils import resolveDottedName
+from plone.z3cform import z2
 
 
 class DexterityFieldTile(DisplayForm, Tile):
@@ -32,5 +33,6 @@ class DexterityFieldTile(DisplayForm, Tile):
         return u"<html><body>%s</body></html>" % render
 
     def __call__(self):
+        z2.switch_on(self)
         self.update()
         return self._wrap_widget(self.widgets[self.data['field']].render())
