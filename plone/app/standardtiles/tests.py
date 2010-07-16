@@ -6,6 +6,7 @@ from plone.app.testing import PLONE_INTEGRATION_TESTING
 from plone.app.testing import PLONE_FUNCTIONAL_TESTING
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import quickInstallProduct
+from plone.app.testing import applyProfile
 
 from zope.configuration import xmlconfig
 
@@ -17,7 +18,7 @@ from zope.contentprovider.interfaces import UpdateNotCalled
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.manager import PortletManager, PortletManagerRenderer
-
+import plone.app.dexterity
 
 class IMockPortletManager(IPortletManager):
     """Marker interface for the mock portlet manager."""
@@ -54,11 +55,12 @@ class PAStandardtiles(PloneSandboxLayer):
         import plone.app.standardtiles
         xmlconfig.file('configure.zcml', plone.app.standardtiles,
                        context=configurationContext)
-
+        xmlconfig.file('configure.zcml', plone.app.dexterity,
+                       context=configurationContext)
     def setUpPloneSite(self, portal):
         # install into the Plone site
         quickInstallProduct(portal, 'plone.app.standardtiles')
-
+        applyProfile(portal, 'plone.app.dexterity:default')
         # register portlet manager and portlet manager renderer
         sm = getSiteManager(portal)
         sm.registerUtility(component=MockPortletManager(),
@@ -67,15 +69,19 @@ class PAStandardtiles(PloneSandboxLayer):
         provideAdapter(MockPortletManagerRenderer)
 
 PASTANDARDTILES_INTEGRATION_TESTING = PAStandardtiles()
-PASTANDARDTILES_FUNCTIONAL_TESTING = PAStandardtiles(bases=(PLONE_FUNCTIONAL_TESTING,))
+PASTANDARDTILES_FUNCTIONAL_TESTING = PAStandardtiles(name="PAStandardtiles:Functional", \
+    bases=(PLONE_FUNCTIONAL_TESTING,))
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
-
+testfiles = [
+    'standardtiles.txt',
+    'field.txt',
+]
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTests([
-        layered(doctest.DocFileSuite('standardtiles.txt', 
+        layered(doctest.DocFileSuite( test ,
                                      optionflags=optionflags),
                 layer=PASTANDARDTILES_FUNCTIONAL_TESTING)
-        ])
+        for test in testfiles])
     return suite
