@@ -71,6 +71,7 @@
         permission="zope2.View"
         />
 
+    <!-- app tiles -->
     <plone:tile
         name="plone.app.standardtiles.video"
         title="Video"
@@ -102,7 +103,7 @@
         mode="input"
         widget="plone.app.standardtiles.image.IImagePreviewSelectWidget"
         layer="z3c.form.interfaces.IFormLayer"
-        template="image_preview_select_widget.pt"
+        template="templates/image_preview_select_widget.pt"
         />
 
     <plone:tile
@@ -166,6 +167,7 @@
         schema=".legacy.IViewletManagerTile"
         />
 
+    <!-- legacy tiles -->
     <plone:tile
         name="plone.app.standardtiles.portletmanager"
         title="Portlet Manager Tile"
@@ -185,6 +187,7 @@
         template="templates/skip_links.pt"
         />
 
+    <!-- layout tiles -->
     <plone:tile
         name="plone.app.standardtiles.personal_bar"
         class=".common.PersonalBarTile"
