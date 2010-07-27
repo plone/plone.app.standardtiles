@@ -28,6 +28,11 @@ setup(name='plone.app.standardtiles',
           'lxml',
           'plone.app.tiles',
           'plone.directives.tiles',
+          'zope.app.component',
+          'zope.intid',
+          'z3c.relationfield',
+          'z3c.form',
+          'Products.CMFCore',
       ],
       extras_require={
           'test': [

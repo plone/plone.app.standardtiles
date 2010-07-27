@@ -9,4 +9,8 @@
       <element>plone.app.standardtiles.navigation|media|Navtree|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>
     </value>
   </record>
+
+  <record interface="plone.app.standardtiles.interfaces.IStandardTilesSettings" field="images_repo_path">
+    <value>images</value>
+  </record>
 </registry>
