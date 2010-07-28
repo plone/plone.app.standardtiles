@@ -42,6 +42,9 @@ class ImagePreviewSelectWidget(SelectWidget):
 
     promptMessage = _('select an image ...')
 
+    def method(self):
+        return self.request.get("%s.method" % self.name, "existing")
+
     def update(self):
         self.upload = ImageUploadForm(None, self.request)
         self.upload.update()
@@ -54,7 +57,7 @@ class ImagePreviewSelectWidget(SelectWidget):
             filedata = data['image_upload']
             image_upload_widget = self.upload.widgets['image_upload']
             
-            if filedata:
+            if filedata and self.method() == 'upload':
                 site = getSite()
                 registry = getUtility(IRegistry)
                 images_path = str(registry['plone.app.standardtiles.interfaces.IStandardTilesSettings.images_repo_path']) # XXX: why doesn't it return a string instead of unicode?

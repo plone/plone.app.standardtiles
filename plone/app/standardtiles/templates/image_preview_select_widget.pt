@@ -1,7 +1,17 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
      xmlns:tal="http://xml.zope.org/namespaces/tal"
-     tal:omit-tag="">
+     tal:omit-tag=""
+     tal:define="upload_widget view/upload/widgets/image_upload;
+                 method view/method">
 <script type="text/javascript" tal:content="structure view/js"></script>
+
+<input type="radio" value="existing" 
+       tal:attributes="name string:${view/name}.method;
+                       id string:${view/id}-existing;
+                       onclick string:document.getElementById('${view/id}').disabled=false;; document.getElementById('${upload_widget/id}').disabled=true;
+                       checked python:(method == 'existing') and 'checked' or None;" />
+<label tal:attributes="for string:${view/id}-existing;">Use an existing image</label> <br />
+
 <select id="" name="" class="" tabindex="" disabled="" multiple="" size=""
         tal:attributes="id view/id;
                         name string:${view/name}:list;
@@ -51,7 +61,16 @@
                        src python:view.value and view.getImageURLFromId(view.value[0]) + '/image_thumb' or ''" />
 </div>
 
-Or upload a new image:
+<input type="radio" value="upload" 
+       tal:attributes="name string:${view/name}.method;
+                       id string:${view/id}-upload;
+                       checked python:(method == 'upload') and 'checked' or None;
+                       onclick string:document.getElementById('${view/id}').disabled=true;; document.getElementById('${upload_widget/id}').disabled=false;" />
+<label tal:attributes="for string:${view/id}-upload;">Upload a new image</label>
+
 <div tal:replace="structure view/upload/render" />
+<script tal:condition="python: method!='upload'" type="text/javascript"
+        tal:content="string:document.getElementById('${upload_widget/id}').disabled=true;; document.getElementById('${view/id}').disabled=false;">
+</script>
 
 </div>
