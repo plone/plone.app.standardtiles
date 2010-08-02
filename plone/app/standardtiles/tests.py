@@ -2,10 +2,10 @@ import unittest2 as unittest
 import doctest
 from plone.testing import layered
 
-from plone.app.testing import PLONE_INTEGRATION_TESTING
-from plone.app.testing import PLONE_FUNCTIONAL_TESTING
+from plone.app.testing.layers import IntegrationTesting
+from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing import PloneSandboxLayer
-from plone.app.testing import quickInstallProduct
+from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import applyProfile
 
 from zope.configuration import xmlconfig
@@ -19,6 +19,7 @@ from zope.contentprovider.interfaces import UpdateNotCalled
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.manager import PortletManager, PortletManagerRenderer
 import plone.app.dexterity
+
 
 class IMockPortletManager(IPortletManager):
     """Marker interface for the mock portlet manager."""
@@ -48,7 +49,7 @@ class MockPortletManagerRenderer(PortletManagerRenderer):
 
 
 class PAStandardtiles(PloneSandboxLayer):
-    defaultBases = (PLONE_INTEGRATION_TESTING,)
+    defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         # load ZCML
@@ -57,9 +58,10 @@ class PAStandardtiles(PloneSandboxLayer):
                        context=configurationContext)
         xmlconfig.file('configure.zcml', plone.app.dexterity,
                        context=configurationContext)
+
     def setUpPloneSite(self, portal):
         # install into the Plone site
-        quickInstallProduct(portal, 'plone.app.standardtiles')
+        applyProfile(portal, 'plone.app.standardtiles:default')
         applyProfile(portal, 'plone.app.dexterity:default')
         # register portlet manager and portlet manager renderer
         sm = getSiteManager(portal)
@@ -68,9 +70,10 @@ class PAStandardtiles(PloneSandboxLayer):
                            name='mock.portletmanager')
         provideAdapter(MockPortletManagerRenderer)
 
-PASTANDARDTILES_INTEGRATION_TESTING = PAStandardtiles()
-PASTANDARDTILES_FUNCTIONAL_TESTING = PAStandardtiles(name="PAStandardtiles:Functional", \
-    bases=(PLONE_FUNCTIONAL_TESTING,))
+PASTANDARDTILES_FIXTURE = PAStandardtiles()
+
+PASTANDARDTILES_INTEGRATION_TESTING = IntegrationTesting(bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Integration")
+PASTANDARDTILES_FUNCTIONAL_TESTING = FunctionalTesting(bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Functional")
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 testfiles = [
