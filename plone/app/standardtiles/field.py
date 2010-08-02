@@ -15,9 +15,7 @@ class DexterityFieldTile(DisplayForm, Tile):
     def __init__(self, context, request):
         Tile.__init__(self, context, request)
         DisplayForm.__init__(self, context, request)
-        self.fields = Fields()
-        for schema in iterSchemata(self.context):
-            self.fields += Fields(schema)
+        self.fields = Fields(*iterSchemata(self.context))
 
     def updateWidgets(self):
         for schema in iterSchemata(self.context):
