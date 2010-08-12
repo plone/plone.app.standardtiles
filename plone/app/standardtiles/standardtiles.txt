@@ -1,26 +1,86 @@
-First, we set up a browser instance::
+This package registers a set of standard tiles, including tiles for
+the page layout like the footer, site actions or the search box, tiles
+for the headers like stylesheets and javascript resource registries
+output, and application tiles like the image, video or proxy tiles.
+
+Here we present some of them.
+
+First, we set up a browser instance and get Manager privileges::
 
     >>> from plone.testing.z2 import Browser
     >>> app = layer['app']
     >>> browser = Browser(app)
     >>> browser.handleErrors = False
-
-Transient tiles can be accessed directly using a querystring syntax::
-
     >>> portal = layer['portal']
-    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.colophon/tile1')
+    >>> portalURL = portal.absolute_url()
 
-Persistent tiles require a bit more work, exercising data managers::
+    >>> from plone.app.testing import setRoles
+    >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
+    >>> browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+    >>> setRoles(portal, TEST_USER_NAME, ['Manager'])
 
-    >>> video_tile = portal.restrictedTraverse('@@plone.app.standardtiles.video/tile1')
-    >>> from plone.tiles.interfaces import ITileDataManager
-    >>> dataManager = ITileDataManager(video_tile)
-    >>> dataManager.set({'youtubeURL': 'http://www.youtube.com/watch?v=ayPKvFNz8aE'})
-    >>> print video_tile()
-    <html><body><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object></body></html>
+    >>> import transaction
+    >>> transaction.commit() # make the browser see this role
 
-To test the portlet manager tile, we can use the mock portlet manager we registered in the testing layer::
+Layout tiles like the colophon don't need any config parameters::
 
-    >>> browser.open(portal.absolute_url() + '/@@plone.app.standardtiles.portletmanager/tile1?manager=mock.portletmanager')
-    >>> print browser.contents
-    <html><body>Portlet Manager Renderer output.</body></html>
+    >>> browser.open(portalURL+ '/@@plone.app.standardtiles.colophon/colophon-tile')
+    >>> browser.contents
+    '...This site was built using the Plone Open Source CMS/WCM...'
+
+The video tile is a persistent tile which takes a YouTube video URL
+and displays the associated video::
+
+    >>> browser.open(portalURL+ '/@@add-tile/plone.app.standardtiles.video/video-tile')
+    >>> browser.getControl(name='youtubeURL').value = 'http://www.youtube.com/watch?v=ayPKvFNz8aE'
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.video/video-tile')
+    >>> browser.contents
+    '<html><body><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object></body></html>'
+
+The proxy tile takes the int id of a content object in the site and
+displays the result of calling ``@@proxy-view`` on it. The default
+``@@proxy-view``, registered for all interfaces, renders the contents
+of the ``#content`` HTML element of the default view of the object.
+
+We create a Document object in the portal for it to be referenced, and
+set its title and description::
+
+    >>> dummy = portal.invokeFactory('Document', 'aDocument',
+    ...                              title='A document',
+    ...                              description="A description")
+    >>> document = portal['aDocument']
+    >>> transaction.commit()
+
+Using the proxy tile with this document exhibits the default behavior::
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.proxy/proxy-tile')
+    >>> browser.getControl(name='contentId.widgets.query').value = 'aDocument'
+    >>> browser.getControl(name='contentId.buttons.search').click()
+    >>> contentId = browser.getControl(name="contentId:list")
+    >>> contentId.displayOptions
+    ['A document']
+    >>> contentId.getControl('A document').selected = True
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/plone.app.standardtiles.proxy/proxy-tile')
+    >>> browser.contents
+    '...id="content"...A document...A description...'
+
+If we register a view with the name ``@@proxy-view`` for a more
+specific interface, it will be used instead::
+
+    >>> from zope.interface import Interface
+    >>> from Products.ATContentTypes.interfaces.document import IATDocument
+    >>> from zope.component import adapts, provideAdapter
+    >>> from Products.Five.browser import BrowserView
+    >>> from zope.publisher.interfaces.browser import IBrowserView
+
+    >>> class ProxyView(BrowserView):
+    ...     adapts(IATDocument, Interface)
+    ...     def __call__(self):
+    ...         return "Custom proxy view."
+    >>> provideAdapter(ProxyView, provides=IBrowserView, name="proxy-view")
+
+    >>> browser.open(portalURL + '/plone.app.standardtiles.proxy/proxy-tile')
+    >>> browser.contents
+    'Custom proxy view.'
