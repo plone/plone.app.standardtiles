@@ -36,8 +36,7 @@ class ProxyView(BrowserView):
     template = ViewPageTemplateFile('proxy_view.pt')
     
     def __call__(self):
-        layout = self.context.getLayout()
-        out = self.context.restrictedTraverse([layout])()
+        out = self.context.restrictedTraverse('view')()
         htmlparser = etree.HTMLParser()
         tree = etree.fromstring(out, htmlparser)
         sel = cssselect.CSSSelector('#content')
