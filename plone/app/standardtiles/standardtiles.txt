@@ -74,7 +74,7 @@ Using the proxy tile with this document exhibits the default behavior::
     ['A document']
     >>> contentId.getControl('A document').selected = True
     >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/plone.app.standardtiles.proxy/proxy-tile')
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.proxy/proxy-tile')
     >>> browser.contents
     '...id="content"...A document...A description...'
 
@@ -93,7 +93,7 @@ specific interface, it will be used instead::
     ...         return "Custom proxy view."
     >>> provideAdapter(ProxyView, provides=IBrowserView, name="proxy-view")
 
-    >>> browser.open(portalURL + '/plone.app.standardtiles.proxy/proxy-tile')
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.proxy/proxy-tile')
     >>> browser.contents
     'Custom proxy view.'
 
