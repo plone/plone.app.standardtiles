@@ -22,11 +22,19 @@ First, we set up a browser instance and get Manager privileges::
     >>> import transaction
     >>> transaction.commit() # make the browser see this role
 
+
+Layout tiles
+-------------
+
 Layout tiles like the colophon don't need any config parameters::
 
     >>> browser.open(portalURL+ '/@@plone.app.standardtiles.colophon/colophon-tile')
     >>> browser.contents
     '...This site was built using the Plone Open Source CMS/WCM...'
+
+
+Video tile
+-----------
 
 The video tile is a persistent tile which takes a YouTube video URL
 and displays the associated video::
@@ -37,6 +45,10 @@ and displays the associated video::
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.video/video-tile')
     >>> browser.contents
     '<html><body><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object></body></html>'
+
+
+Proxy tile
+-----------
 
 The proxy tile takes the int id of a content object in the site and
 displays the result of calling ``@@proxy-view`` on it. The default
@@ -84,3 +96,26 @@ specific interface, it will be used instead::
     >>> browser.open(portalURL + '/plone.app.standardtiles.proxy/proxy-tile')
     >>> browser.contents
     'Custom proxy view.'
+
+
+Navigation tree tile
+---------------------
+
+The navigation tree tile displays a navigation tree for the context
+where it's inserted and take no configuration parameters.
+
+Rendering this tile in the site root should show the document we
+created before::
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.navigation/navigation-tile')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.navigation/navigation-tile')
+    >>> print browser.contents
+    <body>
+      <ul id="navigation" class="navigation">
+        <li>
+          <a href="http://nohost/plone/aDocument" class="state-missing-value" title="A description">
+            A document <em class="icon document">(Page)</em></a>
+        </li>
+      </ul>
+    </body>
