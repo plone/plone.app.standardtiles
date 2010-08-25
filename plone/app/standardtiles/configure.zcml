@@ -281,8 +281,8 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.version_history"
-        class=".common.VersionHistoryTile"
+        name="plone.app.standardtiles.history"
+        class=".common.HistoryTile"
         for="*"
         permission="zope2.View"
         />

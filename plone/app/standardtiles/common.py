@@ -438,10 +438,8 @@ class DocumentBylineTile(Tile):
         if not _checkPermission('CMFEditions: Access previous versions',
                                 self.context):
             return False
-        repotool = getToolByName(self.context, 'portal_repository')
-        if repotool.isVersionable(self.context):
+        else:
             return True
-        return False
 
     def locked_icon(self):
         if not getSecurityManager().checkPermission('Modify portal content',
@@ -520,9 +518,10 @@ class RelatedItemsTile(Tile):
       
         return related
 
-class VersionHistoryTile(Tile):
-    """Provides the version history as tile. Basically just renders
-    the @@contenthistorypopup view.
+class HistoryTile(Tile):
+    """Provides the history as tile. Basically just renders
+    the @@contenthistorypopup view, which includes version / content
+    history and workflow history.
     """
 
     def __call__(self):
