@@ -32,9 +32,18 @@ Layout tiles like the colophon don't need any config parameters::
     >>> browser.contents
     '...This site was built using the Plone Open Source CMS/WCM...'
 
+Footer tile::
+
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.footer')
     >>> browser.contents
     '...id="portal-footer"...and the Plone logo are registered trademarks of the...' 
+
+Site actions tile::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.site_actions')
+    >>> browser.contents
+    '...id="portal-siteactions"...'
+  
 
 Video tile
 -----------
