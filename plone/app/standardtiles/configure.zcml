@@ -156,7 +156,6 @@
         class=".discussion.DiscussionTile"
         for="*"
         permission="zope.Public"
-        schema=".discussion.IDiscussionTile"
         />
         
     <plone:tile
