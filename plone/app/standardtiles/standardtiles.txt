@@ -145,3 +145,4 @@ If not link text is supplied, the name of the file is used instead.
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile')
     >>> browser.contents
     '<html><body><a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/textfile.txt">textfile.txt</a></body></html>'
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile/@@download')

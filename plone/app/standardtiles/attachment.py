@@ -67,7 +67,7 @@ class AttachmentTileDownload(object):
         """
         
         fileObj = self.context.data.get('fileObj', None)
-        if file is None:
+        if fileObj is None:
             raise NotFound(self, self.filename, self.request)
         
         if not self.filename:
