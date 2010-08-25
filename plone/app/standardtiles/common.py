@@ -12,7 +12,6 @@ from plone.memoize.view import memoize
 from urllib import unquote
 
 
-
 class FooterTile(Tile):
     """A footer tile
     """
@@ -51,6 +50,87 @@ class SkipLinksTile(Tile):
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
         return context_state.current_page_url
+
+
+class LoginTile(Tile):
+    """Login tile
+    """
+
+    def __call__(self):
+        context = aq_inner(self.context)
+        request = self.request
+        self.membership = getToolByName(context, 'portal_membership')
+        self.context_state = getMultiAdapter((context, request),
+            name=u'plone_context_state')
+        self.portal_state = getMultiAdapter((context, request),
+            name=u'plone_portal_state')
+        self.pas_info = getMultiAdapter((context, request), name=u'pas_info')
+        self.navigation_root_url = self.portal_state.navigation_root_url()
+
+        self.update()
+        return self.index()
+
+    def show(self):
+        if not self.portal_state.anonymous():
+            return False
+        if not self.pas_info.hasLoginPasswordExtractor():
+            return False
+        page = self.request.get('URL', '').split('/')[-1]
+        return page not in ('login_form', '@@register')
+
+    @property
+    def available(self):
+        return self.auth() is not None and self.show()
+
+    def login_form(self):
+        return '%s/login_form' % self.portal_state.portal_url()
+
+    def mail_password_form(self):
+        return '%s/mail_password_form' % self.portal_state.portal_url()
+
+    def login_name(self):
+        auth = self.auth()
+        name = None
+        if auth is not None:
+            name = getattr(auth, 'name_cookie', None)
+        if not name:
+            name = '__ac_name'
+        return name
+
+    def login_password(self):
+        auth = self.auth()
+        passwd = None
+        if auth is not None:
+            passwd = getattr(auth, 'pw_cookie', None)
+        if not passwd:
+            passwd = '__ac_password'
+        return passwd
+
+    def join_action(self):
+        context = self.context
+        tool = getToolByName(context, 'portal_actions')
+        join = tool.listActionInfos(action_chain='user/join', object=context)
+        if len(join) > 0:
+            return join[0]['url']
+        return None
+
+    def can_register(self):
+        if getToolByName(self.context, 'portal_registration', None) is None:
+            return False
+        return self.membership.checkPermission('Add portal member',
+                                               self.context)
+
+    def can_request_password(self):
+        return self.membership.checkPermission('Mail forgotten password',
+                                               self.context)
+
+    @memoize
+    def auth(self, _marker=[]):
+        acl_users = getToolByName(self.context, 'acl_users')
+        return getattr(acl_users, 'credentials_cookie_auth', None)
+
+    def update(self):
+        pass
 
 
 class PersonalBarTile(Tile):
@@ -116,11 +196,12 @@ class SearchBoxTile(Tile):
                                         name=u'plone_context_state')
 
         props = getToolByName(self.context, 'portal_properties')
-        livesearch = props.site_properties.getProperty('enable_livesearch', False)
+        livesearch = props.site_properties.getProperty('enable_livesearch',
+                                                       False)
         if livesearch:
             self.search_input_id = "searchGadget"
         else:
-            self.search_input_id = "nolivesearchGadget" # don't use "" here!
+            self.search_input_id = "nolivesearchGadget"  # don't use "" here!
 
         folder = context_state.folder()
         self.folder_path = '/'.join(folder.getPhysicalPath())
@@ -193,9 +274,9 @@ class GlobalSectionsTile(Tile):
         # Sort by path length, the longest matching path wins
         valid_actions.sort()
         if valid_actions:
-            return {'portal' : valid_actions[-1][1]}
+            return {'portal': valid_actions[-1][1]}
 
-        return {'portal' : default_tab}
+        return {'portal': default_tab}
 
 
 class PathBarTile(Tile):
@@ -223,7 +304,8 @@ class ContentViewsTile(Tile):
     """
 
     @memoize
-    def prepareObjectTabs(self, default_tab='view', sort_first=['folderContents']):
+    def prepareObjectTabs(self, default_tab='view',
+                          sort_first=['folderContents']):
         """Prepare the object tabs by determining their order and working
         out which tab is selected. Used in global_contentviews.pt
         """
@@ -232,8 +314,7 @@ class ContentViewsTile(Tile):
         context_fti = context.getTypeInfo()
 
         context_state = getMultiAdapter(
-            (context, self.request), name=u'plone_context_state'
-            )
+            (context, self.request), name=u'plone_context_state')
         actions = context_state.actions
 
         action_list = []
@@ -252,10 +333,10 @@ class ContentViewsTile(Tile):
             request_url_path = request_url_path[1:]
 
         for action in action_list:
-            item = {'title'    : action['title'],
-                    'id'       : action['id'],
-                    'url'      : '',
-                    'selected' : False}
+            item = {'title': action['title'],
+                    'id': action['id'],
+                    'url': '',
+                    'selected': False}
 
             action_url = action['url'].strip()
             starts = action_url.startswith
@@ -269,13 +350,11 @@ class ContentViewsTile(Tile):
             # Action method may be a method alias:
             # Attempt to resolve to a template.
             action_method = context_fti.queryMethodID(
-                action_method, default=action_method
-                )
+                action_method, default=action_method)
             if action_method:
                 request_action = unquote(request_url_path)
                 request_action = context_fti.queryMethodID(
-                    request_action, default=request_action
-                    )
+                    request_action, default=request_action)
                 if action_method == request_action:
                     item['selected'] = True
                     found_selected = True
@@ -312,12 +391,12 @@ class ContentActionsTile(Tile):
 
     def icon(self, action):
         return action.get('icon', None)
-    
+
 
 class DocumentBylineTile(Tile):
     """A document byline tile
     """
-    
+
     def __call__(self):
         self.update()
         return self.index()
@@ -337,7 +416,8 @@ class DocumentBylineTile(Tile):
         return not self.anonymous or allowAnonymousViewAbout
 
     def show_history(self):
-        if not _checkPermission('CMFEditions: Access previous versions', self.context):
+        if not _checkPermission('CMFEditions: Access previous versions',
+                                self.context):
             return False
         if IViewView.providedBy(self.__parent__):
             return True
@@ -355,7 +435,8 @@ class DocumentBylineTile(Tile):
             locked = lock_info.is_locked()
         else:
             context = aq_inner(self.context)
-            lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
+            lockable = getattr(context.aq_explicit,
+                               'wl_isLocked', None) is not None
             locked = lockable and context.wl_isLocked()
 
         if not locked:
@@ -381,7 +462,7 @@ class DocumentBylineTile(Tile):
             return self.context.expires().isPast()
         return False
 
-    def toLocalizedTime(self, time, long_format=None, time_only = None):
+    def toLocalizedTime(self, time, long_format=None, time_only=None):
         """Convert time to localized time
         """
         util = getToolByName(self.context, 'translation_service')

@@ -85,6 +85,17 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.login"
+        title="Login"
+        description="A tile which displays a loginbox"
+        add_permission="zope.Public"
+        class=".common.LoginTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/login.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.image"
         title="Image"
         description='A tile which displays an image'
@@ -117,7 +128,7 @@
         permission="zope.Public"
         schema=".attachment.IAttachmentTile"
         />
-    
+
     <browser:page
         name="download"
         for=".attachment.AttachmentTile"
