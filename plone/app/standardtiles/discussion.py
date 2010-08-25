@@ -74,7 +74,6 @@ except ImportError:
     HAS_WRAPPED_FORM = False
 
 
-
 class DiscussionTile(Tile):
     """Discussion tile.
     """
@@ -94,13 +93,6 @@ class DiscussionTile(Tile):
         pass
     
     # view methods
-
-    def is_anonymous(self):#
-        return True
-    
-    def login_action(self):
-        return "#"
-    
     def cook(self, text):
         transforms = getToolByName(self, 'portal_transforms')
         targetMimetype = 'text/html'
@@ -211,3 +203,24 @@ class DiscussionTile(Tile):
         settings = registry.forInterface(IDiscussionSettings)
         return settings.show_commenter_image
 
+    def is_anonymous(self):
+        portal_membership = getToolByName(self.context, 
+                                          'portal_membership', 
+                                          None)
+        return portal_membership.isAnonymousUser()
+
+    def login_action(self):
+        return '%s/login_form?came_from=%s' % (self.navigation_root_url, 
+                                               url_quote(self.request.get('URL', '')),)
+
+    def format_time(self, time):
+        # We have to transform Python datetime into Zope DateTime
+        # before we can call toLocalizedTime.
+        util = getToolByName(self.context, 'translation_service')
+        zope_time = DateTime(time.year, 
+                             time.month, 
+                             time.day, 
+                             time.hour, 
+                             time.minute, 
+                             time.second)
+        return util.toLocalizedTime(zope_time, long_format=True)
