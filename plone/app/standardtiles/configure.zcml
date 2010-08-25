@@ -276,6 +276,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.lockinfo"
+        class=".common.LockInfoTile"
+        for="plone.locking.interfaces.ITTWLockable"
+        permission="cmf.ModifyPortalContent"
+        template="templates/lockinfo.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.stylesheets"
         class=".head.StylesheetsTile"
         for="*"

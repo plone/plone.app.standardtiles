@@ -74,7 +74,7 @@ class PersonalBarTile(Tile):
         if not self.anonymous:
             member = self.portal_state.member()
             userid = member.getId()
-            
+
             if sm.checkPermission('Portlets: View dashboard', context):
                 self.homelink_url = self.navigation_root_url + '/dashboard'
             else:
@@ -136,7 +136,7 @@ class LogoTile(Tile):
 
     def update(self):
         portal = self.portal_state.portal()
-        bprops = portal.restrictedTraverse('base_properties', None) 
+        bprops = portal.restrictedTraverse('base_properties', None)
         if bprops is not None:
             logoName = bprops.logoName
         else:
@@ -229,7 +229,7 @@ class ContentViewsTile(Tile):
 
         context_state = getMultiAdapter(
             (context, self.request), name=u'plone_context_state'
-        )
+            )
         actions = context_state.actions
 
         action_list = []
@@ -266,12 +266,12 @@ class ContentViewsTile(Tile):
             # Attempt to resolve to a template.
             action_method = context_fti.queryMethodID(
                 action_method, default=action_method
-            )
+                )
             if action_method:
                 request_action = unquote(request_url_path)
                 request_action = context_fti.queryMethodID(
                     request_action, default=request_action
-                )
+                    )
                 if action_method == request_action:
                     item['selected'] = True
                     found_selected = True
@@ -308,3 +308,20 @@ class ContentActionsTile(Tile):
 
     def icon(self, action):
         return action.get('icon', None)
+
+
+class LockInfoTile(Tile):
+    """A lockinfo tile
+    """
+
+    def __call__(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.update()
+        return self.index()
+
+    def update(self):
+        self.info = getMultiAdapter((self.context, self.request),
+                                    name='plone_lock_info')
+        self.lock_is_stealable = self.info.lock_is_stealable()
+        self.lock_info = self.info.lock_info
