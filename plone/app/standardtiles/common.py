@@ -524,3 +524,11 @@ class RelatedItemsTile(Tile):
       
         return related
 
+class VersionHistoryTile(Tile):
+    """Provides the version history as tile. Basically just renders
+    the @@contenthistorypopup view.
+    """
+
+    def __call__(self):
+        view = self.context.restrictedTraverse('@@contenthistorypopup')
+        return view()

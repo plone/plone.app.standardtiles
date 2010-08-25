@@ -281,6 +281,13 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.version_history"
+        class=".common.VersionHistoryTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.colophon"
         for="*"
         permission="zope2.View"
