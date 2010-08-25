@@ -1,5 +1,7 @@
 import unittest2 as unittest
 import doctest
+import pprint
+import interlude
 from plone.testing import layered
 
 from plone.app.testing.layers import IntegrationTesting
@@ -83,8 +85,12 @@ testfiles = [
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTests([
-        layered(doctest.DocFileSuite( test ,
-                                     optionflags=optionflags),
+        layered(doctest.DocFileSuite(test ,
+                                     optionflags=optionflags,
+                                     globs={'interact': interlude.interact,
+                                            'pprint': pprint.pprint,
+                                            }
+                                     ),
                 layer=PASTANDARDTILES_FUNCTIONAL_TESTING)
         for test in testfiles])
     return suite
