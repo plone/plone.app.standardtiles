@@ -207,6 +207,28 @@ class SearchBoxTile(Tile):
         self.folder_path = '/'.join(folder.getPhysicalPath())
 
 
+class DiscussionTile(Tile):
+    """A tile for comments
+    """
+
+    def __call__(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.navigation_root_url = self.portal_state.navigation_root_url()
+
+        self.update()
+        return self.index()
+
+    def update(self):
+        context_state = getMultiAdapter((self.context, self.request),
+                                        name=u'plone_context_state')
+
+        props = getToolByName(self.context, 'portal_properties')
+
+        folder = context_state.folder()
+        self.folder_path = '/'.join(folder.getPhysicalPath())
+
+
 class LogoTile(Tile):
     """A logo tile
     """

@@ -217,6 +217,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.discussion"
+        class=".common.DiscussionTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/discussion.pt"
+        />
+        
+    <plone:tile
         name="plone.app.standardtiles.logo"
         class=".common.LogoTile"
         for="*"
