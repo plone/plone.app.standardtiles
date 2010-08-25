@@ -96,6 +96,18 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.rss"
+        title="RSS Feed"
+        description="A tile which displays a RSS feed"
+        add_permission="zope.Public"
+        class=".rss.RSSTile"
+        for="*"
+        permission="zope2.View"
+        schema=".rss.IRSSTile"
+        template="templates/rss.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.image"
         title="Image"
         description='A tile which displays an image'

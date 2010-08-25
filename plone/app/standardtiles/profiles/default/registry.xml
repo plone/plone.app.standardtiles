@@ -8,6 +8,7 @@
       <element>plone.app.standardtiles.proxy|media|Proxy|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>
       <element>plone.app.standardtiles.navigation|media|Navtree|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>
       <element>plone.app.standardtiles.discussion|media|Discussion|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>      
+      <element>plone.app.standardtiles.rss|media|RSS|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>
     </value>
   </record>
 
