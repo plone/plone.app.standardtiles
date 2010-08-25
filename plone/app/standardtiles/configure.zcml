@@ -223,7 +223,7 @@
         permission="zope2.View"
         template="templates/discussion.pt"
         />
-        
+
     <plone:tile
         name="plone.app.standardtiles.logo"
         class=".common.LogoTile"
@@ -270,6 +270,14 @@
         for="*"
         permission="zope2.View"
         template="templates/related_items.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.tableofcontents"
+        class=".common.TableOfContentsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/tableofcontents.pt"
         />
 
     <plone:tile

@@ -505,18 +505,26 @@ class LockInfoTile(Tile):
         self.lock_info = self.info.lock_info
 
 
+class TableOfContentsTile(Tile):
+    """A Table of contents tile
+    """
+    def __call__(self):
+        return self.index()
+
+
 class RelatedItemsTile(Tile):
     """A related items tile
     """
-    
+
     def related_items(self):
         context = aq_inner(self.context)
         related = ()
 
         if base_hasattr(context, 'relatedItems'):
             related = context.relatedItems
-      
+
         return related
+
 
 class HistoryTile(Tile):
     """Provides the history as tile. Basically just renders
