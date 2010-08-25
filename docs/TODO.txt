@@ -9,8 +9,6 @@ rssfeed
 navigation tree
 calendar
 searchbox
-loginbox
-
 
 content
 -------
