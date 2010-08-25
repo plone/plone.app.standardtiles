@@ -511,6 +511,10 @@ class TableOfContentsTile(Tile):
     def __call__(self):
         return self.index()
 
+    @property
+    def available(self):
+        return True
+
 
 class RelatedItemsTile(Tile):
     """A related items tile

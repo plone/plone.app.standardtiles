@@ -2,15 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       i18n:domain="plone">
 <body>
-    <dl id="document-toc" class="portlet toc" style="display: none"
-    tal:condition="view/available"
-    i18n:domain="plone">
+    <dl id="document-toc" class="portlet toc"
+        tal:condition="view/available"
+        i18n:domain="plone">
+
         <dt class="portletHeader"
             i18n:translate="label_tableofcontents">Contents</dt>
-    <dd class="portletItem"></dd>
-
-</dl>
-
-
+        <dd class="portletItem"></dd>
+    </dl>
 </body>
 </html>
