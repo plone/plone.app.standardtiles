@@ -1,9 +1,3 @@
-import unittest2 as unittest
-import doctest
-import pprint
-import interlude
-from plone.testing import layered
-
 from plone.app.testing.layers import IntegrationTesting
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing import PloneSandboxLayer
@@ -76,21 +70,3 @@ PASTANDARDTILES_FIXTURE = PAStandardtiles()
 
 PASTANDARDTILES_INTEGRATION_TESTING = IntegrationTesting(bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Integration")
 PASTANDARDTILES_FUNCTIONAL_TESTING = FunctionalTesting(bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Functional")
-
-optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
-testfiles = [
-    'standardtiles.txt',
-    'field.txt',
-]
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTests([
-        layered(doctest.DocFileSuite(test ,
-                                     optionflags=optionflags,
-                                     globs={'interact': interlude.interact,
-                                            'pprint': pprint.pprint,
-                                            }
-                                     ),
-                layer=PASTANDARDTILES_FUNCTIONAL_TESTING)
-        for test in testfiles])
-    return suite
