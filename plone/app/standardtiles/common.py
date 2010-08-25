@@ -1,12 +1,16 @@
 from plone.tiles.tile import Tile
 from datetime import date
-from zope.component import getMultiAdapter
+from zope.component import getMultiAdapter, queryMultiAdapter
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import _checkPermission
 from Products.CMFPlone.utils import safe_unicode
+from Products.CMFPlone.utils import base_hasattr
 from Acquisition import aq_inner
 from AccessControl import getSecurityManager
+from plone.app.layout.globals.interfaces import IViewView
 from plone.memoize.view import memoize
 from urllib import unquote
+
 
 
 class FooterTile(Tile):
@@ -308,6 +312,81 @@ class ContentActionsTile(Tile):
 
     def icon(self, action):
         return action.get('icon', None)
+    
+
+class DocumentBylineTile(Tile):
+    """A document byline tile
+    """
+    
+    def __call__(self):
+        self.update()
+        return self.index()
+
+    def update(self):
+        self.portal_state = getMultiAdapter((self.context, self.request),
+                                            name=u'plone_portal_state')
+        self.context_state = getMultiAdapter((self.context, self.request),
+                                             name=u'plone_context_state')
+        self.anonymous = self.portal_state.anonymous()
+
+    def show(self):
+        properties = getToolByName(self.context, 'portal_properties')
+        site_properties = getattr(properties, 'site_properties')
+        allowAnonymousViewAbout = site_properties.getProperty(
+            'allowAnonymousViewAbout', True)
+        return not self.anonymous or allowAnonymousViewAbout
+
+    def show_history(self):
+        if not _checkPermission('CMFEditions: Access previous versions', self.context):
+            return False
+        if IViewView.providedBy(self.__parent__):
+            return True
+        return False
+
+    def locked_icon(self):
+        if not getSecurityManager().checkPermission('Modify portal content',
+                                                    self.context):
+            return ""
+
+        locked = False
+        lock_info = queryMultiAdapter((self.context, self.request),
+                                      name='plone_lock_info')
+        if lock_info is not None:
+            locked = lock_info.is_locked()
+        else:
+            context = aq_inner(self.context)
+            lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
+            locked = lockable and context.wl_isLocked()
+
+        if not locked:
+            return ""
+
+        portal = self.portal_state.portal()
+        icon = portal.restrictedTraverse('lock_icon.gif')
+        return icon.tag(title='Locked')
+
+    def creator(self):
+        return self.context.Creator()
+
+    def author(self):
+        membership = getToolByName(self.context, 'portal_membership')
+        return membership.getMemberInfo(self.creator())
+
+    def authorname(self):
+        author = self.author()
+        return author and author['fullname'] or self.creator()
+
+    def isExpired(self):
+        if base_hasattr(self.context, 'expires'):
+            return self.context.expires().isPast()
+        return False
+
+    def toLocalizedTime(self, time, long_format=None, time_only = None):
+        """Convert time to localized time
+        """
+        util = getToolByName(self.context, 'translation_service')
+        return util.ulocalized_time(time, long_format, time_only, self.context,
+                                    domain='plonelocales')
 
 
 class LockInfoTile(Tile):

@@ -238,6 +238,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.document_byline"
+        class=".common.DocumentBylineTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/document_byline.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.contentactions"
         class=".common.ContentActionsTile"
         for="*"
