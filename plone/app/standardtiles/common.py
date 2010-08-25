@@ -7,7 +7,6 @@ from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import base_hasattr
 from Acquisition import aq_inner
 from AccessControl import getSecurityManager
-from plone.app.layout.globals.interfaces import IViewView
 from plone.memoize.view import memoize
 from urllib import unquote
 
@@ -222,8 +221,6 @@ class DiscussionTile(Tile):
     def update(self):
         context_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_context_state')
-
-        props = getToolByName(self.context, 'portal_properties')
 
         folder = context_state.folder()
         self.folder_path = '/'.join(folder.getPhysicalPath())
@@ -519,7 +516,6 @@ class RelatedItemsTile(Tile):
         related = ()
 
         if base_hasattr(context, 'relatedItems'):
-            catalog = getToolByName(context, 'portal_catalog')
             related = context.relatedItems
       
         return related
