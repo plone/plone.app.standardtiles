@@ -30,6 +30,6 @@ tile::
     >>> browser.handleErrors = False
     >>> browser.open(content.absolute_url())
     >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=contributors')
-    >>> '<div id="form-widgets-contributors"' in browser.contents
+    >>> 'id="form-widgets-contributors"' in browser.contents
     True
 
