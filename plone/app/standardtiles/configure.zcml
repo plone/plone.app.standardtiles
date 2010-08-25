@@ -265,6 +265,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.related_items"
+        class=".common.RelatedItemsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/related_items.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.contentactions"
         class=".common.ContentActionsTile"
         for="*"

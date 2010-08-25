@@ -508,3 +508,19 @@ class LockInfoTile(Tile):
                                     name='plone_lock_info')
         self.lock_is_stealable = self.info.lock_is_stealable()
         self.lock_info = self.info.lock_info
+
+
+class RelatedItemsTile(Tile):
+    """A related items tile
+    """
+    
+    def related_items(self):
+        context = aq_inner(self.context)
+        related = ()
+
+        if base_hasattr(context, 'relatedItems'):
+            catalog = getToolByName(context, 'portal_catalog')
+            related = context.relatedItems
+      
+        return related
+
