@@ -389,4 +389,12 @@
         template="templates/rsslink.pt"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.comments"
+        class=".comments.CommentsTile"
+        for="Products.CMFCore.interfaces.IContentish"
+        permission="zope2.View"
+        template="templates/comments.pt"
+        />
+
 </configure>
