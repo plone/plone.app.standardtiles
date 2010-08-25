@@ -137,6 +137,17 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.discussion"
+        title="Discussion"
+        description='A tile which displays comments'
+        add_permission="zope2.View"
+        class=".discussion.DiscussionTile"
+        for="*"
+        permission="zope.Public"
+        schema=".discussion.IDiscussionTile"
+        />
+        
+    <plone:tile
         name="plone.app.standardtiles.proxy"
         title="Proxy"
         description='A tile which displays a content object'
@@ -214,14 +225,6 @@
         for="*"
         permission="zope2.View"
         template="templates/searchbox.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.discussion"
-        class=".common.DiscussionTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/discussion.pt"
         />
 
     <plone:tile
