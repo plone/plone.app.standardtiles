@@ -441,7 +441,8 @@ class DocumentBylineTile(Tile):
         if not _checkPermission('CMFEditions: Access previous versions',
                                 self.context):
             return False
-        if IViewView.providedBy(self.__parent__):
+        repotool = getToolByName(self.context, 'portal_repository')
+        if repotool.isVersionable(self.context):
             return True
         return False
 
