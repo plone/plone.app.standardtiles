@@ -3,13 +3,13 @@ from zope import schema
 from plone.directives import form as directivesform
 from plone.tiles import PersistentTile
 
-from plone.formwidget.query.widget import QueryWidgetFieldWidget
+from plone.formwidget.querystring.widget import QueryStringWidgetFieldWidget
 
 
 class IContentListingTile(directivesform.Schema):
     """Video tile
     """
-    directivesform.widget(search_terms=QueryWidgetFieldWidget)
+    directivesform.widget(search_terms=QueryStringWidgetFieldWidget)
     search_terms = schema.TextLine(title=u'Search terms',
                           description=u'Define the search terms for the items '
                           'you want to list by choosing what to match on. The '
