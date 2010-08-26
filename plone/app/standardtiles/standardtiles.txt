@@ -293,3 +293,71 @@ Searchbox tile
     >>> unprivileged_browser.contents
     '...id="portal-searchbox"...'
 
+
+Next previous tile
+------------------
+
+The next previous tile shows a next and a previous button if there is
+a next or a previous object. It can be activated by checking the checkbox
+in the schema (edit).
+
+Let's add a folder and add three pages for testing the tile::
+
+    >>> portal.invokeFactory('Folder', 'next-previous-folder',
+    ...     title='Next Previous folder')
+    'next-previous-folder'
+    >>> folder = portal.get('next-previous-folder')
+
+    >>> folder.invokeFactory('Document', 'page-one', title='Page one')
+    'page-one'
+    >>> page1 = folder.get('page-one')
+
+    >>> folder.invokeFactory('Document', 'page-two', title='Page two')
+    'page-two'
+    >>> page2 = folder.get('page-two')
+
+    >>> folder.invokeFactory('Document', 'page-three', title='Page three')
+    'page-three'
+    >>> page3 = folder.get('page-three')
+
+
+Test the tile on the first page. It should not be there since next
+previous is still disabled (default configuration).
+
+    >>> page1.restrictedTraverse('@@plone_nextprevious_view').enabled()
+    False
+
+    >>> tile_view = '@@plone.app.standardtiles.nextprevious'
+
+    >>> html = page1.restrictedTraverse(tile_view)()
+    >>> assert '<div' not in html, 'Next / previous is disabled ' + \
+    ...     'but the tile has contents.'
+
+Then we activate next previous and we should see a next-link when
+rendering the tile on the first page::
+
+    >>> folder.getField('nextPreviousEnabled').set(folder, True)
+    >>> page1.restrictedTraverse('@@plone_nextprevious_view').enabled()
+    True
+
+    >>> html = page1.restrictedTraverse(tile_view)()
+    >>> assert '<div' in html, 'Next / previous is enabled ' + \
+    ...     'but the tiles is empty'
+    >>> assert 'class="next"' in html, 'Expected "next" link'
+    >>> assert 'class="previous"' not in html, 'Didn\'t expect "previous" link'
+
+    >>> html = page2.restrictedTraverse(tile_view)()
+    >>> assert '<div' in html, 'Next / previous is enabled ' + \
+    ...     'but the tiles is empty'
+    >>> assert 'class="next"' in html, 'Expected "next" link'
+    >>> assert 'class="previous"' in html, 'Expected "previous" link'
+
+    >>> html = page3.restrictedTraverse(tile_view)()
+    >>> assert '<div' in html, 'Next / previous is enabled ' + \
+    ...     'but the tiles is empty'
+    >>> assert 'class="next"' not in html, 'Didn\'t expect "next" link'
+    >>> assert 'class="previous"' in html, 'Expected "previous" link'
+
+Cleanup::
+
+    >>> portal.manage_delObjects(['next-previous-folder'])

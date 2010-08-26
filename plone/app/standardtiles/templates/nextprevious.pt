@@ -4,9 +4,8 @@
       i18n:domain="plone">
   <body>
 
-    <div tal:define="enabled view/npview/enabled|nothing;
-                     isViewTemplate view/npview/isViewTemplate|nothing"
-         tal:condition="python:enabled and isViewTemplate"
+    <div tal:define="enabled view/npview/enabled|nothing"
+         tal:condition="python:enabled"
          tal:omit-tag="">
 
       <tal:block define="portal_url here/portal_url;">
