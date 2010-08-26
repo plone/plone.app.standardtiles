@@ -225,56 +225,6 @@ If not link text is supplied, the name of the file is used instead.
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile/@@download')
 
 
-Content listing tile
---------------------
-Lets create some content so we can use this with the tile. Adding a dexterity
-page is tedious (not installed), for now an ATDocument is good.
-
-    >>> browser.open(portalURL)
-    >>> browser.getLink('Folder').click()
-    >>> browser.getControl('Title').value = 'My folder'
-    >>> browser.getControl('Save').click()
-    >>> browser.url
-    'http://nohost/plone/my-folder/'
-
-    >>> browser.open('http://nohost/plone/my-folder/createObject?type_name=Document')
-    >>> browser.getControl('Title').value = 'My first page'
-    >>> browser.getControl('Save').click()
-    >>> browser.url
-    'http://nohost/plone/my-folder/my-first-page'
-
-    >>> browser.open('http://nohost/plone/my-folder/createObject?type_name=Document')
-    >>> browser.getControl('Title').value = 'My second page'
-    >>> browser.getControl('Save').click()
-    >>> browser.url
-    'http://nohost/plone/my-folder/my-second-page'
-
-    >>> folder = getattr(portal, 'my-folder')
-    >>> folder.objectIds()
-    [...'my-first-page', 'my-second-page'...]
-
-    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.contentlisting/contentlisting-tile')
-    >>> browser.getControl(name='query.i:records').value = 'SearchableText'
-    >>> browser.getControl(name='query.v:records').value = 'first'
-    >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.contentlisting/contentlisting-tile')
-    >>> browser.contents
-    '...<h2 class="searchResultsHeading"><span>Search results</span> <span class="discreet"> — <span>1 item matching your search terms</span></span></h2>...'
-    >>> browser.contents
-    '...<a href="http://nohost/plone/my-folder/my-first-page" class="private">My first page</a>...'
-    
-
-    >>> browser.open(portalURL + '/@@edit-tile/plone.app.standardtiles.contentlisting/contentlisting-tile')
-    >>> browser.getControl(name='query.i:records').value = 'SearchableText'
-    >>> browser.getControl(name='query.v:records').value = 'my'
-    >>> browser.contents
-    '...2 items matching your search terms...'
-    >>> browser.getControl(name='query.i:records').value = 'SearchableText'
-    >>> browser.getControl(name='query.v:records').value = 'second'
-    >>> browser.contents
-    '...1 items matching your search terms...'
-
-
 Calendar tile
 -------------
 
@@ -323,3 +273,12 @@ Rendering the tile again should result in different html:
      >>> assert prior_html != tile(), "Cache key wasn't invalidated"
      >>> 'class="event"' in tile()
      True
+
+
+Searchbox tile
+--------------
+
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.searchbox')
+    >>> unprivileged_browser.contents
+    '...id="portal-searchbox"...'
+
