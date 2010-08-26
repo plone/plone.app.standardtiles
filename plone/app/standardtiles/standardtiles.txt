@@ -82,7 +82,7 @@ Also test the personal bar as a logged-in user::
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.personal_bar')
     >>> browser.contents
     '...id="portal-personaltools-wrapper"...<a...Log out</a>...'
-    
+
 Logo tile::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.logo')
@@ -232,6 +232,59 @@ created before::
         </li>
       </ul>
     </body>
+
+
+Image tile
+-----------
+
+The image tile lets you select an existing image or upload a new one
+to insert into the page. By default, the tile looks for and uploads
+images to a folder named ``images`` at the root of the plone
+site. This is can be configured changing the ``images_repo_path``
+property of the ``IStandardTilesSettings`` interface in the registry.
+
+We first create this folder to be able to upload images to it::
+
+    >>> portal.invokeFactory('Folder', 'images', title='Images')
+    'images'
+    >>> images = portal['images']
+    >>> transaction.commit()
+
+We now create an image tile with an uploaded image::
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.image/image-tile')
+    >>> browser.getControl(name='imageId.method').getControl(value='upload').selected = True
+    >>> upload = browser.getControl(name='form.widgets.image_upload')
+    >>> import cStringIO
+    >>> upload.add_file(cStringIO.StringIO('Image contents'), 'image/jpeg', 'image.jpg')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.image/image-tile')
+    >>> browser.contents
+    '<html><body><img src="http://nohost/plone/images/image.jpg" alt="" /></body></html>'
+
+Note that, since we have not specified an alternative text, the
+``alt`` attribute of the ``img`` tag is empty (but present).
+
+The image has been uploaded to the ``images`` folder created above::
+
+    >>> images.keys()
+    ['image.jpg']
+
+If we edit the tile now, our image should be selected in the dropdown
+of existing images::
+
+    >>> browser.open(portalURL + '/@@edit-tile/plone.app.standardtiles.image/image-tile')
+    >>> imageId = browser.getControl(name='imageId:list')
+    >>> imageId.getControl('image.jpg').selected
+    True
+
+Entering an alternative text will display it properly::
+
+    >>> browser.getControl(name='altText').value = "An image"
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.image/image-tile')
+    >>> browser.contents
+    '<html><body><img src="http://nohost/plone/images/image.jpg" alt="An image" /></body></html>'
 
 
 Attachment tile
@@ -407,3 +460,4 @@ Make shure at least the print actionis visible::
     >>> html = portal.restrictedTraverse(view_name)()
     >>> assert 'id="document-action-print"' in html, \
     ...     'Expected document action to be visible'
+>>>>>>> .r39035
