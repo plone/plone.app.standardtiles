@@ -1,33 +1,13 @@
-dexterityfield
-==============
+Field Tile
+==========
 
-creating fti::
-
-    >>> from plone.dexterity.fti import DexterityFTI
-    >>> fti = DexterityFTI('test_type')
-    >>> fti.behaviors = ('plone.app.dexterity.behaviors.metadata.IOwnership',)
-    >>> portal = layer['portal']
-    >>> portal.portal_types._setObject('test_type', fti)
-    'test_type'
-    >>> schema = fti.lookupSchema()
-  
-creating sample-content::
-
-    >>> from plone.app.testing import SITE_OWNER_NAME
-    >>> from plone.app.testing import login
-    >>> login(layer['app'], SITE_OWNER_NAME)
-    >>> id = portal.invokeFactory('test_type', 'test_type')
-    >>> content = portal[id]
-    >>> content.contributors = (u"jane doe", u"john doe")
-    >>> import transaction
-    >>> transaction.commit()
-
-tile::  
+A field tile is a very simple tile: it just displays a field of its context honoring the widget customizations present in the schema tagged values (but it doesn't take into account the other tagged values such as when to display something or not, as this is reserved for the )
 
     >>> from plone.testing.z2 import Browser
     >>> app = layer['app']
     >>> browser = Browser(app)
     >>> browser.handleErrors = False
+    >>> content = layer['portal']['test_type']
     >>> browser.open(content.absolute_url())
     >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=contributors')
     >>> 'id="form-widgets-contributors"' in browser.contents
