@@ -201,6 +201,18 @@
         schema=".legacy.IViewletManagerTile"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.content_listing"
+        title="Content listing"
+        description='A tile which displays the content listing of this item'
+        add_permission="zope.Public"
+        class=".contentlisting.ContentListingTile"
+        for="Products.CMFCore.interfaces.IFolderish"
+        permission="zope2.View"
+        schema=".contentlisting.IContentListingTile"
+        template="templates/content_listing.pt"
+        />
+
     <!-- legacy tiles -->
     <plone:tile
         name="plone.app.standardtiles.portletmanager"
@@ -272,8 +284,11 @@
 
     <plone:tile
         name="plone.app.standardtiles.document_byline"
-        class=".common.DocumentBylineTile"
+        title="Document byline"
+        description='Shows the document byline with author name and date'
+        add_permission="zope.Public"
         for="*"
+        class=".common.DocumentBylineTile"
         permission="zope2.View"
         template="templates/document_byline.pt"
         />
