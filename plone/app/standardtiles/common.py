@@ -3,6 +3,7 @@ from datetime import date
 from zope.component import getMultiAdapter, queryMultiAdapter
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.utils import _checkPermission
+from plone.locking.interfaces import ITTWLockable
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.utils import base_hasattr
 from Acquisition import aq_inner
@@ -473,6 +474,8 @@ class LockInfoTile(Tile):
     """
 
     def __call__(self):
+        if not ITTWLockable.providedBy(self.context):
+            return '<html></html>'
         self.portal_state = getMultiAdapter((self.context, self.request),
                                             name=u'plone_portal_state')
         self.update()

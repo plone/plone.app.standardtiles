@@ -376,7 +376,7 @@
     <plone:tile
         name="plone.app.standardtiles.lockinfo"
         class=".common.LockInfoTile"
-        for="plone.locking.interfaces.ITTWLockable"
+        for="*"
         permission="cmf.ModifyPortalContent"
         template="templates/lockinfo.pt"
         />
