@@ -384,6 +384,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.document_actions"
+        class=".common.DocumentActionsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/document_actions.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.stylesheets"
         class=".head.StylesheetsTile"
         for="*"

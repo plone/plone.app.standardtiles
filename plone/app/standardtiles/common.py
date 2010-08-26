@@ -498,7 +498,22 @@ class NextPreviousTile(Tile):
         return self.index()
 
     def update(self):
-        self.npview = self.context.restrictedTraverse('@@plone_nextprevious_view')
+        self.npview = self.context.restrictedTraverse(
+            '@@plone_nextprevious_view')
+
+
+class DocumentActionsTile(Tile):
+    """Shows the document actions.
+    """
+
+    def __call__(self):
+        self.update()
+        return self.index()
+
+    def update(self):
+        self.context_state = getMultiAdapter((self.context, self.request),
+                                             name=u'plone_context_state')
+        self.actions = self.context_state.actions('document_actions')
 
 
 class RelatedItemsTile(Tile):
