@@ -157,7 +157,7 @@
         for="*"
         permission="zope.Public"
         />
-        
+
     <plone:tile
         name="plone.app.standardtiles.proxy"
         title="Proxy"
@@ -288,10 +288,12 @@
 
     <plone:tile
         name="plone.app.standardtiles.tableofcontents"
-        class=".common.TableOfContentsTile"
-        for="*"
-        permission="zope2.View"
+        title="Table of contents"
+        description="A tile which display a Table of contents"
+        add_permission="cmf.ManagePortal"
+        class="plone.app.standardtiles.tableofcontents.TableOfContentsTile"
         template="templates/tableofcontents.pt"
+        permission="zope.Public"
         />
 
     <plone:tile

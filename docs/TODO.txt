@@ -5,7 +5,6 @@ common
 ------
 
 poll
-rssfeed
 navigation tree
 calendar
 searchbox

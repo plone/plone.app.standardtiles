@@ -485,17 +485,6 @@ class LockInfoTile(Tile):
         self.lock_info = self.info.lock_info
 
 
-class TableOfContentsTile(Tile):
-    """A Table of contents tile
-    """
-    def __call__(self):
-        return self.index()
-
-    @property
-    def available(self):
-        return True
-
-
 class RelatedItemsTile(Tile):
     """A related items tile
     """
