@@ -85,10 +85,15 @@ Also test the personal bar as a logged-in user::
     
 Logo tile::
 
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.logo')
-    >>> browser.contents
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.logo')
+    >>> unprivileged_browser.contents
     '...id="portal-logo"...'
 
+Global sections::
+
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.global_sections')
+    >>> unprivileged_browser.contents
+    '...id="portal-globalnav"...'
 
 Login tile
 ----------
