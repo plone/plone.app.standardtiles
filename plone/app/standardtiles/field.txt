@@ -1,15 +1,41 @@
 Field Tile
 ==========
 
-A field tile is a very simple tile: it just displays a field of its context honoring the widget customizations present in the schema tagged values (but it doesn't take into account the other tagged values such as when to display something or not, as this is reserved for the )
+A field tile is a very simple tile: it just displays a field of its context
+honoring the widget customizations present in the schema tagged values; but it
+doesn't take into account the other tagged values such as when to display
+something or not, as this is both useless from a tile point-of-view, and causes
+harm due to certain default settings of behaviours.
+
+Let's then proceed and see how the field tile works. First of all, let's set up
+a bit of boilerplate: ::
 
     >>> from plone.testing.z2 import Browser
     >>> app = layer['app']
     >>> browser = Browser(app)
     >>> browser.handleErrors = False
-    >>> content = layer['portal']['test_type']
-    >>> browser.open(content.absolute_url())
-    >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=contributors')
-    >>> 'id="form-widgets-contributors"' in browser.contents
-    True
+    >>> content = layer['portal']['deco-test-type1']
+    >>> import transaction
+
+We now have a browser and a test content, which uses a very simple content type
+we have defined that has the following fields (see ``tests/schemata.py`` for
+details):
+
+textfield
+    A textline field
+
+intfield
+    An integer field
+
+boolfield
+    A boolean field
+
+We can then try to set the textfield and try to render the tile that
+displays it: ::
+
+    >>> content.textfield = u"Hello world"
+    >>> transaction.commit()
+    >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=textfield')
+    >>> browser.contents
+    '...<span id="form-widgets-textfield" ...>Hello world</span>...'
 

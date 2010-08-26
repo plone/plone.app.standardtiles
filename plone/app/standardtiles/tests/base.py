@@ -78,15 +78,16 @@ class PAStandardtilesTestType(PAStandardtiles):
     def setUpPloneSite(self, portal):
         super(PAStandardtilesTestType, self).setUpPloneSite(portal)
         # Define the dexterity "junk" type
-        fti = DexterityFTI('test_type')
-        fti.behaviors = ('plone.app.dexterity.behaviors.metadata.IOwnership',)
-        portal.portal_types._setObject('test_type', fti)
+        fti = DexterityFTI('DecoTestType1')
+        fti.schema = u'plone.app.standardtiles.tests.schemata.ITestType1'
+        fti.behaviors = ('plone.app.dexterity.behaviors.metadata.IDublinCore',)
+        portal.portal_types._setObject('DecoTestType1', fti)
         schema = fti.lookupSchema()
         # inserts the content of the types defined above
         setRoles(portal, TEST_USER_NAME, ['Manager'])
         login(portal, TEST_USER_NAME)
-        content = portal[portal.invokeFactory('test_type', 'test_type')]
-        content.contributors = (u"jane doe", u"john doe")
+        content = portal[portal.invokeFactory('DecoTestType1', 'deco-test-type1')]
+        content.contributors = (u"Jane Doe", u"John Doe")
         logout()
 
 
