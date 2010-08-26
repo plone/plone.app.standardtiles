@@ -206,6 +206,7 @@ If not link text is supplied, the name of the file is used instead.
     '<html><body><a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/textfile.txt">textfile.txt</a></body></html>'
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile/@@download')
 
+
 Content listing tile
 --------------------
 Lets create some content so we can use this with the tile. Adding a dexterity
@@ -254,3 +255,53 @@ page is tedious (not installed), for now an ATDocument is good.
     >>> browser.getControl(name='query.v:records').value = 'second'
     >>> browser.contents
     '...1 items matching your search terms...'
+
+
+Calendar tile
+-------------
+
+This tile shows a calendar.
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.calendar/calendar-tile')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.calendar/calendar-tile')
+    >>> browser.contents
+    '...<dl class="calendar-tile"...'
+
+If we create a new event the cache should be invalidated::
+
+    >>> tile = portal.unrestrictedTraverse(
+    ...     '@@plone.app.standardtiles.calendar/calendar-tile')
+    >>> 'ACTUAL_URL' not in portal.REQUEST.keys()
+    True
+    >>> portal.REQUEST['ACTUAL_URL'] = portalURL + \
+    ...     '/@@plone.app.standardtiles.calendar/calendar-tile'
+    >>> prior_html = tile()
+    >>> from DateTime import DateTime
+
+Lets a event in the last day of the current month::
+
+    >>> year, month = tile.getYearAndMonthToDisplay()
+    >>> year, month = tile.getNextMonth(year, month)
+    >>> last_day_month = DateTime('%s/%s/1' % (year, month)) - 1
+    >>> hour = 1 / 24.0
+    >>> portal.invokeFactory('Event', 'e1',
+    ...     startDate=last_day_month + 23 * hour,
+    ...     endDate=last_day_month + 23.5 * hour)
+    'e1'
+    >>> portal.e1
+    <ATEvent at /plone/e1>
+
+We also need to publish it. But the default workflow may not
+be set beause of a unknown problem with the test:
+
+    >>> portal.portal_workflow.setDefaultChain('simple_publication_workflow')
+    >>> portal.portal_workflow.doActionFor(portal.e1, 'publish')
+    >>> portal.portal_workflow.getInfoFor(portal.e1, 'review_state')
+    'published'
+
+Rendering the tile again should result in different html:
+
+     >>> assert prior_html != tile(), "Cache key wasn't invalidated"
+     >>> 'class="event"' in tile()
+     True
