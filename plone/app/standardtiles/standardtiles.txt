@@ -460,4 +460,4 @@ Make shure at least the print actionis visible::
     >>> html = portal.restrictedTraverse(view_name)()
     >>> assert 'id="document-action-print"' in html, \
     ...     'Expected document action to be visible'
->>>>>>> .r39035
+
