@@ -96,7 +96,7 @@ class CalendarTile(Tile):
         self.monthName = PLMF(self._ts.month_msgid(month),
                               default=self._ts.month_english(month))
 
-#     @ram.cache(_render_cachekey)
+    @ram.cache(_render_cachekey)
     def render(self):
         return xhtml_compress(self.index())
 
