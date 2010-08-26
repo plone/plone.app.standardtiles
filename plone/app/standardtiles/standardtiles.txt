@@ -83,6 +83,12 @@ Also test the personal bar as a logged-in user::
     >>> browser.contents
     '...id="portal-personaltools-wrapper"...<a...Log out</a>...'
     
+Logo tile::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.logo')
+    >>> browser.contents
+    '...id="portal-logo"...'
+
 
 Login tile
 ----------
