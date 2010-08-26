@@ -201,10 +201,6 @@
         permission="zope.Public"
         />
 
-    <adapter
-        factory=".navigation.TreeFactory" />
-
-
     <plone:tile
         name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"
