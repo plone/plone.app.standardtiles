@@ -219,7 +219,7 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.content_listing"
+        name="plone.app.standardtiles.contentlisting"
         title="Content listing"
         description='A tile which displays the content listing of this item'
         add_permission="zope.Public"
