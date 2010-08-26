@@ -19,12 +19,15 @@ class DexterityFieldTile(DisplayForm, Tile):
 
     def updateWidgets(self):
         for schema in iterSchemata(self.context):
-            widgets = mergedTaggedValueDict(schema, WIDGETS_KEY)
-            for name, factory in widgets.items():
-                if self.fields[name].widgetFactory.get(self.mode, None) is None:
-                    if isinstance(factory, basestring):
-                        factory = resolveDottedName(factory)
-                    self.fields[name].widgetFactory = factory
+            if self.data['field'] in schema:
+                widgets = mergedTaggedValueDict(schema, WIDGETS_KEY)
+                name = self.data['field']
+                if name in widgets:
+                    factory = widgets[name]
+                    if self.fields[name].widgetFactory.get(self.mode, None) is None:
+                        if isinstance(factory, basestring):
+                            factory = resolveDottedName(factory)
+                        self.fields[name].widgetFactory = factory
         DisplayForm.updateWidgets(self)
 
     def _wrap_widget(self, render):
