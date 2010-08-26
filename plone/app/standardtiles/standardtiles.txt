@@ -71,11 +71,18 @@ Skip links tile::
     >>> unprivileged_browser.contents
     '...class="hiddenStructure"...Skip to content...Skip to navigation...'
 
-Personal bar::
+Test the personal bar as Anonymous::
     
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.personal_bar')
     >>> unprivileged_browser.contents
-    '...id="portal-personaltools-wrapper"...'
+    '...id="portal-personaltools-wrapper"...<a...Log in</a>...'
+
+Also test the personal bar as a logged-in user::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.personal_bar')
+    >>> browser.contents
+    '...id="portal-personaltools-wrapper"...<a...Log out</a>...'
+    
 
 Login tile
 ----------
@@ -91,6 +98,17 @@ When we are not logged in, we should get the form::
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.login')
     >>> unprivileged_browser.contents
     '...id="loginform"...'
+
+By default, we should not have the "register" link in there::
+
+But if we enable self-registration, it should show up::
+
+    >>> browser.open(portalURL + '/@@security-controlpanel')
+    >>> browser.getControl('Enable self-registration').selected = True
+    >>> browser.getControl('Save').click()
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.login')
+    >>> unprivileged_browser.contents
+    '...<a...@@register...New user...</a>...'
 
 Video tile
 ----------
