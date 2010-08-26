@@ -1,3 +1,6 @@
+from plone.tiles import Tile
+
+
 class TableOfContentsTile(Tile):
     """A Table of contents tile
     """
