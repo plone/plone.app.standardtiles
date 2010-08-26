@@ -22,32 +22,36 @@ First, we set up a browser instance and get Manager privileges::
     >>> import transaction
     >>> transaction.commit() # make the browser see this role
 
+We also keep another testbrowser handy for testing how tiles are rendered if
+you're not logged in::
+
+    >>> unprivileged_browser = Browser(app)
 
 Layout tiles
 -------------
 
 Layout tiles like the colophon don't need any config parameters::
 
-    >>> browser.open(portalURL+ '/@@plone.app.standardtiles.colophon/colophon-tile')
-    >>> browser.contents
+    >>> unprivileged_browser.open(portalURL+ '/@@plone.app.standardtiles.colophon/colophon-tile')
+    >>> unprivileged_browser.contents
     '...This site was built using the Plone Open Source CMS/WCM...'
 
 Footer tile::
 
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.footer')
-    >>> browser.contents
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.footer')
+    >>> unprivileged_browser.contents
     '...id="portal-footer"...and the Plone logo are registered trademarks of the...' 
 
 Site actions tile::
 
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.site_actions')
-    >>> browser.contents
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.site_actions')
+    >>> unprivileged_browser.contents
     '...id="portal-siteactions"...'
 
 Empty analytics tile::
 
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.analytics')
-    >>> browser.contents
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.analytics')
+    >>> unprivileged_browser.contents
     '<html><body></body></html>'
 
 Now insert an example Google Analytics script::
@@ -57,12 +61,39 @@ Now insert an example Google Analytics script::
     >>> ptool = getToolByName(portal, "portal_properties")
     >>> ptool.site_properties.webstats_js = snippet
     >>> transaction.commit()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.analytics')
-    >>> snippet in browser.contents
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.analytics')
+    >>> snippet in unprivileged_browser.contents
     True
 
+Skip links tile::
+
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.skip_links')
+    >>> unprivileged_browser.contents
+    '...class="hiddenStructure"...Skip to content...Skip to navigation...'
+
+Personal bar::
+    
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.personal_bar')
+    >>> unprivileged_browser.contents
+    '...id="portal-personaltools-wrapper"...'
+
+Login tile
+----------
+
+For a logged-in user, the login tile should be empty::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.login')
+    >>> browser.contents
+    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<body>\n\n    \n</body>\n</html>\n'
+
+When we are not logged in, we should get the form::
+
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.login')
+    >>> unprivileged_browser.contents
+    '...id="loginform"...'
+
 Video tile
------------
+----------
 
 The video tile is a persistent tile which takes a YouTube video URL
 and displays the associated video::
