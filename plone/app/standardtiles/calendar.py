@@ -67,8 +67,6 @@ class CalendarTile(Tile):
         return super(CalendarTile, self).__init__(*args, **kwargs)
 
     def __call__(self):
-        # XXX: remove this
-        self.updated = False
         self.update()
         return self.render()
 
