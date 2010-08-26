@@ -61,9 +61,9 @@ class LoginTile(Tile):
         request = self.request
         self.membership = getToolByName(context, 'portal_membership')
         self.context_state = getMultiAdapter((context, request),
-            name=u'plone_context_state')
+                                             name=u'plone_context_state')
         self.portal_state = getMultiAdapter((context, request),
-            name=u'plone_portal_state')
+                                            name=u'plone_portal_state')
         self.pas_info = getMultiAdapter((context, request), name=u'pas_info')
         self.navigation_root_url = self.portal_state.navigation_root_url()
 
@@ -486,6 +486,19 @@ class LockInfoTile(Tile):
                                     name='plone_lock_info')
         self.lock_is_stealable = self.info.lock_is_stealable()
         self.lock_info = self.info.lock_info
+
+
+class NextPreviousTile(Tile):
+    """Tile for showing the next / previous links, based on nextprevious
+    viewlets in p.a.layout.
+    """
+
+    def __call__(self):
+        self.update()
+        return self.index()
+
+    def update(self):
+        self.npview = self.context.restrictedTraverse('@@plone_nextprevious_view')
 
 
 class RelatedItemsTile(Tile):

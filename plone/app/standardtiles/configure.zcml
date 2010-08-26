@@ -382,6 +382,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.nextprevious"
+        class=".common.NextPreviousTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/nextprevious.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.stylesheets"
         class=".head.StylesheetsTile"
         for="*"
