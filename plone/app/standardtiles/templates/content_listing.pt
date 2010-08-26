@@ -2,13 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       i18n:domain="plone">
     <body>
-    <h2>Content listing</h2>
-    
-    <ul>
-        <li tal:repeat="item view/folderlisting" >
-            <a tal:content="item/Title" tal:attributes="href item/getURL"/>
-        </li>
-    </ul>
-
-</body>
+        <h2>Content listing</h2>
+        <span tal:content="view/data"/>
+<!--
+        <div class="previewresults" tal:content="structure python:view.SearchResults()">
+        </div>-->
+    </body>
 </html>
