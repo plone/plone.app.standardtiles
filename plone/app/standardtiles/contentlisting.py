@@ -1,7 +1,5 @@
 from zope import schema
-from zope.component import getMultiAdapter, queryMultiAdapter
 
-from plone.app.contentlisting.interfaces import IContentListing
 from plone.directives import form as directivesform
 from plone.tiles import PersistentTile
 

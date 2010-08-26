@@ -205,3 +205,20 @@ If not link text is supplied, the name of the file is used instead.
     >>> browser.contents
     '<html><body><a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/textfile.txt">textfile.txt</a></body></html>'
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile/@@download')
+
+Content listing tile
+--------------------
+Lets create some content so we can use this with the tile
+
+    >>> browser.open(portalURL)
+    >>> browser.getLink('Folder').click()
+    >>> browser.getControl('Title').value = 'My folder'
+    >>> browser.getControl('Save').click()
+    >>> browser.url
+    'http://nohost/plone/my-folder/view'
+
+    >>> browser.getLink('++add++plone.page').click()
+    >>> browser.getControl('Title').value = 'My first page'
+    >>> browser.getControl('Save').click()
+    >>> browser.url
+    'http://nohost/plone/my-folder/my-first-page/view'
