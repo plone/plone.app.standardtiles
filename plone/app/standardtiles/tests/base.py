@@ -14,7 +14,6 @@ from zope.contentprovider.interfaces import UpdateNotCalled
 
 from plone.portlets.interfaces import IPortletManager
 from plone.portlets.manager import PortletManager, PortletManagerRenderer
-import plone.app.dexterity
 
 
 class IMockPortletManager(IPortletManager):
@@ -52,13 +51,14 @@ class PAStandardtiles(PloneSandboxLayer):
         import plone.app.standardtiles
         xmlconfig.file('configure.zcml', plone.app.standardtiles,
                        context=configurationContext)
-        xmlconfig.file('configure.zcml', plone.app.dexterity,
-                       context=configurationContext)
 
     def setUpPloneSite(self, portal):
         # install into the Plone site
-        applyProfile(portal, 'plone.app.standardtiles:default')
+        applyProfile(portal, 'plone.app.registry:default')
         applyProfile(portal, 'plone.app.dexterity:default')
+        applyProfile(portal, 'plone.app.intid:default')
+        applyProfile(portal, 'plone.app.standardtiles:default')
+
         # register portlet manager and portlet manager renderer
         sm = getSiteManager(portal)
         sm.registerUtility(component=MockPortletManager(),

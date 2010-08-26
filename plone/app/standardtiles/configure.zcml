@@ -8,9 +8,7 @@
     i18n_domain="plone.app.standardtiles">
 
     <!-- Include our dependencies -->
-    <include package="plone.app.tiles" />
-    <include package="plone.directives.tiles" />
-    <include package="z3c.form" file="meta.zcml" />
+    <includeDependencies package="." />
 
     <!-- Grok the package to initialise schema interfaces and content classes -->
     <grok:grok package="." />
