@@ -361,3 +361,24 @@ rendering the tile on the first page::
 Cleanup::
 
     >>> portal.manage_delObjects(['next-previous-folder'])
+
+
+Document actions tile
+---------------------
+
+The document actions tile just lists the actions registered
+in the document_actions category.
+
+Make shure at least the print actionis visible::
+
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> action_tool = getToolByName(portal, 'portal_actions')
+    >>> print_action = action_tool.document_actions.get('print')
+    >>> print_action
+    <Action at /plone/portal_actions/document_actions/print>
+    >>> print_action.visible = True
+
+    >>> view_name = '@@plone.app.standardtiles.document_actions'
+    >>> html = portal.restrictedTraverse(view_name)()
+    >>> assert 'id="document-action-print"' in html, \
+    ...     'Expected document action to be visible'
