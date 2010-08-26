@@ -95,6 +95,31 @@ Global sections::
     >>> unprivileged_browser.contents
     '...id="portal-globalnav"...'
 
+Path bar tile::
+
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.path_bar')
+    >>> unprivileged_browser.contents
+    '...id="portal-breadcrumbs"...'
+
+Content views tile (test as logged in user)::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.contentviews')
+    >>> browser.contents
+    '...id="content-views"...'
+
+Content actions tile (test as logged in user)::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.contentactions')
+    >>> browser.contents
+    '...id="contentActionMenus"...'
+
+Document byline tile (test as logged in user)::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.document_byline')
+    >>> browser.contents
+    '...id="plone-document-byline"...'
+
+
 Login tile
 ----------
 
