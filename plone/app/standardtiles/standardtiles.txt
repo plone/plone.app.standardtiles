@@ -119,6 +119,12 @@ Document byline tile (test as logged in user)::
     >>> browser.contents
     '...id="plone-document-byline"...'
 
+Table of contents tile::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.tableofcontents')
+    >>> browser.contents
+    '...id="document-toc"...'
+
 
 Login tile
 ----------
