@@ -2,5 +2,6 @@
   <version>0.1</version>
   <dependencies>
     <dependency>profile-plone.app.tiles:default</dependency>
+    <dependency>profile-plone.formwidget.querystring:default</dependency>
   </dependencies>
 </metadata>
