@@ -139,9 +139,10 @@ By default, we should not have the "register" link in there::
 
 But if we enable self-registration, it should show up::
 
-    >>> browser.open(portalURL + '/@@security-controlpanel')
-    >>> browser.getControl('Enable self-registration').selected = True
-    >>> browser.getControl('Save').click()
+    >>> from plone.app.controlpanel.security import ISecuritySchema
+    >>> security_settings = ISecuritySchema(portal)
+    >>> security_settings.set_enable_self_reg(True)
+    >>> transaction.commit()
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.login')
     >>> unprivileged_browser.contents
     '...<a...@@register...New user...</a>...'
