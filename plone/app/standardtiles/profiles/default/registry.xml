@@ -14,6 +14,7 @@
       <element>plone.app.standardtiles.document_byline|structure|Document byline|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>
       <element>plone.app.standardtiles.related_items|structure|Related items|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>
       <element>plone.app.standardtiles.calendar|media|Calendar|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>
+      <element>plone.app.standardtiles.keywords|structure|Keywords|false|true|false|false|blur|tile-align-block|tile-align-right|tile-align-left</element>
     </value>
   </record>
 

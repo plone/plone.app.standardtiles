@@ -225,6 +225,17 @@
         template="templates/content_listing.pt"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.keywords"
+        title="Context keywords"
+        description='A tile which displays the keywords of this item'
+        add_permission="zope.Public"
+        class=".keywords.KeywordsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/keywords.pt"
+        />
+
     <!-- legacy tiles -->
     <plone:tile
         name="plone.app.standardtiles.portletmanager"

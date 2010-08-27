@@ -101,6 +101,12 @@ Path bar tile::
     >>> unprivileged_browser.contents
     '...id="portal-breadcrumbs"...'
 
+Keywords tile::
+
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.keywords')
+    >>> unprivileged_browser.contents
+    '...id="category"...'
+
 Content views tile (test as logged in user)::
 
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.contentviews')
