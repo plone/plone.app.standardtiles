@@ -138,6 +138,12 @@
         name="Available Images"
         />
 
+    <utility
+        component="plone.app.standardtiles.contentlisting.availableListingViewsVocabulary"
+        name="Available Listing Views"
+        />
+
+
     <z3c:widgetTemplate
         mode="input"
         widget="plone.app.standardtiles.image.IImagePreviewSelectWidget"

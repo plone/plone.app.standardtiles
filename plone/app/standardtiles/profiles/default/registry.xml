@@ -21,4 +21,11 @@
   <record interface="plone.app.standardtiles.interfaces.IStandardTilesSettings" field="images_repo_path">
     <value>images</value>
   </record>
+
+  <record interface="plone.app.standardtiles.interfaces.IStandardTilesSettings" field="listing_views">
+    <value>
+        <element key="collection_summary_view">Summary view</element>
+        <element key="collection_tabular_view">Tabular view</element>
+    </value>
+  </record>
 </registry>

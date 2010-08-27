@@ -1,9 +1,15 @@
 from zope import schema
 from zope.component import getMultiAdapter
+from zope.component import getUtility
+from zope.schema.vocabulary import SimpleVocabulary
 from plone.directives import form as directivesform
 from plone.tiles import PersistentTile
 from plone.formwidget.querystring.widget import QueryStringFieldWidget
 from plone.app.collection import queryparser
+from plone.registry.interfaces import IRegistry
+from zope.schema.interfaces import IVocabularyFactory
+from zope.interface import directlyProvides
+from plone.app.standardtiles.interfaces import IStandardTilesSettings
 
 
 class IContentListingTile(directivesform.Schema):
@@ -17,7 +23,7 @@ class IContentListingTile(directivesform.Schema):
                         'list of results will be dynamically updated',
                         required=False)
     view_template = schema.Choice(title=u"Display mode",
-                                  values=('tabular', 'summary'),
+                                  source=u"Available Listing Views",
                                   required=True)
 
 
@@ -41,3 +47,18 @@ class ContentListingTile(PersistentTile):
 
         view = 'display_query_results'
         return getMultiAdapter((accessor, self.request), name=view)()
+
+
+def availableListingViewsVocabulary(context):
+    """Get available views for listing content as vocabulary"""
+    registry = getUtility(IRegistry)
+    proxy = registry.forInterface(IStandardTilesSettings)
+    sorted = proxy.listing_views.items()
+    sorted.sort(lambda a, b: cmp(a[1], b[1]))
+    voc = []
+
+    for key, label in sorted:
+        voc.append(SimpleVocabulary.createTerm(key, key, label))
+    return SimpleVocabulary(voc)
+
+directlyProvides(availableListingViewsVocabulary, IVocabularyFactory)
