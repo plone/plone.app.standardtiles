@@ -15,17 +15,24 @@ First, we set up a browser instance and get Manager privileges::
     >>> import transaction
     >>> transaction.commit() # make the browser see this role
 
-We also keep another testbrowser handy for testing how tiles are rendered if
-you're not logged in::
+Most of these tiles should (also) be available to Anonymous users::
 
     >>> unprivileged_browser = Browser(app)
 
-Stylesheets
------------
-
-Styleheets should be available to Anonymous users::
+Stylesheets::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.stylesheets')
     >>> unprivileged_browser.contents
     '...<head...<link.../>...</head>...'
+
+Javascripts::
+
+    >>> unprivileged_browser.open(portalURL +'/@@plone.app.standardtiles.javascripts')
+    >>> unprivileged_browser.contents
+
+Favicon link::
+
+    >>> unprivileged_browser.open(portalURL +'/@@plone.app.standardtiles.faviconlink')
+    >>> unprivileged_browser.contents
+    '...<head...<link...favicon.ico.../>...</head>...'
 
