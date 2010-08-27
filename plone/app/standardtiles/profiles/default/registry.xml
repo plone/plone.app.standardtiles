@@ -24,8 +24,7 @@
 
   <record interface="plone.app.standardtiles.interfaces.IStandardTilesSettings" field="listing_views">
     <value>
-        <element key="collection_summary_view">Summary view</element>
-        <element key="collection_tabular_view">Tabular view</element>
+        <element key="display_query_results">Listing view</element>
     </value>
   </record>
 </registry>
