@@ -3,9 +3,6 @@
       i18n:domain="plone">
     <body>
         <h2>Content listing</h2>
-        <span tal:content="view/data"/>
-<!--
-        <div class="previewresults" tal:content="structure python:view.SearchResults()">
-        </div>-->
+        <div class="previewresults" tal:content="structure python:view.SearchResults()" />
     </body>
 </html>
