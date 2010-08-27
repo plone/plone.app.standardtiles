@@ -154,6 +154,7 @@
         for="*"
         permission="zope.Public"
         schema=".attachment.IAttachmentTile"
+        template="templates/attachment_listing.pt"
         />
 
     <browser:page
