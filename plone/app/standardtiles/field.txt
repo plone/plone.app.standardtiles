@@ -30,6 +30,9 @@ intfield
 boolfield
     A boolean field
 
+funkyfield
+    A textline field, with a funky custom widget
+
 We can then try to set the textfield and try to render the tile that
 displays it: ::
 
@@ -38,4 +41,29 @@ displays it: ::
     >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=textfield')
     >>> browser.contents
     '...<span id="form-widgets-textfield" ...>Hello world</span>...'
+
+The same is valid for the other fields: ::
+
+    >>> content.intfield = 10
+    >>> content.boolfield = True
+    >>> transaction.commit()
+    >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=intfield')
+    >>> browser.contents
+    '...<span id="form-widgets-intfield" ...>10</span>...'
+    >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=boolfield')
+    >>> browser.contents
+    '...<span id="form-widgets-boolfield" ... class="selected-option">Boolean test field...'
+
+One interesting case if the ``funkyfield`` field, as it is a normal textline
+field, but there is a form directive that instructs it to use a special, funky
+widget that displays the text within an ``<h1>``.
+
+Therefore, the field tile for said field will use the custom widget defined ion
+the schema instead of the usual, boring textline widget: ::
+
+    >>> content.funkyfield = u"Oh yeah, baby!"
+    >>> transaction.commit()
+    >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=funkyfield')
+    >>> browser.contents
+    '...<h1 id="form-widgets-funkyfield" class="funky-widget...>Oh yeah, baby!</h1>...'
 

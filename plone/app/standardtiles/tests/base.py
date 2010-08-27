@@ -75,11 +75,18 @@ class PAStandardtiles(PloneSandboxLayer):
 
 class PAStandardtilesTestType(PAStandardtiles):
 
+    def setUpZope(self, app, configurationContext):
+        super(PAStandardtilesTestType, self).setUpZope(app, configurationContext)
+        # load ZCML
+        import plone.app.standardtiles
+        xmlconfig.file('testing.zcml', plone.app.standardtiles,
+                       context=configurationContext)
+
     def setUpPloneSite(self, portal):
         super(PAStandardtilesTestType, self).setUpPloneSite(portal)
         # Define the dexterity "junk" type
         fti = DexterityFTI('DecoTestType1')
-        fti.schema = u'plone.app.standardtiles.tests.schemata.ITestType1'
+        fti.schema = u'plone.app.standardtiles.testing.ITestType1'
         fti.behaviors = ('plone.app.dexterity.behaviors.metadata.IDublinCore',)
         portal.portal_types._setObject('DecoTestType1', fti)
         schema = fti.lookupSchema()
