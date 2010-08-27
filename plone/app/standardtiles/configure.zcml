@@ -473,4 +473,12 @@
         template="templates/comments.pt"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.configlets"
+        class=".configlets.ConfigletsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/configlets.pt"
+        />
+
 </configure>

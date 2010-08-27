@@ -159,6 +159,16 @@ But if we enable self-registration, it should show up::
     >>> unprivileged_browser.contents
     '...<a...@@register...New user...</a>...'
 
+
+Configlets tile
+---------------
+
+The configlets tile renders a list of the available config dialogs::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.configlets')
+    >>> browser.contents
+    '...Site Setup...Add-ons...Calendar...Collections...'
+
 Video tile
 ----------
 
