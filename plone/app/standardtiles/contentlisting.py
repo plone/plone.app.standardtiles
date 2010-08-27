@@ -1,14 +1,10 @@
 from zope import schema
-from zope.app.component.hooks import getSite
+#from zope.app.component.hooks import getSite
 from zope.component import getMultiAdapter
-
 from plone.directives import form as directivesform
 from plone.tiles import PersistentTile
-
-from plone.app.collection.browser.querybuilder import QueryBuilder
-
+#from plone.app.collection.browser.querybuilder import QueryBuilder
 from plone.formwidget.querystring.widget import QueryStringFieldWidget
-from plone.formwidget.querystring import field
 
 
 class IContentListingTile(directivesform.Schema):
@@ -37,5 +33,5 @@ class ContentListingTile(PersistentTile):
 
     def SearchResults(self):
         """search results"""
-        
+
         return getMultiAdapter((self.query, self.request), name='display_query_results')()
