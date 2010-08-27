@@ -13,7 +13,7 @@ from plone.app.standardtiles.interfaces import IStandardTilesSettings
 
 
 class IContentListingTile(directivesform.Schema):
-    """ A tile that displays the content in a folderish item """
+    """A tile that displays a listing of content items"""
     directivesform.widget(query=QueryStringFieldWidget)
     query = schema.List(title=u'Search terms',
                         value_type=schema.Dict(value_type=schema.TextLine(),
@@ -39,7 +39,7 @@ class ContentListingTile(PersistentTile):
         self.view_template = self.data.get('view_template')
 
     def SearchResults(self):
-        """search results"""
+        """Search results"""
         parsedquery = queryparser.parseFormquery(self.context, self.query)
         accessor = getMultiAdapter((self.context, self.request),
             name='searchResults')(query=parsedquery)
