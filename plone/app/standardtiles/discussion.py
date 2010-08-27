@@ -72,8 +72,11 @@ try:
 except ImportError: 
     HAS_WRAPPED_FORM = False
 
+from plone.z3cform import layout
 
-class DiscussionTile(Tile):
+#CommentFormView = layout.wrap_form(CommentForm)
+
+class DiscussionTile(Tile, layout.FormWrapper):
     """Discussion tile.
     """
 
@@ -81,16 +84,21 @@ class DiscussionTile(Tile):
     index = ViewPageTemplateFile('templates/discussion.pt')
     
     def __call__(self):
-        self.form = self.form(aq_inner(self.context), self.request)
+
+        form = self.request.form
+        self.request = self.context.REQUEST
+        self.request.URL = self.context.absolute_url()
+        self.form = CommentForm(aq_inner(self.context), self.request)
         alsoProvides(self.form, IWrappedForm)
+        # wrap the form inside the page
+        z2.switch_on(self.form, request_layer=IFormLayer)        
         self.form.update()
-        #self.update()
-        return self.index()
-        #return self.form.render()
+
+        if form:
+            self.form.extractData()
         
-    def update(self):
-        pass
-    
+        return self.index()
+        
     # view methods
     def cook(self, text):
         transforms = getToolByName(self, 'portal_transforms')
@@ -209,7 +217,7 @@ class DiscussionTile(Tile):
         return portal_membership.isAnonymousUser()
 
     def login_action(self):
-        return '%s/login_form?came_from=%s' % (self.navigation_root_url, 
+        return '%s/login_form?came_from=%s' % (self.context, 
                                                url_quote(self.request.get('URL', '')),)
 
     def format_time(self, time):
