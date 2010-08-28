@@ -12,59 +12,59 @@
 
         <dl>
           <tal:entry repeat="item results">
-                <dt tal:attributes="class item/ContentTypeClass">
+            <dt tal:attributes="class item/ContentTypeClass">
 
-                  <span class="summary">
-                    <img tal:replace="structure item/getIcon" />
-                    <a
-                        href="#"
-                        tal:attributes="href item/getURL;
-                                        class string:${item/ContentTypeClass} ${item/review_state}"
-                        tal:content="item/Title|item/getId" />
+              <span class="summary">
+                <img tal:replace="structure item/getIcon" />
+                <a
+                    href="#"
+                    tal:attributes="href item/getURL;
+                                    class string:${item/ContentTypeClass} ${item/review_state}"
+                    tal:content="item/Title|item/getId" />
+              </span>
+
+              <span class="documentByLine">
+
+                <tal:comment condition="python:item.Type() == 'Event'">
+                  <!-- Removed special handling for Event type for now.-->
+                </tal:comment>
+
+                <tal:byline condition="show_about">
+                  &mdash;
+
+                  <span class="documentAuthor" tal:define="author item/Creator"
+                        tal:on-error="author/fullname"
+                        i18n:translate="label_by_author" tal:condition="author/fullname">
+                    by
+                    <a href="#"
+                       tal:content="author/fullname"
+                       tal:omit-tag="not:item/Creator"
+                       tal:attributes="href string:${original_context/@@plone_portal_state/navigation_root_url}/author/${author/username}"
+                       i18n:name="author">
+                      Bob Dobalina
+                    </a>
                   </span>
 
-                  <span class="documentByLine">
+                  <tal:modified condition="python: item.Type() != 'Event'">
+                    &mdash;
+                    <tal:mod i18n:translate="box_last_modified">
+                      last modified
+                    </tal:mod>
+                    <span tal:replace="python:toLocalizedTime(item.ModificationDate())">
+                      August 16, 2001 at 23:35:59
+                    </span>
+                  </tal:modified>
 
-                    <tal:comment condition="python:item.Type() == 'Event'">
-                      <!-- Removed special handling for Event type for now.-->
-                    </tal:comment>
+                </tal:byline>
+              </span>
 
-                    <tal:byline condition="show_about">
-                      &mdash;
+            </dt>
 
-                      <span class="documentAuthor" tal:define="author item/Creator"
-                            tal:on-error="author/fullname"
-                            i18n:translate="label_by_author" tal:condition="author/fullname">
-                        by
-                        <a href="#"
-                           tal:content="author/fullname"
-                           tal:omit-tag="not:item/Creator"
-                           tal:attributes="href string:${original_context/@@plone_portal_state/navigation_root_url}/author/${author/username}"
-                           i18n:name="author">
-                          Bob Dobalina
-                        </a>
-                      </span>
-
-                      <tal:modified condition="python: item.Type() != 'Event'">
-                        &mdash;
-                        <tal:mod i18n:translate="box_last_modified">
-                          last modified
-                        </tal:mod>
-                        <span tal:replace="python:toLocalizedTime(item.ModificationDate())">
-                          August 16, 2001 at 23:35:59
-                        </span>
-                      </tal:modified>
-
-                    </tal:byline>
-                  </span>
-
-                </dt>
-
-                <dd>
-                  <span tal:replace="item/Description">
-                    Cropped description
-                  </span>
-                </dd>
+            <dd>
+              <span tal:replace="item/Description">
+                Cropped description
+              </span>
+            </dd>
 
           </tal:entry>
         </dl>
