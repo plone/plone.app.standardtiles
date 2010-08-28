@@ -57,6 +57,13 @@ And on a content object with title::
     >>> browser.contents
     '...<title>A simple page &mdash; Plone site</title>...'
 
+The author link tile renders a link tag pointing to a page with info
+about the creator of the context::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.authorlink')
+    >>> browser.contents
+    '...<link rel="author" href="http://nohost/plone/author/" title="Author information" />...'
+
 Footer tile::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.footer')
