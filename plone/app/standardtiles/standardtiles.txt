@@ -569,9 +569,8 @@ page is tedious (not installed), for now an ATDocument is good enough.
    >>> browser.getControl(name='addoperator').value = ['plone.app.collection.operation.string.contains']
    >>> browser.getControl(name='form.button.addcriteria').click()
    >>> browser.getControl(name='query.v:records').value = 'first'
+   >>> browser.getControl(name='view_template:list').value = ['listing_view']
    >>> browser.getControl(name='buttons.save').click()
    >>> browser.open(portalURL + '/@@plone.app.standardtiles.contentlisting/contentlisting-tile')
    >>> browser.contents
-   '...<span>1 items matching your search terms</span>...'
-   >>> browser.contents
-   '...<a href="http://nohost/plone/my-folder/my-first-page" class="link-location">/plone/my-folder/my-first-page</a>...'
+   '...My first page...'
