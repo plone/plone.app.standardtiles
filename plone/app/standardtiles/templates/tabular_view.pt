@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      i18n:domain="plone">
+    <body>
+        <h2>Content listing tabular</h2>
+
+        <div tal:define="results context">
+            <div tal:condition="not: results">
+                <p><strong>Nothing to list</strong></p>
+            </div>
+
+            <div tal:condition="results">
+                <tal:results repeat="item results">
+                    <table class="listing" summary="Content listing" i18n:attributes="summary summary_content_listing;">
+                        <thead>
+                            <tr>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td tal:content="item/Title">
+                                    Title
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </tal:results>
+            </div>
+        </div>
+    </body>
+</html>

@@ -32,13 +32,13 @@ class ContentListingTile(PersistentTile):
 
     def __call__(self):
         self.update()
-        return self.index()
+        return self.contents()
 
     def update(self):
         self.query = self.data.get('query')
         self.view_template = self.data.get('view_template')
 
-    def SearchResults(self):
+    def contents(self):
         """Search results"""
         parsedquery = queryparser.parseFormquery(self.context, self.query)
         accessor = getMultiAdapter((self.context, self.request),
@@ -61,3 +61,4 @@ def availableListingViewsVocabulary(context):
     return SimpleVocabulary(voc)
 
 directlyProvides(availableListingViewsVocabulary, IVocabularyFactory)
+

@@ -6,7 +6,10 @@
 
   <record interface="plone.app.standardtiles.interfaces.IStandardTilesSettings" field="listing_views">
     <value>
-        <element key="display_query_results">Listing view</element>
+        <element key="listing_view">Listing view</element>
+        <element key="summary_view">Summary view</element>
+        <element key="tabular_view">Tabular view</element>
+        <element key="album_view">Album view</element>
     </value>
   </record>
 </registry>

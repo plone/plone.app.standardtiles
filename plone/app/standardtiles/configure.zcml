@@ -228,7 +228,34 @@
         for="Products.CMFCore.interfaces.IFolderish"
         permission="zope2.View"
         schema=".contentlisting.IContentListingTile"
-        template="templates/content_listing.pt"
+        />
+
+    <browser:page
+        name="tabular_view"
+        for="*"
+        permission="zope2.View"
+        template="templates/tabular_view.pt"
+        />
+
+    <browser:page
+        name="listing_view"
+        for="*"
+        permission="zope2.View"
+        template="templates/listing_view.pt"
+        />
+
+    <browser:page
+        name="folder_summary_view"
+        for="*"
+        permission="zope2.View"
+        template="templates/folder_summary_view.pt"
+        />
+
+    <browser:page
+        name="album_view"
+        for="*"
+        permission="zope2.View"
+        template="templates/album_view.pt"
         />
 
     <plone:tile
