@@ -36,6 +36,12 @@ Layout tiles like the colophon don't need any config parameters::
     >>> unprivileged_browser.contents
     '...This site was built using the Plone Open Source CMS/WCM...'
 
+Head title tile::
+
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.headtitle')
+    >>> unprivileged_browser.contents
+    '<title>Plone site</title>\n'
+
 Footer tile::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.footer')

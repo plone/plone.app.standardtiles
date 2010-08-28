@@ -445,6 +445,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.headtitle"
+        class=".head.TitleTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/headtitle.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.stylesheets"
         class=".head.StylesheetsTile"
         for="*"
