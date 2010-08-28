@@ -4,6 +4,8 @@
     xmlns:grok="http://namespaces.zope.org/grok"
     i18n_domain="plone.app.standardtiles">
 
+  <include package="." file="configure.zcml" />
+
   <include package="z3c.form" file="meta.zcml" />
 
   <z3c:widgetTemplate

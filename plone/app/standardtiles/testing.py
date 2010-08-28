@@ -7,7 +7,7 @@ from z3c.form import interfaces
 from z3c.form.widget import Widget, FieldWidget
 from z3c.form.browser import widget
 
-from plone.directives import form
+from plone.directives import form, dexterity
 
 
 class IFunkyWidget(interfaces.IWidget):
@@ -38,21 +38,27 @@ def FunkyFieldWidget(field, request):
 
 class ITestType1(form.Schema):
 
-    textfield = schema.TextLine(
+    test_text = schema.TextLine(
         title = u"Test text field"
     )
 
-    intfield = schema.Int(
+    test_int = schema.Int(
         title = u"Integer test field"
     )
 
-    boolfield = schema.Bool(
+    test_bool = schema.Bool(
         title = u"Boolean test field"
     )
 
     form.widget(
-        funkyfield = FunkyFieldWidget
+        funky = FunkyFieldWidget
     )
-    funkyfield = schema.TextLine(
+    funky = schema.TextLine(
         title = u"Test funky field"
+    )
+
+    dexterity.read_permission(topsecret='cmf.ModifyPortalContent')
+    dexterity.write_permission(topsecret='cmf.ManagePortal')
+    topsecret =  schema.TextLine(
+        title = u"Top secret field"
     )
