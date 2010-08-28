@@ -520,7 +520,7 @@ Document actions tile
 The document actions tile just lists the actions registered
 in the document_actions category.
 
-Make shure at least the print action is visible::
+Make sure at least the print action is visible::
 
     >>> from Products.CMFCore.utils import getToolByName
     >>> action_tool = getToolByName(portal, 'portal_actions')
