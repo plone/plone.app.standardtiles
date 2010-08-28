@@ -131,6 +131,45 @@ Table of contents tile::
     >>> browser.contents
     '...id="document-toc"...'
 
+Language selector tile
+-----------------------
+
+The language selector tile shows a list of languages available in the
+site. Since the language selection depends on cookies, this tile will
+be only available if the corresponding setting is set in the
+portal_languages tool.
+
+By default, this setting set and the selector shows up::
+
+    >>> lt = getToolByName(portal, 'portal_languages')
+    >>> lt.use_cookie_negotiation
+    True
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.languageselector')
+    >>> browser.contents
+    '...language-en...'
+
+However, anonymous won't see the selector by default:
+
+    >>> unprivileged_browser.open('/@@plone.app.standardtiles.languageselector')
+    >>> 'language-en' in unprivileged_browser.contents
+    False
+
+But the ``always_show_selector`` flag is still obeyed::
+
+    >>> lt.always_show_selector = True
+    >>> transaction.commit()
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.languageselector')
+    >>> unprivileged_browser.contents
+    '...language-en...'
+
+Adding supported languages will show them in the tile::
+
+    >>> lt.addSupportedLanguage('ca')
+    >>> transaction.commit()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.languageselector')
+    >>> browser.contents
+    '...language-en...language-ca...'
 
 Login tile
 ----------

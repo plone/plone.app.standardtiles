@@ -539,3 +539,62 @@ class HistoryTile(Tile):
     def __call__(self):
         view = self.context.restrictedTraverse('@@contenthistorypopup')
         return view()
+
+
+class LanguageSelectorTile(Tile):
+    """Shows the language selector.
+    """
+
+    def __call__(self):
+        self.update()
+        return self.index()
+
+    def update(self):
+        self.tool = getToolByName(self.context, 'portal_languages', None)
+
+    def available(self):
+        if self.tool is not None:
+            return self.tool.showSelector()
+        return False
+
+    def portal_url(self):
+        portal_tool = getToolByName(self.context, 'portal_url', None)
+        if portal_tool is not None:
+            return portal_tool.getPortalObject().absolute_url()
+        return None
+
+    def languages(self):
+        """Returns list of languages."""
+        if self.tool is None:
+            return []
+
+        bound = self.tool.getLanguageBindings()
+        current = bound[0]
+
+        def merge(lang, info):
+            info["code"]=lang
+            if lang == current:
+                info['selected'] = True
+            else:
+                info['selected'] = False
+            return info
+
+        languages = [merge(lang, info) for (lang,info) in
+                        self.tool.getAvailableLanguageInformation().items()
+                        if info["selected"]]
+
+        # sort supported languages by index in portal_languages tool
+        supported_langs = self.tool.getSupportedLanguages()
+        def index(info):
+            try:
+                return supported_langs.index(info["code"])
+            except ValueError:
+                return len(supported_langs)
+
+        return sorted(languages, key=index)
+
+    def showFlags(self):
+        """Do we use flags?."""
+        if self.tool is not None:
+            return self.tool.showFlags()
+        return False

@@ -410,6 +410,14 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.languageselector"
+        class=".common.LanguageSelectorTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/languageselector.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.stylesheets"
         class=".head.StylesheetsTile"
         for="*"
