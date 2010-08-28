@@ -1,1 +1,5 @@
-<title tal:content="structure view/site_title">Site Title</title>
+<html>
+  <head>
+    <title tal:content="structure view/site_title">Site Title</title>
+  </head>
+</html>

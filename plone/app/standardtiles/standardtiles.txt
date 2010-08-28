@@ -40,7 +40,7 @@ Head title tile::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.headtitle')
     >>> unprivileged_browser.contents
-    '<title>Plone site</title>\n'
+    '...<title>Plone site</title>...'
 
 Footer tile::
 
