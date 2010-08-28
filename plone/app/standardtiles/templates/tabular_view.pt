@@ -5,53 +5,60 @@
       lang="en"
       i18n:domain="plone">
     <body>
-        <div tal:define="results context;
-                         toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
+        <div tal:define="results context">
             <div tal:condition="not: results">
                 <p><strong>Nothing to list</strong></p>
             </div>
 
             <div tal:condition="results">
-                <table class="listing" summary="Content listing" i18n:attributes="summary summary_content_listing;">
-                <thead>
-                    <tr>
-                        <th class="nosort">&nbsp;
-                            <tal:title i18n:translate="listingheader_title">
-                                Title
-                            </tal:title>&nbsp;
-                        </th>
-                        <th class="nosort">&nbsp;
-                            <tal:title i18n:translate="listingheader_author">
-                                Author
-                            </tal:title>
-                            &nbsp;
-                        </th>
-                        <th class="nosort">
-                            &nbsp;
-                            <tal:title i18n:translate="listingheader_type">
-                                Type
-                            </tal:title>
-                            &nbsp;
-                        </th>
-                        <th class="nosort">
-                            &nbsp;
-                            <tal:modified i18n:translate="listingheader_modified">
-                                Modified
-                            </tal:modified>&nbsp;
-                        </th>
-                    </tr>
-                </thead>
+
+                    <table class="listing" summary="Content listing" i18n:attributes="summary summary_content_listing;">
+                    <thead>
+                        <tr>
+                            <th class="nosort">&nbsp;
+                                <tal:title i18n:translate="listingheader_title">
+                                    Title
+                                </tal:title>&nbsp;
+                            </th>
+                            <th class="nosort">&nbsp;
+                                <tal:title i18n:translate="listingheader_author">
+                                    Author
+                                </tal:title>
+                                &nbsp;
+                            </th>
+                            <th class="nosort">
+                                &nbsp;
+                                <tal:title i18n:translate="listingheader_type">
+                                    Type
+                                </tal:title>
+                                &nbsp;
+                            </th>
+                            <th class="nosort">
+                                &nbsp;
+                                <tal:modified i18n:translate="listingheader_modified">
+                                    Modified
+                                </tal:modified>&nbsp;
+                            </th>
+                        </tr>
+                    </thead>
                     <tbody>
                         <tal:results repeat="item results">
+                            <tal:block tal:define="item_url item/getURL;
+                                                   item_title_or_id item/title_or_id;
+                                                   item_type item/Type;
+                                                   item_description item/Description;
+                                                   item_creator item/Creator;
+                                                   item_modified item/ModificationDate">
+
                             <tr tal:define="oddrow repeat/item/odd;"
                                 tal:attributes="class python:oddrow and 'even' or 'odd'" >
                                 <td>
-                                    <a href="#" tal:attributes="href item/getURL" tal:content="item/Title">
+                                    <a href="#" tal:attributes="href item_url" tal:content="item_title_or_id">
                                         Item Title
                                     </a>
                                 </td>
                                 <td>
-                                    <tal:name tal:condition="item/Creator" tal:define="author item/Creator">
+                                    <tal:name tal:condition="item_creator" tal:define="author item_creator">
 
                                         <a href="#"
                                            tal:attributes="href string:author/${author/username}"
@@ -61,15 +68,17 @@
                                         </a>
                                     </tal:name>
                                 </td>
-                                <td tal:content="item/Type">
+                                <td tal:content="item_type">
                                     Page
                                 </td>
 
-                                <td tal:content="item/ModificationDate">
+                                <td tal:content="item_modified">
                                     Date
                                 </td>
 
                             </tr>
+                        </tal:block>
+
                         </tal:results>
                     </tbody>
                 </table>
