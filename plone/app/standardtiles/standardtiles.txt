@@ -64,6 +64,13 @@ about the creator of the context::
     >>> browser.contents
     '...<link rel="author" href="http://nohost/plone/author/" title="Author information" />...'
 
+The navigation link tile renders two links tags pointing to the site
+root and the site map, respectively::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.navigationlink')
+    >>> browser.contents
+    '...<link rel="home" href="http://nohost/plone" title="Front page" />...<link rel="contents" href="http://nohost/plone/sitemap" title="Site Map" />...'
+
 Footer tile::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.footer')
