@@ -5,7 +5,7 @@
 
     <tal:defines
         define="results context;
-                show_about python:False">
+                show_about python:True">
       <tal:listing condition="results">
 
         <dl>
@@ -30,10 +30,12 @@
                     <tal:byline condition="show_about">
                       &mdash;
 
+                      <!-- Note that context is not a normal content item, so getting the navigation_root_url fails here,
+                           which is why we define a fall back with tal:on-error. -->
                       <span class="documentAuthor" tal:define="author item/Creator"
+                            tal:on-error="author/fullname"
                             i18n:translate="label_by_author" tal:condition="author/fullname">
                         by
-                        <!-- Note that context is not a normal content item, so getting the nagivation_root_url fails here. -->
                         <a href="#"
                            tal:content="author/fullname"
                            tal:omit-tag="not:item/Creator"
