@@ -406,7 +406,7 @@
         name="plone.app.standardtiles.lockinfo"
         class=".common.LockInfoTile"
         for="*"
-        permission="cmf.ModifyPortalContent"
+        permission="zope2.View"
         template="templates/lockinfo.pt"
         />
 

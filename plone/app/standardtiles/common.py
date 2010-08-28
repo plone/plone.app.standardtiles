@@ -476,12 +476,17 @@ class LockInfoTile(Tile):
     """
 
     def __call__(self):
-        if not ITTWLockable.providedBy(self.context):
+        if not self.available() or not ITTWLockable.providedBy(self.context):
             return '<html></html>'
         self.portal_state = getMultiAdapter((self.context, self.request),
                                             name=u'plone_portal_state')
         self.update()
         return self.index()
+
+    def available(self):
+        membership = getToolByName(self.context, 'portal_membership')
+        return membership.checkPermission('Modify portal content',
+                                          self.context)
 
     def update(self):
         self.info = getMultiAdapter((self.context, self.request),
@@ -574,19 +579,20 @@ class LanguageSelectorTile(Tile):
         current = bound[0]
 
         def merge(lang, info):
-            info["code"]=lang
+            info["code"] = lang
             if lang == current:
                 info['selected'] = True
             else:
                 info['selected'] = False
             return info
 
-        languages = [merge(lang, info) for (lang,info) in
+        languages = [merge(lang, info) for (lang, info) in
                         self.tool.getAvailableLanguageInformation().items()
                         if info["selected"]]
 
         # sort supported languages by index in portal_languages tool
         supported_langs = self.tool.getSupportedLanguages()
+
         def index(info):
             try:
                 return supported_langs.index(info["code"])
