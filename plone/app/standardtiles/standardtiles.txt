@@ -71,6 +71,12 @@ root and the site map, respectively::
     >>> browser.contents
     '...<link rel="home" href="http://nohost/plone" title="Front page" />...<link rel="contents" href="http://nohost/plone/sitemap" title="Site Map" />...'
 
+The search link tile renders a link tag pointing to the site search form::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.searchlink')
+    >>> browser.contents
+    '...<link rel="search" href="http://nohost/plone/search_form" title="Search this site" />...'
+
 Footer tile::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.footer')
