@@ -279,29 +279,6 @@ specific interface, it will be used instead::
     'Custom proxy view.'
 
 
-Navigation tree tile
----------------------
-
-The navigation tree tile displays a navigation tree for the context
-where it's inserted and take no configuration parameters.
-
-Rendering this tile in the site root should show the document we
-created before::
-
-    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.navigation/navigation-tile')
-    >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.navigation/navigation-tile')
-    >>> print browser.contents
-    <body>
-      <ul id="navigation" class="navigation">
-        <li>
-          <a href="http://nohost/plone/aDocument" class="state-missing-value" title="A description">
-            A document <em class="icon document">(Page)</em></a>
-        </li>
-      </ul>
-    </body>
-
-
 Image tile
 -----------
 
