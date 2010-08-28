@@ -5,6 +5,8 @@
 
     <tal:defines
         define="results context;
+                original_context nocall:options/original_context|context;
+                toLocalizedTime nocall:original_context/@@plone/toLocalizedTime;
                 show_about python:True">
       <tal:listing condition="results">
 
@@ -30,8 +32,6 @@
                     <tal:byline condition="show_about">
                       &mdash;
 
-                      <!-- Note that context is not a normal content item, so getting the navigation_root_url fails here,
-                           which is why we define a fall back with tal:on-error. -->
                       <span class="documentAuthor" tal:define="author item/Creator"
                             tal:on-error="author/fullname"
                             i18n:translate="label_by_author" tal:condition="author/fullname">
@@ -39,7 +39,7 @@
                         <a href="#"
                            tal:content="author/fullname"
                            tal:omit-tag="not:item/Creator"
-                           tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${author/username}"
+                           tal:attributes="href string:${original_context/@@plone_portal_state/navigation_root_url}/author/${author/username}"
                            i18n:name="author">
                           Bob Dobalina
                         </a>
@@ -50,7 +50,7 @@
                         <tal:mod i18n:translate="box_last_modified">
                           last modified
                         </tal:mod>
-                        <span tal:replace="item/ModificationDate">
+                        <span tal:replace="python:toLocalizedTime(item.ModificationDate())">
                           August 16, 2001 at 23:35:59
                         </span>
                       </tal:modified>

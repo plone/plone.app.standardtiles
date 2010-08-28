@@ -45,7 +45,8 @@ class ContentListingTile(PersistentTile):
             name='searchResults')(query=parsedquery)
         view = self.view_template
         view = view.encode('utf-8')
-        return getMultiAdapter((accessor, self.request), name=view)()
+        options = dict(original_context=self.context)
+        return getMultiAdapter((accessor, self.request), name=view)(**options)
 
 
 def availableListingViewsVocabulary(context):
