@@ -107,12 +107,6 @@ Path bar tile::
     >>> unprivileged_browser.contents
     '...id="portal-breadcrumbs"...'
 
-Keywords tile::
-
-    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.keywords')
-    >>> unprivileged_browser.contents
-    '...id="category"...'
-
 Content views tile (test as logged in user)::
 
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.contentviews')
@@ -176,6 +170,41 @@ Adding supported languages will show them in the tile::
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.languageselector')
     >>> browser.contents
     '...language-en...language-ca...'
+
+
+Keywords tile
+-------------
+
+The keywords tile displays a list of the keywords (aka subjects)
+assigned to the context.
+
+First, we create a page to add keywords to::
+
+    >>> browser.open(portalURL + '/createObject?type_name=Document')
+    >>> browser.getControl('Title').value = 'A simple page'
+    >>> browser.getControl('Save').click()
+    >>> browser.url
+    'http://nohost/plone/a-simple-page'
+
+Since we have not added any keyword to it yet, the tile contents are empty::
+
+    >>> pageURL = browser.url
+    >>> browser.open(pageURL + '/@@plone.app.standardtiles.keywords')
+    >>> 'id="category"' in browser.contents
+    False
+
+If we now add some keywords to it::
+
+    >>> browser.open(pageURL + '/edit')
+    >>> browser.getControl(name='subject_keywords:lines').value = 'Statues\n Sprint'
+    >>> browser.getControl('Save').click()
+
+The tile will show them::
+
+    >>> unprivileged_browser.open(pageURL + '/@@plone.app.standardtiles.keywords')
+    >>> unprivileged_browser.contents
+    '...id="category"...Sprint...Statues...'
+
 
 Login tile
 ----------
