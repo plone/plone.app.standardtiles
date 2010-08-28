@@ -245,10 +245,10 @@
         />
 
     <browser:page
-        name="folder_summary_view"
+        name="summary_view"
         for="*"
         permission="zope2.View"
-        template="templates/folder_summary_view.pt"
+        template="templates/summary_view.pt"
         />
 
     <browser:page
