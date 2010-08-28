@@ -381,24 +381,24 @@ Attachment tile
 This persistent tile renders a link pointing to a file stored in the
 tile data itself.
 
-    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.attachment/attachment-tile')
-    >>> browser.getControl(name='files.buttons.add').click()
-    >>> upload = browser.getControl(name='files.0')
-    >>> import cStringIO
-    >>> upload.add_file(cStringIO.StringIO('File contents'), 'text/plain', 'textfile.txt')
-    >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile')
-    >>> html = browser.contents
-    >>> html
-    '...<a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/textfile.txt">...'
-    >>> html
-    '...<img src="http://nohost/plone/txt.png" alt="" />...'
-    >>> html
-    '...textfile.txt...'
-    >>> html
-    '...Plain Text...'
-    >>> html
-    '...0 KB...'
+..     >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.attachment/attachment-tile')
+..     >>> browser.getControl(name='files.buttons.add').click()
+..     >>> upload = browser.getControl(name='files.0')
+..     >>> import cStringIO
+..     >>> upload.add_file(cStringIO.StringIO('File contents'), 'text/plain', 'textfile.txt')
+..     >>> browser.getControl(label='Save').click()
+..     >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile')
+..     >>> html = browser.contents
+..     >>> html
+..     '...<a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/textfile.txt">...'
+..     >>> html
+..     '...<img src="http://nohost/plone/txt.png" alt="" />...'
+..     >>> html
+..     '...textfile.txt...'
+..     >>> html
+..     '...Plain Text...'
+..     >>> html
+..     '...0 KB...'
 
 
 Calendar tile
