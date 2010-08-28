@@ -27,20 +27,35 @@ you're not logged in::
 
     >>> unprivileged_browser = Browser(app)
 
+We create a page in the site to use it in tests later::
+
+    >>> browser.open(portalURL + '/createObject?type_name=Document')
+    >>> browser.getControl('Title').value = 'A simple page'
+    >>> browser.getControl('Save').click()
+    >>> pageURL = browser.url
+    >>> pageURL
+    'http://nohost/plone/a-simple-page'
+
 Layout tiles
 -------------
 
 Layout tiles like the colophon don't need any config parameters::
 
-    >>> unprivileged_browser.open(portalURL+ '/@@plone.app.standardtiles.colophon/colophon-tile')
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.colophon')
     >>> unprivileged_browser.contents
     '...This site was built using the Plone Open Source CMS/WCM...'
 
-Head title tile::
+Head title tile on the portal object::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.headtitle')
     >>> unprivileged_browser.contents
     '...<title>Plone site</title>...'
+
+And on a content object with title::
+
+    >>> browser.open(pageURL + '/@@plone.app.standardtiles.headtitle')
+    >>> browser.contents
+    '...<title>A simple page &mdash; Plone site</title>...'
 
 Footer tile::
 
@@ -178,17 +193,9 @@ Keywords tile
 The keywords tile displays a list of the keywords (aka subjects)
 assigned to the context.
 
-First, we create a page to add keywords to::
+We will use the page we created before for the tests. Since we have
+not added any keyword to it yet, the tile contents are empty::
 
-    >>> browser.open(portalURL + '/createObject?type_name=Document')
-    >>> browser.getControl('Title').value = 'A simple page'
-    >>> browser.getControl('Save').click()
-    >>> browser.url
-    'http://nohost/plone/a-simple-page'
-
-Since we have not added any keyword to it yet, the tile contents are empty::
-
-    >>> pageURL = browser.url
     >>> browser.open(pageURL + '/@@plone.app.standardtiles.keywords')
     >>> 'id="category"' in browser.contents
     False
