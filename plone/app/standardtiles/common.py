@@ -326,7 +326,9 @@ class ContentViewsTile(Tile):
         found_selected = False
         fallback_action = None
 
-        request_url = self.request['ACTUAL_URL']
+        # we use the context-acquired request object here, which is
+        # different from the request fetching the tile HTML
+        request_url = self.context.REQUEST['ACTUAL_URL']
         request_url_path = request_url[len(context_url):]
 
         if request_url_path.startswith('/'):
