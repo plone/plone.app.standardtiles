@@ -4,8 +4,9 @@ from plone.dexterity.utils import iterSchemata
 from plone.tiles import Tile
 from plone.supermodel.utils import mergedTaggedValueDict
 from plone.autoform.interfaces import WIDGETS_KEY, READ_PERMISSIONS_KEY
-from plone.autoform.utils import _getDisallowedFields, resolveDottedName
+from plone.autoform.utils import resolveDottedName
 from plone.z3cform import z2
+from plone.app.deco.utils import PermissionChecker
 
 
 class DexterityFieldTile(DisplayForm, Tile):
@@ -42,13 +43,10 @@ class DexterityFieldTile(DisplayForm, Tile):
         """Checks wheter the user has read permission of the field: if this is
         not the case, then the field is not displayed
         """
-        if self.field in _getDisallowedFields(
-            self.context,
+        return PermissionChecker(
             mergedTaggedValueDict(self.schema, READ_PERMISSIONS_KEY),
-            ''
-        ):
-            return False
-        return True
+            self.context
+        ).allowed(self.field)
 
     def _wrap_widget(self, render):
         return u"<html><body>%s</body></html>" % render
