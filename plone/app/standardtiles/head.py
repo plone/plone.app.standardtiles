@@ -1,6 +1,5 @@
 from Acquisition import aq_inner
 from Products.PythonScripts.standard import url_quote
-from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
