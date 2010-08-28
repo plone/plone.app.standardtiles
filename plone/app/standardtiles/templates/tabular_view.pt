@@ -1,30 +1,78 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
       i18n:domain="plone">
     <body>
-        <h2>Content listing tabular</h2>
-
-        <div tal:define="results context">
+        <div tal:define="results context;
+                         toLocalizedTime nocall: context/@@plone/toLocalizedTime;">
             <div tal:condition="not: results">
                 <p><strong>Nothing to list</strong></p>
             </div>
 
             <div tal:condition="results">
-                <tal:results repeat="item results">
-                    <table class="listing" summary="Content listing" i18n:attributes="summary summary_content_listing;">
-                        <thead>
-                            <tr>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td tal:content="item/Title">
-                                    Title
+                <table class="listing" summary="Content listing" i18n:attributes="summary summary_content_listing;">
+                <thead>
+                    <tr>
+                        <th class="nosort">&nbsp;
+                            <tal:title i18n:translate="listingheader_title">
+                                Title
+                            </tal:title>&nbsp;
+                        </th>
+                        <th class="nosort">&nbsp;
+                            <tal:title i18n:translate="listingheader_author">
+                                Author
+                            </tal:title>
+                            &nbsp;
+                        </th>
+                        <th class="nosort">
+                            &nbsp;
+                            <tal:title i18n:translate="listingheader_type">
+                                Type
+                            </tal:title>
+                            &nbsp;
+                        </th>
+                        <th class="nosort">
+                            &nbsp;
+                            <tal:modified i18n:translate="listingheader_modified">
+                                Modified
+                            </tal:modified>&nbsp;
+                        </th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        <tal:results repeat="item results">
+                            <tr tal:define="oddrow repeat/item/odd;"
+                                tal:attributes="class python:oddrow and 'even' or 'odd'" >
+                                <td>
+                                    <a href="#" tal:attributes="href item/getURL" tal:content="item/Title">
+                                        Item Title
+                                    </a>
                                 </td>
+                                <td>
+                                    <tal:name tal:condition="item/Creator" tal:define="author item/Creator">
+
+                                        <a href="#"
+                                           tal:attributes="href string:author/${author/username}"
+                                           tal:content="author/username"
+                                           tal:omit-tag="not:author">
+                                            Bob Dobalina
+                                        </a>
+                                    </tal:name>
+                                </td>
+                                <td tal:content="item/Type">
+                                    Page
+                                </td>
+
+                                <td tal:content="item/ModificationDate">
+                                    Date
+                                </td>
+
                             </tr>
-                        </tbody>
-                    </table>
-                </tal:results>
+                        </tal:results>
+                    </tbody>
+                </table>
             </div>
         </div>
     </body>
