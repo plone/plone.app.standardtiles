@@ -16,7 +16,7 @@ class IContentListingTile(directivesform.Schema):
     """A tile that displays a listing of content items"""
     directivesform.widget(query=QueryStringFieldWidget)
     query = schema.List(title=u'Search terms',
-                        value_type=schema.Dict(value_type=schema.TextLine(),
+                        value_type=schema.Dict(value_type=schema.Field(),
                                                key_type=schema.TextLine()),
                         description=u'Define the search terms for the items '
                         'you want to list by choosing what to match on. The '
@@ -61,4 +61,3 @@ def availableListingViewsVocabulary(context):
     return SimpleVocabulary(voc)
 
 directlyProvides(availableListingViewsVocabulary, IVocabularyFactory)
-
