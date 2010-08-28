@@ -8,20 +8,24 @@
                 original_context nocall:options/original_context|context;
                 toLocalizedTime nocall:original_context/@@plone/toLocalizedTime;
                 show_about python:True">
-      <tal:listing condition="results">
-        <dl>
-          <tal:entry repeat="item results">
-            <dt tal:attributes="class item/ContentTypeClass">
-                <tal:block tal:condition="python: item.Type() == 'Image'">
-                    <img tal:attributes="src item/getURL" />
-                </tal:block>
-            </dt>
-          </tal:entry>
-        </dl>
+        <div class="phoatoAlbum">
+            <tal:listing condition="results">
+                    <tal:entry repeat="item results">
+                        <div class="photoAlbumEntry" tal:condition="python: item.Type() == 'Image'">
+                            <a href="#" tal:attributes="href item/getURL">
+                                <span class="photoAlbumEntryWrapper">
+                                    <img tal:attributes="src string:${item/getURL}/image_thumb" />
+                                </span>
+                                <span class="photoAlbumEntryTitle" tal:content="item/Title">bla</span>
+                            </a>
+                        </div>
 
-        <!-- Batching? -->
+                    </tal:entry>
+                    <div class="visualClear"><!-- --></div>
+              <!-- Batching? -->
+            </tal:listing>
+        </div>
 
-      </tal:listing>
       <p class="discreet"
          tal:condition="not:results"
          i18n:translate="description_no_items_in_folder">
