@@ -30,7 +30,8 @@ you're not logged in::
 We create a page in the site to use it in tests later::
 
     >>> browser.open(portalURL + '/createObject?type_name=Document')
-    >>> browser.getControl('Title').value = 'A simple page'
+    >>> browser.getControl(name='title').value = 'A simple page'
+    >>> browser.getControl(name='description').value = 'A description'
     >>> browser.getControl('Save').click()
     >>> pageURL = browser.url
     >>> pageURL
@@ -292,28 +293,19 @@ displays the result of calling ``@@proxy-view`` on it. The default
 ``@@proxy-view``, registered for all interfaces, renders the contents
 of the ``#content`` HTML element of the default view of the object.
 
-We create a Document object in the portal for it to be referenced, and
-set its title and description::
-
-    >>> dummy = portal.invokeFactory('Document', 'aDocument',
-    ...                              title='A document',
-    ...                              description="A description")
-    >>> document = portal['aDocument']
-    >>> transaction.commit()
-
-Using the proxy tile with this document exhibits the default behavior::
+Using the proxy tile with the document we formerly created exhibits the default behavior::
 
     >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.proxy/proxy-tile')
-    >>> browser.getControl(name='contentId.widgets.query').value = 'aDocument'
+    >>> browser.getControl(name='contentId.widgets.query').value = 'A simple page'
     >>> browser.getControl(name='contentId.buttons.search').click()
     >>> contentId = browser.getControl(name="contentId:list")
     >>> contentId.displayOptions
-    ['A document']
-    >>> contentId.getControl('A document').selected = True
+    ['A simple page']
+    >>> contentId.getControl('A simple page').selected = True
     >>> browser.getControl(label='Save').click()
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.proxy/proxy-tile')
     >>> browser.contents
-    '...id="content"...A document...A description...'
+    '...id="content"...A simple page...A description...'
 
 If we register a view with the name ``@@proxy-view`` for a more
 specific interface, it will be used instead::
@@ -333,6 +325,29 @@ specific interface, it will be used instead::
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.proxy/proxy-tile')
     >>> browser.contents
     'Custom proxy view.'
+
+
+Navigation tree tile
+---------------------
+
+The navigation tree tile displays a navigation tree for the context
+where it's inserted and take no configuration parameters.
+
+Rendering this tile in the site root should show the document we
+created before::
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.navtree/navtree-tile')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.navtree/navtree-tile')
+    >>> print browser.contents
+    <body>
+      <ul id="navigation" class="navigation">
+        <li>
+          <a href="http://nohost/plone/a-simple-page" class="state-missing-value" title="A description">
+            A simple page <em class="icon document">(Page)</em></a>
+        </li>
+      </ul>
+    </body>
 
 
 Image tile
