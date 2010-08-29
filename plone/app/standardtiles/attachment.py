@@ -24,14 +24,14 @@ class IAttachmentTile(directivesform.Schema):
 
 class AttachmentTile(PersistentTile):
     """Attachment tile.
-    
+
     This is a persistent tile which stores a file and optionally link
     text. When rendered, the tile will output an <a /> tag like::
-    
-        <a href="http://.../@@plone.app.standardtiles.attachment/tile-id/@@download/filename.ext">Link text</a>
+
+    <a href="http://.../@@plone.app.standardtiles.attachment/tile-id/@@download/filename.ext">Link text</a>
 
     If the link text is not provided, the filename itself will be used.
-    
+
     The tile is a public traversal view, so it will stream the file data
     if the correct filename (matching the uploaded filename), is given in
     the traversal subpath (filename.ext in the example above). Note that the
@@ -73,27 +73,29 @@ class AttachmentTile(PersistentTile):
 
 class AttachmentTileDownload(object):
     """Implementation of the @@download view on the attachment tile.
-    
+
     This is a view onto the AttachmentTile tile view.
     """
-    
+
     implements(IPublishTraverse)
-    filename = None
-    
+    index = None
+
     def publishTraverse(self, request, name):
-        if self.filename is None:
-            self.filename = name
+        if self.index is None:
+            self.index = name
             return self
         raise NotFound(name)
-    
+
     def __call__(self):
         """Render the file to the browser
         """
-        
-        for file_ in self.context.data.get('files', ()):
-            if self.filename == getattr(file_, 'filename', ''):
-                set_headers(file_, self.request.response,
-                            filename=self.filename)
-                return stream_data(file_)
+        files = self.context.data.get('files', ())
 
-        raise NotFound(self, self.filename, self.request)
+        try:
+            file_ = files[int(self.index)]
+        except KeyError:
+            raise NotFound(self, self.index, self.request)
+        set_headers(file_, self.request.response,
+                    filename=file_.filename)
+        return stream_data(file_)
+

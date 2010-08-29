@@ -11,7 +11,7 @@
 
         <tal:file tal:condition="attachment">
 
-          <a tal:attributes="href string:${view/url}/@@download/${attachment/filename}">
+          <a tal:attributes="href string:${view/url}/@@download/${repeat/attachment/index}">
             <img tal:condition="icon" src="" alt=""
                  tal:define="icon python:view.get_icon_for(attachment)"
                  tal:attributes="src string:${context/portal_url}/$icon"/>

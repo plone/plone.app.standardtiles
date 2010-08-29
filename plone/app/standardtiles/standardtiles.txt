@@ -425,7 +425,7 @@ the widget and then we are able to test it with the MultiWidget / NamedFileWidge
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile')
     >>> html = browser.contents
     >>> html
-    '...<a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/textfile.txt">...'
+    '...<a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/0">...'
     >>> html
     '...<img src="http://nohost/plone/txt.png" alt="" />...'
     >>> html
@@ -434,6 +434,13 @@ the widget and then we are able to test it with the MultiWidget / NamedFileWidge
     '...Plain Text...'
     >>> html
     '...0 KB...'
+
+We should also be able to download the file::
+
+    >>> browser.open(portalURL + \
+    ...     '/@@plone.app.standardtiles.attachment/attachment-tile/@@download/0')
+    >>> browser.contents
+    'File contents'
 
 
 Calendar tile
