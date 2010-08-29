@@ -186,27 +186,26 @@ class IImageTile(directivesform.Schema):
 
 class ImageTile(PersistentTile):
     """Image tile.
-    
+
     This is a transient tile which stores a reference to an image and
     optionally alt text. When rendered, the tile will look-up the image
     url and output an <img /> tag.
     """
 
     implements(IHasOutgoingRelations)
-    
+
     def __call__(self):
         # Not for production use - this should be in a template!
         imageId = self.data.get('imageId')
         imageId = int(imageId)
         intids = getUtility(IIntIds)
         image = intids.queryObject(imageId)
+
         if image is not None:
             imageURL = image.absolute_url()
             altText = self.data.get('altText')
-            if altText is not None:
-                altText = altText.replace('"', '\"')
-            else:
-                altText = ''
+            altText = altText.replace('"', '\"')
+
             return '<html><body><img src="%s" alt="%s" /></body></html>' % (imageURL, altText)
         else:
             return '<html><body><em>Image not found.</em></body></html>'
