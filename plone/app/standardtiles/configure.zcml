@@ -199,6 +199,19 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.navigation"
+        title="Navigation tree"
+        description=""
+        class=".navigation.NavigationTile"
+        schema=".navigation.INavigationTile"
+        template="templates/navigation.pt"
+        add_permission="cmf.ManagePortal"
+        permission="zope.Public"
+        />
+    <adapter factory=".navigation.QueryBuilder" />
+    <adapter factory=".navigation.NavtreeStrategy" />
+
+    <plone:tile
         name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"
         description="A tile which displays a specified viewlet manager"
