@@ -147,7 +147,7 @@ class TreeFactory(object):
         return CatalogNavTree(self.context, self.request)
 
 
-class NavigationTile(Tile):
+class NavtreeTile(Tile):
 
     def update(self):
         portal_types = getToolByName(self.context, "portal_types")
@@ -173,7 +173,7 @@ class NavigationTile(Tile):
             node["class"] = " ".join(filter(None,
                                             ["active" if node["current"] or node["currentParent"] else None,
                                              "current" if node["current"] else None])) or None
-            
+
         if "brain" in tree.root:
             self.tree = [tree.root]
         else:
@@ -182,4 +182,3 @@ class NavigationTile(Tile):
     def __call__(self):
         self.update()
         return self.index()
-
