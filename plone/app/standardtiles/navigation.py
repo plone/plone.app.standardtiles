@@ -17,7 +17,7 @@ from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
 from Products.CMFDynamicViewFTI.interface import IBrowserDefault
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from plone.tiles import Tile
+from plone.tiles import PersistentTile
 from plone.memoize.instance import memoize
 from plone.directives.form import Schema
 from plone.i18n.normalizer.interfaces import IIDNormalizer
@@ -97,7 +97,7 @@ class INavigationTile(Schema):
             required=False)
 
 
-class NavigationTile(Tile):
+class NavigationTile(PersistentTile):
 
     implements(INavigationTile)
 
@@ -108,10 +108,9 @@ class NavigationTile(Tile):
         self.properties = portal_properties.navtree_properties
 
     def title(self):
-        # FIXME: this should be actually fixed in TIle Data provider stuff
-        if self.data['name'] or self.data['name'] == 'None':
+        if not self.data['name'] or self.data['name'] == 'None':
             return self.properties.name
-        return self.date['name']
+        return self.data['name']
 
     @property
     def available(self):

@@ -336,17 +336,47 @@ where it's inserted and take no configuration parameters.
 Rendering this tile in the site root should show the document we
 created before::
 
-    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.navtree/navtree-tile')
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.navigation/navigation-tile')
+    >>> browser.getControl(name='name').value = 'TEST NAVIGATION TILE'
+    >>> browser.getControl(name='includeTop:list').value = ['selected']
+    >>> browser.getControl(name='topLevel').value = '0'
     >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.navtree/navtree-tile')
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.navigation/navigation-tile')
     >>> print browser.contents
     <body>
-      <ul id="navigation" class="navigation">
-        <li>
-          <a href="http://nohost/plone/a-simple-page" class="state-missing-value" title="A description">
-            A simple page <em class="icon document">(Page)</em></a>
-        </li>
-      </ul>
+        <div class="navigationTile">
+            <h2 class="tileHeader">TEST NAVIGATION TILE</h2>
+            <ul class="navTree navTreeLevel0">
+                <li class="navTreeItem navTreeTopNode navTreeCurrentNode">
+                    <div>
+                        <a href="http://nohost/plone" class="contenttype-plone-site navTreeCurrentItem" title="">
+                            Home
+                        </a>
+                    </div>
+                </li>
+    <BLANKLINE>
+    <BLANKLINE>
+    <BLANKLINE>
+    <BLANKLINE>
+    <li class="navTreeItem visualNoMarker section-a-simple-page">
+    <BLANKLINE>
+    <BLANKLINE>
+    <BLANKLINE>
+    <BLANKLINE>
+            <a href="http://nohost/plone/a-simple-page" class="state-missing-value contenttype-document" title="A description">
+    <BLANKLINE>
+                <span>A simple page</span>
+            </a>
+    <BLANKLINE>
+    <BLANKLINE>
+    <BLANKLINE>
+    </li>
+    <BLANKLINE>
+    <BLANKLINE>
+    <BLANKLINE>
+    <BLANKLINE>
+            </ul>
+        </div>
     </body>
 
 

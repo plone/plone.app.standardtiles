@@ -223,18 +223,6 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.navtree"
-        title="Navigation tree"
-        add_permission="zope2.View"
-        class=".navtree.NavtreeTile"
-        template="templates/navtree.pt"
-        permission="zope.Public"
-        />
-
-    <adapter
-        factory=".navtree.TreeFactory" />
-
-    <plone:tile
         name="plone.app.standardtiles.contentlisting"
         title="Content listing"
         description='A tile which displays the content listing of this item'
