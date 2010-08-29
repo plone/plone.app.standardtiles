@@ -36,7 +36,7 @@ class ImagePreviewSelectWidget(SelectWidget):
     """
 
     implementsOnly(IImagePreviewSelectWidget)
-    
+
     klass = u'image-preview-select-widget'
     prompt = True
 
@@ -53,17 +53,17 @@ class ImagePreviewSelectWidget(SelectWidget):
             data, errors = self.upload.extractData()
             if errors:
                 return
-            
+
             filedata = data['image_upload']
             image_upload_widget = self.upload.widgets['image_upload']
-            
+
             if filedata and self.method() == 'upload':
                 site = getSite()
                 registry = getUtility(IRegistry)
                 images_path = str(registry['plone.app.standardtiles.interfaces.IStandardTilesSettings.images_repo_path']) # XXX: why doesn't it return a string instead of unicode?
                 repo = site.unrestrictedTraverse(images_path)
                 filename = image_upload_widget.filename
-                
+
                 temp_id = repo.generateUniqueId(filename)
                 repo.invokeFactory('Image', temp_id)
                 image = getattr(repo, temp_id)
@@ -73,7 +73,7 @@ class ImagePreviewSelectWidget(SelectWidget):
                 namechooser = INameChooser(repo)
                 unique_id = namechooser.chooseName(filename, image)
                 image.setId(unique_id)
-                
+
                 intids = getUtility(IIntIds)
                 image_id = intids.getId(image)
 
@@ -111,13 +111,13 @@ class ImagePreviewSelectWidget(SelectWidget):
             });
 
           })
-        })(jQuery); 
+        })(jQuery);
         """ % {'id': self.id}
 
     def getImageURLFromId(self, imageId):
         """Look-up the URL for the src attribute of an image tag from
         its id."""
-        
+
         if imageId == self.noValueToken:
             return ''
         try:
