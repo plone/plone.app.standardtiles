@@ -409,24 +409,31 @@ Attachment tile
 This persistent tile renders a link pointing to a file stored in the
 tile data itself.
 
-..     >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.attachment/attachment-tile')
-..     >>> browser.getControl(name='files.buttons.add').click()
-..     >>> upload = browser.getControl(name='files.0')
-..     >>> import cStringIO
-..     >>> upload.add_file(cStringIO.StringIO('File contents'), 'text/plain', 'textfile.txt')
-..     >>> browser.getControl(label='Save').click()
-..     >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile')
-..     >>> html = browser.contents
-..     >>> html
-..     '...<a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/textfile.txt">...'
-..     >>> html
-..     '...<img src="http://nohost/plone/txt.png" alt="" />...'
-..     >>> html
-..     '...textfile.txt...'
-..     >>> html
-..     '...Plain Text...'
-..     >>> html
-..     '...0 KB...'
+Since the attachment file uses the plone.formwidget.multifile, wich bases
+on flash, we cannot test it with our test browser. So we need to remove
+the widget and then we are able to test it with the MultiWidget / NamedFileWidget.
+
+    >>> from plone.app.standardtiles import attachment
+    >>> del attachment.IAttachmentTile._Element__tagged_values['plone.autoform.widgets']['files']
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.attachment/attachment-tile')
+    >>> browser.getControl(name='files.buttons.add').click()
+    >>> upload = browser.getControl(name='files.0')
+    >>> import cStringIO
+    >>> upload.add_file(cStringIO.StringIO('File contents'), 'text/plain', 'textfile.txt')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile')
+    >>> html = browser.contents
+    >>> html
+    '...<a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/textfile.txt">...'
+    >>> html
+    '...<img src="http://nohost/plone/txt.png" alt="" />...'
+    >>> html
+    '...textfile.txt...'
+    >>> html
+    '...Plain Text...'
+    >>> html
+    '...0 KB...'
 
 
 Calendar tile
