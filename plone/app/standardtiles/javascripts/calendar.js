@@ -1,5 +1,4 @@
 jq(function($) {
-   console.info($('.calendar-tile-change-month').length);
    $('.calendar-tile-change-month').live('click', function(e) {
 
        e.preventDefault();
