@@ -1,44 +1,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n">
-  <body i18n:domain="plone">
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+  <body>
 
     <ul class="attachment-tile">
-
-
       <li tal:repeat="attachment view/data/files">
-
         <tal:file tal:condition="attachment">
-
           <a tal:attributes="href string:${view/url}/@@download/${repeat/attachment/index}">
             <img tal:condition="icon" src="" alt=""
                  tal:define="icon python:view.get_icon_for(attachment)"
                  tal:attributes="src string:${context/portal_url}/$icon"/>
             <tal:filename tal:replace="attachment/filename" />
           </a>
-
-          <span class="discreet"> &mdash;
+          <span class="discreet"> -
             <span tal:replace="python:context.lookupMime(attachment.contentType)">
               ContentType
             </span>,
             <span tal:replace="python:view.file_size(attachment)">100</span> KB
           </span>
-
-
         </tal:file>
-
         <tal:no_file tal:condition="not:attachment">
           <span class="discreet" i18n:translate="no_file">
             No file
           </span>
         </tal:no_file>
-
       </li>
-
     </ul>
-
-    <br />
-
   </body>
-<html>
+</html>
