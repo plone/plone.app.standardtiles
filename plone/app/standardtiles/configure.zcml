@@ -173,7 +173,7 @@
     <plone:tile
         name="plone.app.standardtiles.discussion"
         title="Discussion"
-        description='A tile which displays comments'
+        description="A tile which displays comments"
         add_permission="zope2.View"
         class=".discussion.DiscussionTile"
         for="*"
@@ -509,14 +509,6 @@
         for="*"
         permission="zope2.View"
         template="templates/rsslink.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.comments"
-        class=".comments.CommentsTile"
-        for="Products.CMFCore.interfaces.IContentish"
-        permission="zope2.View"
-        template="templates/comments.pt"
         />
 
     <plone:tile
