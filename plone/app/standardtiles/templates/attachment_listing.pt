@@ -6,12 +6,13 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
-
     <ul class="attachment-tile">
       <li tal:repeat="attachment view/data/files">
         <tal:file tal:condition="attachment">
           <a tal:attributes="href string:${view/url}/@@download/${repeat/attachment/index}">
-            <img tal:condition="icon" src="" alt=""
+            <img tal:condition="icon"
+                 src=""
+                 alt=""
                  tal:define="icon python:view.get_icon_for(attachment)"
                  tal:attributes="src string:${context/portal_url}/$icon"/>
             <tal:filename tal:replace="attachment/filename" />
@@ -24,7 +25,8 @@
           </span>
         </tal:file>
         <tal:no_file tal:condition="not:attachment">
-          <span class="discreet" i18n:translate="no_file">
+          <span class="discreet"
+                i18n:translate="">
             No file
           </span>
         </tal:no_file>
