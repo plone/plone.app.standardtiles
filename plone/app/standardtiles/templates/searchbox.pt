@@ -1,5 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
     <div id="portal-searchbox"
@@ -8,11 +12,9 @@
       <form name="searchform"
             action="search"
             tal:attributes="action string:${navigation_root_url}/search">
-
         <label class="hiddenStructure"
                tal:attributes="for search_input_id"
                i18n:translate="text_search">Search Site</label>
-
         <div class="LSBox">
           <input name="SearchableText"
                  type="text"
@@ -24,36 +26,32 @@
                  tal:attributes="value request/form/SearchableText|nothing;
                                  id search_input_id"
                  class="inputLabel" />
-
           <input class="searchButton"
                  type="submit"
                  value="Search"
                  i18n:attributes="value label_search;" />
-
           <div class="searchSection">
             <input id="searchbox_currentfolder_only"
                    class="noborder"
                    type="checkbox"
                    name="path"
-                   tal:attributes="value view/folder_path"
-                   />
+                   tal:attributes="value view/folder_path" />
             <label for="searchbox_currentfolder_only"
                    i18n:translate="label_searchbox_currentfolder_only"
                    style="cursor: pointer">
-                only in current section
+              only in current section
             </label>
           </div>
           <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
         </div>
       </form>
-
       <div id="portal-advanced-search"
            class="hiddenStructure">
         <a href="#"
            tal:attributes="href string:${navigation_root_url}/search_form"
            i18n:translate="label_advanced_search"
            accesskey="5">
-            Advanced Search&hellip;
+          Advanced Search&hellip;
         </a>
       </div>
     </div>

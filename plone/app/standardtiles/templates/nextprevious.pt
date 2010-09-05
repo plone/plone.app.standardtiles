@@ -1,22 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xml:lang="en"
+      lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
-
     <div tal:define="enabled view/npview/enabled|nothing"
          tal:condition="python:enabled"
          tal:omit-tag="">
-
       <tal:block define="portal_url here/portal_url;">
-
         <div class="listingBar"
              tal:define="next view/npview/next;
                          previous view/npview/previous"
              tal:condition="python:previous is not None or next is not None">
-
           <tal:previous condition="previous">
-            <a class="previous" href=""
+            <a class="previous"
+               href=""
                title="Go to previous item"
                i18n:attributes="title title_previous_item"
                tal:attributes="href previous/url">
@@ -24,13 +24,13 @@
               <span i18n:translate="label_previous_item"
                     tal:omit-tag="">
                 Previous:
-                <span i18n:name="itemtitle" tal:replace="previous/title" />
+                <span i18n:name="itemtitle"
+                      tal:replace="previous/title" />
               </span>
             </a>
           </tal:previous>
-
-
-          <a class="next" href=""
+          <a class="next"
+             href=""
              title="Go to next item"
              i18n:attributes="title title_next_item"
              tal:condition="next"
@@ -38,18 +38,13 @@
             <span i18n:translate="label_next_item"
                   tal:omit-tag="">
               Next:
-              <span i18n:name="itemtitle" tal:replace="next/title" />
+              <span i18n:name="itemtitle"
+                    tal:replace="next/title" />
             </span>
             »
           </a>
-
-          &nbsp;
-
         </div>
-
       </tal:block>
-
     </div>
-
   </body>
 </html>

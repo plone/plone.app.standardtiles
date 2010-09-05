@@ -1,40 +1,37 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
-
-    <tal:defines
-        define="results context;
-                original_context nocall:options/original_context|context;
-                toLocalizedTime nocall:original_context/@@plone/toLocalizedTime;
-                show_about python:True">
+    <tal:defines define="results context;
+                         original_context nocall:options/original_context|context;
+                         toLocalizedTime nocall:original_context/@@plone/toLocalizedTime;
+                         show_about python:True">
       <tal:listing condition="results">
-
         <dl>
           <tal:entry repeat="item results">
             <dt tal:attributes="class item/ContentTypeClass">
-
               <span class="summary">
                 <img tal:replace="structure item/getIcon" />
-                <a
-                    href="#"
-                    tal:attributes="href item/getURL;
-                                    class string:${item/ContentTypeClass} ${item/review_state}"
-                    tal:content="item/Title|item/getId" />
+                <a href="#"
+                   tal:attributes="href item/getURL;
+                                   class string:${item/ContentTypeClass} ${item/review_state}"
+                   tal:content="item/Title|item/getId" />
               </span>
-
               <span class="documentByLine">
-
                 <tal:comment condition="python:item.Type() == 'Event'">
                   <!-- Removed special handling for Event type for now.-->
                 </tal:comment>
-
                 <tal:byline condition="show_about">
                   &mdash;
-
-                  <span class="documentAuthor" tal:define="author item/Creator"
+                  <span class="documentAuthor"
+                        tal:define="author item/Creator"
                         tal:on-error="author/fullname"
-                        i18n:translate="label_by_author" tal:condition="author/fullname">
+                        i18n:translate="label_by_author"
+                        tal:condition="author/fullname">
                     by
                     <a href="#"
                        tal:content="author/fullname"
@@ -44,7 +41,6 @@
                       Bob Dobalina
                     </a>
                   </span>
-
                   <tal:modified condition="python: item.Type() != 'Event'">
                     &mdash;
                     <tal:mod i18n:translate="box_last_modified">
@@ -54,23 +50,16 @@
                       August 16, 2001 at 23:35:59
                     </span>
                   </tal:modified>
-
                 </tal:byline>
               </span>
-
             </dt>
-
             <dd>
               <span tal:replace="item/Description">
                 Cropped description
               </span>
             </dd>
-
           </tal:entry>
         </dl>
-
-        <!-- Batching? -->
-
       </tal:listing>
       <p class="discreet"
          tal:condition="not:results"

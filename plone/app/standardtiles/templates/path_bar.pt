@@ -1,43 +1,54 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
     <div id="portal-breadcrumbs"
          tal:define="breadcrumbs view/breadcrumbs;
                      is_rtl view/is_rtl">
-
-    <span id="breadcrumbs-you-are-here" i18n:translate="you_are_here">You
-are here:</span>
-    <span id="breadcrumbs-home">
+      <span id="breadcrumbs-you-are-here"
+            i18n:translate="you_are_here">
+        You are here:
+      </span>
+      <span id="breadcrumbs-home">
         <a i18n:translate="tabs_home"
-           tal:attributes="href view/navigation_root_url">Home</a>
-        <span tal:condition="breadcrumbs" class="breadcrumbSeparator">
-            <tal:ltr condition="not: is_rtl">&rsaquo;</tal:ltr>
-            <tal:rtl condition="is_rtl">&lsaquo;</tal:rtl>
+           tal:attributes="href view/navigation_root_url">
+          Home
+        </a>
+        <span tal:condition="breadcrumbs"
+              class="breadcrumbSeparator">
+          <tal:ltr condition="not: is_rtl">&rsaquo;</tal:ltr>
+          <tal:rtl condition="is_rtl">&lsaquo;</tal:rtl>
         </span>
-    </span>
-    <span tal:repeat="crumb breadcrumbs"
-          tal:attributes="dir python:is_rtl and 'rtl' or 'ltr';
-                          id string:breadcrumbs-${repeat/crumb/number}">
+      </span>
+      <span tal:repeat="crumb breadcrumbs"
+            tal:attributes="dir python:is_rtl and 'rtl' or 'ltr';
+                            id string:breadcrumbs-${repeat/crumb/number}">
         <tal:item tal:define="is_last repeat/crumb/end;
                               url crumb/absolute_url;
                               title crumb/Title">
-            <a href="#"
-               tal:omit-tag="not: url"
-               tal:condition="python:not is_last"
-               tal:attributes="href url"
-               tal:content="title">
-                crumb
-            </a>
-            <span class="breadcrumbSeparator" tal:condition="not: is_last">
-                <tal:ltr condition="not: is_rtl">&rsaquo;</tal:ltr>
-                <tal:rtl condition="is_rtl">&lsaquo;</tal:rtl>
-            </span>
-            <span id="breadcrumbs-current"
-                  tal:condition="is_last"
-                  tal:content="title">crumb</span>
-         </tal:item>
-    </span>
+          <a href="#"
+             tal:omit-tag="not: url"
+             tal:condition="python:not is_last"
+             tal:attributes="href url"
+             tal:content="title">
+            crumb
+          </a>
+          <span class="breadcrumbSeparator"
+                tal:condition="not: is_last">
+            <tal:ltr condition="not: is_rtl">&rsaquo;</tal:ltr>
+            <tal:rtl condition="is_rtl">&lsaquo;</tal:rtl>
+          </span>
+          <span id="breadcrumbs-current"
+                tal:condition="is_last"
+                tal:content="title">
+            crumb
+          </span>
+        </tal:item>
+      </span>
     </div>
   </body>
 </html>

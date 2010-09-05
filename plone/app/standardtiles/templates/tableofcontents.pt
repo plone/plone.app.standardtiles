@@ -1,14 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
-<body>
-    <dl id="document-toc" class="portlet toc"
+  <body>
+    <dl id="document-toc"
+        class="portlet toc"
         tal:condition="view/available"
         i18n:domain="plone">
-
-        <dt class="portletHeader"
-            i18n:translate="label_tableofcontents">Contents</dt>
-        <dd class="portletItem"></dd>
+      <dt class="portletHeader"
+          i18n:translate="label_tableofcontents">
+        Contents
+      </dt>
+      <dd class="portletItem"></dd>
     </dl>
-</body>
+  </body>
 </html>
