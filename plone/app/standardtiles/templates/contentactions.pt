@@ -1,37 +1,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
     <div class="contentActions"
          tal:define="ploneview context/@@plone"
          tal:condition="ploneview/showEditableBorder">
 
-    <tal:block define="content_actions view/object_actions;">
+      <tal:block define="content_actions view/object_actions;">
 
         <div class="hiddenStructure" 
-            tal:condition="content_actions | wf_state"
-            i18n:translate="heading_actions">Actions</div>
+             tal:condition="content_actions | wf_state"
+             i18n:translate="heading_actions">
+          Actions
+        </div>
 
-        <ul tal:condition="content_actions" class="actionItems">
-            <li tal:repeat="action content_actions"
-                tal:attributes="id string:contentaction-${action/id};">
+        <ul tal:condition="content_actions"
+            class="actionItems">
+          <li tal:repeat="action content_actions"
+              tal:attributes="id string:contentaction-${action/id};">
 
-                <a class="" href=""
-                   tal:define="icon python:view.icon(action)"
-                   tal:attributes="href action/url;">
-
-                    <tal:action tal:content="action/title" i18n:translate="">
-                        Action name
-                    </tal:action>
-                </a>
-
-            </li>
+            <a class=""
+               href=""
+               tal:define="icon python:view.icon(action)"
+               tal:attributes="href action/url;">
+              <tal:action tal:content="action/title"
+                          i18n:translate="">
+                Action name
+              </tal:action>
+            </a>
+          </li>
         </ul>
-
         <div tal:replace="structure provider:plone.contentmenu" />
-
-    </tal:block>
-
+      </tal:block>
     </div>
   </body>
 </html>
