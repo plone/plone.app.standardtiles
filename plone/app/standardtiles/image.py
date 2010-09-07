@@ -4,7 +4,7 @@ from zope.component import adapter, getUtility
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 from zope.schema.interfaces import IVocabularyFactory, IChoice
 from zope.app.component.hooks import getSite
-from z3c.form.i18n import MessageFactory as _
+from plone.app.standardtiles import PloneMessageFactory as _
 from zope.intid.interfaces import IIntIds
 from z3c.relationfield import RelationChoice
 from z3c.relationfield.interfaces import IHasOutgoingRelations
