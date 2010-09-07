@@ -9,7 +9,10 @@ from plone.memoize.compress import xhtml_compress
 from plone.tiles.tile import Tile
 from time import localtime
 from zope.component import getMultiAdapter
-from plone.app.standardtiles import PloneMessageFactory as _
+from zope.i18nmessageid import MessageFactory
+
+
+PLMF = MessageFactory('plonelocales')
 
 
 def _render_cachekey(fun, self):
@@ -90,7 +93,7 @@ class CalendarTile(Tile):
         self.nextMonthYear, self.nextMonthMonth = self.getNextMonth(year,
                                                                     month)
 
-        self.monthName = _(self._ts.month_msgid(month),
+        self.monthName = PLMF(self._ts.month_msgid(month),
                               default=self._ts.month_english(month))
 
     @ram.cache(_render_cachekey)
@@ -194,7 +197,7 @@ class CalendarTile(Tile):
         weekdays = []
         # list of ordered weekdays as numbers
         for day in self.calendar.getDayNumbers():
-            weekdays.append(_(self._ts.day_msgid(day, format='s'),
+            weekdays.append(PLMF(self._ts.day_msgid(day, format='s'),
                                  default=self._ts.weekday_english(
                         day, format='a')))
 
