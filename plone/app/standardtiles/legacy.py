@@ -9,10 +9,12 @@ from plone.tiles import Tile
 from zope.viewlet.interfaces import IViewletManager
 from plone.portlets.interfaces import IPortletManager
 
+from plone.app.standardtiles import PloneMessageFactory as _
+
 
 class IViewletManagerTile(Interface):
-    manager = schema.TextLine(title=u"Name of the viewlet manager to render.",
-                           required=True)
+    manager = schema.TextLine(title=_(u"Name of the viewlet manager to render."),
+                              required=True)
 
 
 class ViewletManagerTile(Tile):
