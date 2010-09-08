@@ -40,7 +40,7 @@ class ImagePreviewSelectWidget(SelectWidget):
     klass = u'image-preview-select-widget'
     prompt = True
 
-    promptMessage = _('select an image ...')
+    promptMessage = _(u"select an image...")
 
     def method(self):
         return self.request.get("%s.method" % self.name, "existing")
@@ -177,10 +177,10 @@ directlyProvides(availableImagesVocabulary, IVocabularyFactory)
 class IImageTile(directivesform.Schema):
 
     directivesform.widget(imageId=ImagePreviewSelectFieldWidget)
-    imageId = RelationChoice(title=u"Image Id", required=True,
+    imageId = RelationChoice(title=_(u"Image Id"), required=True,
                              vocabulary=u"Available Images")
     imageId._type = int
-    altText = schema.TextLine(title=u"Alternative text", required=False,
+    altText = schema.TextLine(title=_(u"Alternative text"), required=False,
                               missing_value=u'')
 
 
