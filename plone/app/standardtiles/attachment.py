@@ -13,13 +13,15 @@ from plone.namedfile.field import NamedFile
 from plone.namedfile.interfaces import INamed
 from plone.formwidget.multifile.widget import MultiFileFieldWidget
 
+from plone.app.standardtiles import PloneMessageFactory as _
+
 
 class IAttachmentTile(directivesform.Schema):
 
     directivesform.widget(files=MultiFileFieldWidget)
     files = schema.List(
-        title=u'Upload files',
-        value_type=NamedFile(title=u"Please upload a file", required=True))
+        title=_(u'Upload files'),
+        value_type=NamedFile(title=_(u"Please upload a file"), required=True))
 
 
 class AttachmentTile(PersistentTile):
