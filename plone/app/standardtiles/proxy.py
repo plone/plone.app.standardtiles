@@ -8,9 +8,11 @@ from plone.app.standardtiles.source import IntIdSourceBinder
 from zope.intid.interfaces import IIntIds
 from zope.component import getUtility
 
+from plone.app.standardtiles import PloneMessageFactory as _
+
 
 class IProxyTile(directivesform.Schema):
-    contentId = RelationChoice(title=u"Id of the proxied content.",
+    contentId = RelationChoice(title=_(u"Id of the proxied content."),
                                source=IntIdSourceBinder(),
                                required=True)
     contentId._type = int
@@ -33,7 +35,7 @@ class ProxyTile(PersistentTile):
 
 class ProxyView(BrowserView):
 
-    template = ViewPageTemplateFile('proxy_view.pt')
+    template = ViewPageTemplateFile('templates/proxy_view.pt')
     
     def __call__(self):
         out = self.context.restrictedTraverse('view')()
