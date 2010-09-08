@@ -11,19 +11,21 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.interface import directlyProvides
 from plone.app.standardtiles.interfaces import IStandardTilesSettings
 
+from plone.app.standardtiles import PloneMessageFactory as _
+
 
 class IContentListingTile(directivesform.Schema):
     """A tile that displays a listing of content items"""
     directivesform.widget(query=QueryStringFieldWidget)
-    query = schema.List(title=u'Search terms',
+    query = schema.List(title=_(u"Search terms"),
                         value_type=schema.Dict(value_type=schema.Field(),
                                                key_type=schema.TextLine()),
-                        description=u'Define the search terms for the items '
-                        'you want to list by choosing what to match on. The '
-                        'list of results will be dynamically updated',
+                        description=_(u"Define the search terms for the items "
+                        "you want to list by choosing what to match on. The "
+                        "list of results will be dynamically updated"),
                         required=False)
-    view_template = schema.Choice(title=u"Display mode",
-                                  source=u"Available Listing Views",
+    view_template = schema.Choice(title=_(u"Display mode"),
+                                  source=_(u"Available Listing Views"),
                                   required=True)
 
 
