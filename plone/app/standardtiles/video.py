@@ -24,11 +24,11 @@ class VideoTile(PersistentTile):
         youtubeURL = self.data.get('youtubeURL')
         youtubeID = re.split('v=([A-Za-z00-9_\-]+)', youtubeURL)[1]
 
-        return '<html><body><object width="425" height="344"><param '
-               'name="movie" value="http://www.youtube.com/v/%s&hl=en_GB&fs=1&'
-               '"></param><param name="allowFullScreen" value="true"></param>'
-               '<param name="allowscriptaccess" value="always"></param><embed '
-               'src="http://www.youtube.com/v/%s&hl=en_GB&fs=1&" '
-               'type="application/x-shockwave-flash" allowscriptaccess="always'
-               '" allowfullscreen="true" width="425" height="344"></embed>'
+        return '<html><body><object width="425" height="344"><param ' \
+               'name="movie" value="http://www.youtube.com/v/%s&hl=en_GB&fs=1&' \
+               '"></param><param name="allowFullScreen" value="true"></param>' \
+               '<param name="allowscriptaccess" value="always"></param><embed ' \
+               'src="http://www.youtube.com/v/%s&hl=en_GB&fs=1&" ' \
+               'type="application/x-shockwave-flash" allowscriptaccess="always' \
+               '" allowfullscreen="true" width="425" height="344"></embed>' \
                '</object></body></html>' % (youtubeID, youtubeID)
