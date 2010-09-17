@@ -8,7 +8,6 @@
   <body>
     <div class="documentByLine"
          id="plone-document-byline"
-         i18n:domain="plone"
          tal:condition="view/show">
       <span id="lock-icon"
             tal:define="lock_icon view/locked_icon"
@@ -21,7 +20,7 @@
                               creator_is_openid python:'/' in creator_short_form;
                               creator_id python:(creator_short_form, creator_long_form)[creator_is_openid];">
           <span class="documentAuthor"
-                i18n:translate="label_by_author">
+                i18n:translate="">
             by
             <a href="#"
                tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}"
@@ -35,7 +34,7 @@
       </tal:creator>
       <span class="documentModified">
         &mdash;
-        <span i18n:translate="box_last_modified">
+        <span i18n:translate="">
           last modified
         </span>
         <span tal:replace="python:view.toLocalizedTime(context.ModificationDate(),long_format=1)">
@@ -45,7 +44,7 @@
       <tal:expired tal:condition="view/isExpired">
         &mdash;
         <span class="state-expired"
-              i18n:translate="time_expired">
+              i18n:translate="">
           expired
         </span>
       </tal:expired>
@@ -55,14 +54,14 @@
         &mdash;
         <a href="#"
            tal:attributes="href string:${here/absolute_url}/@@historyview"
-           i18n:translate="label_history">
+           i18n:translate="">
           History
         </a>
       </span>
       <div class="documentContributors"
            tal:define="contributors context/Contributors"
            tal:condition="contributors"
-           i18n:translate="text_contributors">
+           i18n:translate="">
         Contributors:
         <span i18n:name="name"
               tal:omit-tag=""

@@ -8,10 +8,9 @@
   <body>
     <dl id="document-toc"
         class="portlet toc"
-        tal:condition="view/available"
-        i18n:domain="plone">
+        tal:condition="view/available">
       <dt class="portletHeader"
-          i18n:translate="label_tableofcontents">
+          i18n:translate="">
         Contents
       </dt>
       <dd class="portletItem"></dd>

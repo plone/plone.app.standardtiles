@@ -7,16 +7,15 @@
       i18n:domain="plone">
   <body>
     <div id="plone-lock-status"
-         i18n:domain="plone"
          tal:define="locked view/info/is_locked_for_current_user;
                      stealable view/lock_is_stealable;
                      lock_details view/lock_info;">
       <tal:block condition="locked">
         <dl class="portalMessage info">
-          <dt i18n:translate="label_locked">Locked</dt>
+          <dt i18n:translate="">Locked</dt>
           <dd>
             <tal:author-page tal:condition="lock_details/author_page"
-                             i18n:translate="description_webdav_locked_by_author_on_time">
+                             i18n:translate="">
               This item was locked by
               <a i18n:name="author"
                  tal:content="lock_details/fullname"
@@ -26,7 +25,7 @@
               ago.
             </tal:author-page>
             <tal:no-author-page tal:condition="not:lock_details/author_page"
-                                i18n:translate="description_webdav_locked_by_author_on_time">
+                                i18n:translate="">
               This item was locked by
               <span i18n:name="author"
                     tal:content="lock_details/fullname" />
@@ -36,7 +35,7 @@
             </tal:no-author-page>
             <form tal:condition="stealable"
                   tal:attributes="action string:${context/absolute_url}/@@plone_lock_operations/force_unlock">
-              <span i18n:translate="description_webdav_locked_steal">
+              <span i18n:translate="">
                 If you are certain this user has abandoned the object,
                 you may
                 <input type="submit"

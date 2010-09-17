@@ -8,8 +8,7 @@
   <body>
 
     <tal:block tal:define="isDiscussionAllowed view/is_discussion_allowed"
-               tal:condition="isDiscussionAllowed"
-               i18n:domain="plone">
+               tal:condition="isDiscussionAllowed">
       <tal:block define="userHasReplyPermission view/can_reply;
                          isAnonymousDiscussionAllowed view/anonymous_discussion_allowed;
                          isAnon view/is_anonymous;
@@ -26,7 +25,7 @@
                    style="margin-bottom: 1.25em;"
                    type="submit"
                    value="Log in to add comments"
-                   i18n:attributes="value label_login_to_add_comments;" />
+                   i18n:attributes="value" />
           </form>
         </div>
 
@@ -71,8 +70,8 @@
               <h3 class="commentTitle"
                   tal:content="reply/Title" />
 
-              <div class="documentByLine" i18n:domain="plone.app.discussion">
-                <tal:posted i18n:translate="label_comment_by">Posted by</tal:posted>
+              <div class="documentByLine">
+                <tal:posted i18n:translate="">Posted by</tal:posted>
                 <tal:name>
                   <a href=""
                      tal:condition="has_author_link"
@@ -85,7 +84,7 @@
                 </tal:name>
                 <tal:name condition="python:reply.Creator() in ('Anonymous User', '', None)"
                           tal:content="reply/author_name">Anonymous User</tal:name>
-                <tal:at i18n:translate="label_commented_at">at</tal:at>
+                <tal:at i18n:translate="">at</tal:at>
                 <span tal:replace="python:view.format_time(reply.modification_date)">8/23/2001 12:40:44 PM</span>
                </div>
 
@@ -95,7 +94,7 @@
               <div class="commentActions">
                 <button class="context reply-to-comment-button hide allowMultiSubmit"
                         tal:condition="python:isDiscussionAllowed and (isAnon and isAnonymousDiscussionAllowed or userHasReplyPermission)"
-                        i18n:translate="label_reply">
+                        i18n:translate="">
                   Reply
                 </button>
 
@@ -109,7 +108,7 @@
                          class="destructive"
                          type="submit"
                          value="Delete"
-                         i18n:attributes="value label_delete;" />
+                         i18n:attributes="value" />
                 </form>
 
                 <form name=""
@@ -141,7 +140,7 @@
                    style="margin-bottom: 1.25em;"
                    type="submit"
                    value="Log in to add comments"
-                   i18n:attributes="value label_login_to_add_comments;" />
+                   i18n:attributes="value" />
           </form>
         </div>
 
@@ -149,8 +148,8 @@
              class="reply"
              tal:condition="python:isDiscussionAllowed and (isAnon and isAnonymousDiscussionAllowed or userHasReplyPermission)">
           <fieldset>
-            <legend i18n:translate="label_add_comment">Add comment</legend>
-            <p i18n:translate="description_add_comment">
+            <legend i18n:translate="">Add comment</legend>
+            <p i18n:translate="">
               You can add a comment by filling out the form below. Plain text
               formatting.
             </p>

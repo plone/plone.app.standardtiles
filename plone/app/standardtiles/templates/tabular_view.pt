@@ -13,30 +13,30 @@
 
             <div tal:condition="results">
 
-                    <table class="listing" summary="Content listing" i18n:attributes="summary summary_content_listing;">
+                    <table class="listing" summary="Content listing" i18n:attributes="summary">
                     <thead>
                         <tr>
                             <th class="nosort">&nbsp;
-                                <tal:title i18n:translate="listingheader_title">
+                                <tal:title i18n:translate="">
                                     Title
                                 </tal:title>&nbsp;
                             </th>
                             <th class="nosort">&nbsp;
-                                <tal:title i18n:translate="listingheader_author">
+                                <tal:title i18n:translate="">
                                     Author
                                 </tal:title>
                                 &nbsp;
                             </th>
                             <th class="nosort">
                                 &nbsp;
-                                <tal:title i18n:translate="listingheader_type">
+                                <tal:title i18n:translate="">
                                     Type
                                 </tal:title>
                                 &nbsp;
                             </th>
                             <th class="nosort">
                                 &nbsp;
-                                <tal:modified i18n:translate="listingheader_modified">
+                                <tal:modified i18n:translate="">
                                     Modified
                                 </tal:modified>&nbsp;
                             </th>

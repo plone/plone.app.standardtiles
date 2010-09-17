@@ -28,7 +28,7 @@
 
       <p class="discreet"
          tal:condition="not:results"
-         i18n:translate="description_no_items_in_folder">
+         i18n:translate="">
         There are currently no items in this folder.
       </p>
     </tal:defines>

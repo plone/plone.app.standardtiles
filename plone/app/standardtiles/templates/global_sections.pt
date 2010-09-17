@@ -9,7 +9,7 @@
     <tal:sections tal:define="portal_tabs view/portal_tabs"
                   tal:condition="portal_tabs">
       <div class="hiddenStructure"
-           i18n:translate="heading_sections">
+           i18n:translate="">
         Sections
       </div>
       <ul id="portal-globalnav"

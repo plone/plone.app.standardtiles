@@ -11,8 +11,8 @@
           <li>
             <a href="http://plone.org"
                title="This site was built using the Plone Open Source CMS/WCM."
-               i18n:attributes="title title_built_with_plone;"
-               i18n:translate="label_powered_by_plone">
+               i18n:attributes="title;"
+               i18n:translate="">
               Powered by Plone &amp; Python</a>
           </li>
         </ul>

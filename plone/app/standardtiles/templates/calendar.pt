@@ -23,7 +23,7 @@
            tal:attributes="id python:showPrevMonth and 'calendar-previous' or '';
                            href python:'%s?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (request['ACTUAL_URL'], query_string, prevMonthMonth, prevMonthYear, url_quote_plus(query_string));"
            tal:condition="showPrevMonth"
-           i18n:attributes="title title_previous_month;">
+           i18n:attributes="title">
           &lt;
         </a>
         <span i18n:translate="" tal:omit-tag="">
@@ -50,7 +50,7 @@
            tal:attributes="id python:showNextMonth and 'calendar-next' or '';
                            href python:'%s?%smonth:int=%d&amp;year:int=%d&amp;orig_query=%s' % (request['ACTUAL_URL'], query_string, nextMonthMonth, nextMonthYear, url_quote_plus(query_string));"
            tal:condition="showNextMonth"
-           i18n:attributes="title title_next_month;">
+           i18n:attributes="title">
           &gt;
         </a>
       </dt>
@@ -58,8 +58,7 @@
       <dd class="item">
         <table class="ploneCalendar"
                summary="Calendar"
-               i18n:domain="plone"
-               i18n:attributes="summary summary_calendar;">
+               i18n:attributes="summary">
           <caption class="hiddenStructure"
                    tal:content="view/monthName">
             Month name

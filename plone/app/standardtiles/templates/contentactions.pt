@@ -14,7 +14,7 @@
 
         <div class="hiddenStructure" 
              tal:condition="content_actions | wf_state"
-             i18n:translate="heading_actions">
+             i18n:translate="">
           Actions
         </div>
 

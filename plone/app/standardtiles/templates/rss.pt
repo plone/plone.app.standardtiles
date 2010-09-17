@@ -42,7 +42,7 @@
           tal:condition="view/feedAvailable">
         <a href=""
            tal:attributes="href view/siteurl"
-           i18n:translate="box_morelink">
+           i18n:translate="">
           More&hellip;
         </a>
       </dd>

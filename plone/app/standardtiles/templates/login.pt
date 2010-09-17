@@ -14,7 +14,7 @@
           <a href="#"
              class="tile"
              tal:attributes="href view/login_form"
-             i18n:translate="box_sign_in">
+             i18n:translate="">
             Log in
           </a>
           <span class="portletTopRight"></span>
@@ -56,7 +56,7 @@
               <tal:loginname condition="not:use_email_as_login">
                 <label for=""
                        tal:attributes="for ac_name"
-                       i18n:translate="label_login_name">
+                       i18n:translate="">
                   Login Name
                 </label>
                 <br />
@@ -65,12 +65,12 @@
                        alt="Login Name"
                        tal:attributes="name ac_name; id ac_name;
                                        value python:request.get(ac_name, '');"
-                       i18n:attributes="alt label_login_name;" />
+                       i18n:attributes="alt" />
               </tal:loginname>
               <tal:email condition="use_email_as_login">
                 <label for=""
                        tal:attributes="for ac_name"
-                       i18n:translate="label_email">
+                       i18n:translate="">
                   E-mail
                 </label>
                 <br />
@@ -79,13 +79,13 @@
                        alt="E-mail"
                        tal:attributes="name ac_name; id ac_name;
                                        value python:request.get(ac_name, '');"
-                       i18n:attributes="alt label_email;" />
+                       i18n:attributes="alt" />
               </tal:email>
             </div>
             <div class="field">
               <label for=""
                      tal:attributes="for ac_password"
-                     i18n:translate="label_password">
+                     i18n:translate="">
                 Password
               </label>
               <br />
@@ -93,9 +93,9 @@
                      size="10"
                      alt="Password"
                      tal:attributes="name ac_password; id ac_password;"
-                     i18n:attributes="alt label_password;" />
+                     i18n:attributes="alt" />
             </div>
-            <div i18n:translate="enable_cookies_message_before_login"
+            <div i18n:translate=""
                  class="cookiesMessage portalMessage"
                  style="display:none">
               Cookies are not enabled. You must enable cookies before you
@@ -107,7 +107,7 @@
                      name="submit"
                      value="Log in"
                      alt="Log in"
-                     i18n:attributes="value label_log_in; alt label_log_in;"/>
+                     i18n:attributes="value alt"/>
             </div>
           </form>
         </dd>
@@ -118,7 +118,7 @@
              tal:attributes="href view/mail_password_form">
             <tal:block replace="structure context/info_icon.gif" />
             <span tal:omit-tag=""
-                  i18n:translate="box_forgot_password_option">
+                  i18n:translate="">
               Forgot your password?
             </span>
           </a>
@@ -130,7 +130,7 @@
              tal:attributes="href view/join_action">
             <tal:block replace="structure context/user.gif"/>
             <span tal:omit-tag=""
-                  i18n:translate="box_new_user_option">
+                  i18n:translate="">
               New user?
             </span>
           </a>
@@ -143,12 +143,12 @@
         <dt class="portletHeader">
           <a href="#"
              class="tile"
-             i18n:translate="box_sign_in">
+             i18n:translate="">
             Log in
           </a>
         </dt>
         <dd class="portletItem"
-            i18n:translate="login_portlet_disabled">
+            i18n:translate="">
           Cookie authentication is disabled.
           Login portlet not available.
         </dd>

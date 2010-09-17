@@ -14,13 +14,12 @@
 
         <div class="hiddenStructure"
               tal:condition="view_actions"
-              i18n:translate="heading_views">
+              i18n:translate="">
           Views
         </div>
 
         <ul class="contentViews"
-            id="content-views"
-            i18n:domain="plone">
+            id="content-views">
           <tal:views repeat="action view_actions">
             <li tal:define="selected action/selected|nothing;"
                 tal:attributes="id string:contentview-${action/id};

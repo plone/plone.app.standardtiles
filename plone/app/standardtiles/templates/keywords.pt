@@ -6,11 +6,10 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
-    <div i18n:domain="plone"
-         id="category"
+    <div id="category"
          class="documentByLine"
          tal:condition="view/categories">
-      <tal:filedunder i18n:translate="label_filed_under">Filed under:</tal:filedunder>
+      <tal:filedunder i18n:translate="">Filed under:</tal:filedunder>
       <span tal:repeat="category view/categories">
         <a href=""
            class="link-category"

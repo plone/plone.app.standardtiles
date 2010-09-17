@@ -24,7 +24,7 @@
                                class string:contenttype-plone-site $selectedClass;">
               <span tal:omit-tag=""
                     tal:condition="rootIsPortal"
-                    i18n:translate="tabs_home">
+                    i18n:translate="">
                 Home
               </span>
               <span tal:condition="not:rootIsPortal"

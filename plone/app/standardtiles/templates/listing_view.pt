@@ -30,7 +30,7 @@
                   <span class="documentAuthor"
                         tal:define="author item/Creator"
                         tal:on-error="author/fullname"
-                        i18n:translate="label_by_author"
+                        i18n:translate=""
                         tal:condition="author/fullname">
                     by
                     <a href="#"
@@ -43,7 +43,7 @@
                   </span>
                   <tal:modified condition="python: item.Type() != 'Event'">
                     &mdash;
-                    <tal:mod i18n:translate="box_last_modified">
+                    <tal:mod i18n:translate="">
                       last modified
                     </tal:mod>
                     <span tal:replace="python:toLocalizedTime(item.ModificationDate())">
@@ -63,7 +63,7 @@
       </tal:listing>
       <p class="discreet"
          tal:condition="not:results"
-         i18n:translate="description_no_items_in_folder">
+         i18n:translate="">
         There are currently no items in this folder.
       </p>
     </tal:defines>

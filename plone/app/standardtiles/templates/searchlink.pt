@@ -9,7 +9,7 @@
     <link rel="search"
           href=""
           title="Search this site"
-          i18n:attributes="title title_search_this_site"
+          i18n:attributes="title"
           tal:attributes="href string:${view/navigation_root_url}/search_form" />
   </head>
 </html>

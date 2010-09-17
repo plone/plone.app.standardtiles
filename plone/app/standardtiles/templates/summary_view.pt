@@ -36,7 +36,7 @@
           <div class="documentByLine">
             <tal:event condition="python: item_type == 'Event'">
               <span tal:condition="python: item_type == 'Event' and item.location"
-                    i18n:translate="label_event_byline_with_location">
+                    i18n:translate="">
                 (
                 <span tal:content="string:${item/location}"
                       class="location"
@@ -60,7 +60,7 @@
                 )
               </span>
               <span tal:condition="python: item_type == 'Event' and not item.location"
-                    i18n:translate="label_event_byline_without_location">
+                    i18n:translate="">
                 (from
                 <abbr class="dtstart"
                       tal:attributes="title python:item_start"
@@ -89,7 +89,7 @@
               </tal:name>
               &mdash;
               <span class="documentModified">
-                <tal:mod i18n:translate="box_last_modified">
+                <tal:mod i18n:translate="">
                   last modified
                 </tal:mod>
                 <span tal:content="item_modified">
@@ -108,7 +108,7 @@
           <p class="tileFooter">
             <a href=""
                tal:attributes="href python:item_url"
-               i18n:translate="read_more">
+               i18n:translate="">
               Read More&hellip;
             </a>
           </p>

@@ -9,12 +9,12 @@
     <link rel="home"
           href=""
           title="Front page"
-          i18n:attributes="title title_frontpage"
+          i18n:attributes="title"
           tal:attributes="href string:${view/navigation_root_url}" />
     <link rel="contents"
           href=""
           title="Site Map"
-          i18n:attributes="title title_sitemap"
+          i18n:attributes="title"
           tal:attributes="href string:${view/navigation_root_url}/sitemap" />
   </head>
 </html>

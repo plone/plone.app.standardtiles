@@ -7,7 +7,7 @@
     <link rel="author"
           href=""
           title="Author information"
-          i18n:attributes="title title_author_info"
+          i18n:attributes="title"
           tal:condition="view/show"
           tal:attributes="href string:${view/navigation_root_url}/author/${context/Creator|nothing}" />
   </head>

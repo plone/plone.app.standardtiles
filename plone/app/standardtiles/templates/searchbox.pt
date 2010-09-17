@@ -14,7 +14,7 @@
             tal:attributes="action string:${navigation_root_url}/search">
         <label class="hiddenStructure"
                tal:attributes="for search_input_id"
-               i18n:translate="text_search">Search Site</label>
+               i18n:translate="">Search Site</label>
         <div class="LSBox">
           <input name="SearchableText"
                  type="text"
@@ -22,14 +22,14 @@
                  value=""
                  title="Search Site"
                  accesskey="4"
-                 i18n:attributes="title title_search_site;"
+                 i18n:attributes="title"
                  tal:attributes="value request/form/SearchableText|nothing;
                                  id search_input_id"
                  class="inputLabel" />
           <input class="searchButton"
                  type="submit"
                  value="Search"
-                 i18n:attributes="value label_search;" />
+                 i18n:attributes="value" />
           <div class="searchSection">
             <input id="searchbox_currentfolder_only"
                    class="noborder"
@@ -37,7 +37,7 @@
                    name="path"
                    tal:attributes="value view/folder_path" />
             <label for="searchbox_currentfolder_only"
-                   i18n:translate="label_searchbox_currentfolder_only"
+                   i18n:translate=""
                    style="cursor: pointer">
               only in current section
             </label>
@@ -49,7 +49,7 @@
            class="hiddenStructure">
         <a href="#"
            tal:attributes="href string:${navigation_root_url}/search_form"
-           i18n:translate="label_advanced_search"
+           i18n:translate=""
            accesskey="5">
           Advanced Search&hellip;
         </a>

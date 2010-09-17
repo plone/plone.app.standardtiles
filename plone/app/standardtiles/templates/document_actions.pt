@@ -10,7 +10,7 @@
     <div class="documentActions">
       <tal:docactions tal:condition="view/actions">
         <div class="hiddenStructure"
-            i18n:translate="heading_document_actions">
+            i18n:translate="">
           Document Actions
         </div>
         <ul tal:define="normalizeString nocall: context/@@plone/normalizeString">
