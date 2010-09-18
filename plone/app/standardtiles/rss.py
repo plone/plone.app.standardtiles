@@ -71,7 +71,7 @@ class RSSTile(Tile):
 
     def _getFeed(self):
         """return a feed object but do not update it"""
-        feed = FEED_DATA.get(self.data.get('url'),None)
+        feed = FEED_DATA.get(self.data.get('url'), None)
         if feed is None:
             # create it
             feed = FEED_DATA[self.data.get('url')] = RSSFeed(
@@ -84,7 +84,6 @@ class RSSTile(Tile):
         """return url of feed for portlet"""
         return self._getFeed().url
 
-
     @property
     def siteurl(self):
         """return url of site for portlet"""
@@ -93,7 +92,7 @@ class RSSTile(Tile):
     @property
     def feedlink(self):
         """return rss url of feed for portlet"""
-        return self.data.get('url').replace("http://","feed://")
+        return self.data.get('url').replace("http://", "feed://")
 
     @property
     def title(self):
@@ -117,8 +116,8 @@ class RSSTile(Tile):
 class IFeed(Interface):
 
     def __init__(url, timeout):
-        """initialize the feed with the given url. will not automatically load it
-        timeout defines the time between updates in minutes
+        """initialize the feed with the given url. will not automatically load
+        it timeout defines the time between updates in minutes
         """
 
     def loaded():
@@ -163,8 +162,10 @@ class RSSFeed(object):
 
     implements(IFeed)
 
-    # TODO: discuss whether we want an increasing update time here, probably not though
-    FAILURE_DELAY = 10  # time in minutes after which we retry to load it after a failure
+    # TODO: discuss whether we want an increasing update time here, probably
+    # not though
+    FAILURE_DELAY = 10  # time in minutes after which we retry to load it
+                        # after a failure
 
     def __init__(self, url, timeout):
         self.url = url
@@ -175,7 +176,7 @@ class RSSFeed(object):
         self._siteurl = ""
         self._loaded = False    # is the feed loaded
         self._failed = False    # does it fail at the last update?
-        self._last_update_time_in_minutes = 0 # when was the feed last updated?
+        self._last_update_time_in_minutes = 0  # when was the feed updated?
         self._last_update_time = None            # time as DateTime or Nonw
 
     @property
@@ -204,16 +205,16 @@ class RSSFeed(object):
     @property
     def needs_update(self):
         """check if this feed needs updating"""
-        now = time.time()/60
-        return (self.last_update_time_in_minutes+self.timeout) < now
+        now = time.time() / 60
+        return (self.last_update_time_in_minutes + self.timeout) < now
 
     def update(self):
         """update this feed"""
-        now = time.time()/60    # time in minutes
+        now = time.time() / 60    # time in minutes
 
         # check for failure and retry
         if self.update_failed:
-            if (self.last_update_time_in_minutes+self.FAILURE_DELAY) < now:
+            if (self.last_update_time_in_minutes + self.FAILURE_DELAY) < now:
                 return self._retrieveFeed()
             else:
                 return False
@@ -227,13 +228,13 @@ class RSSFeed(object):
     def _retrieveFeed(self):
         """do the actual work and try to retrieve the feed"""
         url = self.url
-        if url!='':
-            self._last_update_time_in_minutes = time.time()/60
+        if url != '':
+            self._last_update_time_in_minutes = time.time() / 60
             self._last_update_time = DateTime()
             d = feedparser.parse(url)
             if d.bozo == 1 and not isinstance(d.get('bozo_exception'),
                                               ACCEPTED_FEEDPARSER_EXCEPTIONS):
-                self._loaded = True # we tried at least but have a failed load
+                self._loaded = True  # we tried at least but have a failed load
                 self._failed = True
                 return False
             self._title = d.feed.title
@@ -244,23 +245,23 @@ class RSSFeed(object):
                 try:
                     link = item.links[0]['href']
                     itemdict = {
-                        'title' : item.title,
-                        'url' : link,
-                        'summary' : item.get('description',''),
+                        'title': item.title,
+                        'url': link,
+                        'summary': item.get('description', ''),
                         }
                     if hasattr(item, "updated"):
-                        itemdict['updated']=DateTime(item.updated)
+                        itemdict['updated'] = DateTime(item.updated)
                 except AttributeError:
                     continue
                 self._items.append(itemdict)
             self._loaded = True
             self._failed = False
             return True
-        
-        self._loaded = True
-        self._failed = True # no url set means failed
-        return False # no url set, although that actually should not really happen
 
+        self._loaded = True
+        self._failed = True  # no url set means failed
+        return False  # no url set, although that actually should not really
+                      # happen
 
     @property
     def items(self):
@@ -272,7 +273,7 @@ class RSSFeed(object):
     @property
     def feed_link(self):
         """return rss url of feed for portlet"""
-        return self.url.replace("http://","feed://")
+        return self.url.replace("http://", "feed://")
 
     @property
     def title(self):

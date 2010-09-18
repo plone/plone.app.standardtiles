@@ -17,4 +17,5 @@ class KeywordsTile(PersistentTile):
         """Safely quote URL."""
 
         return "%s/search?Subject:list=%s" % \
-               (getNavigationRoot(self.context).absolute_url(), quote(category))
+               (getNavigationRoot(self.context).absolute_url(),
+                quote(category))

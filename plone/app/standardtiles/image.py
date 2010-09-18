@@ -1,4 +1,5 @@
-from zope.interface import directlyProvides, implements, implementsOnly, implementer, Interface
+from zope.interface import directlyProvides, implements, implementsOnly, \
+    implementer, Interface
 from zope import schema
 from zope.component import adapter, getUtility
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
@@ -15,7 +16,8 @@ from plone.registry.interfaces import IRegistry
 from plone.tiles import PersistentTile
 
 from z3c.form.browser.select import SelectWidget
-from z3c.form.interfaces import IFormLayer, IFieldWidget, ISelectWidget, ISubForm
+from z3c.form.interfaces import IFormLayer, IFieldWidget, ISelectWidget, \
+    ISubForm
 from z3c.form.widget import FieldWidget
 from z3c.form import field
 from z3c.form import form
@@ -60,7 +62,9 @@ class ImagePreviewSelectWidget(SelectWidget):
             if filedata and self.method() == 'upload':
                 site = getSite()
                 registry = getUtility(IRegistry)
-                images_path = str(registry['plone.app.standardtiles.interfaces.IStandardTilesSettings.images_repo_path']) # XXX: why doesn't it return a string instead of unicode?
+                images_path = str(registry['plone.app.standardtiles.' + \
+                                           'interfaces.IStandardTiles' + \
+                                           'Settings.images_repo_path'])
                 repo = site.unrestrictedTraverse(images_path)
                 filename = image_upload_widget.filename
 
@@ -152,7 +156,7 @@ class ImageUploadForm(form.Form):
     css_class = 'image_subform'
 
     fields = field.Fields(
-        schema.Bytes(__name__='image_upload', required=False)
+        schema.Bytes(__name__='image_upload', required=False),
         )
 
 
@@ -165,11 +169,14 @@ def availableImagesVocabulary(context):
     portal_state = site.restrictedTraverse('@@plone_portal_state')
     root_path = portal_state.navigation_root_path()
     registry = getUtility(IRegistry)
-    images_path = "%s/%s" % (root_path, registry['plone.app.standardtiles.interfaces.IStandardTilesSettings.images_repo_path'])
+    images_path = "%s/%s" % (root_path, registry[
+        'plone.app.standardtiles.interfaces.IStandardTilesSettings.' + \
+        'images_repo_path'])
     results = catalog(path=images_path,
                       portal_type='Image')
     intids = getUtility(IIntIds)
-    terms = [SimpleTerm(value=intids.getId(r.getObject()), title=r.id) for r in results]
+    terms = [SimpleTerm(value=intids.getId(r.getObject()), title=r.id) \
+            for r in results]
     return SimpleVocabulary(terms)
 directlyProvides(availableImagesVocabulary, IVocabularyFactory)
 
@@ -206,6 +213,7 @@ class ImageTile(PersistentTile):
             altText = self.data.get('altText')
             altText = altText.replace('"', '\"')
 
-            return '<html><body><img src="%s" alt="%s" /></body></html>' % (imageURL, altText)
+            return '<html><body><img src="%s" alt="%s" /></body></html>' % \
+                   (imageURL, altText)
         else:
             return '<html><body><em>Image not found.</em></body></html>'

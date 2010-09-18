@@ -36,7 +36,7 @@ class ProxyTile(PersistentTile):
 class ProxyView(BrowserView):
 
     template = ViewPageTemplateFile('templates/proxy_view.pt')
-    
+
     def __call__(self):
         out = self.context.restrictedTraverse('view')()
         htmlparser = etree.HTMLParser()

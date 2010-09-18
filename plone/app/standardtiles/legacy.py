@@ -1,6 +1,6 @@
 from zope.interface import implements
 from zope.component import queryMultiAdapter
-from zope.component import getUtility 
+from zope.component import getUtility
 from zope.interface import Interface
 from zope import schema
 
@@ -13,7 +13,7 @@ from plone.app.standardtiles import PloneMessageFactory as _
 
 
 class IViewletManagerTile(Interface):
-    manager = schema.TextLine(title=_(u"Name of the viewlet manager to render."),
+    manager = schema.TextLine(title=_(u"Name of the viewlet manager."),
                               required=True)
 
 
@@ -25,7 +25,8 @@ class ViewletManagerTile(Tile):
     def __call__(self):
         """Return the rendered contents of the viewlet manager specified."""
         manager = self.data.get('manager')
-        managerObj = queryMultiAdapter((self.context, self.request, self), IViewletManager, manager)
+        managerObj = queryMultiAdapter((self.context, self.request, self),
+                                       IViewletManager, manager)
         managerObj.update()
         return "<html><body>%s</body></html>" % managerObj.render()
 

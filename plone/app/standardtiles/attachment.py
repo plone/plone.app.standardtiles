@@ -30,7 +30,8 @@ class AttachmentTile(PersistentTile):
     This is a persistent tile which stores a file and optionally link
     text. When rendered, the tile will output an <a /> tag like::
 
-    <a href="http://.../@@plone.app.standardtiles.attachment/tile-id/@@download/filename.ext">Link text</a>
+    <a href="http://.../@@plone.app.standardtiles.attachment/tile-id/
+    @@download/filename.ext">Link text</a>
 
     If the link text is not provided, the filename itself will be used.
 
@@ -100,4 +101,3 @@ class AttachmentTileDownload(object):
         set_headers(file_, self.request.response,
                     filename=file_.filename)
         return stream_data(file_)
-

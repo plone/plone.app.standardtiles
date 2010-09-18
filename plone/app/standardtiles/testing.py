@@ -39,26 +39,26 @@ def FunkyFieldWidget(field, request):
 class ITestType1(form.Schema):
 
     test_text = schema.TextLine(
-        title = u"Test text field"
+        title=u"Test text field",
     )
 
     test_int = schema.Int(
-        title = u"Integer test field"
+        title=u"Integer test field",
     )
 
     test_bool = schema.Bool(
-        title = u"Boolean test field"
+        title=u"Boolean test field",
     )
 
     form.widget(
-        funky = FunkyFieldWidget
+        funky=FunkyFieldWidget,
     )
     funky = schema.TextLine(
-        title = u"Test funky field"
+        title=u"Test funky field",
     )
 
     dexterity.read_permission(topsecret='cmf.ModifyPortalContent')
     dexterity.write_permission(topsecret='cmf.ManagePortal')
-    topsecret =  schema.TextLine(
-        title = u"Top secret field"
+    topsecret = schema.TextLine(
+        title=u"Top secret field",
     )

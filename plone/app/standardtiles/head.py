@@ -57,21 +57,23 @@ class StylesheetsTile(Tile):
                         'media': style.getMedia(),
                         'rel': style.getRel(),
                         'title': style.getTitle(),
-                        'conditionalcomment' : style.getConditionalcomment(),
+                        'conditionalcomment': style.getConditionalcomment(),
                         'src': src}
             elif rendering == 'import':
                 data = {'rendering': rendering,
                         'media': style.getMedia(),
-                        'conditionalcomment' : style.getConditionalcomment(),
+                        'conditionalcomment': style.getConditionalcomment(),
                         'src': src}
             elif rendering == 'inline':
                 content = registry.getInlineResource(style.getId(), context)
                 data = {'rendering': rendering,
                         'media': style.getMedia(),
-                        'conditionalcomment' : style.getConditionalcomment(),
+                        'conditionalcomment': style.getConditionalcomment(),
                         'content': content}
             else:
-                raise ValueError("Unkown rendering method '%s' for style '%s'" % (rendering, style.getId()))
+                raise ValueError(
+                    "Unkown rendering method '%s' for style '%s'" % \
+                        (rendering, style.getId()))
             result.append(data)
         return result
 
@@ -99,7 +101,7 @@ class JavascriptsTile(Tile):
             if inline:
                 content = registry.getInlineResource(script.getId(), context)
                 data = {'inline': inline,
-                        'conditionalcomment' : script.getConditionalcomment(),
+                        'conditionalcomment': script.getConditionalcomment(),
                         'content': content}
             else:
                 if script.isExternalResource():
@@ -107,7 +109,7 @@ class JavascriptsTile(Tile):
                 else:
                     src = "%s/%s/%s" % (registry_url, skinname, script.getId())
                 data = {'inline': inline,
-                        'conditionalcomment' : script.getConditionalcomment(),
+                        'conditionalcomment': script.getConditionalcomment(),
                         'src': src}
             result.append(data)
         return result
@@ -142,7 +144,8 @@ class AuthorLinkTile(Tile):
         portal_state = getMultiAdapter((self.context, self.request),
                                         name=u'plone_portal_state')
         anonymous = portal_state.anonymous()
-        allowAnonymousViewAbout = site_properties.getProperty('allowAnonymousViewAbout', True)
+        allowAnonymousViewAbout = site_properties.getProperty(
+            'allowAnonymousViewAbout', True)
         return not anonymous or allowAnonymousViewAbout
 
 

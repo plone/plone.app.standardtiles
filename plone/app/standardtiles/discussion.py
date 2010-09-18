@@ -21,14 +21,9 @@ from plone.namedfile.utils import set_headers, stream_data
 from plone.namedfile.field import NamedFile
 
 from plone.z3cform.interfaces import IWrappedForm
- 
+
 from plone.app.discussion.interfaces import IComment
 from plone.app.discussion.browser.comments import CommentForm
-
-
-
-
-
 
 from Acquisition import aq_inner
 
@@ -65,16 +60,17 @@ from plone.app.discussion.browser.validator import CaptchaValidator
 from plone.z3cform import z2
 from plone.z3cform.fieldsets import extensible
 
-# starting from 0.6.0 version plone.z3cform has IWrappedForm interface 
+# starting from 0.6.0 version plone.z3cform has IWrappedForm interface
 try:
-    from plone.z3cform.interfaces import IWrappedForm 
-    HAS_WRAPPED_FORM = True 
-except ImportError: 
+    from plone.z3cform.interfaces import IWrappedForm
+    HAS_WRAPPED_FORM = True
+except ImportError:
     HAS_WRAPPED_FORM = False
 
 from plone.z3cform import layout
 
 #CommentFormView = layout.wrap_form(CommentForm)
+
 
 class DiscussionTile(Tile, layout.FormWrapper):
     """Discussion tile.
@@ -82,7 +78,7 @@ class DiscussionTile(Tile, layout.FormWrapper):
 
     form = CommentForm
     index = ViewPageTemplateFile('templates/discussion.pt')
-    
+
     def __call__(self):
 
         form = self.request.form
@@ -91,32 +87,32 @@ class DiscussionTile(Tile, layout.FormWrapper):
         self.form = CommentForm(aq_inner(self.context), self.request)
         alsoProvides(self.form, IWrappedForm)
         # wrap the form inside the page
-        z2.switch_on(self.form, request_layer=IFormLayer)        
+        z2.switch_on(self.form, request_layer=IFormLayer)
         self.form.update()
 
         if form:
             self.form.extractData()
-        
+
         return self.index()
-        
+
     # view methods
     def cook(self, text):
         transforms = getToolByName(self, 'portal_transforms')
         targetMimetype = 'text/html'
         registry = queryUtility(IRegistry)
         settings = registry.forInterface(IDiscussionSettings)
-        mimetype = settings.text_transform        
-        return transforms.convertTo(targetMimetype, 
-                                    text, 
-                                    context=self, 
+        mimetype = settings.text_transform
+        return transforms.convertTo(targetMimetype,
+                                    text,
+                                    context=self,
                                     mimetype=mimetype).getData()
-    
+
     def can_reply(self):
-        return getSecurityManager().checkPermission('Reply to item', 
+        return getSecurityManager().checkPermission('Reply to item',
                                                     aq_inner(self.context))
 
     def can_manage(self):
-        return getSecurityManager().checkPermission('Manage portal', 
+        return getSecurityManager().checkPermission('Manage portal',
                                                     aq_inner(self.context))
 
     def is_discussion_allowed(self):
@@ -173,7 +169,7 @@ class DiscussionTile(Tile, layout.FormWrapper):
                     r = r.copy()
                     r['workflow_status'] = workflow_status
                     yield r
-        
+
         # Return all direct replies
         if conversation.total_comments > 0:
             if workflow_actions:
@@ -196,7 +192,8 @@ class DiscussionTile(Tile, layout.FormWrapper):
             portal_membership = getToolByName(self.context,
                                               'portal_membership',
                                               None)
-            return portal_membership.getPersonalPortrait(username).absolute_url();
+            return portal_membership.getPersonalPortrait(username) \
+                .absolute_url()
 
     def anonymous_discussion_allowed(self):
         # Check if anonymous comments are allowed in the registry
@@ -211,23 +208,25 @@ class DiscussionTile(Tile, layout.FormWrapper):
         return settings.show_commenter_image
 
     def is_anonymous(self):
-        portal_membership = getToolByName(self.context, 
-                                          'portal_membership', 
+        portal_membership = getToolByName(self.context,
+                                          'portal_membership',
                                           None)
         return portal_membership.isAnonymousUser()
 
     def login_action(self):
-        return '%s/login_form?came_from=%s' % (self.context, 
-                                               url_quote(self.request.get('URL', '')),)
+        return '%s/login_form?came_from=%s' % (self.context,
+                                               url_quote(
+                                                   self.request.get('URL',
+                                                                    '')),)
 
     def format_time(self, time):
         # We have to transform Python datetime into Zope DateTime
         # before we can call toLocalizedTime.
         util = getToolByName(self.context, 'translation_service')
-        zope_time = DateTime(time.year, 
-                             time.month, 
-                             time.day, 
-                             time.hour, 
-                             time.minute, 
+        zope_time = DateTime(time.year,
+                             time.month,
+                             time.day,
+                             time.hour,
+                             time.minute,
                              time.second)
         return util.toLocalizedTime(zope_time, long_format=True)

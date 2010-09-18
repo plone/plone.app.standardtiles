@@ -45,7 +45,7 @@ class DexterityFieldTile(DisplayForm, Tile):
         """
         return PermissionChecker(
             mergedTaggedValueDict(self.schema, READ_PERMISSIONS_KEY),
-            self.context
+            self.context,
         ).allowed(self.field)
 
     def _wrap_widget(self, render):

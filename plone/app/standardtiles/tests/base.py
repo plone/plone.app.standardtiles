@@ -102,19 +102,19 @@ class PAStandardtilesTestType(PloneSandboxLayer):
             self.NORMAL_USER_NAME,
             self.NORMAL_USER_PASSWORD,
             ['Member'],
-            []
+            [],
         )
         acl_users.userFolderAddUser(
             self.EDITOR_USER_NAME,
             self.EDITOR_USER_PASSWORD,
             ['Editor'],
-            []
+            [],
         )
         acl_users.userFolderAddUser(
             self.MANAGER_USER_NAME,
             self.MANAGER_USER_PASSWORD,
             ['Manager'],
-            []
+            [],
         )
 
         # Define the dexterity "junk" type
@@ -126,7 +126,8 @@ class PAStandardtilesTestType(PloneSandboxLayer):
 
         # inserts the content of the types defined above
         login(portal, self.MANAGER_USER_NAME)
-        content = portal[portal.invokeFactory('DecoTestType1', 'deco-test-type1')]
+        content = portal[portal.invokeFactory('DecoTestType1',
+                                              'deco-test-type1')]
         content.title = u"Test content"
         content.description = u"Just a test content"
         content.contributors = (u'Jane Doe', u'John Doe')
@@ -136,9 +137,11 @@ class PAStandardtilesTestType(PloneSandboxLayer):
 PASTANDARDTILES_FIXTURE = PAStandardtiles()
 PASTANDARDTILES_TESTTYPE_FIXTURE = PAStandardtilesTestType()
 
-PASTANDARDTILES_INTEGRATION_TESTING = IntegrationTesting(bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Integration")
-PASTANDARDTILES_FUNCTIONAL_TESTING = FunctionalTesting(bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Functional")
+PASTANDARDTILES_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Integration")
+PASTANDARDTILES_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Functional")
 PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PASTANDARDTILES_TESTTYPE_FIXTURE,),
-    name="PAStandardTilesTestType:Functional"
+    name="PAStandardTilesTestType:Functional",
 )

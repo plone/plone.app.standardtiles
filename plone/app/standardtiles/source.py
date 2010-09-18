@@ -13,7 +13,7 @@ class IntIdSource(PathSource):
     def __init__(self, *args, **kwargs):
         self.intids = getUtility(IIntIds)
         super(IntIdSource, self).__init__(*args, **kwargs)
-        
+
     def _path_for_value(self, value):
         obj = self.intids.getObject(value)
         return '/'.join(obj.getPhysicalPath())
@@ -26,6 +26,7 @@ class IntIdSource(PathSource):
         return SimpleTerm(value=intid,
                           token=path,
                           title=brain.Title)
+
 
 class IntIdSourceBinder(PathSourceBinder):
     path_source = IntIdSource

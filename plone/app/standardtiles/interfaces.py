@@ -12,6 +12,7 @@ class IMetadataTile(Interface):
         """Returns the value to display through the template.
         """
 
+
 class IStandardTilesSettings(Interface):
     """Settings for standard tiles."""
     listing_views = schema.Dict(title=_(u"Listing views"),
