@@ -5,7 +5,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 from plone.directives import form as directivesform
 from plone.tiles import PersistentTile
 from plone.formwidget.querystring.widget import QueryStringFieldWidget
-from plone.app.collection import queryparser
+from plone.app.querystring import queryparser
 from plone.registry.interfaces import IRegistry
 from zope.schema.interfaces import IVocabularyFactory
 from zope.interface import directlyProvides
