@@ -6,26 +6,41 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
-    <ul class="attachment-tile">
+    <ul class="tileAttachment">
       <li tal:repeat="attachment view/data/files">
         <tal:file tal:condition="attachment">
-          <a tal:attributes="href string:${view/url}/@@download/${repeat/attachment/index}">
+          <a href="#"
+             tal:attributes="href string:${view/url}/@@download/${repeat/attachment/index}">
             <img tal:condition="icon"
-                 src=""
+                 class="icon"
+                 src="pdf.png"
                  alt=""
                  tal:define="icon python:view.get_icon_for(attachment)"
                  tal:attributes="src string:${context/portal_url}/$icon"/>
             <tal:filename tal:replace="attachment/filename" />
           </a>
-          <span class="discreet"> -
-            <span tal:replace="python:context.lookupMime(attachment.contentType)">
-              ContentType
-            </span>,
-            <span tal:replace="python:view.file_size(attachment)">100</span> KB
+          <span class="discreet byLine">
+            <span class="separator">
+              -
+            </span>
+            <span class="contentType"
+                  tal:replace="python:context.lookupMime(attachment.contentType)">
+              PDF document
+            </span>
+            <span class="separator">
+              -
+            </span>
+            <span class="fileSize"
+                  tal:replace="python:view.file_size(attachment)">
+              100
+            </span>
+            <span class="fileSizeUnit">
+              KB
+            </span>
           </span>
         </tal:file>
         <tal:no_file tal:condition="not:attachment">
-          <span class="discreet"
+          <span class="discreet noFile"
                 i18n:translate="">
             No file
           </span>

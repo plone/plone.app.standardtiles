@@ -4,6 +4,18 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Fixed markup of attachment tile.
+  [robgietema]
+
+- Fixed PEP8 syntax.
+  [robgietema]
+
+- Fixed translatable strings.
+  [robgietema]
+
+- Fixed xmllint compatibility.
+  [robgietema]
+
 - Removed TODO.txt, tickets are in trac now.
   [robgietema]
 
