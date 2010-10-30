@@ -6,6 +6,37 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
+    <div id="contentviews"
+         tal:define="ploneview context/@@plone;"
+         tal:condition="ploneview/showEditableBorder">
+
+      <tal:block define="view_actions view/prepareObjectTabs;">
+
+        <div class="hiddenStructure"
+              tal:condition="view_actions"
+              i18n:translate="">
+          Views
+        </div>
+
+        <ul class="contentViews"
+            id="content-views">
+          <tal:views repeat="action view_actions">
+            <li tal:define="selected action/selected|nothing;"
+                tal:attributes="id string:contentview-${action/id};
+                                class python:selected and 'selected' or 'plain'">
+              <a href=""
+                 tal:content="action/title"
+                 tal:attributes="href action/url;"
+                 i18n:translate="">
+                View name
+              </a>
+            </li>
+          </tal:views>
+        </ul>
+      </tal:block>
+    </div>
+
+    <div id="contentactions">
     <div class="contentActions"
          tal:define="ploneview context/@@plone"
          tal:condition="ploneview/showEditableBorder">
@@ -36,6 +67,7 @@
         </ul>
         <div tal:replace="structure provider:plone.contentmenu" />
       </tal:block>
+    </div>
     </div>
   </body>
 </html>

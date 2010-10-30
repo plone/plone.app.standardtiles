@@ -143,15 +143,14 @@ Path bar tile::
     >>> unprivileged_browser.contents
     '...id="portal-breadcrumbs"...'
 
-Content views tile (test as logged in user)::
+Edit bar tile (test as logged in user)::
 
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.contentviews')
     >>> browser.contents
     '...id="content-views"...'
 
-Content actions tile (test as logged in user)::
+Should also contain content actions (test as logged in user)::
 
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.contentactions')
     >>> browser.contents
     '...id="contentActionMenus"...'
 

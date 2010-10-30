@@ -334,11 +334,11 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.contentviews"
-        class=".common.ContentViewsTile"
+        name="plone.app.standardtiles.edit_bar"
+        class=".common.EditBarTile"
         for="*"
         permission="zope2.View"
-        template="templates/contentviews.pt"
+        template="templates/edit_bar.pt"
         />
 
     <plone:tile
@@ -368,14 +368,6 @@
         class="plone.app.standardtiles.tableofcontents.TableOfContentsTile"
         template="templates/tableofcontents.pt"
         permission="zope.Public"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.contentactions"
-        class=".common.ContentActionsTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/contentactions.pt"
         />
 
     <plone:tile

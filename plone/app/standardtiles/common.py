@@ -299,8 +299,8 @@ class PathBarTile(Tile):
         self.breadcrumbs = breadcrumbs_view.breadcrumbs()
 
 
-class ContentViewsTile(Tile):
-    """A content views tile
+class EditBarTile(Tile):
+    """A edit bar tile
     """
 
     @memoize
@@ -378,11 +378,6 @@ class ContentViewsTile(Tile):
 
         tabs.sort(key=sortOrder)
         return tabs
-
-
-class ContentActionsTile(Tile):
-    """A content actions tile
-    """
 
     def object_actions(self):
         context = aq_inner(self.context)
