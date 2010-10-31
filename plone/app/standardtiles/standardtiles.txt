@@ -145,7 +145,7 @@ Path bar tile::
 
 Edit bar tile (test as logged in user)::
 
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.contentviews')
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.edit_bar')
     >>> browser.contents
     '...id="content-views"...'
 
