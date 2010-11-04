@@ -635,7 +635,7 @@ page is tedious (not installed), for now an ATDocument is good enough.
    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.contentlisting/contentlisting-tile')
    >>> browser.getControl(name='addindex').value = ['SearchableText']
    >>> browser.getControl(name='form.button.addcriteria').click()
-   >>> browser.getControl(name='addoperator').value = ['plone.app.collection.operation.string.contains']
+   >>> browser.getControl(name='addoperator').value = ['plone.app.querystring.operation.string.contains']
    >>> browser.getControl(name='form.button.addcriteria').click()
    >>> browser.getControl(name='query.v:records').value = 'first'
    >>> browser.getControl(name='view_template:list').value = ['listing_view']
