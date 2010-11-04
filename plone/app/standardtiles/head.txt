@@ -8,9 +8,9 @@ First, we set up a browser instance and get Manager privileges::
     >>> portalURL = portal.absolute_url()
 
     >>> from plone.app.testing import setRoles
-    >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
+    >>> from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, TEST_USER_PASSWORD
     >>> browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
-    >>> setRoles(portal, TEST_USER_NAME, ['Manager'])
+    >>> setRoles(portal, TEST_USER_ID, ['Manager'])
 
     >>> import transaction
     >>> transaction.commit() # make the browser see this role
