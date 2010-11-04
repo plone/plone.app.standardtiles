@@ -239,8 +239,12 @@ Login tile
 For a logged-in user, the login tile should be empty::
 
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.login')
-    >>> browser.contents
-    '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml">\n<body>\n\n    \n</body>\n</html>\n'
+    >>> print browser.contents
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+      <body>
+      </body>
+    </html>
 
 When we are not logged in, we should get the form::
 
@@ -342,6 +346,8 @@ created before::
     >>> browser.getControl(label='Save').click()
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.navigation/navigation-tile')
     >>> print browser.contents
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <body>
         <div class="navigationTile">
             <h2 class="tileHeader">TEST NAVIGATION TILE</h2>
@@ -353,31 +359,15 @@ created before::
                         </a>
                     </div>
                 </li>
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
-    <li class="navTreeItem visualNoMarker section-a-simple-page">
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
-            <a href="http://nohost/plone/a-simple-page" class="state-missing-value contenttype-document" title="A description">
-    <BLANKLINE>
-                <span>A simple page</span>
-            </a>
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
-    </li>
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
-    <BLANKLINE>
+                <li class="navTreeItem visualNoMarker section-a-simple-page">
+                   <a href="http://nohost/plone/a-simple-page" class="state-missing-value contenttype-document" title="A description">
+                       <span>A simple page</span>
+                   </a>
+                </li>
             </ul>
         </div>
     </body>
-
+    </html>
 
 Image tile
 -----------
@@ -440,7 +430,7 @@ tile data itself.
 
 Since the attachment file uses the plone.formwidget.multifile, wich bases
 on flash, we cannot test it with our test browser. So we need to remove
-the widget and then we are able to test it with the MultiWidget / NamedFileWidget.
+the widget and then test it with the MultiWidget / NamedFileWidget.
 
     >>> from plone.app.standardtiles import attachment
     >>> del attachment.IAttachmentTile._Element__tagged_values['plone.autoform.widgets']['files']
@@ -454,15 +444,7 @@ the widget and then we are able to test it with the MultiWidget / NamedFileWidge
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile')
     >>> html = browser.contents
     >>> html
-    '...<a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/0">...'
-    >>> html
-    '...<img src="http://nohost/plone/txt.png" alt="" />...'
-    >>> html
-    '...textfile.txt...'
-    >>> html
-    '...Plain Text...'
-    >>> html
-    '...0 KB...'
+    '...<a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/0">...<img class="icon" src="http://nohost/plone/txt.png" alt="" />...textfile.txt...Plain Text...'
 
 We should also be able to download the file::
 
