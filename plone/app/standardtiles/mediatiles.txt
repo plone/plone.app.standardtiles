@@ -1,0 +1,269 @@
+This package registers a set of standard tiles, including tiles for
+the page layout like the footer, site actions or the search box, tiles
+for the headers like stylesheets and javascript resource registries
+output, and application tiles like the image, video or proxy tiles.
+
+Here we present some of them.
+
+First, we set up a browser instance and get Manager privileges::
+
+    >>> from plone.testing.z2 import Browser
+    >>> app = layer['app']
+    >>> browser = Browser(app)
+    >>> browser.handleErrors = False
+    >>> portal = layer['portal']
+    >>> portalURL = portal.absolute_url()
+
+    >>> from plone.app.testing import setRoles
+    >>> from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, TEST_USER_PASSWORD
+    >>> browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+    >>> setRoles(portal, TEST_USER_ID, ['Manager'])
+
+    >>> import transaction
+    >>> transaction.commit() # make the browser see this role
+
+We also keep another testbrowser handy for testing how tiles are rendered if
+you're not logged in::
+
+    >>> unprivileged_browser = Browser(app)
+
+We create a page in the site to use it in tests later::
+
+    >>> browser.open(portalURL + '/createObject?type_name=Document')
+    >>> browser.getControl(name='title').value = 'A simple page'
+    >>> browser.getControl(name='description').value = 'A description'
+    >>> browser.getControl('Save').click()
+    >>> pageURL = browser.url
+    >>> pageURL
+    'http://nohost/plone/a-simple-page'
+
+
+Video tile
+----------
+
+The video tile is a persistent tile which takes a YouTube video URL
+and displays the associated video::
+
+    >>> browser.open(portalURL+ '/@@add-tile/plone.app.standardtiles.video/video-tile')
+    >>> browser.getControl(name='youtubeURL').value = 'http://www.youtube.com/watch?v=ayPKvFNz8aE'
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.video/video-tile')
+    >>> browser.contents
+    '<html><body><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object></body></html>'
+
+
+Proxy tile
+-----------
+
+The proxy tile takes the int id of a content object in the site and
+displays the result of calling ``@@proxy-view`` on it. The default
+``@@proxy-view``, registered for all interfaces, renders the contents
+of the ``#content`` HTML element of the default view of the object.
+
+Using the proxy tile with the document we formerly created exhibits the default behavior::
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.proxy/proxy-tile')
+    >>> browser.getControl(name='contentId.widgets.query').value = 'A simple page'
+    >>> browser.getControl(name='contentId.buttons.search').click()
+    >>> contentId = browser.getControl(name="contentId:list")
+    >>> contentId.displayOptions
+    ['A simple page']
+    >>> contentId.getControl('A simple page').selected = True
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.proxy/proxy-tile')
+    >>> browser.contents
+    '...id="content"...A simple page...A description...'
+
+If we register a view with the name ``@@proxy-view`` for a more
+specific interface, it will be used instead::
+
+    >>> from zope.interface import Interface
+    >>> from Products.ATContentTypes.interfaces.document import IATDocument
+    >>> from zope.component import adapts, provideAdapter
+    >>> from Products.Five.browser import BrowserView
+    >>> from zope.publisher.interfaces.browser import IBrowserView
+
+    >>> class ProxyView(BrowserView):
+    ...     adapts(IATDocument, Interface)
+    ...     def __call__(self):
+    ...         return "Custom proxy view."
+    >>> provideAdapter(ProxyView, provides=IBrowserView, name="proxy-view")
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.proxy/proxy-tile')
+    >>> browser.contents
+    'Custom proxy view.'
+
+
+Navigation tree tile
+---------------------
+
+The navigation tree tile displays a navigation tree for the context
+where it's inserted and take no configuration parameters.
+
+Rendering this tile in the site root should show the document we
+created before::
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.navigation/navigation-tile')
+    >>> browser.getControl(name='name').value = 'TEST NAVIGATION TILE'
+    >>> browser.getControl(name='includeTop:list').value = ['selected']
+    >>> browser.getControl(name='topLevel').value = '0'
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.navigation/navigation-tile')
+    >>> print browser.contents
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <body>
+        <div class="navigationTile">
+            <h2 class="tileHeader">TEST NAVIGATION TILE</h2>
+            <ul class="navTree navTreeLevel0">
+                <li class="navTreeItem navTreeTopNode navTreeCurrentNode">
+                    <div>
+                        <a href="http://nohost/plone" class="contenttype-plone-site navTreeCurrentItem" title="">
+                            Home
+                        </a>
+                    </div>
+                </li>
+                <li class="navTreeItem visualNoMarker section-a-simple-page">
+                   <a href="http://nohost/plone/a-simple-page" class="state-missing-value contenttype-document" title="A description">
+                       <span>A simple page</span>
+                   </a>
+                </li>
+            </ul>
+        </div>
+    </body>
+    </html>
+
+Image tile
+-----------
+
+The image tile lets you select an existing image or upload a new one
+to insert into the page. By default, the tile looks for and uploads
+images to a folder named ``images`` at the root of the plone
+site. This is can be configured changing the ``images_repo_path``
+property of the ``IStandardTilesSettings`` interface in the registry.
+
+We first create this folder to be able to upload images to it::
+
+    >>> portal.invokeFactory('Folder', 'images', title='Images')
+    'images'
+    >>> images = portal['images']
+    >>> transaction.commit()
+
+We now create an image tile with an uploaded image::
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.image/image-tile')
+    >>> browser.getControl(name='imageId.method').getControl(value='upload').selected = True
+    >>> upload = browser.getControl(name='form.widgets.image_upload')
+    >>> import cStringIO
+    >>> upload.add_file(cStringIO.StringIO('Image contents'), 'image/jpeg', 'image.jpg')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.image/image-tile')
+    >>> browser.contents
+    '<html><body><img src="http://nohost/plone/images/image.jpg" alt="" /></body></html>'
+
+Note that, since we have not specified an alternative text, the
+``alt`` attribute of the ``img`` tag is empty (but present).
+
+The image has been uploaded to the ``images`` folder created above::
+
+    >>> images.keys()
+    ['image.jpg']
+
+If we edit the tile now, our image should be selected in the dropdown
+of existing images::
+
+    >>> browser.open(portalURL + '/@@edit-tile/plone.app.standardtiles.image/image-tile')
+    >>> imageId = browser.getControl(name='imageId:list')
+    >>> imageId.getControl('image.jpg').selected
+    True
+
+Entering an alternative text will display it properly::
+
+    >>> browser.getControl(name='altText').value = "An image"
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.image/image-tile')
+    >>> browser.contents
+    '<html><body><img src="http://nohost/plone/images/image.jpg" alt="An image" /></body></html>'
+
+
+Attachment tile
+----------------
+
+This persistent tile renders a link pointing to a file stored in the
+tile data itself.
+
+Since the attachment file uses the plone.formwidget.multifile, wich bases
+on flash, we cannot test it with our test browser. So we need to remove
+the widget and then test it with the MultiWidget / NamedFileWidget.
+
+    >>> from plone.app.standardtiles import attachment
+    >>> del attachment.IAttachmentTile._Element__tagged_values['plone.autoform.widgets']['files']
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.attachment/attachment-tile')
+    >>> browser.getControl(name='files.buttons.add').click()
+    >>> upload = browser.getControl(name='files.0')
+    >>> import cStringIO
+    >>> upload.add_file(cStringIO.StringIO('File contents'), 'text/plain', 'textfile.txt')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.attachment/attachment-tile')
+    >>> html = browser.contents
+    >>> html
+    '...<a href="http://nohost/plone/@@plone.app.standardtiles.attachment/attachment-tile/@@download/0">...<img class="icon" src="http://nohost/plone/txt.png" alt="" />...textfile.txt...Plain Text...'
+
+We should also be able to download the file::
+
+    >>> browser.open(portalURL + \
+    ...     '/@@plone.app.standardtiles.attachment/attachment-tile/@@download/0')
+    >>> browser.contents
+    'File contents'
+
+
+Calendar tile
+-------------
+
+This tile shows a calendar.
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.calendar/calendar-tile')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.calendar/calendar-tile')
+    >>> browser.contents
+    '...<dl class="calendar-tile"...'
+
+If we create a new event the cache should be invalidated::
+
+    >>> tile = portal.unrestrictedTraverse(
+    ...     '@@plone.app.standardtiles.calendar/calendar-tile')
+    >>> 'ACTUAL_URL' not in portal.REQUEST.keys()
+    True
+    >>> portal.REQUEST['ACTUAL_URL'] = portalURL + \
+    ...     '/@@plone.app.standardtiles.calendar/calendar-tile'
+    >>> prior_html = tile()
+    >>> from DateTime import DateTime
+
+Lets a event in the last day of the current month::
+
+    >>> year, month = tile.getYearAndMonthToDisplay()
+    >>> year, month = tile.getNextMonth(year, month)
+    >>> last_day_month = DateTime('%s/%s/1' % (year, month)) - 1
+    >>> hour = 1 / 24.0
+    >>> portal.invokeFactory('Event', 'e1',
+    ...     startDate=last_day_month + 23 * hour,
+    ...     endDate=last_day_month + 23.5 * hour)
+    'e1'
+    >>> portal.e1
+    <ATEvent at /plone/e1>
+
+We also need to publish it. But the default workflow may not
+be set beause of a unknown problem with the test:
+
+    >>> portal.portal_workflow.setDefaultChain('simple_publication_workflow')
+    >>> portal.portal_workflow.doActionFor(portal.e1, 'publish')
+    >>> portal.portal_workflow.getInfoFor(portal.e1, 'review_state')
+    'published'
+
+Rendering the tile again should result in different html:
+
+     >>> assert prior_html != tile(), "Cache key wasn't invalidated"
+     >>> 'class="event"' in tile()
+     True
+
