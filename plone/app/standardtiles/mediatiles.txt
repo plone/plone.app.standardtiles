@@ -1,9 +1,8 @@
-This package registers a set of standard tiles, including tiles for
-the page layout like the footer, site actions or the search box, tiles
-for the headers like stylesheets and javascript resource registries
-output, and application tiles like the image, video or proxy tiles.
+Media tiles
+===========
 
-Here we present some of them.
+Here we introduce and exercise some tiles like navigation, proxy or
+video.
 
 First, we set up a browser instance and get Manager privileges::
 

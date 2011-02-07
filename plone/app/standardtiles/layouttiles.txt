@@ -1,9 +1,7 @@
-This package registers a set of standard tiles, including tiles for
-the page layout like the footer, site actions or the search box, tiles
-for the headers like stylesheets and javascript resource registries
-output, and application tiles like the image, video or proxy tiles.
+Layout tiles
+============
 
-Here we present some of them.
+Here we show up the main tiles used for the page layout.
 
 First, we set up a browser instance and get Manager privileges::
 
@@ -37,11 +35,10 @@ We create a page in the site to use it in tests later::
     >>> pageURL
     'http://nohost/plone/a-simple-page'
 
-
-Layout tiles
+Basic layout
 -------------
 
-Layout tiles like the colophon don't need any config parameters::
+Tiles like the colophon don't need any config parameters::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.colophon')
     >>> unprivileged_browser.contents
@@ -167,6 +164,13 @@ Table of contents tile::
     >>> browser.contents
     '...id="document-toc"...'
 
+Searchbox tile::
+
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.searchbox')
+    >>> unprivileged_browser.contents
+    '...id="portal-searchbox"...'
+
+
 Language selector tile
 -----------------------
 
@@ -257,8 +261,8 @@ The print action shows up accordingly::
 
 
 
-Next previous tile
-------------------
+Next/previous tile
+-------------------
 
 The next previous tile shows a next and a previous button if there is
 a next or a previous object. It can be activated by checking the checkbox
@@ -326,26 +330,6 @@ Cleanup::
     >>> portal.manage_delObjects(['next-previous-folder'])
 
 
-
-Searchbox tile
---------------
-
-    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.searchbox')
-    >>> unprivileged_browser.contents
-    '...id="portal-searchbox"...'
-
-
-
-Configlets tile
----------------
-
-The configlets tile renders a list of the available config dialogs::
-
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.configlets')
-    >>> browser.contents
-    '...Site Setup...Add-ons...Calendar...Collections...'
-
-
 Login tile
 ----------
 
@@ -376,3 +360,14 @@ But if we enable self-registration, it should show up::
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.login')
     >>> unprivileged_browser.contents
     '...<a...@@register...New user...</a>...'
+
+
+Configlets tile
+---------------
+
+The configlets tile renders a list of the available config dialogs::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.configlets')
+    >>> browser.contents
+    '...Site Setup...Add-ons...Calendar...Collections...'
+
