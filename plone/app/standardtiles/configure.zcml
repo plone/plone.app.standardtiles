@@ -67,6 +67,16 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.text"
+        title="Text"
+        description="A tile which adds text"
+        add_permission="zope.Public"
+        class=".common.TextTile"
+        for="*"
+        permission="zope2.View"
+        />
+        
+    <plone:tile
         name="plone.app.standardtiles.field"
         title="Field"
         description='A tile which displays a field'
@@ -201,7 +211,7 @@
     <plone:tile
         name="plone.app.standardtiles.navigation"
         title="Navigation tree"
-        description=""
+        description="A tile which displays a navigation tree"
         class=".navigation.NavigationTile"
         schema=".navigation.INavigationTile"
         template="templates/navigation.pt"
@@ -331,6 +341,14 @@
         for="*"
         permission="zope2.View"
         template="templates/path_bar.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.menu_link"
+        class=".common.MenuLinkTile"
+        for="*"
+        permission="plone.ViewCMSUI"
+        template="templates/menu_link.pt"
         />
 
     <plone:tile

@@ -12,6 +12,11 @@ from plone.memoize.view import memoize
 from urllib import unquote
 
 
+class TextTile(Tile):
+    """A text tile
+    """
+
+
 class FooterTile(Tile):
     """A footer tile
     """
@@ -297,6 +302,14 @@ class PathBarTile(Tile):
         breadcrumbs_view = getMultiAdapter((self.context, self.request),
                                            name='breadcrumbs_view')
         self.breadcrumbs = breadcrumbs_view.breadcrumbs()
+
+
+class MenuLinkTile(Tile):
+    """An menu link tile
+    """
+
+    def getLink(self):
+        return self.context.absolute_url()+"/@@cmsui-menu"
 
 
 class EditBarTile(Tile):
