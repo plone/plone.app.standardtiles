@@ -13,6 +13,9 @@
     <!-- Grok the package to initialise schema interfaces and content classes -->
     <grok:grok package="." />
 
+    <!-- Needed for the permission plone.ViewCMSUI -->
+    <include package="plone.app.cmsui" />
+
     <!-- Register an extension profile to make the product installable -->
     <genericsetup:registerProfile
         name="default"
@@ -75,7 +78,7 @@
         for="*"
         permission="zope2.View"
         />
-        
+
     <plone:tile
         name="plone.app.standardtiles.field"
         title="Field"
