@@ -183,4 +183,4 @@ class RSSLinkTile(Tile):
     def url(self):
         context_state = getMultiAdapter((self.context, self.request),
                                          name=u'plone_context_state')
-        self.url = '%s/RSS' % context_state.object_url()
+        return '%s/RSS' % context_state.object_url()
