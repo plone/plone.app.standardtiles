@@ -1,7 +1,9 @@
+from zope.interface import Interface
 from zope.interface import implements
 from zope.component import queryMultiAdapter
 from zope.component import getUtility
-from zope.interface import Interface
+from zope.browser.interfaces import IView
+
 from zope import schema
 
 from plone.tiles import Tile
@@ -11,6 +13,39 @@ from plone.portlets.interfaces import IPortletManager
 
 from plone.app.standardtiles import PloneMessageFactory as _
 
+def findView(tile, viewName):
+    """Find the view to use for portlet/viewlet context lookup
+    """
+    
+    view = tile
+    prequest = tile.request.get('PARENT_REQUEST', None)
+
+    # Attempt to determine the underlying view name from the parent request
+    # XXX: This won't work if using ESI rendering or any other
+    # technique that doesn't use plone.subrequest    
+    if viewName is None and prequest is not None:
+        ppublished = prequest.get('PUBLISHED', None)
+        if IView.providedBy(ppublished):
+            viewName = prequest['PUBLISHED'].__name__
+    
+    context = tile.context
+    request = tile.request
+    if prequest is not None:
+        request = prequest
+    
+    if viewName is not None:
+        view = queryMultiAdapter((context, request), name=viewName)
+    
+    if view is None:
+        view = tile
+    
+    # Decide whether to mark the view
+    # XXX: Again, this probably won't work well if not using plone.subrequest
+    layoutPolicy = queryMultiAdapter((context, request), name='plone_layout')
+    if layoutPolicy is not None:
+        layoutPolicy.mark_view(view)
+    
+    return view
 
 class IViewletManagerTile(Interface):
     manager = schema.TextLine(title=_(u"Name of the viewlet manager."),
@@ -35,15 +70,9 @@ class ViewletManagerTile(Tile):
         viewName = self.data.get('view', None)
         section = self.data.get('section', 'body')
         
-        view = self
-        if viewName is not None:
-            view = queryMultiAdapter((self.context, self.request),
-                                     name=viewName)
-            if view is None:
-                return u""
+        view = findView(self, viewName)
         
-        managerObj = queryMultiAdapter((self.context, self.request, view),
-                                       IViewletManager, name=manager)
+        managerObj = queryMultiAdapter((self.context, self.request, view), IViewletManager, name=manager)
         managerObj.update()
         
         if section == 'head':
@@ -71,12 +100,7 @@ class PortletManagerTile(Tile):
         
         managerObj = getUtility(IPortletManager, name=manager)
         
-        view = self
-        if viewName is not None:
-            view = queryMultiAdapter((self.context, self.request),
-                                     name=viewName)
-            if view is None:
-                return u""
+        view = findView(self, viewName)
         
         rendererObj = managerObj(self.context, self.request, view)
         rendererObj.update()
