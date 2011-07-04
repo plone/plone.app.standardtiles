@@ -350,7 +350,7 @@
         name="plone.app.standardtiles.menu_link"
         class=".common.MenuLinkTile"
         for="*"
-        permission="plone.ViewCMSUI"
+        permission="zope2.View"
         template="templates/menu_link.pt"
         />
 

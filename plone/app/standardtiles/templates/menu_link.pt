@@ -11,7 +11,7 @@
 <!-- TODO: Improve the placement and appearance of this.
            See http://projects.plone.org/browse/NEWUI-12
   -->
-    <div id="plone-cmsui-trigger">
+    <div id="plone-cmsui-trigger" tal:condition="view/showCMSUI">
       <!-- diazo prepend rule -->
       <script type="text/javascript">
           (function () {
@@ -20,7 +20,7 @@
       </script>
       <a id="plone-cmsui-menu-link" href="" tal:attributes="href view/getLink">Manage page</a>
       <style type="text/css">
-          iframe#plone-cmsui-menu {    
+          iframe#plone-cmsui-menu {
               margin: 0;
               padding: 0;
               border: 0;

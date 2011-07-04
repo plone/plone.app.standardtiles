@@ -311,6 +311,12 @@ class MenuLinkTile(Tile):
     def getLink(self):
         return self.context.absolute_url()+"/@@cmsui-menu"
 
+    def showCMSUI(self):
+        if not _checkPermission('Plone: View CMS UI',
+                                self.context):
+            return False
+        else:
+            return True
 
 class EditBarTile(Tile):
     """A edit bar tile
