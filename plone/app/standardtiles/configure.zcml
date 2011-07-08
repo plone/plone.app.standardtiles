@@ -13,9 +13,6 @@
     <!-- Grok the package to initialise schema interfaces and content classes -->
     <grok:grok package="." />
 
-    <!-- Needed for the permission plone.ViewCMSUI -->
-    <include package="plone.app.cmsui" />
-
     <!-- Register an extension profile to make the product installable -->
     <genericsetup:registerProfile
         name="default"
