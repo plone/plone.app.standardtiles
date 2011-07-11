@@ -204,7 +204,11 @@ class ImageTile(PersistentTile):
     def __call__(self):
         # Not for production use - this should be in a template!
         imageId = self.data.get('imageId')
-        imageId = int(imageId)
+        if isinstance(imageId, int):
+            imageId = int(imageId)
+        else:
+            return '<html><body><em>Image not found.</em></body></html>'
+
         intids = getUtility(IIntIds)
         image = intids.queryObject(imageId)
 
