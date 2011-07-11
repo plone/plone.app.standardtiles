@@ -111,6 +111,8 @@ class NavigationTile(PersistentTile):
         return len(tree['children']) > 0
 
     def include_top(self):
+        if self.data['includeTop'] == None:
+            return self.properties.includeTop
         return self.data.get('includeTop', self.properties.includeTop)
 
     def navigation_root(self):
