@@ -25,6 +25,7 @@ from z3c.form import form
 from Products.CMFCore.utils import getToolByName
 
 from zope.container.interfaces import INameChooser
+from plone.app.imaging.utils import getAllowedSizes
 
 
 class IImagePreviewSelectWidget(ISelectWidget):
@@ -181,14 +182,27 @@ def availableImagesVocabulary(context):
 directlyProvides(availableImagesVocabulary, IVocabularyFactory)
 
 
+def availablePloneAppImagingScalesVocabulary(context):
+    terms = []
+    for scale, (width, height) in getAllowedSizes().iteritems():
+        terms.append(SimpleTerm(scale, scale, \
+                                "%s (%dx%d)" % (scale, width, height)))
+
+    return SimpleVocabulary(terms)
+directlyProvides(availablePloneAppImagingScalesVocabulary, IVocabularyFactory)
+
+
 class IImageTile(directivesform.Schema):
 
     directivesform.widget(imageId=ImagePreviewSelectFieldWidget)
     imageId = RelationChoice(title=_(u"Image Id"), required=True,
-                             vocabulary=u"Available Images")
+                            vocabulary=u"Available Images")
     imageId._type = int
     altText = schema.TextLine(title=_(u"Alternative text"), required=False,
-                              missing_value=u'')
+                            missing_value=u'')
+    image_size = schema.Choice(title=_(u"Image Size"),
+                            vocabulary=u"Available Images Scales",
+                            required=True)
 
 
 class ImageTile(PersistentTile):
@@ -215,9 +229,14 @@ class ImageTile(PersistentTile):
         if image is not None:
             imageURL = image.absolute_url()
             altText = self.data.get('altText')
+            image_size = self.data.get('image_size')
+            if image_size == None:
+                image_size = 'image'
+            else:
+                image_size = 'image_' + image_size
             altText = altText.replace('"', '\"')
 
-            return '<html><body><img src="%s" alt="%s" /></body></html>' % \
-                   (imageURL, altText)
+            return '<html><body><img src="%s/%s" alt="%s" /></body></html>' % \
+                   (imageURL, image_size, altText)
         else:
             return '<html><body><em>Image not found.</em></body></html>'

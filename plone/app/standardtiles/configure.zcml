@@ -149,6 +149,11 @@
         />
 
     <utility
+        component=".image.availablePloneAppImagingScalesVocabulary"
+        name="Available Images Scales"
+        />
+
+    <utility
         component="plone.app.standardtiles.contentlisting.availableListingViewsVocabulary"
         name="Available Listing Views"
         />
