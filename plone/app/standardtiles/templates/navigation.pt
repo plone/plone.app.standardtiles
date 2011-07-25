@@ -23,12 +23,8 @@
                                title root/Description;
                                class string:contenttype-plone-site $selectedClass;">
               <span tal:condition="rootIsPortal"
-                    i18n:translate="">Home</span>
-              <span tal:condition="not:rootIsPortal"
-                    tal:content="root/Title">
-                Root item title
-              </span>
-            </a>
+                    i18n:translate="">Home</span><span tal:condition="not:rootIsPortal"
+                    tal:content="root/Title">Root item title</span></a>
           </tal:block>
         </li>
         <li tal:replace="structure view/createNavTree">
