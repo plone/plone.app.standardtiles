@@ -60,6 +60,7 @@ class ImagePreviewSelectWidget(SelectWidget):
             $('div.imageRepositoryAlbum a').click(function(e) {
               e.preventDefault();
               $('#%(id)s').attr('value',$(this).attr('href'));
+              //TODO: Set altText default too
               $(this).parent().siblings('.photoAlbumEntry').removeClass('selected');
               $(this).parent().addClass('selected');
             });
@@ -68,7 +69,7 @@ class ImagePreviewSelectWidget(SelectWidget):
             var input_value = $('#%(id)s').attr('value');
             if(input_value) {
               if(input_value.indexOf('"') != -1) { return; }
-              $('div.imageRepositoryAlbum a[href="'+input_value+'"]').parent().addClass('selected');
+              $('div.imageRepositoryAlbum a[href="'+input_value+'"]').trigger('click');
               //TODO: Should put up a warning message if not found
             }
 
