@@ -56,12 +56,21 @@ class ImagePreviewSelectWidget(SelectWidget):
         (function($) {
           $().ready(function() {
 
+            // Clicking an image updates selected value
             $('div.imageRepositoryAlbum a').click(function(e) {
               e.preventDefault();
               $('#%(id)s').attr('value',$(this).attr('href'));
               $(this).parent().siblings('.photoAlbumEntry').removeClass('selected');
               $(this).parent().addClass('selected');
             });
+            
+            // If there is an initial value, try and find a matching checkbox
+            var input_value = $('#%(id)s').attr('value');
+            if(input_value) {
+              if(input_value.indexOf('"') != -1) { return; }
+              $('div.imageRepositoryAlbum a[href="'+input_value+'"]').parent().addClass('selected');
+              //TODO: Should put up a warning message if not found
+            }
 
           })
         })(jQuery);
