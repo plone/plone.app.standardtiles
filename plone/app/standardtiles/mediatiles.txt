@@ -132,6 +132,42 @@ created before::
     </body>
     </html>
 
+Sitemap tree tile
+---------------------
+
+The sitemape tile displays a sitemap for the site.
+
+Rendering this tile in the site root should show the document we
+created before::
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.sitemap/sitemap-tile')
+    >>> browser.getControl(name='name').value = 'TEST SITEMAP TILE'
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.sitemap/sitemap-tile')
+    >>> print browser.contents
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <body>
+        <div class="navigationTile">
+            <h2 class="tileHeader">TEST SITEMAP TILE</h2>
+            <ul class="navTree navTreeLevel0">
+                <li class="navTreeItem navTreeTopNode navTreeCurrentNode">
+                    <div>
+                        <a href="http://nohost/plone" class="contenttype-plone-site navTreeCurrentItem" title="">
+                            Home
+                        </a>
+                    </div>
+                </li>
+                <li class="navTreeItem visualNoMarker section-a-simple-page">
+                   <a href="http://nohost/plone/a-simple-page" class="state-missing-value contenttype-document" title="A description">
+                       <span>A simple page</span>
+                   </a>
+                </li>
+            </ul>
+        </div>
+    </body>
+    </html>
+
 Image tile
 -----------
 
@@ -157,6 +193,7 @@ We now create an image tile with an uploaded image::
     >>> upload.add_file(cStringIO.StringIO('Image contents'), 'image/jpeg', 'image.jpg')
     >>> browser.getControl(label='Save').click()
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.image/image-tile')
+    >>> #import pdb; pdb.set_trace()
     >>> browser.contents
     '<html><body><img src="http://nohost/plone/images/image.jpg" alt="" /></body></html>'
 
