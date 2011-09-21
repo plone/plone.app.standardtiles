@@ -144,11 +144,6 @@
         />
 
     <utility
-        component=".image.availableImagesVocabulary"
-        name="Available Images"
-        />
-
-    <utility
         component=".image.availablePloneAppImagingScalesVocabulary"
         name="Available Images Scales"
         />
