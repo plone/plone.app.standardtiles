@@ -227,6 +227,17 @@
     <adapter factory=".navigation.NavtreeStrategy" />
 
     <plone:tile
+        name="plone.app.standardtiles.sitemap"
+        title="Sitemap"
+        description="A tile which displays a sitemap"
+        class=".sitemap.SitemapTile"
+        schema=".sitemap.ISitemapTile"
+        template="templates/navigation.pt"
+        add_permission="cmf.ManagePortal"
+        permission="zope.Public"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"
         description="A tile which displays a specified viewlet manager"

@@ -97,9 +97,7 @@ class NavigationTile(PersistentTile):
         self.properties = portal_properties.navtree_properties
 
     def title(self):
-        if not self.data['name'] or self.data['name'] == 'None':
-            return self.properties.name
-        return self.data['name']
+        return self.data.get('name', self.properties.name)
 
     @property
     def available(self):
@@ -111,8 +109,6 @@ class NavigationTile(PersistentTile):
         return len(tree['children']) > 0
 
     def include_top(self):
-        if self.data['includeTop'] == None:
-            return self.properties.includeTop
         return self.data.get('includeTop', self.properties.includeTop)
 
     def navigation_root(self):
@@ -144,7 +140,7 @@ class NavigationTile(PersistentTile):
 
     def createNavTree(self):
         data = self.getNavTree()
-        bottomLevel = self.data['bottomLevel'] or \
+        bottomLevel = self.data.get('bottomLevel') or \
                       self.properties.getProperty('bottomLevel', 0)
         return self.recurse(children=data.get('children', []),
                             level=1, bottomLevel=bottomLevel)
@@ -155,13 +151,13 @@ class NavigationTile(PersistentTile):
 
     @memoize
     def getNavRootPath(self):
-        currentFolderOnly = self.data['currentFolderOnly'] or \
+        currentFolderOnly = self.data.get('currentFolderOnly') or \
             self.properties.getProperty('currentFolderOnlyInNavtree', False)
-        topLevel = self.data['topLevel'] or \
+        topLevel = self.data.get('topLevel') or \
             self.properties.getProperty('topLevel', 0)
 
         return getRootPath(self.context, currentFolderOnly,
-                           topLevel, str(self.data['root']))
+                           topLevel, str(self.data.get('root')))
 
     @memoize
     def getNavRoot(self, _marker=[]):
@@ -202,7 +198,7 @@ class QueryBuilder(NavtreeQueryBuilder):
         portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
-        rootPath = getNavigationRoot(context, relativeRoot=tile.data['root'])
+        rootPath = getNavigationRoot(context, relativeRoot=tile.data.get('root'))
         currentPath = '/'.join(context.getPhysicalPath())
 
         # override query path with tile path if needed
@@ -212,8 +208,7 @@ class QueryBuilder(NavtreeQueryBuilder):
         else:
             self.query['path'] = {'query': currentPath, 'navtree': 1}
 
-        topLevel = tile.data['topLevel'] or \
-                   navtree_properties.getProperty('topLevel', 0)
+        topLevel = tile.data.get('topLevel') or navtree_properties.getProperty('topLevel', 0)
         if topLevel and topLevel > 0:
             self.query['path']['navtree_start'] = topLevel + 1
 
@@ -230,16 +225,16 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
         # XXX: We can't do this with a 'depth' query to EPI...
-        self.bottomLevel = tile.data['bottomLevel'] or \
+        self.bottomLevel = tile.data.get('bottomLevel') or \
                            navtree_properties.getProperty('bottomLevel', 0)
 
-        currentFolderOnly = tile.data['currentFolderOnly'] or \
+        currentFolderOnly = tile.data.get('currentFolderOnly') or \
                             navtree_properties.getProperty(
                                     'currentFolderOnlyInNavtree', False)
-        topLevel = tile.data['topLevel'] or \
+        topLevel = tile.data.get('topLevel') or \
                    navtree_properties.getProperty('topLevel', 0)
         self.rootPath = getRootPath(context, currentFolderOnly,
-                                    topLevel, tile.data['root'])
+                                    topLevel, tile.data.get('root'))
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
