@@ -1,19 +1,20 @@
+from plone.app.mediarepository.source import MediaRepoSourceBinder
+
 from zope.interface import directlyProvides, implements, implementsOnly, \
     implementer, Interface
 from zope import schema
 from zope.component import adapter, getUtility
 from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
-from zope.schema.interfaces import IVocabularyFactory, IChoice
+from zope.schema.interfaces import IVocabularyFactory, IChoice, ISource, IContextSourceBinder
 from zope.app.component.hooks import getSite
 from plone.app.standardtiles import PloneMessageFactory as _
-from zope.intid.interfaces import IIntIds
-from z3c.relationfield import RelationChoice
-from z3c.relationfield.interfaces import IHasOutgoingRelations
 
 from plone.directives import form as directivesform
 from plone.registry.interfaces import IRegistry
 
 from plone.tiles import PersistentTile
+
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from z3c.form.browser.select import SelectWidget
 from z3c.form.interfaces import IFormLayer, IFieldWidget, ISelectWidget, \
@@ -41,101 +42,40 @@ class ImagePreviewSelectWidget(SelectWidget):
     implementsOnly(IImagePreviewSelectWidget)
 
     klass = u'image-preview-select-widget'
-    prompt = True
-
-    promptMessage = _(u"select an image...")
-
+    
     def method(self):
         return self.request.get("%s.method" % self.name, "existing")
-
-    def update(self):
-        self.upload = ImageUploadForm(None, self.request)
-        self.upload.update()
-
-        if not self.ignoreRequest:
-            data, errors = self.upload.extractData()
-            if errors:
-                return
-
-            filedata = data['image_upload']
-            image_upload_widget = self.upload.widgets['image_upload']
-
-            if filedata and self.method() == 'upload':
-                site = getSite()
-                registry = getUtility(IRegistry)
-                images_path = str(registry['plone.app.standardtiles.' + \
-                                           'interfaces.IStandardTiles' + \
-                                           'Settings.images_repo_path'])
-                repo = site.unrestrictedTraverse(images_path)
-                filename = image_upload_widget.filename
-
-                temp_id = repo.generateUniqueId(filename)
-                repo.invokeFactory('Image', temp_id)
-                image = getattr(repo, temp_id)
-                image.setImage(filedata)
-
-                # set a unique name for the uploaded image
-                namechooser = INameChooser(repo)
-                unique_id = namechooser.chooseName(filename, image)
-                image.setId(unique_id)
-
-                intids = getUtility(IIntIds)
-                image_id = intids.getId(image)
-
-                self.request.form[self.name] = str(image_id)
-
-        super(ImagePreviewSelectWidget, self).update()
+    
+    def renderMediaRepository(self):
+        site = getSite()
+        view = site.restrictedTraverse("@@mediarepo-picker")
+        return view.__of__(site)()
 
     def js(self):
         return  """\
         (function($) {
           $().ready(function() {
 
-            var image_preview = $('#%(id)s-image-preview');
-            if (image_preview.attr('src')) {
-              image_preview.prepOverlay({
-                subtype: 'image',
-                urlmatch: '/image_thumb$',
-                urlreplace: '/image_preview'
-              });
-            }
-
-            $('#%(id)s').change(function() {
-              var selected = $('#%(id)s option:selected');
-              var url = selected.attr('title');
-              $('#%(id)s-image-preview').attr('src', url);
-
-              var overlay = image_preview.attr("rel");
-              $(overlay).remove();
-              image_preview.removeAttr("rel");
-              image_preview.prepOverlay({
-                subtype: 'image',
-                urlmatch: '/image_thumb$',
-                urlreplace: '/image_preview'
-              });
+            // Clicking an image updates selected value
+            $('div.imageRepositoryAlbum a').click(function(e) {
+              e.preventDefault();
+              $('#%(id)s').attr('value',$(this).attr('href'));
+              //TODO: Set altText default too
+              $(this).parent().siblings('.photoAlbumEntry').removeClass('selected');
+              $(this).parent().addClass('selected');
             });
+            
+            // If there is an initial value, try and find a matching checkbox
+            var input_value = $('#%(id)s').attr('value');
+            if(input_value) {
+              if(input_value.indexOf('"') != -1) { return; }
+              $('div.imageRepositoryAlbum a[href="'+input_value+'"]').trigger('click');
+              //TODO: Should put up a warning message if not found
+            }
 
           })
         })(jQuery);
         """ % {'id': self.id}
-
-    def getImageURLFromId(self, imageId):
-        """Look-up the URL for the src attribute of an image tag from
-        its id."""
-
-        if imageId == self.noValueToken:
-            return ''
-        try:
-            imageId = int(imageId)
-        except ValueError:
-            raise Exception('The image id must be an integer')
-        intids = getUtility(IIntIds)
-        image = intids.queryObject(imageId)
-        if image:
-            return image.absolute_url()
-        return ''  # image not found
-        # XXX: should point to a "image-not-found" image
-
 
 @adapter(IChoice,
          Interface,
@@ -150,36 +90,6 @@ def ImagePreviewSelectFieldWidget(field, source, request=None):
         real_request = request
     fieldwidget = FieldWidget(field, ImagePreviewSelectWidget(real_request))
     return fieldwidget
-
-
-class ImageUploadForm(form.Form):
-    implements(ISubForm)
-    css_class = 'image_subform'
-
-    fields = field.Fields(
-        schema.Bytes(__name__='image_upload', required=False),
-        )
-
-
-def availableImagesVocabulary(context):
-    """Vocabulary composed of Images inside the '/images' folder
-    at the site root.
-    """
-    site = getSite()
-    catalog = getToolByName(site, 'portal_catalog')
-    portal_state = site.restrictedTraverse('@@plone_portal_state')
-    root_path = portal_state.navigation_root_path()
-    registry = getUtility(IRegistry)
-    images_path = "%s/%s" % (root_path, registry[
-        'plone.app.standardtiles.interfaces.IStandardTilesSettings.' + \
-        'images_repo_path'])
-    results = catalog(path=images_path,
-                      portal_type='Image')
-    intids = getUtility(IIntIds)
-    terms = [SimpleTerm(value=intids.getId(r.getObject()), title=r.id) \
-            for r in results]
-    return SimpleVocabulary(terms)
-directlyProvides(availableImagesVocabulary, IVocabularyFactory)
 
 
 def availablePloneAppImagingScalesVocabulary(context):
@@ -197,9 +107,8 @@ directlyProvides(availablePloneAppImagingScalesVocabulary, IVocabularyFactory)
 class IImageTile(directivesform.Schema):
 
     directivesform.widget(imageId=ImagePreviewSelectFieldWidget)
-    imageId = RelationChoice(title=_(u"Image Id"), required=True,
-                            vocabulary=u"Available Images")
-    imageId._type = int
+    imageId = schema.Choice(title=_(u"Select an Image"), required=True,
+                            source=MediaRepoSourceBinder())
     altText = schema.TextLine(title=_(u"Alternative text"), required=False,
                             missing_value=u'')
     image_size = schema.Choice(title=_(u"Image Size"),
@@ -214,31 +123,17 @@ class ImageTile(PersistentTile):
     optionally alt text. When rendered, the tile will look-up the image
     url and output an <img /> tag.
     """
-
-    implements(IHasOutgoingRelations)
-
+    display_template = ViewPageTemplateFile('templates/image.pt')
+    
     def __call__(self):
-        # Not for production use - this should be in a template!
         imageId = self.data.get('imageId')
-        if isinstance(imageId, int):
-            imageId = int(imageId)
-        else:
-            return '<html><body><em>Image not found.</em></body></html>'
-
-        intids = getUtility(IIntIds)
-        image = intids.queryObject(imageId)
-
-        if image is not None:
-            imageURL = image.absolute_url()
-            altText = self.data.get('altText')
-            image_size = self.data.get('image_size')
-            if image_size == None or image_size == 'original':
-                image_size = 'image'
-            else:
-                image_size = 'image_' + image_size
-            altText = altText.replace('"', '\"')
-
-            return '<html><body><img src="%s/%s" alt="%s" /></body></html>' % \
-                   (imageURL, image_size, altText)
-        else:
-            return '<html><body><em>Image not found.</em></body></html>'
+        try:
+            catalog = getToolByName(self.context, "portal_catalog")
+            image = catalog(UID=imageId)[0]
+            return self.display_template(
+                image = image,
+                altText = self.data.get('altText'),
+                image_size = self.data.get('image_size'),
+            )
+        except (KeyError, IndexError):
+            return self.display_template()

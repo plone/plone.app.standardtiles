@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html><body>
+  <img tal:condition="exists:options/image"
+       tal:attributes="src string:${options/image/getURL}/@@images/image/${options/image_size};
+                       alt options/altText
+                      "
+       />
+  <em tal:condition="not:exists:options/image">Image not found.</em>
+</body></html>
