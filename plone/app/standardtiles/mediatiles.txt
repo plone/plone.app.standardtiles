@@ -313,3 +313,27 @@ Rendering the tile again should result in different html:
      >>> 'class="event"' in tile()
      True
 
+
+RSS Tile
+--------
+
+This tile shows the first five items in a RSS feed.
+
+Use the RSS stored in the test directory, this way we don't have an external dependency.
+
+    >>> import os
+    >>> import plone.app.standardtiles.tests as test_dir
+    >>> test_dir = os.path.dirname(test_dir.__file__)
+    >>> path = 'file://{0}'.format(os.path.join(test_dir, 'RSS.xml'))
+
+Create the RSS tile, with the local RSS URI:
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.rss/rss-tile')
+    >>> browser.getControl(name='portlet_title').value = 'TEST RSS TILE'
+    >>> browser.getControl(name='url').value = path
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.rss/rss-tile')
+    >>> 'TEST RSS TILE' in browser.contents
+    True
+    >>> """<a href="http://localhost:55440/plone/doc-one" class="tile">""" in browser.contents
+    True
