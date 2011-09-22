@@ -184,6 +184,8 @@ directlyProvides(availableImagesVocabulary, IVocabularyFactory)
 
 def availablePloneAppImagingScalesVocabulary(context):
     terms = []
+    terms.append(SimpleTerm('original', 'original', "original"))
+
     for scale, (width, height) in getAllowedSizes().iteritems():
         terms.append(SimpleTerm(scale, scale, \
                                 "%s (%dx%d)" % (scale, width, height)))
@@ -230,7 +232,7 @@ class ImageTile(PersistentTile):
             imageURL = image.absolute_url()
             altText = self.data.get('altText')
             image_size = self.data.get('image_size')
-            if image_size == None:
+            if image_size == None or image_size == 'original':
                 image_size = 'image'
             else:
                 image_size = 'image_' + image_size
