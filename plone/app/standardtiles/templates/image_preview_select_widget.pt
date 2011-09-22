@@ -8,6 +8,6 @@
   <input type="input" value=""
          tal:attributes="name string:${view/name};
                          id string:${view/id};
-                         value python:view.terms.getTerm(context[view.name]).token if hasattr(context,view.name) else '';"
+                         value python:view.terms.getTerm(context[view.name]).token if not(view.ignoreContext) and context.has_key(view.name) else '';"
          />
 </div>
