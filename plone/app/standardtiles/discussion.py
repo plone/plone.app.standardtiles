@@ -80,18 +80,6 @@ class DiscussionTile(Tile, layout.FormWrapper):
 
         return self.index()
 
-    # view methods
-    def cook(self, text):
-        transforms = getToolByName(self, 'portal_transforms')
-        targetMimetype = 'text/html'
-        registry = queryUtility(IRegistry)
-        settings = registry.forInterface(IDiscussionSettings)
-        mimetype = settings.text_transform
-        return transforms.convertTo(targetMimetype,
-                                    text,
-                                    context=self,
-                                    mimetype=mimetype).getData()
-
     def can_reply(self):
         return getSecurityManager().checkPermission('Reply to item',
                                                     aq_inner(self.context))

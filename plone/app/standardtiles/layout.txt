@@ -371,3 +371,18 @@ The configlets tile renders a list of the available config dialogs::
     >>> browser.contents
     '...Site Setup...Add-ons...Calendar...Collections...'
 
+
+Discussion tile
+---------------
+
+Add a discussion tile and add a comment thru this tile.
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.discussion/discussion-tile')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.discussion/discussion-tile')
+
+    >>> 'You can add a comment by filling out the form below' in browser.contents
+    True
+
+Unfortunately it is hard to test this tile, it expects a deco page as parent. Figure out how we can test this tile...
+
