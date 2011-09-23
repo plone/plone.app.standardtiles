@@ -99,8 +99,6 @@
         />
 
 
-
-
     <plone:tile
         name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"
@@ -162,6 +160,7 @@
         permission="zope2.View"
         schema=".legacy.IPortletManagerTile"
         />
+
 
     <plone:tile
         name="plone.app.standardtiles.menu_link"

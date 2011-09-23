@@ -386,3 +386,39 @@ Add a discussion tile and add a comment thru this tile.
 
 Unfortunately it is hard to test this tile, it expects a deco page as parent. Figure out how we can test this tile...
 
+
+Menu link tile
+--------------
+
+Add a menu_link tile
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.menu_link/menu_link-tile')
+
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.menu_link/menu_link-tile')
+    >>> """<a id="plone-cmsui-menu-link" href="http://nohost/plone/@@cmsui-menu">Manage page</a>""" in browser.contents
+    True
+
+
+Related items tile
+--------------
+
+Add a related_items tile
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.related_items/related_items-tile')
+
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.menu_link/related_items-tile)
+
+
+Text tile
+---------
+
+Add a text tile
+
+    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.text/text-tile')
+
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.text/text-tile')
+
+
