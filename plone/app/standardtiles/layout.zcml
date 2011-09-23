@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="plone">
 
     <plone:tile
@@ -156,6 +157,24 @@
         for="*"
         permission="zope2.View"
         template="templates/login.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.discussion"
+        title="Discussion"
+        description="A tile which displays comments"
+        add_permission="zope2.View"
+        class=".discussion.DiscussionTile"
+        for="*"
+        permission="zope.Public"
+        />
+
+     <browser:page
+        name="conversation_view"
+        for="plone.dexterity.interfaces.IDexterityContainer"
+        layer="plone.app.blocks.interfaces.IBlocksLayer"
+        class=".discussion.ConversationView"
+        permission="zope2.View"
         />
 
 </configure>
