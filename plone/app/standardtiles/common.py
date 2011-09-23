@@ -541,10 +541,6 @@ class RelatedItemsTile(Tile):
     """A related items tile
     """
 
-    def __call__(self):
-        self.update()
-        return self.index()
-
     def related_items(self):
         context = aq_inner(self.context)
         related = ()
