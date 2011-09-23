@@ -372,8 +372,11 @@
 
     <plone:tile
         name="plone.app.standardtiles.related_items"
+        title="Related items"
+        description="Show related items"
         class=".common.RelatedItemsTile"
         for="*"
+        add_permission="zope.Public"
         permission="zope2.View"
         template="templates/related_items.pt"
         />
