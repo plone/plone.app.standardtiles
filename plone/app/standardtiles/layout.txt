@@ -211,55 +211,6 @@ Adding supported languages will show them in the tile::
     >>> browser.contents
     '...language-en...language-ca...'
 
-Keywords tile
--------------
-
-The keywords tile displays a list of the keywords (aka subjects)
-assigned to the context.
-
-We will use the page we created before for the tests. Since we have
-not added any keyword to it yet, the tile contents are empty::
-
-    >>> browser.open(pageURL + '/@@plone.app.standardtiles.keywords')
-    >>> 'id="category"' in browser.contents
-    False
-
-If we now add some keywords to it::
-
-    >>> browser.open(pageURL + '/edit')
-    >>> browser.getControl(name='subject_keywords:lines').value = 'Statues\n Sprint'
-    >>> browser.getControl('Save').click()
-
-The tile will show them::
-
-    >>> unprivileged_browser.open(pageURL + '/@@plone.app.standardtiles.keywords')
-    >>> unprivileged_browser.contents
-    '...id="category"...Sprint...Statues...'
-
-
-Document actions tile
----------------------
-
-The document actions tile just lists the actions registered
-in the document_actions category.
-
-We make sure at least the print action visibility is on::
-
-    >>> from Products.CMFCore.utils import getToolByName
-    >>> action_tool = getToolByName(portal, 'portal_actions')
-    >>> print_action = action_tool.document_actions.get('print')
-    >>> print_action
-    <Action at /plone/portal_actions/document_actions/print>
-    >>> print_action.visible = True
-    >>> transaction.commit()
-
-The print action shows up accordingly::
-
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.document_actions')
-    >>> browser.contents
-    '...id="document-action-print"...'
-
-
 
 Next/previous tile
 -------------------
@@ -377,48 +328,28 @@ Discussion tile
 
 Add a discussion tile and add a comment thru this tile.
 
-    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.discussion/discussion-tile')
+    >>> browser.open(pageURL + '/@@add-tile/plone.app.standardtiles.discussion/discussion-tile')
     >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.discussion/discussion-tile')
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.discussion/discussion-pageURL')
 
     >>> 'You can add a comment by filling out the form below' in browser.contents
     True
-
-Unfortunately it is hard to test this tile, it expects a deco page as parent. Figure out how we can test this tile...
 
 
 Menu link tile
 --------------
 
-Add a menu_link tile
+Add a menu_link tile:
 
     >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.menu_link/menu_link-tile')
 
     >>> browser.getControl(label='Save').click()
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.menu_link/menu_link-tile')
+
+Currently the menu link only shows a 'manage page' link and some javascript:
+
     >>> """<a id="plone-cmsui-menu-link" href="http://nohost/plone/@@cmsui-menu">Manage page</a>""" in browser.contents
     True
 
-
-Related items tile
---------------
-
-Add a related_items tile
-
-    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.related_items/related_items-tile')
-
-    >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.menu_link/related_items-tile)
-
-
-Text tile
----------
-
-Add a text tile
-
-    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.text/text-tile')
-
-    >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.text/text-tile')
 
 

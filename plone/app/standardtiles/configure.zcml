@@ -27,6 +27,8 @@
         directory="javascripts"
         />
 
+    <!-- Tiles are divided in four zcml files -->
+    <include file="content.zcml"/>
     <include file="head.zcml"/>
     <include file="layout.zcml"/>
     <include file="media.zcml"/>
@@ -90,14 +92,10 @@
         permission="zope2.View"
         />
 
-    <!-- app tiles -->
-
-
     <utility
         component="plone.app.standardtiles.contentlisting.availableListingViewsVocabulary"
         name="Available Listing Views"
         />
-
 
     <plone:tile
         name="plone.app.standardtiles.viewletmanager"
@@ -119,6 +117,17 @@
         for="Products.CMFCore.interfaces.IFolderish"
         permission="zope2.View"
         schema=".contentlisting.IContentListingTile"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.portletmanager"
+        title="Portlet Manager Tile"
+        description="A tile which displays a specified portlet manager"
+        add_permission="zope.Public"
+        class=".legacy.PortletManagerTile"
+        for="*"
+        permission="zope2.View"
+        schema=".legacy.IPortletManagerTile"
         />
 
     <browser:page
@@ -150,58 +159,5 @@
         />
 
 
-    <plone:tile
-        name="plone.app.standardtiles.portletmanager"
-        title="Portlet Manager Tile"
-        description="A tile which displays a specified portlet manager"
-        add_permission="zope.Public"
-        class=".legacy.PortletManagerTile"
-        for="*"
-        permission="zope2.View"
-        schema=".legacy.IPortletManagerTile"
-        />
-
-
-    <plone:tile
-        name="plone.app.standardtiles.menu_link"
-        class=".common.MenuLinkTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/menu_link.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.related_items"
-        title="Related items"
-        description="Show related items"
-        class=".common.RelatedItemsTile"
-        for="*"
-        add_permission="zope.Public"
-        permission="zope2.View"
-        template="templates/related_items.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.history"
-        class=".common.HistoryTile"
-        for="*"
-        permission="zope2.View"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.lockinfo"
-        class=".common.LockInfoTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/lockinfo.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.configlets"
-        class=".configlets.ConfigletsTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/configlets.pt"
-        />
 
 </configure>

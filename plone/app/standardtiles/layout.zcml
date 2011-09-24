@@ -93,27 +93,6 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.document_byline"
-        title="Document byline"
-        description='Shows the document byline with author name and date'
-        add_permission="zope.Public"
-        for="*"
-        class=".common.DocumentBylineTile"
-        permission="zope2.View"
-        template="templates/document_byline.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.tableofcontents"
-        title="Table of contents"
-        description="A tile which display a Table of contents"
-        add_permission="cmf.ManagePortal"
-        class="plone.app.standardtiles.tableofcontents.TableOfContentsTile"
-        template="templates/tableofcontents.pt"
-        permission="zope.Public"
-        />
-
-    <plone:tile
         name="plone.app.standardtiles.nextprevious"
         class=".common.NextPreviousTile"
         for="*"
@@ -137,16 +116,6 @@
         template="templates/languageselector.pt"
         />
 
-    <plone:tile
-        name="plone.app.standardtiles.keywords"
-        title="Context keywords"
-        description='A tile which displays the keywords of this item'
-        add_permission="zope.Public"
-        class=".keywords.KeywordsTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/keywords.pt"
-        />
 
     <plone:tile
         name="plone.app.standardtiles.login"
@@ -175,6 +144,25 @@
         layer="plone.app.blocks.interfaces.IBlocksLayer"
         class=".discussion.ConversationView"
         permission="zope2.View"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.menu_link"
+        title="Menu link"
+        description="Show menu link"
+        class=".common.MenuLinkTile"
+        for="*"
+        add_permission="zope.Public"
+        permission="zope2.View"
+        template="templates/menu_link.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.configlets"
+        class=".configlets.ConfigletsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/configlets.pt"
         />
 
 </configure>
