@@ -4,5 +4,6 @@
     <dependency>profile-plone.app.tiles:default</dependency>
     <dependency>profile-plone.formwidget.querystring:default</dependency>
     <dependency>profile-plone.app.discussion:default</dependency>
+    <dependency>profile-plone.app.mediarepository:default</dependency>
   </dependencies>
 </metadata>
