@@ -9,6 +9,7 @@ from Products.CMFPlone.utils import base_hasattr
 from Acquisition import aq_inner
 from AccessControl import getSecurityManager
 from plone.memoize.view import memoize
+from plone.directives.form import Schema
 from urllib import unquote
 
 

@@ -1,7 +1,7 @@
 from DateTime import DateTime
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.directives.form import Schema
-from plone.tiles.tile import Tile
+from plone.tiles.tile import Tile, PersistentTile
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.interface import implements, Interface
@@ -49,7 +49,7 @@ class IRSSTile(Schema):
         default=100)
 
 
-class RSSTile(Tile):
+class RSSTile(PersistentTile):
     """The RSS tile displays a configured RSS feed.
     """
 
@@ -205,7 +205,7 @@ class RSSFeed(object):
     @property
     def needs_update(self):
         """check if this feed needs updating"""
-        now = time.time() / 60
+        now = time.time() / 6
         return (self.last_update_time_in_minutes + self.timeout) < now
 
     def update(self):

@@ -1,0 +1,167 @@
+Content tiles
+=============
+
+Here we show up the main tiles used for the content usage.
+
+First, we set up a browser instance and get Manager privileges::
+
+    >>> from plone.testing.z2 import Browser
+    >>> app = layer['app']
+    >>> browser = Browser(app)
+    >>> browser.handleErrors = False
+    >>> portal = layer['portal']
+    >>> portalURL = portal.absolute_url()
+
+    >>> from plone.app.testing import setRoles
+    >>> from plone.app.testing import TEST_USER_ID, TEST_USER_NAME, TEST_USER_PASSWORD
+    >>> browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,))
+    >>> setRoles(portal, TEST_USER_ID, ['Manager'])
+
+    >>> from plone.app.standardtiles.tests.base import EDITOR_USER_NAME, EDITOR_USER_PASSWORD, MANAGER_USER_NAME, MANAGER_USER_PASSWORD
+
+    >>> import transaction
+    >>> transaction.commit() # make the browser see this role
+
+We also keep another testbrowser handy for testing how tiles are rendered if
+you're not logged in::
+
+    >>> unprivileged_browser = Browser(app)
+
+We create a page in the site to use it in tests later::
+
+    >>> browser.open(portalURL + '/createObject?type_name=Document')
+    >>> browser.getControl(name='title').value = 'A simple page'
+    >>> browser.getControl(name='description').value = 'A description'
+    >>> browser.getControl('Save').click()
+    >>> pageURL = browser.url
+    >>> pageURL
+    'http://nohost/plone/a-simple-page'
+
+Document actions tile
+---------------------
+
+The document actions tile just lists the actions registered
+in the document_actions category.
+
+We make sure at least the print action visibility is on::
+
+    >>> from Products.CMFCore.utils import getToolByName
+    >>> action_tool = getToolByName(portal, 'portal_actions')
+    >>> print_action = action_tool.document_actions.get('print')
+    >>> print_action
+    <Action at /plone/portal_actions/document_actions/print>
+    >>> print_action.visible = True
+    >>> transaction.commit()
+
+The print action shows up accordingly::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.document_actions')
+    >>> browser.contents
+    '...id="document-action-print"...'
+
+Keywords tile
+-------------
+
+The keywords tile displays a list of the keywords (aka subjects)
+assigned to the context.
+
+We will use the page we created before for the tests. Since we have
+not added any keyword to it yet, the tile contents are empty::
+
+    >>> browser.open(pageURL + '/@@plone.app.standardtiles.keywords')
+    >>> 'id="category"' in browser.contents
+    False
+
+If we now add some keywords to it::
+
+    >>> browser.open(pageURL + '/edit')
+    >>> browser.getControl(name='subject_keywords:lines').value = 'Statues\n Sprint'
+    >>> browser.getControl('Save').click()
+
+The tile will show them::
+
+    >>> unprivileged_browser.open(pageURL + '/@@plone.app.standardtiles.keywords')
+    >>> unprivileged_browser.contents
+    '...id="category"...Sprint...Statues...'
+
+
+Related items tile
+------------------
+
+Add a related_items tile:
+
+    >>> browser.open(pageURL + '/@@add-tile/plone.app.standardtiles.related_items/related_items-tile')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(pageURL + '/@@plone.app.standardtiles.related_items/related_items-tile')
+
+We should add a relation thru 'page properties' but that functionality isn't here yet.
+A relation must beadded to a deco page and tested if this tile shows that relation.
+
+    >>> print browser.contents
+    <!- html for related items tile -->
+
+
+History tile
+------------
+
+First edit a page so we have an edit history:
+
+   >>> browser.open(pageURL + '/edit')
+   >>> browser.getControl(name='title').value = 'A different title'
+   >>> browser.getControl(label='Save').click()
+   >>> 'A different title' in browser.contents
+
+Add a history tile on the page:
+
+    >>> browser.open(pageURL + '/@@add-tile/plone.app.standardtiles.history/history-tile')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(pageURL + '/@@plone.app.standardtiles.history/history-tile')
+
+Test if the edit action is visible in the viewlet:
+
+    >>> print browser.contents
+    ...
+    <span class="historyAction state-Edited">Edited</span>
+    ...
+    <a href="http://nohost/plone/a-simple-page/versions_history_form?version_id=2#version_preview">View</a>
+    ...
+
+
+Lock info tile
+---------------
+
+First lock the page using a DAV lock request as editor:
+
+    >>> print http(r"""
+    ... LOCK /test_folder_1_/some-file HTTP/1.1
+    ... Content-Type: text/xml; charset="utf-8"
+    ... Depth: 0
+    ... Authorization: Basic %s:%s
+    ...
+    ... <?xml version="1.0" encoding="utf-8"?>
+    ... <DAV:lockinfo xmlns:DAV="DAV:">
+    ... <DAV:lockscope><DAV:exclusive/></DAV:lockscope>
+    ... <DAV:locktype><DAV:write/></DAV:locktype>
+    ... </DAV:lockinfo>""" % (EDITOR_USER_NAME, EDITOR_USER_PASSWORD))
+    HTTP/1.1 200 OK
+    ...
+    Lock-Token: ...
+
+Add a lock info tile:
+
+    >>> browser.open(pageURL + '/@@add-tile/plone.app.standardtiles.lockinfo/lockinfo-tile')
+    >>> browser.getControl(label='Save').click()
+    >>> browser.open(pageURL + '/@@plone.app.standardtiles.lockinfo/lockinfo-tile')
+
+
+We should see that the page is locked. But apparently the page isn't locked:
+
+    >>> print browser.contents
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dt
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+      <body>
+        <div id="plone-lock-status">
+            [some lock text]
+        </div>
+      </body>
+    </html>
