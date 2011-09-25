@@ -1,0 +1,126 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:z3c="http://namespaces.zope.org/z3c"
+    i18n_domain="plone">
+
+    <plone:tile
+        name="plone.app.standardtiles.video"
+        title="Video"
+        description='A tile which displays a video'
+        add_permission="zope.Public"
+        class=".video.VideoTile"
+        for="*"
+        permission="zope2.View"
+        schema=".video.IVideoTile"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.proxy"
+        title="Proxy"
+        description='A tile which displays a content object'
+        add_permission="zope2.View"
+        class=".proxy.ProxyTile"
+        for="*"
+        permission="zope.Public"
+        schema=".proxy.IProxyTile"
+        />
+
+    <browser:page
+        name="proxy-view"
+        for="*"
+        permission="zope2.View"
+        class=".proxy.ProxyView"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.navigation"
+        title="Navigation tree"
+        description="A tile which displays a navigation tree"
+        class=".navigation.NavigationTile"
+        schema=".navigation.INavigationTile"
+        template="templates/navigation.pt"
+        add_permission="cmf.ManagePortal"
+        permission="zope.Public"
+        />
+    <adapter factory=".navigation.QueryBuilder" />
+    <adapter factory=".navigation.NavtreeStrategy" />
+
+    <plone:tile
+        name="plone.app.standardtiles.sitemap"
+        title="Sitemap"
+        description="A tile which displays a sitemap"
+        class=".sitemap.SitemapTile"
+        schema=".sitemap.ISitemapTile"
+        template="templates/navigation.pt"
+        add_permission="cmf.ManagePortal"
+        permission="zope.Public"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.image"
+        title="Image"
+        description='A tile which displays an image'
+        add_permission="zope2.View"
+        class=".image.ImageTile"
+        for="*"
+        permission="zope.Public"
+        schema=".image.IImageTile"
+        />
+
+    <utility
+        component=".image.availablePloneAppImagingScalesVocabulary"
+        name="Available Images Scales"
+        />
+
+    <z3c:widgetTemplate
+        mode="input"
+        widget="plone.app.standardtiles.image.IImagePreviewSelectWidget"
+        layer="z3c.form.interfaces.IFormLayer"
+        template="templates/image_preview_select_widget.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.attachment"
+        title="Attachment"
+        description='A tile which displays a link to an uploaded file'
+        add_permission="zope2.View"
+        class=".attachment.AttachmentTile"
+        for="*"
+        permission="zope.Public"
+        schema=".attachment.IAttachmentTile"
+        template="templates/attachment_listing.pt"
+        />
+
+    <browser:page
+        name="download"
+        for=".attachment.AttachmentTile"
+        permission="zope2.View"
+        class=".attachment.AttachmentTileDownload"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.calendar"
+        title="Calendar"
+        description="A tile displaying a calendar"
+        add_permission="zope.Public"
+        class=".calendar.CalendarTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/calendar.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.rss"
+        title="RSS Feed"
+        description="A tile which displays a RSS feed"
+        add_permission="zope.Public"
+        class=".rss.RSSTile"
+        for="*"
+        permission="zope2.View"
+        schema=".rss.IRSSTile"
+        template="templates/rss.pt"
+        />
+
+</configure>

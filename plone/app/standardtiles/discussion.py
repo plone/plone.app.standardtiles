@@ -1,64 +1,25 @@
 # -*- coding: utf-8 -*-
-from Acquisition import aq_inner
-
-from AccessControl import getSecurityManager
-
-from Products.CMFCore.utils import getToolByName
-
-from zope import schema
-from zope.interface import implements
-from zope.interface import alsoProvides
-from zope.publisher.interfaces import NotFound
-from zope.publisher.interfaces import IPublishTraverse
-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from plone.directives import form as directivesform
-
-from plone.tiles import Tile
-
-from plone.namedfile.utils import set_headers, stream_data
-from plone.namedfile.field import NamedFile
-
-from plone.z3cform.interfaces import IWrappedForm
-
-from plone.app.discussion.interfaces import IComment
-from plone.app.discussion.browser.comments import CommentForm
-
-from Acquisition import aq_inner
-
-from AccessControl import getSecurityManager
-
-from datetime import datetime
-from DateTime import DateTime
-
 from urllib import quote as url_quote
 
+from Acquisition import aq_inner
+from AccessControl import getSecurityManager
+from DateTime import DateTime
+
 from zope.component import createObject, queryUtility
-
 from zope.interface import alsoProvides
-
-from z3c.form import form, field, button, interfaces
 from z3c.form.interfaces import IFormLayer
+from z3c.form import button
 
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-from Products.statusmessages.interfaces import IStatusMessage
 
 from plone.registry.interfaces import IRegistry
-
-from plone.app.layout.viewlets.common import ViewletBase
-
 from plone.app.discussion.interfaces import IConversation
-from plone.app.discussion.interfaces import IComment
-from plone.app.discussion.interfaces import IReplies
 from plone.app.discussion.interfaces import IDiscussionSettings
-from plone.app.discussion.interfaces import ICaptcha
-
-from plone.app.discussion.browser.validator import CaptchaValidator
-
+from plone.app.discussion.browser.comments import CommentForm
+from plone.app.discussion import PloneAppDiscussionMessageFactory as _
+from plone.tiles import Tile
 from plone.z3cform import z2
-from plone.z3cform.fieldsets import extensible
 
 # starting from 0.6.0 version plone.z3cform has IWrappedForm interface
 try:
@@ -72,40 +33,52 @@ from plone.z3cform import layout
 #CommentFormView = layout.wrap_form(CommentForm)
 
 
+class ConversationView(object):
+    """ Discussion is allowed if it is globally enabled """
+
+    def enabled(self):
+        # Fetch discussion registry
+        registry = queryUtility(IRegistry)
+        settings = registry.forInterface(IDiscussionSettings, check=False)
+
+        # Check if discussion is allowed globally
+        if not settings.globally_enabled:
+            return False
+
+        return True
+
+class DiscussionForm(CommentForm):
+
+    @property
+    def action(self):
+        """ Return the tile url for posting form data, use page url when redirecting
+        after a post.
+        """
+        if 'form.buttons.comment' in self.request.keys():
+            return self.context.absolute_url()
+        else:
+            return self.request.ACTUAL_URL
+
 class DiscussionTile(Tile, layout.FormWrapper):
-    """Discussion tile.
-    """
+    """ Discussion tile. """
 
     form = CommentForm
     index = ViewPageTemplateFile('templates/discussion.pt')
 
     def __call__(self):
-
-        form = self.request.form
+        form_data = self.request.form
         self.request = self.context.REQUEST
         self.request.URL = self.context.absolute_url()
-        self.form = CommentForm(aq_inner(self.context), self.request)
+        self.form = DiscussionForm(aq_inner(self.context), self.request)
         alsoProvides(self.form, IWrappedForm)
         # wrap the form inside the page
         z2.switch_on(self.form, request_layer=IFormLayer)
         self.form.update()
 
-        if form:
+        if form_data:
             self.form.extractData()
 
         return self.index()
-
-    # view methods
-    def cook(self, text):
-        transforms = getToolByName(self, 'portal_transforms')
-        targetMimetype = 'text/html'
-        registry = queryUtility(IRegistry)
-        settings = registry.forInterface(IDiscussionSettings)
-        mimetype = settings.text_transform
-        return transforms.convertTo(targetMimetype,
-                                    text,
-                                    context=self,
-                                    mimetype=mimetype).getData()
 
     def can_reply(self):
         return getSecurityManager().checkPermission('Reply to item',
@@ -117,9 +90,6 @@ class DiscussionTile(Tile, layout.FormWrapper):
 
     def is_discussion_allowed(self):
         return True
-        context = aq_inner(self.context)
-        conversation = IConversation(context)
-        return conversation.enabled()
 
     def has_replies(self, workflow_actions=False):
         """Returns true if there are replies.

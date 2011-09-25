@@ -86,6 +86,8 @@ def ImagePreviewSelectFieldWidget(field, source, request=None):
 
 def availablePloneAppImagingScalesVocabulary(context):
     terms = []
+    terms.append(SimpleTerm('original', 'original', "original"))
+
     for scale, (width, height) in getAllowedSizes().iteritems():
         terms.append(SimpleTerm(scale, scale, \
                                 "%s (%dx%d)" % (scale, width, height)))

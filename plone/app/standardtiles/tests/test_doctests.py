@@ -8,8 +8,9 @@ import interlude
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 normal_testfiles = [
-    '../mediatiles.txt',
-    '../layouttiles.txt',
+    '../content.txt',
+    '../media.txt',
+    '../layout.txt',
     '../head.txt',
 ]
 testtype_testfiles = [

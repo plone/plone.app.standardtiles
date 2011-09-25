@@ -1,0 +1,168 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="plone">
+
+    <plone:tile
+        name="plone.app.standardtiles.colophon"
+        for="*"
+        permission="zope2.View"
+        template="templates/colophon.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.footer"
+        class=".common.FooterTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/footer.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.site_actions"
+        class=".common.SiteActionsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/site_actions.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.analytics"
+        class=".common.AnalyticsTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <!-- legacy tile -->
+    <plone:tile
+        name="plone.app.standardtiles.skip_links"
+        class=".common.SkipLinksTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/skip_links.pt"
+        />
+
+    <!-- layout tiles -->
+    <plone:tile
+        name="plone.app.standardtiles.personal_bar"
+        class=".common.PersonalBarTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/personal_bar.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.searchbox"
+        class=".common.SearchBoxTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/searchbox.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.logo"
+        class=".common.LogoTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/logo.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.global_sections"
+        class=".common.GlobalSectionsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/global_sections.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.path_bar"
+        class=".common.PathBarTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/path_bar.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.edit_bar"
+        class=".common.EditBarTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/edit_bar.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.nextprevious"
+        class=".common.NextPreviousTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/nextprevious.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.document_actions"
+        class=".common.DocumentActionsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/document_actions.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.languageselector"
+        class=".common.LanguageSelectorTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/languageselector.pt"
+        />
+
+
+    <plone:tile
+        name="plone.app.standardtiles.login"
+        title="Login"
+        description="A tile which displays a loginbox"
+        add_permission="zope.Public"
+        class=".common.LoginTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/login.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.discussion"
+        title="Discussion"
+        description="A tile which displays comments"
+        add_permission="zope2.View"
+        class=".discussion.DiscussionTile"
+        for="*"
+        permission="zope.Public"
+        />
+
+     <browser:page
+        name="conversation_view"
+        for="plone.dexterity.interfaces.IDexterityContainer"
+        layer="plone.app.blocks.interfaces.IBlocksLayer"
+        class=".discussion.ConversationView"
+        permission="zope2.View"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.menu_link"
+        title="Menu link"
+        description="Show menu link"
+        class=".common.MenuLinkTile"
+        for="*"
+        add_permission="zope.Public"
+        permission="zope2.View"
+        template="templates/menu_link.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.configlets"
+        class=".configlets.ConfigletsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/configlets.pt"
+        />
+
+</configure>

@@ -1,0 +1,70 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="plone">
+
+    <plone:tile
+        name="plone.app.standardtiles.document_byline"
+        title="Document byline"
+        description='Shows the document byline with author name and date'
+        add_permission="zope.Public"
+        for="*"
+        class=".common.DocumentBylineTile"
+        permission="zope2.View"
+        template="templates/document_byline.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.tableofcontents"
+        title="Table of contents"
+        description="A tile which display a Table of contents"
+        add_permission="cmf.ManagePortal"
+        class="plone.app.standardtiles.tableofcontents.TableOfContentsTile"
+        template="templates/tableofcontents.pt"
+        permission="zope.Public"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.keywords"
+        title="Context keywords"
+        description='A tile which displays the keywords of this item'
+        add_permission="zope.Public"
+        class=".keywords.KeywordsTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/keywords.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.related_items"
+        title="Related items"
+        description="Show related items"
+        class=".common.RelatedItemsTile"
+        for="*"
+        add_permission="zope.Public"
+        permission="zope2.View"
+        template="templates/related_items.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.history"
+        class=".common.HistoryTile"
+        title="History"
+        description="Show the edit history on content"
+        add_permission="zope.Public"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.lockinfo"
+        class=".common.LockInfoTile"
+        title="Lock info"
+        description="Shows the lock info on content"
+        add_permission="zope.Public"
+        for="*"
+        permission="zope2.View"
+        template="templates/lockinfo.pt"
+        />
+
+</configure>
