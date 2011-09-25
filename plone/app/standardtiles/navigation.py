@@ -10,8 +10,6 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import typesToList
-from Products.CMFPlone.utils import safe_callable
 from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy, NavtreeQueryBuilder
 from Products.CMFDynamicViewFTI.interface import IBrowserDefault
@@ -27,7 +25,6 @@ from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.defaultpage import isDefaultPage
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
-from plone.formwidget.contenttree.widget import ContentTreeWidget
 from plone.app.standardtiles import PloneMessageFactory as _
 
 
@@ -89,10 +86,6 @@ class INavigationTile(Schema):
 class NavigationTile(PersistentTile):
 
     implements(INavigationTile)
-
-    fields = ficontentelds.Fields(INavigationTile)
-    fields['root'].widgetFactory = ContentTreeWidget
-
 
     def __init__(self, *arg, **kw):
         super(NavigationTile, self).__init__(*arg, **kw)
