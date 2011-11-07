@@ -4,6 +4,9 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Fixed url in image tile for 'original' size.
+  [buchi]
+
 - Fixed markup of attachment tile.
   [robgietema]
 

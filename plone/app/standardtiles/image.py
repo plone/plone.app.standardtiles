@@ -8,6 +8,7 @@ from zope.app.component.hooks import getSite
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.mediarepository.source import MediaRepoSourceBinder
 from plone.app.imaging.utils import getAllowedSizes
+from plone.app.uuid.utils import uuidToCatalogBrain
 from plone.directives import form as directivesform
 from plone.tiles import PersistentTile
 
@@ -16,8 +17,6 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.browser.select import SelectWidget
 from z3c.form.interfaces import IFormLayer, IFieldWidget, ISelectWidget
 from z3c.form.widget import FieldWidget
-
-from Products.CMFCore.utils import getToolByName
 
 
 class IImagePreviewSelectWidget(ISelectWidget):
@@ -118,14 +117,14 @@ class ImageTile(PersistentTile):
     display_template = ViewPageTemplateFile('templates/image.pt')
 
     def __call__(self):
-        imageId = self.data.get('imageId')
-        try:
-            catalog = getToolByName(self.context, "portal_catalog")
-            image = catalog(UID=imageId)[0]
-            return self.display_template(
-                image=image,
-                altText=self.data.get('altText'),
-                image_size=self.data.get('image_size'),
-            )
-        except (KeyError, IndexError):
+        image = uuidToCatalogBrain(self.data.get('imageId'))
+        if image is None:
             return self.display_template()
+
+        image_size = self.data.get('image_size', 'original')
+        if image_size=='original':
+            image_url = image.getURL()
+        else:
+            image_url = '%s/@@images/image/%s' % (image.getURL(), image_size)
+        return self.display_template(image_url=image_url,
+                                     altText=self.data.get('altText'))
