@@ -4,15 +4,6 @@ from zope import schema
 from plone.app.standardtiles import PloneMessageFactory as _
 
 
-class IMetadataTile(Interface):
-    """Metadata tiles are application tiles that handle metadata
-    """
-
-    def get_value(self):
-        """Returns the value to display through the template.
-        """
-
-
 class IStandardTilesSettings(Interface):
     """Settings for standard tiles."""
 

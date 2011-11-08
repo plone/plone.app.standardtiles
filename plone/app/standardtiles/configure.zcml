@@ -35,44 +35,6 @@
 
 
     <plone:tile
-        name="plone.app.standardtiles.title"
-        title="Title"
-        description='A tile which displays the context title'
-        add_permission="zope.Public"
-        class=".metadata.DefaultTitleTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/title.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.title"
-        class=".metadata.DexterityTitleTile"
-        for="plone.dexterity.interfaces.IDexterityContent"
-        permission="zope2.View"
-        template="templates/title.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.description"
-        title="Description"
-        description='A tile which displays the context description'
-        add_permission="zope.Public"
-        class=".metadata.DefaultDescriptionTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/description.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.description"
-        class=".metadata.DexterityDescriptionTile"
-        for="plone.dexterity.interfaces.IDexterityContent"
-        permission="zope2.View"
-        template="templates/description.pt"
-        />
-
-    <plone:tile
         name="plone.app.standardtiles.text"
         title="Text"
         description="A tile which adds text"
