@@ -35,44 +35,6 @@
 
 
     <plone:tile
-        name="plone.app.standardtiles.title"
-        title="Title"
-        description='A tile which displays the context title'
-        add_permission="zope.Public"
-        class=".metadata.DefaultTitleTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/title.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.title"
-        class=".metadata.DexterityTitleTile"
-        for="plone.dexterity.interfaces.IDexterityContent"
-        permission="zope2.View"
-        template="templates/title.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.description"
-        title="Description"
-        description='A tile which displays the context description'
-        add_permission="zope.Public"
-        class=".metadata.DefaultDescriptionTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/description.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.description"
-        class=".metadata.DexterityDescriptionTile"
-        for="plone.dexterity.interfaces.IDexterityContent"
-        permission="zope2.View"
-        template="templates/description.pt"
-        />
-
-    <plone:tile
         name="plone.app.standardtiles.text"
         title="Text"
         description="A tile which adds text"
@@ -92,11 +54,6 @@
         permission="zope2.View"
         />
 
-    <utility
-        component="plone.app.standardtiles.contentlisting.availableListingViewsVocabulary"
-        name="Available Listing Views"
-        />
-
     <plone:tile
         name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"
@@ -109,17 +66,6 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.contentlisting"
-        title="Content listing"
-        description='A tile which displays the content listing of this item'
-        add_permission="zope.Public"
-        class=".contentlisting.ContentListingTile"
-        for="Products.CMFCore.interfaces.IFolderish"
-        permission="zope2.View"
-        schema=".contentlisting.IContentListingTile"
-        />
-
-    <plone:tile
         name="plone.app.standardtiles.portletmanager"
         title="Portlet Manager Tile"
         description="A tile which displays a specified portlet manager"
@@ -129,35 +75,5 @@
         permission="zope2.View"
         schema=".legacy.IPortletManagerTile"
         />
-
-    <browser:page
-        name="tabular_view"
-        for="*"
-        permission="zope2.View"
-        template="templates/tabular_view.pt"
-        />
-
-    <browser:page
-        name="listing_view"
-        for="*"
-        permission="zope2.View"
-        template="templates/listing_view.pt"
-        />
-
-    <browser:page
-        name="summary_view"
-        for="*"
-        permission="zope2.View"
-        template="templates/summary_view.pt"
-        />
-
-    <browser:page
-        name="album_view"
-        for="*"
-        permission="zope2.View"
-        template="templates/album_view.pt"
-        />
-
-
 
 </configure>
