@@ -59,29 +59,6 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.image"
-        title="Image"
-        description='A tile which displays an image'
-        add_permission="zope2.View"
-        class=".image.ImageTile"
-        for="*"
-        permission="zope.Public"
-        schema=".image.IImageTile"
-        />
-
-    <utility
-        component=".image.availablePloneAppImagingScalesVocabulary"
-        name="Available Images Scales"
-        />
-
-    <z3c:widgetTemplate
-        mode="input"
-        widget="plone.app.standardtiles.image.IImagePreviewSelectWidget"
-        layer="z3c.form.interfaces.IFormLayer"
-        template="templates/image_preview_select_widget.pt"
-        />
-
-    <plone:tile
         name="plone.app.standardtiles.attachment"
         title="Attachment"
         description='A tile which displays a link to an uploaded file'
