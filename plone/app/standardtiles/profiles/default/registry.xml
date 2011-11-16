@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<registry>
-  <record interface="plone.app.standardtiles.interfaces.IStandardTilesSettings" field="images_repo_path">
-    <value>images</value>
-  </record>
-</registry>

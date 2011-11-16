@@ -1,7 +1,0 @@
-<!DOCTYPE html>
-<html><body>
-  <img tal:condition="exists:options/image_url"
-       tal:attributes="src string:${options/image_url};
-                       alt options/altText" />
-  <em tal:condition="not:exists:options/image_url">Image not found.</em>
-</body></html>
