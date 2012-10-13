@@ -1,0 +1,2 @@
+<div tal:attributes="data-tile string:${view/navigation_root_url}/@@footer.texttile/1">
+</div>

@@ -6,5 +6,35 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
 
+    <include package="plone.app.tiles"/>
+
+    <!-- Register an extension profile to make the product installable -->
+    <genericsetup:registerProfile
+        name="default"
+        title="Standard tiles"
+        description="Standard available tiles."
+        directory="profiles/default"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        />
+
+    <!-- footer viewlet override -->
+    <browser:resource name="standard_tiles.js" file="resources/standard_tiles.js" />
+    <browser:viewlet
+        name="plone.footer"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        class="plone.app.layout.viewlets.common.FooterViewlet"
+        template="templates/footer_viewlet.pt"
+        layer="plone.app.toolbar.interfaces.IToolbarLayer"
+        permission="zope.Public"/>
+
+      <plone:tile
+        name="footer.texttile"
+        title="Footer Editable Textile"
+        class=".footer.FooterTile"
+        schema=".footer.IFooterTile"
+        template="templates/footer_texttile.pt"
+        permission="zope2.View"
+        add_permission="plone.app.tiles.AddTile"
+        />
 
 </configure>
