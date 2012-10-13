@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  metal:use-macro="context/@@tile-wrapper/master"
+  i18n:domain="plone">
+  <body>
+
+  <metal:tile fill-slot="content"
+    tal:define="scales view/@@images;
+                thumbnail python: scales.scale('picture', scale='mini');">
+
+    <div class="standardTile" id="logo">
+    <a id="portal-logo"
+       title="Home"
+       accesskey="1"
+       tal:attributes="href view/navigation_root_url;
+                       title view/navigation_root_title"
+       i18n:attributes="title">
+
+      <img tal:condition="thumbnail"
+           tal:attributes="src thumbnail/url;
+                           width thumbnail/width;
+                           height thumbnail/height" />
+      <img tal:condition="not:thumbnail"
+           tal:replace="structure view/logo_tag" />
+    </a>
+    <ul style="display:none" class="plone-tiletype-actions">
+      <li tal:repeat="action view/actions">
+        <a href="#"
+          tal:attributes="href python:action.get('url','#');
+          class python:action['name']
+          and 'plone-tiletype-action-' + action['name']
+          or ''"
+          tal:content="action/title">Action</a>
+      </li>
+    </ul>
+    </div>
+  </metal:tile>
+  </body>
+
+</html>
