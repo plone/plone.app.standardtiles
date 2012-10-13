@@ -37,4 +37,23 @@
         add_permission="plone.app.tiles.AddTile"
         />
 
+    <!-- logo viewlet override -->
+    <browser:viewlet
+        name="plone.logo"
+        manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+        class="plone.app.layout.viewlets.common.LogoViewlet"
+        template="templates/logo_viewlet.pt"
+        layer="plone.app.toolbar.interfaces.IToolbarLayer"
+        permission="zope.Public"/>
+
+      <plone:tile
+        name="logo.tile"
+        title="Logo tile"
+        class=".logo.LogoTile"
+        schema=".logo.ILogoTile"
+        template="templates/logo_tile.pt"
+        permission="zope2.View"
+        add_permission="plone.app.tiles.AddTile"
+        />
+
 </configure>
