@@ -1,6 +1,17 @@
-
-*.egg-info
-*.mo
 *.pyc
+*.egg-info
+/.installed.cfg
+/.mr.developer.cfg
+/.project
+/.pydevproject
+/tags
 
-build/
+/bin/
+/develop-eggs/
+/docs/_build/
+/eggs/
+/lib/
+/include/
+/parts/
+/src/
+/var/
