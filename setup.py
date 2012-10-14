@@ -45,6 +45,9 @@ setup(name='plone.app.standardtiles',
               'interlude',
               'plone.app.testing',
               'plone.app.dexterity',
+              'robotsuite',
+              'robotframework-selenium2library',
+              'plone.act'
               ],
           },
       entry_points="""
