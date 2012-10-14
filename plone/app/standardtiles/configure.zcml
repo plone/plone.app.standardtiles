@@ -6,6 +6,10 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
 
+    <include package="plone.app.imagetile"/>
+    <include package="plone.formwidget.querystring"/>
+    <include package="plone.app.blocks"/>
+    <include package="plone.app.toolbar"/>
     <include package="plone.app.tiles"/>
 
     <!-- Register an extension profile to make the product installable -->
@@ -29,7 +33,7 @@
 
       <plone:tile
         name="footer.texttile"
-        title="Footer Editable Textile"
+        title="Footer Editable Texttile"
         class=".footer.FooterTile"
         schema=".footer.IFooterTile"
         template="templates/footer_texttile.pt"
