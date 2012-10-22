@@ -1,10 +1,7 @@
 <metadata>
   <version>0.1</version>
   <dependencies>
-    <dependency>profile-plone.app.toolbar:default</dependency>
     <dependency>profile-plone.app.tiles:default</dependency>
-    <dependency>profile-plone.formwidget.querystring:default</dependency>
-    <dependency>profile-plone.app.discussion:default</dependency>
-    <dependency>profile-plone.app.imagetile:default</dependency>
+    <dependency>profile-plone.app.toolbar:default</dependency>
   </dependencies>
 </metadata>

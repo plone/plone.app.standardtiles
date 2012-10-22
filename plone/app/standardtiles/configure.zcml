@@ -6,11 +6,8 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
 
-    <include package="plone.app.imagetile"/>
-    <include package="plone.formwidget.querystring"/>
-    <include package="plone.app.blocks"/>
-    <include package="plone.app.toolbar"/>
     <include package="plone.app.tiles"/>
+    <include package="plone.app.toolbar"/>
 
     <!-- Register an extension profile to make the product installable -->
     <genericsetup:registerProfile
@@ -21,8 +18,13 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
+
+    <browser:resource
+        name="plone.app.standardtiles.js"
+        file="standardtiles.js" />
+
+
     <!-- footer viewlet override -->
-    <browser:resource name="standard_tiles.js" file="resources/standard_tiles.js" />
     <browser:viewlet
         name="plone.footer"
         manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
@@ -30,8 +32,8 @@
         template="templates/footer_viewlet.pt"
         layer="plone.app.toolbar.interfaces.IToolbarLayer"
         permission="zope.Public"/>
+    <plone:tile
 
-      <plone:tile
         name="footer.texttile"
         title="Footer Editable Texttile"
         class=".footer.FooterTile"
@@ -40,6 +42,7 @@
         permission="zope2.View"
         add_permission="plone.app.tiles.AddTile"
         />
+
 
     <!-- logo viewlet override -->
     <browser:viewlet
