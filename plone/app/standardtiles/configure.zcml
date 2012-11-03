@@ -30,7 +30,7 @@
         manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
         class="plone.app.layout.viewlets.common.FooterViewlet"
         template="templates/footer_viewlet.pt"
-        layer="plone.app.toolbar.interfaces.IToolbarLayer"
+        layer=".interfaces.IStandardTilesLayer"
         permission="zope.Public"/>
     <plone:tile
 
@@ -50,7 +50,7 @@
         manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
         class="plone.app.layout.viewlets.common.LogoViewlet"
         template="templates/logo_viewlet.pt"
-        layer="plone.app.toolbar.interfaces.IToolbarLayer"
+        layer=".interfaces.IStandardTilesLayer"
         permission="zope.Public"/>
 
       <plone:tile
