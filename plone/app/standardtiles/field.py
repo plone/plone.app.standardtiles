@@ -6,7 +6,7 @@ from plone.supermodel.utils import mergedTaggedValueDict
 from plone.autoform.interfaces import WIDGETS_KEY, READ_PERMISSIONS_KEY
 from plone.autoform.utils import resolveDottedName
 from plone.z3cform import z2
-from plone.app.deco.utils import PermissionChecker
+from plone.app.standardtiles.utils import PermissionChecker
 
 
 class DexterityFieldTile(DisplayForm, Tile):
