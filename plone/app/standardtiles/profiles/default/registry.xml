@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<registry>
+  <record name="plone.app.tiles">
+    <field type="plone.registry.field.List">
+      <title>Tiles</title>
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value purge="false">
+      <element>plone.app.standardtiles.attachment</element>
+      <element>plone.app.standardtiles.calendar</element>
+      <element>plone.app.standardtiles.description</element>
+      <element>plone.app.standardtiles.discussion</element>
+      <element>plone.app.standardtiles.document_byline</element>
+      <element>plone.app.standardtiles.keywords</element>
+      <element>plone.app.standardtiles.navigation</element>
+      <element>plone.app.standardtiles.portlet</element>
+      <element>plone.app.standardtiles.portletmanager</element>
+      <element>plone.app.standardtiles.proxy</element>
+      <element>plone.app.standardtiles.related_items</element>
+      <element>plone.app.standardtiles.rss</element>
+      <element>plone.app.standardtiles.tableofcontents</element>
+      <element>plone.app.standardtiles.text</element>
+      <element>plone.app.standardtiles.title</element>
+      <element>plone.app.standardtiles.title</element>
+      <element>plone.app.standardtiles.video</element>
+      <element>plone.app.standardtiles.viewletmanager</element>
+    </value>
+  </record>
+</registry>
