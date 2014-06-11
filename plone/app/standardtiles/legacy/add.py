@@ -21,6 +21,7 @@ from plone.app.portlets.browser.adding import PortletAdding as BasePortletAdding
 from plone.portlets.utils import hashPortletInfo
 
 
+
 class PortletAdding(BasePortletAdding):
     """ overrides portlet manager '+' view
     in order to get the hash of the portlet
@@ -85,3 +86,38 @@ def add_tile(context, request, portlet_hash):
     notify(ObjectAddedEvent(tile, context, tileId))
 
     return tileURL
+
+
+from plone.app.tiles import MessageFactory as _
+from plone.app.tiles.browser.add import DefaultAddView
+from plone.app.tiles.browser.add import DefaultAddForm
+from z3c.form import button
+
+
+class PortletTileAddForm(DefaultAddForm):
+
+    @button.buttonAndHandler(_('Save'), name='save')
+    def handleAdd(self, action):
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        mgr_name = 'plone.app.standardtiles.portletManager'
+        add_portlet_url = '/'.join([
+            self.context.absolute_url(),
+            '++contextportlets++{0}/+'.format(mgr_name),
+            data['portlet_type']
+        ])
+        self.request.response.redirect(add_portlet_url)
+
+    @button.buttonAndHandler(_(u'Cancel'), name='cancel')
+    def handleCancel(self, action):
+        # TODO
+        tileDataJson = {}
+        tileDataJson['action'] = "cancel"
+        url = self.request.getURL()
+        self.request.response.redirect(url)
+
+
+class PortletTileAddView(DefaultAddView):
+    form = PortletTileAddForm

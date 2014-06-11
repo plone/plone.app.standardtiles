@@ -51,4 +51,19 @@
     <!-- override assignment adapter for our portlet manager -->
     <adapter factory=".assignment.localPortletAssignmentMappingAdapter" />
 
+    <utility
+        name="standardtiles.available_portlets"
+        factory=".vocabularies.PortletsVocab"
+        provides="zope.schema.interfaces.IVocabularyFactory"
+        />
+
+    <adapter
+        for="zope.annotation.interfaces.IAnnotatable
+             zope.publisher.interfaces.browser.IDefaultBrowserLayer
+             plone.tiles.interfaces.ITileType"
+        provides="plone.app.tiles.interfaces.ITileAddView"
+        factory=".add.PortletTileAddView"
+        name="plone.app.standardtiles.portlet"
+        />
+
 </configure>
