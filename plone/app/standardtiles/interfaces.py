@@ -17,3 +17,9 @@ class IPortletManager(IPortletManager, IColumn):
     """ a custom portlet manager
     to render single portlets via tiles.
     """
+
+
+class IPortletManagerAssignment(Interface):
+    """ a custom assignment marker interface
+    for our portlet manager assignment.
+    """

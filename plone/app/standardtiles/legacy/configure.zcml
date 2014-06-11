@@ -41,13 +41,14 @@
 
     <!-- Adding view for portlet assignments -->
     <browser:view
-        for=".assignment.IOurAssignment"
+        for="plone.app.standardtiles.interfaces.IPortletManagerAssignment"
         name="+"
         class=".add.PortletAdding"
         allowed_interface="plone.app.portlets.browser.interfaces.IPortletAdding"
         permission="plone.app.portlets.ManagePortlets"
         />
 
+    <!-- override assignment adapter for our portlet manager -->
     <adapter factory=".assignment.localPortletAssignmentMappingAdapter" />
 
 </configure>
