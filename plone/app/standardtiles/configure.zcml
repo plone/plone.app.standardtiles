@@ -28,10 +28,11 @@
         />
 
     <!-- Tiles are divided in four zcml files -->
-    <include file="content.zcml"/>
-    <include file="head.zcml"/>
-    <include file="layout.zcml"/>
-    <include file="media.zcml"/>
+    <include file="content.zcml" />
+    <include file="head.zcml" />
+    <include file="layout.zcml" />
+    <include file="media.zcml" />
+    <include package=".legacy" />
 
 
     <plone:tile
@@ -91,29 +92,5 @@
         for="plone.dexterity.interfaces.IDexterityContent"
         permission="zope2.View"
         />
-
-    <plone:tile
-        name="plone.app.standardtiles.viewletmanager"
-        title="Viewlet Manager Tile"
-        description="A tile which displays a specified viewlet manager"
-        add_permission="zope.Public"
-        class=".legacy.ViewletManagerTile"
-        for="*"
-        permission="zope2.View"
-        schema=".legacy.IViewletManagerTile"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.portletmanager"
-        title="Portlet Manager Tile"
-        description="A tile which displays a specified portlet manager"
-        add_permission="zope.Public"
-        class=".legacy.PortletManagerTile"
-        for="*"
-        permission="zope2.View"
-        schema=".legacy.IPortletManagerTile"
-        />
-
-
 
 </configure>
