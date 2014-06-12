@@ -12,6 +12,7 @@
       <element>plone.app.standardtiles.discussion</element>
       <element>plone.app.standardtiles.document_byline</element>
       <element>plone.app.standardtiles.keywords</element>
+      <element>plone.app.standardtiles.lockinfo</element>
       <element>plone.app.standardtiles.navigation</element>
       <element>plone.app.standardtiles.portlet</element>
       <element>plone.app.standardtiles.portletmanager</element>
@@ -20,7 +21,6 @@
       <element>plone.app.standardtiles.rss</element>
       <element>plone.app.standardtiles.tableofcontents</element>
       <element>plone.app.standardtiles.text</element>
-      <element>plone.app.standardtiles.title</element>
       <element>plone.app.standardtiles.title</element>
       <element>plone.app.standardtiles.video</element>
       <element>plone.app.standardtiles.viewletmanager</element>
