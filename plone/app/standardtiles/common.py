@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.tiles.tile import Tile
 from datetime import date
 from zope.component import getMultiAdapter, queryMultiAdapter

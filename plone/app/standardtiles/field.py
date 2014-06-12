@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from z3c.form.form import DisplayForm
 from z3c.form.field import Fields
 from plone.dexterity.utils import iterSchemata

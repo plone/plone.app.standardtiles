@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from cgi import escape
 from Acquisition import aq_inner
 from Products.PythonScripts.standard import url_quote

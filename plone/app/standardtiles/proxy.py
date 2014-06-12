@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.tiles import PersistentTile
 from plone.directives import form as directivesform
 from Products.Five.browser import BrowserView

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.directives.form import Schema
