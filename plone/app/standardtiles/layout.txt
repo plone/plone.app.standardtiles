@@ -54,7 +54,7 @@ And on a content object with title::
 
     >>> browser.open(pageURL + '/@@plone.app.standardtiles.headtitle')
     >>> browser.contents
-    '...<title>A simple page &mdash; Plone site</title>...'
+    '...<title>A simple page &#8212; Plone site</title>...'
 
 The author link tile renders a link tag pointing to a page with info
 about the creator of the context::
@@ -92,7 +92,7 @@ Empty analytics tile::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.analytics')
     >>> unprivileged_browser.contents
-    '<html><body></body></html>'
+    '...<html><body></body></html>'
 
 Now insert an example Google Analytics script::
 
