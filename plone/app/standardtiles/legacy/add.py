@@ -4,9 +4,13 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from plone.app.portlets.browser.adding import PortletAdding as BasePortletAdding
 from plone.app.portlets.interfaces import IPortletPermissionChecker
+from plone.app.tiles import MessageFactory as _
+from plone.app.tiles.browser.add import DefaultAddForm
+from plone.app.tiles.browser.add import DefaultAddView
 from plone.portlets.utils import hashPortletInfo
 from plone.tiles.interfaces import ITileDataManager
 from plone.uuid.interfaces import IUUIDGenerator
+from z3c.form import button
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
 from zope.event import notify
@@ -79,12 +83,6 @@ def add_tile(context, request, portlet_hash):
     notify(ObjectAddedEvent(tile, context, tileId))
 
     return tileURL
-
-
-from plone.app.tiles import MessageFactory as _
-from plone.app.tiles.browser.add import DefaultAddView
-from plone.app.tiles.browser.add import DefaultAddForm
-from z3c.form import button
 
 
 class PortletTileAddForm(DefaultAddForm):
