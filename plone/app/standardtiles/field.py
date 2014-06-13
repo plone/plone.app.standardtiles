@@ -12,8 +12,7 @@ from z3c.form.field import Fields
 
 
 class DexterityFieldTile(DisplayForm, Tile):
-    """Field tile for Dexterity content
-    """
+    """Field tile for Dexterity content."""
 
     def __init__(self, context, request):
         Tile.__init__(self, context, request)

@@ -8,16 +8,14 @@ import re
 
 
 class IVideoTile(directivesform.Schema):
-    """Video tile
-    """
+    """Video tile."""
 
     youtubeURL = schema.TextLine(title=_(u"Youtube URL"), required=True)
 
 
 class VideoTile(PersistentTile):
     """A tile that displays a youtube movie. Purely as a proof of concept and
-       to showcase possibilities of Deco
-    """
+    to showcase possibilities of Deco."""
 
     def __call__(self):
         youtubeURL = self.data.get('youtubeURL')

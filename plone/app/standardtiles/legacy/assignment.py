@@ -24,8 +24,7 @@ class Mapping(PortletAssignmentMapping):
 @adapter(ILocalPortletAssignable, IPortletManager)
 @implementer(IPortletAssignmentMapping)
 def localPortletAssignmentMappingAdapter(context, manager):
-    """
-    this is pretty much the same code of the original one from
+    """This is pretty much the same code of the original one from
 
     `plone.app.portlets.assignable.localPortletAssignmentMappingAdapter`
 

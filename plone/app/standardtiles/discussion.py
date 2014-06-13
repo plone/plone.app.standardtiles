@@ -29,7 +29,7 @@ from plone.z3cform import layout
 
 
 class ConversationView(object):
-    """ Discussion is allowed if it is globally enabled """
+    """Discussion is allowed if it is globally enabled."""
 
     def enabled(self):
         # Fetch discussion registry
@@ -55,7 +55,7 @@ class DiscussionForm(CommentForm):
             return self.request.ACTUAL_URL
 
 class DiscussionTile(Tile, layout.FormWrapper):
-    """ Discussion tile. """
+    """Discussion tile."""
 
     form = CommentForm
     index = ViewPageTemplateFile('templates/discussion.pt')

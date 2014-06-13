@@ -5,8 +5,7 @@ from urllib import quote
 
 
 class KeywordsTile(PersistentTile):
-    """A tile that displays the context's keywords, if any.
-    """
+    """A tile that displays the context's keywords, if any."""
 
     @property
     def categories(self):

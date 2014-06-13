@@ -22,8 +22,7 @@ FEED_DATA = {}  # url: ({date, title, url, itemlist})
 
 
 class IRSSTile(Schema):
-    """RSS tile schema interface
-    """
+    """RSS tile schema interface."""
 
     portlet_title = schema.TextLine(
         title=_(u"Title"),
@@ -53,8 +52,7 @@ class IRSSTile(Schema):
 
 
 class RSSTile(PersistentTile):
-    """The RSS tile displays a configured RSS feed.
-    """
+    """The RSS tile displays a configured RSS feed."""
 
     def __call__(self):
         self.context_state = getMultiAdapter((self.context, self.request),
@@ -119,49 +117,49 @@ class RSSTile(PersistentTile):
 class IFeed(Interface):
 
     def __init__(url, timeout):
-        """initialize the feed with the given url. will not automatically load
-        it timeout defines the time between updates in minutes
+        """Initialize the feed with the given url. will not automatically load
+        it timeout defines the time between updates in minutes.
         """
 
     def loaded():
-        """return if this feed is in a loaded state"""
+        """Return if this feed is in a loaded state."""
 
     def title():
-        """return the title of the feed"""
+        """Return the title of the feed."""
 
     def items():
-        """return the items of the feed"""
+        """Return the items of the feed."""
 
     def feed_link():
-        """return the url of this feed in feed:// format"""
+        """Return the url of this feed in feed:// format."""
 
     def site_url():
-        """return the URL of the site"""
+        """Return the URL of the site."""
 
     def last_update_time_in_minutes():
-        """return the time this feed was last updated in minutes since epoch"""
+        """Return the time this feed was last updated in minutes since epoch.
+        """
 
     def last_update_time():
-        """return the time the feed was last updated as DateTime object"""
+        """Return the time the feed was last updated as DateTime object."""
 
     def needs_update():
-        """return if this feed needs to be updated"""
+        """return if this feed needs to be updated."""
 
     def update():
-        """update this feed. will automatically check failure state etc.
-        returns True or False whether it succeeded or not
+        """Update this feed. will automatically check failure state etc.
+        returns True or False whether it succeeded or not.
         """
 
     def update_failed():
-        """return if the last update failed or not"""
+        """Return if the last update failed or not."""
 
     def ok():
-        """is this feed ok to display?"""
+        """Is this feed ok to display?"""
 
 
 class RSSFeed(object):
-    """an RSS feed
-    """
+    """An RSS feed."""
 
     implements(IFeed)
 
@@ -184,12 +182,12 @@ class RSSFeed(object):
 
     @property
     def last_update_time_in_minutes(self):
-        """return the time the last update was done in minutes"""
+        """Return the time the last update was done in minutes."""
         return self._last_update_time_in_minutes
 
     @property
     def last_update_time(self):
-        """return the time the last update was done in minutes"""
+        """Return the time the last update was done in minutes."""
         return self._last_update_time
 
     @property
@@ -202,17 +200,17 @@ class RSSFeed(object):
 
     @property
     def loaded(self):
-        """return whether this feed is loaded or not"""
+        """Return whether this feed is loaded or not."""
         return self._loaded
 
     @property
     def needs_update(self):
-        """check if this feed needs updating"""
+        """Check if this feed needs updating."""
         now = time.time() / 6
         return (self.last_update_time_in_minutes + self.timeout) < now
 
     def update(self):
-        """update this feed"""
+        """Update this feed."""
         now = time.time() / 60    # time in minutes
 
         # check for failure and retry
@@ -229,7 +227,7 @@ class RSSFeed(object):
         return self.ok
 
     def _retrieveFeed(self):
-        """do the actual work and try to retrieve the feed"""
+        """Do the actual work and try to retrieve the feed."""
         url = self.url
         if url != '':
             self._last_update_time_in_minutes = time.time() / 60
@@ -275,15 +273,15 @@ class RSSFeed(object):
 
     @property
     def feed_link(self):
-        """return rss url of feed for portlet"""
+        """Return rss url of feed for portlet."""
         return self.url.replace("http://", "feed://")
 
     @property
     def title(self):
-        """return title of feed for portlet"""
+        """Return title of feed for portlet."""
         return self._title
 
     @property
     def siteurl(self):
-        """return the link to the site the RSS feed points to"""
+        """Return the link to the site the RSS feed points to."""
         return self._siteurl

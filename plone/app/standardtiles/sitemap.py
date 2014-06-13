@@ -7,8 +7,7 @@ from zope.interface import implements
 
 
 class ISitemapTile(Schema):
-    """A tile which can render the sitemap
-    """
+    """A tile which can render the sitemap."""
     name = schema.TextLine(
             title=_(u"Title"),
             description=_(u"The title of the sitemap."),

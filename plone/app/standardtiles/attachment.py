@@ -88,8 +88,7 @@ class AttachmentTileDownload(object):
         raise NotFound(name)
 
     def __call__(self):
-        """Render the file to the browser
-        """
+        """Render the file to the browser."""
         files = self.context.data.get('files', ())
 
         try:

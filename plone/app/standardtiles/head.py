@@ -9,8 +9,7 @@ from zope.component import getMultiAdapter
 
 
 class TitleTile(Tile):
-    """A tile rendering the title tag to be inserted in the HTML headers.
-    """
+    """A tile rendering the title tag to be inserted in the HTML headers."""
 
     def __call__(self):
         self.update()
@@ -30,8 +29,7 @@ class TitleTile(Tile):
 
 
 class StylesheetsTile(Tile):
-    """A stylesheets rendering tile
-    """
+    """A stylesheets rendering tile."""
 
     def registry(self):
         return getToolByName(aq_inner(self.context), 'portal_css')
@@ -80,8 +78,7 @@ class StylesheetsTile(Tile):
 
 
 class JavascriptsTile(Tile):
-    """A javascripts rendering tile
-    """
+    """A javascripts rendering tile."""
 
     def registry(self):
         return getToolByName(aq_inner(self.context), 'portal_javascripts')
@@ -117,8 +114,7 @@ class JavascriptsTile(Tile):
 
 
 class FaviconLinkTile(Tile):
-    """Favicon link tile implementation.
-    """
+    """Favicon link tile implementation."""
 
     @property
     def site_url(self):
@@ -128,8 +124,7 @@ class FaviconLinkTile(Tile):
 
 
 class AuthorLinkTile(Tile):
-    """Author link tile implementation.
-    """
+    """Author link tile implementation."""
 
     @property
     def navigation_root_url(self):
@@ -151,8 +146,7 @@ class AuthorLinkTile(Tile):
 
 
 class NavigationLinkTile(Tile):
-    """Navigation link tile implementation.
-    """
+    """Navigation link tile implementation."""
 
     @property
     def navigation_root_url(self):
@@ -162,8 +156,7 @@ class NavigationLinkTile(Tile):
 
 
 class SearchLinkTile(Tile):
-    """Search link tile implementation.
-    """
+    """Search link tile implementation."""
 
     @property
     def navigation_root_url(self):
@@ -173,8 +166,7 @@ class SearchLinkTile(Tile):
 
 
 class RSSLinkTile(Tile):
-    """RSS link tile implementation.
-    """
+    """RSS link tile implementation."""
 
     def allowed(self):
         syntool = getToolByName(self.context, 'portal_syndication')

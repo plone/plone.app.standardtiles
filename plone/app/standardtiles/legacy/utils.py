@@ -4,8 +4,7 @@ from zope.component import queryMultiAdapter
 
 
 def findView(tile, viewName):
-    """Find the view to use for portlet/viewlet context lookup
-    """
+    """Find the view to use for portlet/viewlet context lookup."""
 
     view = tile
     prequest = tile.request.get('PARENT_REQUEST', None)

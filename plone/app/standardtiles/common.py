@@ -15,13 +15,11 @@ from zope.component import queryMultiAdapter
 
 
 class TextTile(Tile):
-    """A text tile
-    """
+    """A text tile."""
 
 
 class FooterTile(Tile):
-    """A footer tile
-    """
+    """A footer tile."""
 
     @property
     def year(self):
@@ -29,8 +27,7 @@ class FooterTile(Tile):
 
 
 class SiteActionsTile(Tile):
-    """A site actions tile
-    """
+    """A site actions tile."""
 
     def site_actions(self):
         context_state = getMultiAdapter((self.context, self.request),
@@ -39,8 +36,7 @@ class SiteActionsTile(Tile):
 
 
 class AnalyticsTile(Tile):
-    """A analytics tile
-    """
+    """A analytics tile."""
 
     def __call__(self):
         ptool = getToolByName(self.context, "portal_properties")
@@ -49,8 +45,7 @@ class AnalyticsTile(Tile):
 
 
 class SkipLinksTile(Tile):
-    """A skip links tile
-    """
+    """A skip links tile."""
 
     @property
     def current_page_url(self):
@@ -60,8 +55,7 @@ class SkipLinksTile(Tile):
 
 
 class LoginTile(Tile):
-    """Login tile
-    """
+    """Login tile."""
 
     def __call__(self):
         context = aq_inner(self.context)
@@ -141,8 +135,7 @@ class LoginTile(Tile):
 
 
 class PersonalBarTile(Tile):
-    """A personal bar tile
-    """
+    """A personal bar tile."""
 
     def __call__(self):
         self.portal_state = getMultiAdapter((self.context, self.request),
@@ -187,8 +180,7 @@ class PersonalBarTile(Tile):
 
 
 class SearchBoxTile(Tile):
-    """A search box tile
-    """
+    """A search box tile."""
 
     def __call__(self):
         self.portal_state = getMultiAdapter((self.context, self.request),
@@ -215,8 +207,7 @@ class SearchBoxTile(Tile):
 
 
 class LogoTile(Tile):
-    """A logo tile
-    """
+    """A logo tile."""
 
     def __call__(self):
         self.portal_state = getMultiAdapter((self.context, self.request),
@@ -239,8 +230,7 @@ class LogoTile(Tile):
 
 
 class GlobalSectionsTile(Tile):
-    """A global sections tile
-    """
+    """A global sections tile."""
 
     def __call__(self):
         self.update()
@@ -287,8 +277,7 @@ class GlobalSectionsTile(Tile):
 
 
 class PathBarTile(Tile):
-    """A path bar tile
-    """
+    """A path bar tile."""
 
     def __call__(self):
         self.portal_state = getMultiAdapter((self.context, self.request),
@@ -307,8 +296,7 @@ class PathBarTile(Tile):
 
 
 class MenuLinkTile(Tile):
-    """An menu link tile
-    """
+    """An menu link tile."""
 
     def getLink(self):
         return self.context.absolute_url()+"/@@cmsui-menu"
@@ -321,8 +309,7 @@ class MenuLinkTile(Tile):
             return True
 
 class EditBarTile(Tile):
-    """A edit bar tile
-    """
+    """A edit bar tile."""
 
     @memoize
     def prepareObjectTabs(self, default_tab='view',
@@ -412,8 +399,7 @@ class EditBarTile(Tile):
 
 
 class DocumentBylineTile(Tile):
-    """A document byline tile
-    """
+    """A document byline tile."""
 
     def __call__(self):
         self.update()
@@ -488,8 +474,7 @@ class DocumentBylineTile(Tile):
 
 
 class LockInfoTile(Tile):
-    """A lockinfo tile
-    """
+    """A lockinfo tile."""
 
     def __call__(self):
         if not self.available() or not ITTWLockable.providedBy(self.context):
@@ -526,8 +511,7 @@ class NextPreviousTile(Tile):
 
 
 class DocumentActionsTile(Tile):
-    """Shows the document actions.
-    """
+    """Shows the document actions."""
 
     def __call__(self):
         self.update()
@@ -540,8 +524,7 @@ class DocumentActionsTile(Tile):
 
 
 class RelatedItemsTile(Tile):
-    """A related items tile
-    """
+    """A related items tile."""
 
     def related_items(self):
         context = aq_inner(self.context)
@@ -565,8 +548,7 @@ class HistoryTile(Tile):
 
 
 class LanguageSelectorTile(Tile):
-    """Shows the language selector.
-    """
+    """Shows the language selector."""
 
     def __call__(self):
         self.update()

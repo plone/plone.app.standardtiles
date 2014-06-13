@@ -27,8 +27,7 @@ from zope.interface import implements
 
 
 class INavigationTile(Schema):
-    """A tile which can render the navigation tree
-    """
+    """A tile which can render the navigation tree."""
 
     name = schema.TextLine(
             title=_(u"Title"),
@@ -209,8 +208,7 @@ class QueryBuilder(NavtreeQueryBuilder):
 
 
 class NavtreeStrategy(SitemapNavtreeStrategy):
-    """The navtree strategy used for the default navigation tile
-    """
+    """The navtree strategy used for the default navigation tile."""
     implements(INavtreeStrategy)
     adapts(Interface, INavigationTile)
 
@@ -243,8 +241,7 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
 
 
 def getRootPath(context, currentFolderOnly, topLevel, root):
-    """Helper function to calculate the real root path
-    """
+    """Helper function to calculate the real root path."""
     context = aq_inner(context)
     if currentFolderOnly:
         folderish = getattr(aq_base(context),

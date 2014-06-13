@@ -20,15 +20,12 @@ from zope.traversing.browser.absoluteurl import absoluteURL
 
 
 class PortletAdding(BasePortletAdding):
-    """ overrides portlet manager '+' view
-    in order to get the hash of the portlet
-    after creation and make the form redirect
-    to the tile URL.
+    """Overrides portlet manager '+' view in order to get the hash of the
+    portlet after creation and make the form redirect to the tile URL.
     """
 
     def add(self, content):
-        """Add the rule to the context
-        """
+        """Add the rule to the context."""
         context = aq_inner(self.context)
         manager = aq_base(context)
 

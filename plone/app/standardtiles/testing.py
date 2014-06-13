@@ -11,13 +11,11 @@ from zope.interface import implementer
 
 
 class IFunkyWidget(interfaces.IWidget):
-    """Funky, useless widget for testing
-    """
+    """Funky, useless widget for testing."""
 
 
 class FunkyWidget(widget.HTMLTextInputWidget, Widget):
-    """Funky widget implementation.
-    """
+    """Funky widget implementation."""
     implementsOnly(IFunkyWidget)
 
     klass = u'funky-widget'
@@ -31,8 +29,7 @@ class FunkyWidget(widget.HTMLTextInputWidget, Widget):
 @adapter(schema.interfaces.IField, interfaces.IFormLayer)
 @implementer(interfaces.IFieldWidget)
 def FunkyFieldWidget(field, request):
-    """IFieldWidget factory for FunkyWidget.
-    """
+    """IFieldWidget factory for FunkyWidget."""
     return FieldWidget(field, FunkyWidget(request))
 
 
