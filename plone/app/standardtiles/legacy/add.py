@@ -18,7 +18,6 @@ from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectCreatedEvent
 from zope.traversing.browser.absoluteurl import absoluteURL
 
-
 class PortletAdding(BasePortletAdding):
     """Overrides portlet manager '+' view in order to get the hash of the
     portlet after creation and make the form redirect to the tile URL.

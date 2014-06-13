@@ -66,4 +66,19 @@
         name="plone.app.standardtiles.portlet"
         />
 
+    <adapter
+        for="zope.annotation.interfaces.IAnnotatable
+             zope.publisher.interfaces.browser.IDefaultBrowserLayer
+             plone.tiles.interfaces.ITileType"
+        provides="plone.app.tiles.interfaces.ITileEditView"
+        factory=".edit.PortletTileEditView"
+        name="plone.app.standardtiles.portlet"
+        />
+
+    <subscriber
+        for="plone.app.standardtiles.legacy.portlet.IPortletTile
+             zope.lifecycleevent.interfaces.IObjectRemovedEvent"
+        handler=".subscribers.delete_portlet_tile"
+        />
+
 </configure>
