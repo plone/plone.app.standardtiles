@@ -6,19 +6,47 @@
       <value_type type="plone.registry.field.TextLine" />
     </field>
     <value purge="false">
+      <element>plone.app.standardtiles.analytics</element>
       <element>plone.app.standardtiles.attachment</element>
+      <element>plone.app.standardtiles.authorlink</element>
       <element>plone.app.standardtiles.calendar</element>
+      <element>plone.app.standardtiles.colophon</element>
+      <element>plone.app.standardtiles.configlets</element>
       <element>plone.app.standardtiles.description</element>
       <element>plone.app.standardtiles.discussion</element>
+      <element>plone.app.standardtiles.document_actions</element>
       <element>plone.app.standardtiles.document_byline</element>
+      <element>plone.app.standardtiles.edit_bar</element>
+      <element>plone.app.standardtiles.faviconlink</element>
+      <element>plone.app.standardtiles.field</element>
+      <element>plone.app.standardtiles.footer</element>
+      <element>plone.app.standardtiles.global_sections</element>
+      <element>plone.app.standardtiles.headtitle</element>
+      <element>plone.app.standardtiles.history</element>
+      <element>plone.app.standardtiles.javascripts</element>
       <element>plone.app.standardtiles.keywords</element>
+      <element>plone.app.standardtiles.languageselector</element>
       <element>plone.app.standardtiles.lockinfo</element>
+      <element>plone.app.standardtiles.login</element>
+      <element>plone.app.standardtiles.logo</element>
+      <element>plone.app.standardtiles.menu_link</element>
       <element>plone.app.standardtiles.navigation</element>
+      <element>plone.app.standardtiles.navigationlink</element>
+      <element>plone.app.standardtiles.nextprevious</element>
+      <element>plone.app.standardtiles.path_bar</element>
+      <element>plone.app.standardtiles.personal_bar</element>
       <element>plone.app.standardtiles.portlet</element>
       <element>plone.app.standardtiles.portletmanager</element>
       <element>plone.app.standardtiles.proxy</element>
       <element>plone.app.standardtiles.related_items</element>
       <element>plone.app.standardtiles.rss</element>
+      <element>plone.app.standardtiles.rsslink</element>
+      <element>plone.app.standardtiles.searchbox</element>
+      <element>plone.app.standardtiles.searchlink</element>
+      <element>plone.app.standardtiles.site_actions</element>
+      <element>plone.app.standardtiles.sitemap</element>
+      <element>plone.app.standardtiles.skip_links</element>
+      <element>plone.app.standardtiles.stylesheets</element>
       <element>plone.app.standardtiles.tableofcontents</element>
       <element>plone.app.standardtiles.text</element>
       <element>plone.app.standardtiles.title</element>
