@@ -21,6 +21,13 @@ from zope.interface import implements
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
 
+NORMAL_USER_NAME = 'user'
+NORMAL_USER_PASSWORD = 'secret'
+EDITOR_USER_NAME = 'editor'
+EDITOR_USER_PASSWORD = 'confidential'
+MANAGER_USER_NAME = 'manager'
+MANAGER_USER_PASSWORD = 'topsecret'
+
 
 class IMockPortletManager(IPortletManager):
     """Marker interface for the mock portlet manager."""
@@ -76,13 +83,6 @@ class PAStandardtiles(PloneSandboxLayer):
 class PAStandardtilesTestType(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 
-    NORMAL_USER_NAME = 'user'
-    NORMAL_USER_PASSWORD = 'secret'
-    EDITOR_USER_NAME = 'editor'
-    EDITOR_USER_PASSWORD = 'confidential'
-    MANAGER_USER_NAME = 'manager'
-    MANAGER_USER_PASSWORD = 'topsecret'
-
     def setUpZope(self, app, configurationContext):
         # load ZCML
         import plone.app.standardtiles
@@ -99,20 +99,20 @@ class PAStandardtilesTestType(PloneSandboxLayer):
         # Creates some users
         acl_users = getToolByName(portal, 'acl_users')
         acl_users.userFolderAddUser(
-            self.NORMAL_USER_NAME,
-            self.NORMAL_USER_PASSWORD,
+            NORMAL_USER_NAME,
+            NORMAL_USER_PASSWORD,
             ['Member'],
             [],
         )
         acl_users.userFolderAddUser(
-            self.EDITOR_USER_NAME,
-            self.EDITOR_USER_PASSWORD,
+            EDITOR_USER_NAME,
+            EDITOR_USER_PASSWORD,
             ['Editor'],
             [],
         )
         acl_users.userFolderAddUser(
-            self.MANAGER_USER_NAME,
-            self.MANAGER_USER_PASSWORD,
+            MANAGER_USER_NAME,
+            MANAGER_USER_PASSWORD,
             ['Manager'],
             [],
         )
@@ -125,7 +125,7 @@ class PAStandardtilesTestType(PloneSandboxLayer):
         schema = fti.lookupSchema()
 
         # inserts the content of the types defined above
-        login(portal, self.MANAGER_USER_NAME)
+        login(portal, MANAGER_USER_NAME)
         content = portal[portal.invokeFactory('DecoTestType1',
                                               'deco-test-type1')]
         content.title = u"Test content"
