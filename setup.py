@@ -11,7 +11,7 @@ setup(name='plone.app.standardtiles',
       version=version,
       description="",
       long_description=open("README.rst").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+                       open(os.path.join("docs", "HISTORY.rst")).read(),
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
