@@ -600,7 +600,7 @@ class LanguageSelectorTile(Tile):
         return sorted(languages, key=index)
 
     def showFlags(self):
-        """Do we use flags?."""
+        """XXX: Do we use flags?."""
         if self.tool is not None:
             return self.tool.showFlags()
         return False
