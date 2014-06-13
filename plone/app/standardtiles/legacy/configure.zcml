@@ -84,10 +84,4 @@
         name="plone.app.standardtiles.portlet"
         />
 
-    <subscriber
-        for="plone.app.standardtiles.legacy.portlet.IPortletTile
-             zope.lifecycleevent.interfaces.IObjectRemovedEvent"
-        handler=".subscribers.delete_portlet_tile"
-        />
-
 </configure>
