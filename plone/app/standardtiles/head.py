@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from cgi import escape
 from Acquisition import aq_inner
-from Products.PythonScripts.standard import url_quote
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
+from Products.PythonScripts.standard import url_quote
+from cgi import escape
 from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
 

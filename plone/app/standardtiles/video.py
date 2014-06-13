@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
+from plone.app.standardtiles import PloneMessageFactory as _
+from plone.directives import form as directivesform
+from plone.tiles import PersistentTile
 from zope import schema
 
 import re
-
-from plone.directives import form as directivesform
-from plone.tiles import PersistentTile
-
-from plone.app.standardtiles import PloneMessageFactory as _
 
 
 class IVideoTile(directivesform.Schema):

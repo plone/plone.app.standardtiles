@@ -1,18 +1,11 @@
 #-*- coding: utf-8 -*-
-
+from plone.portlets.interfaces import IPortletManager
 from zope.interface import implements
-from zope.schema.vocabulary import SimpleVocabulary
-from zope.schema.vocabulary import SimpleTerm
-from zope.schema.interfaces import IVocabularyFactory
-from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.globalrequest import getRequest
-
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.interfaces import IPortletManagerRenderer
-from plone.portlets.interfaces import IPortletRetriever
-
-from plone.i18n.normalizer import idnormalizer
+from zope.schema.vocabulary import SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.interfaces import IVocabularyFactory
 
 
 PORTLET_MANAGER = 'plone.app.standardtiles.portletManager'

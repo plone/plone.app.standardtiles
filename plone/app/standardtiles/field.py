@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
+from plone.app.standardtiles.utils import PermissionChecker
+from plone.autoform.interfaces import READ_PERMISSIONS_KEY
+from plone.autoform.interfaces import WIDGETS_KEY
+from plone.autoform.utils import resolveDottedName
+from plone.dexterity.utils import iterSchemata
+from plone.supermodel.utils import mergedTaggedValueDict
+from plone.tiles import Tile
+from plone.z3cform import z2
 from z3c.form.form import DisplayForm
 from z3c.form.field import Fields
-from plone.dexterity.utils import iterSchemata
-from plone.tiles import Tile
-from plone.supermodel.utils import mergedTaggedValueDict
-from plone.autoform.interfaces import WIDGETS_KEY, READ_PERMISSIONS_KEY
-from plone.autoform.utils import resolveDottedName
-from plone.z3cform import z2
-from plone.app.standardtiles.utils import PermissionChecker
 
 
 class DexterityFieldTile(DisplayForm, Tile):

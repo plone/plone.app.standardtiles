@@ -1,17 +1,12 @@
 #-*- coding: utf-8 -*-
-
+from zope import schema
 from zope.interface import Interface
 from zope.interface import implements
 from zope.component import getUtility
-
-from zope import schema
-
-from plone.tiles import Tile
-
-from plone.portlets.interfaces import IPortletManager
-
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.legacy.utils import findView
+from plone.portlets.interfaces import IPortletManager
+from plone.tiles import Tile
 
 
 class IPortletManagerTile(Interface):

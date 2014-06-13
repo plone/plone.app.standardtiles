@@ -1,32 +1,29 @@
 # -*- coding: utf-8 -*-
-from zope import schema
-from zope.interface import implements
-from zope.interface import Interface
-from zope.component import adapts
-from zope.component import queryUtility
-from zope.component import getMultiAdapter
-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy, NavtreeQueryBuilder
 from Products.CMFDynamicViewFTI.interface import IBrowserDefault
+from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
+from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
+from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-
-from plone.tiles import PersistentTile
-from plone.memoize.instance import memoize
+from plone.app.layout.navigation.defaultpage import isDefaultPage
+from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
+from plone.app.layout.navigation.interfaces import INavtreeStrategy
+from plone.app.layout.navigation.navtree import buildFolderTree
+from plone.app.layout.navigation.root import getNavigationRoot
+from plone.app.standardtiles import PloneMessageFactory as _
 from plone.directives.form import Schema
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-
-from plone.app.layout.navigation.root import getNavigationRoot
-from plone.app.layout.navigation.navtree import buildFolderTree
-from plone.app.layout.navigation.defaultpage import isDefaultPage
-from plone.app.layout.navigation.interfaces import INavtreeStrategy
-from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
-from plone.app.standardtiles import PloneMessageFactory as _
+from plone.memoize.instance import memoize
+from plone.tiles import PersistentTile
+from zope import schema
+from zope.component import adapts
+from zope.component import getMultiAdapter
+from zope.component import queryUtility
+from zope.interface import Interface
+from zope.interface import implements
 
 
 class INavigationTile(Schema):

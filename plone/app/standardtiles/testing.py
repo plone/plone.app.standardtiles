@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-from zope import schema
-
-from zope.component import adapter
-from zope.interface import implementsOnly, implementer
-
-from z3c.form import interfaces
-from z3c.form.widget import Widget, FieldWidget
-from z3c.form.browser import widget
-
 from plone.directives import form, dexterity
+from z3c.form import interfaces
+from z3c.form.browser import widget
+from z3c.form.widget import FieldWidget
+from z3c.form.widget import Widget
+from zope import schema
+from zope.component import adapter
+from zope.interface import implementsOnly
+from zope.interface import implementer
 
 
 class IFunkyWidget(interfaces.IWidget):

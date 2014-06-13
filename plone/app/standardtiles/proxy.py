@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-from plone.tiles import PersistentTile
-from plone.directives import form as directivesform
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from lxml import etree, cssselect
-from z3c.relationfield.schema import RelationChoice
-from plone.app.standardtiles.source import IntIdSourceBinder
-from zope.intid.interfaces import IIntIds
-from zope.component import getUtility
-
 from plone.app.standardtiles import PloneMessageFactory as _
+from plone.app.standardtiles.source import IntIdSourceBinder
+from plone.directives import form as directivesform
+from plone.tiles import PersistentTile
+from z3c.relationfield.schema import RelationChoice
+from zope.component import getUtility
+from zope.intid.interfaces import IIntIds
 
 
 class IProxyTile(directivesform.Schema):

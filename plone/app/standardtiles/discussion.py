@@ -1,25 +1,20 @@
 # -*- coding: utf-8 -*-
-from urllib import quote as url_quote
-
 from Acquisition import aq_inner
 from AccessControl import getSecurityManager
 from DateTime import DateTime
-
-from zope.component import createObject, queryUtility
-from zope.interface import alsoProvides
-from z3c.form.interfaces import IFormLayer
-from z3c.form import button
-
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
-
-from plone.registry.interfaces import IRegistry
 from plone.app.discussion.interfaces import IConversation
 from plone.app.discussion.interfaces import IDiscussionSettings
 from plone.app.discussion.browser.comments import CommentForm
-from plone.app.discussion import PloneAppDiscussionMessageFactory as _
+from plone.registry.interfaces import IRegistry
 from plone.tiles import Tile
 from plone.z3cform import z2
+from urllib import quote as url_quote
+from z3c.form.interfaces import IFormLayer
+from zope.component import queryUtility
+from zope.interface import alsoProvides
+
 
 # starting from 0.6.0 version plone.z3cform has IWrappedForm interface
 try:

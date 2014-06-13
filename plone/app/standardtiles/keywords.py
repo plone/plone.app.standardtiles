@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+from plone.app.standardtiles.utils import getNavigationRoot
 from plone.tiles import PersistentTile
 from urllib import quote
-from plone.app.standardtiles.utils import getNavigationRoot
 
 
 class KeywordsTile(PersistentTile):

@@ -1,22 +1,15 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implementer
-from zope.interface import Interface
-from zope.component import adapter
-from zope.annotation.interfaces import IAnnotations
-
-from plone.portlets.interfaces import IPortletAssignmentMapping
-from plone.portlets.interfaces import ILocalPortletAssignable
-
-from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
-from plone.portlets.constants import CONTEXT_CATEGORY
-
 from BTrees.OOBTree import OOBTree
-
 from plone.app.portlets.storage import PortletAssignmentMapping
-
 from plone.app.standardtiles.interfaces import IPortletManager
 from plone.app.standardtiles.interfaces import IPortletManagerAssignment
-
+from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
+from plone.portlets.constants import CONTEXT_CATEGORY
+from plone.portlets.interfaces import IPortletAssignmentMapping
+from plone.portlets.interfaces import ILocalPortletAssignable
+from zope.annotation.interfaces import IAnnotations
+from zope.component import adapter
+from zope.interface import implementer
 
 # The '+' view of the portlet manager
 # is applied on the assignment not on the manager itself.

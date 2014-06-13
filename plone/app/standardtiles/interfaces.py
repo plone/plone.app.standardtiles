@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from zope.interface import Interface
-
-from plone.portlets.interfaces import IPortletManager
 from plone.app.portlets.interfaces import IColumn
+from plone.portlets.interfaces import IPortletManager
+from zope.interface import Interface
 
 
 class IMetadataTile(Interface):

@@ -1,14 +1,11 @@
 #-*- coding: utf-8 -*-
-
-from zope.interface import Interface
-from zope.interface import implements
-from zope.component import getMultiAdapter
-from zope import schema
-
-from plone.tiles import Tile
-from plone.autoform import directives as form
-
 from plone.app.standardtiles import PloneMessageFactory as _
+from plone.autoform import directives as form
+from plone.tiles import Tile
+from zope import schema
+from zope.component import getMultiAdapter
+from zope.interface import implements
+from zope.interface import Interface
 
 
 class IPortletTile(Interface):

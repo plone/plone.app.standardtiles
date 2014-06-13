@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-from zope.component import getUtility
-
-from zope.schema.vocabulary import SimpleTerm
-
-from zope.intid.interfaces import IIntIds
-
 from plone.formwidget.contenttree.source import PathSource
 from plone.formwidget.contenttree.source import PathSourceBinder
+from zope.component import getUtility
+from zope.intid.interfaces import IIntIds
+from zope.schema.vocabulary import SimpleTerm
 
 
 class IntIdSource(PathSource):

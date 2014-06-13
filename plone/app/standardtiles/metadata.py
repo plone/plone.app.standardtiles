@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from zope.interface import implements
-from plone.tiles.tile import Tile
-
 from plone.app.standardtiles.interfaces import IMetadataTile
+from plone.tiles.tile import Tile
+from zope.interface import implements
+
 
 
 class BaseMetadataTile(Tile):

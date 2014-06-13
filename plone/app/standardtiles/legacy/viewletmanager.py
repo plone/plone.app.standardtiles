@@ -1,17 +1,12 @@
 #-*- coding: utf-8 -*-
-
+from plone.app.standardtiles import PloneMessageFactory as _
+from plone.app.standardtiles.legacy.utils import findView
+from plone.tiles import Tile
+from zope import schema
 from zope.interface import Interface
 from zope.interface import implements
 from zope.component import queryMultiAdapter
-
-from zope import schema
-
-from plone.tiles import Tile
-
 from zope.viewlet.interfaces import IViewletManager
-
-from plone.app.standardtiles import PloneMessageFactory as _
-from plone.app.standardtiles.legacy.utils import findView
 
 
 class IViewletManagerTile(Interface):

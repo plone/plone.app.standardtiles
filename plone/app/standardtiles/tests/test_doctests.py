@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
-import doctest
-from plone.testing import layered
-import unittest2 as unittest
-from base import PASTANDARDTILES_FUNCTIONAL_TESTING, \
+from plone.app.standardtiles.tests.base import \
+    PASTANDARDTILES_FUNCTIONAL_TESTING
+from plone.app.standardtiles.tests.base import \
     PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING
-import pprint
+from plone.testing import layered
+
+import doctest
 import interlude
+import pprint
+import unittest2 as unittest
+
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 normal_testfiles = [

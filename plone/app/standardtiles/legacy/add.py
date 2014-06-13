@@ -1,25 +1,18 @@
 #-*- coding: utf-8 -*-
-
-from zope.lifecycleevent import ObjectAddedEvent
-from zope.component import getUtility
-from zope.traversing.browser.absoluteurl import absoluteURL
-from zope.lifecycleevent import ObjectCreatedEvent
-from zope.event import notify
-
-from plone.uuid.interfaces import IUUIDGenerator
-from plone.tiles.interfaces import ITileDataManager
-
-
-from zope.container.interfaces import INameChooser
-
-from Acquisition import aq_inner
 from Acquisition import aq_base
+from Acquisition import aq_inner
 from Acquisition import aq_parent
-
-from plone.app.portlets.interfaces import IPortletPermissionChecker
 from plone.app.portlets.browser.adding import PortletAdding as BasePortletAdding
+from plone.app.portlets.interfaces import IPortletPermissionChecker
 from plone.portlets.utils import hashPortletInfo
-
+from plone.tiles.interfaces import ITileDataManager
+from plone.uuid.interfaces import IUUIDGenerator
+from zope.component import getUtility
+from zope.container.interfaces import INameChooser
+from zope.event import notify
+from zope.lifecycleevent import ObjectAddedEvent
+from zope.lifecycleevent import ObjectCreatedEvent
+from zope.traversing.browser.absoluteurl import absoluteURL
 
 
 class PortletAdding(BasePortletAdding):

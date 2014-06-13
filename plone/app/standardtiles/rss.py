@@ -2,10 +2,12 @@
 from DateTime import DateTime
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.directives.form import Schema
-from plone.tiles.tile import Tile, PersistentTile
+from plone.tiles.tile import PersistentTile
 from zope import schema
 from zope.component import getMultiAdapter
-from zope.interface import implements, Interface
+from zope.interface import Interface
+from zope.interface import implements
+
 import feedparser
 import time
 

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
-
 from plone.tiles.tile import Tile
 
 

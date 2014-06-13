@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.utils import getToolByName
 from plone.app.testing.layers import IntegrationTesting
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing import PloneSandboxLayer
@@ -6,21 +7,19 @@ from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import applyProfile
 from plone.app.testing import login
 from plone.app.testing import logout
-
-from zope.configuration import xmlconfig
-
-from zope.interface import implements, Interface
-from zope.component import adapts, provideAdapter, getSiteManager
-
-from zope.publisher.interfaces.browser import IBrowserView, IBrowserRequest
-from zope.contentprovider.interfaces import UpdateNotCalled
-
-from plone.portlets.interfaces import IPortletManager
-from plone.portlets.manager import PortletManager, PortletManagerRenderer
-
 from plone.dexterity.fti import DexterityFTI
-
-from Products.CMFCore.utils import getToolByName
+from plone.portlets.interfaces import IPortletManager
+from plone.portlets.manager import PortletManager
+from plone.portlets.manager import PortletManagerRenderer
+from zope.component import adapts
+from zope.component import getSiteManager
+from zope.component import provideAdapter
+from zope.configuration import xmlconfig
+from zope.contentprovider.interfaces import UpdateNotCalled
+from zope.interface import Interface
+from zope.interface import implements
+from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.publisher.interfaces.browser import IBrowserView
 
 
 class IMockPortletManager(IPortletManager):
