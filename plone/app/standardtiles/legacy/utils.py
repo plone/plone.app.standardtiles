@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+
 from zope.browser.interfaces import IView
 from zope.component import queryMultiAdapter
 
