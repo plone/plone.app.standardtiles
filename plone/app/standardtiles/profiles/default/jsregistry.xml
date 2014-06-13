@@ -9,11 +9,11 @@
               inline="False"/>
 
   <javascript id="++resource++plone.app.discussion.javascripts/comments.js"
-              cacheable="True" 
-              compression="safe" 
+              cacheable="True"
+              compression="safe"
               cookable="True"
-              enabled="True" 
-              expression="" 
+              enabled="True"
+              expression=""
               inline="False" />
 
 </object>

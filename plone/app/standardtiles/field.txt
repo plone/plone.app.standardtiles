@@ -131,7 +131,7 @@ about Santa Claus' identity). ::
 
     >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=topsecret')
     >>> browser.contents
-    '...<html><body></body></html>...'    
+    '...<html><body></body></html>...'
 
 As we can see the tile is emp[ty and, after merging from the blocks engine,
 will result in the field simply not being present.

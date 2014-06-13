@@ -4,7 +4,7 @@
 
 
 
-    
+
 
 
 
@@ -13,35 +13,35 @@
   <link>http://localhost:55440/plone</link>
 
   <description>
-    
-      
-    
+
+
+
   </description>
 
-  
 
-  
+
+
             <syn:updatePeriod>daily</syn:updatePeriod>
             <syn:updateFrequency>1</syn:updateFrequency>
             <syn:updateBase>2011-09-22T10:23:57Z</syn:updateBase>
-        
+
 
   <image rdf:resource="http://localhost:55440/plone/logo.png"/>
 
   <items>
     <rdf:Seq>
-      
+
         <rdf:li rdf:resource="http://localhost:55440/plone/doc-one"/>
-      
-      
+
+
         <rdf:li rdf:resource="http://localhost:55440/plone/doc-two"/>
-      
-      
+
+
         <rdf:li rdf:resource="http://localhost:55440/plone/doc-three"/>
-      
-      
+
+
         <rdf:li rdf:resource="http://localhost:55440/plone/a-simple-page"/>
-      
+
     </rdf:Seq>
   </items>
 

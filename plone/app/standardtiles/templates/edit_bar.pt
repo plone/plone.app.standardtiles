@@ -43,7 +43,7 @@
 
       <tal:block define="content_actions view/object_actions;">
 
-        <div class="hiddenStructure" 
+        <div class="hiddenStructure"
              tal:condition="content_actions | wf_state"
              i18n:translate="">
           Actions
