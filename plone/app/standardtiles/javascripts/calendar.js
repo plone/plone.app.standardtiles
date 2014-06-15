@@ -1,4 +1,4 @@
-jq(function($) {
+jQuery(function($) {
    $('.calendar-tile-change-month').live('click', function(e) {
 
        e.preventDefault();
