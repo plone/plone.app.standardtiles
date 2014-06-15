@@ -10,7 +10,7 @@ from zope.interface import Interface
 
 class IPortletTile(Interface):
 
-    # form.omitted('portlet_hash')
+    form.omitted('portlet_hash')
     portlet_hash = schema.TextLine(
         title=_(u"The portlet hash"),
         required=False
