@@ -13,13 +13,13 @@ import unittest2 as unittest
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 normal_testfiles = [
-    '../content.txt',
-    '../media.txt',
-    '../layout.txt',
-    '../head.txt',
+    '../content.rst',
+    '../media.rst',
+    '../layout.rst',
+    '../head.rst',
 ]
 testtype_testfiles = [
-    '../field.txt',
+    '../field.rst',
 ]
 
 

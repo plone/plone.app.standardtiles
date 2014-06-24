@@ -52,7 +52,7 @@ and displays the associated video::
 
 
 Proxy tile
------------
+----------
 
 The proxy tile takes the int id of a content object in the site and
 displays the result of calling ``@@proxy-view`` on it. The default
@@ -94,7 +94,7 @@ specific interface, it will be used instead::
 
 
 Navigation tree tile
----------------------
+--------------------
 
 The navigation tree tile displays a navigation tree for the context
 where it's inserted and take no configuration parameters.
@@ -148,7 +148,7 @@ created before::
     <BLANKLINE>
 
 Sitemap tree tile
----------------------
+-----------------
 
 The sitemap tile displays a sitemap for the site.
 
@@ -180,7 +180,7 @@ created before::
 
 
 Attachment tile
-----------------
+---------------
 
 This persistent tile renders a link pointing to a file stored in the
 tile data itself.

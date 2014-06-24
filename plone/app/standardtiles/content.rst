@@ -128,7 +128,7 @@ Test if the edit action is visible in the viewlet:
 
 
 Lock info tile
----------------
+--------------
 
 First lock the page using a DAV lock request as editor:
 

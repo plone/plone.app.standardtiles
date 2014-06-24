@@ -36,7 +36,7 @@ We create a page in the site to use it in tests later::
     'http://nohost/plone/a-simple-page'
 
 Basic layout
--------------
+------------
 
 Tiles like the colophon don't need any config parameters::
 
@@ -172,7 +172,7 @@ Searchbox tile::
 
 
 Language selector tile
------------------------
+----------------------
 
 The language selector tile shows a list of languages available in the
 site. Since the language selection depends on cookies, this tile will
@@ -213,7 +213,7 @@ Adding supported languages will show them in the tile::
 
 
 Next/previous tile
--------------------
+------------------
 
 The next previous tile shows a next and a previous button if there is
 a next or a previous object. It can be activated by checking the checkbox
