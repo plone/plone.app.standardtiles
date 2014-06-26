@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:grok="http://namespaces.zope.org/grok"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:plone="http://namespaces.plone.org/plone"
@@ -55,6 +56,21 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.title"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        permission="zope2.View"
+        template="templates/legacytitle.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.title"
+        for="Products.ATContentTypes.interfaces.interfaces.IATContentType"
+        permission="zope2.View"
+        template="templates/legacytitle.pt"
+        zcml:condition="installed Products.ATContentTypes"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.description"
         title="Description"
         description='A tile which displays the context description'
@@ -71,6 +87,21 @@
         for="plone.dexterity.interfaces.IDexterityContent"
         permission="zope2.View"
         template="templates/description.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.description"
+        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        permission="zope2.View"
+        template="templates/legacydescription.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.description"
+        for="Products.ATContentTypes.interfaces.interfaces.IATContentType"
+        permission="zope2.View"
+        template="templates/legacydescription.pt"
+        zcml:condition="installed Products.ATContentTypes"
         />
 
     <plone:tile
