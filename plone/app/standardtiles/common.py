@@ -224,7 +224,10 @@ class LogoTile(Tile):
             logoName = bprops.logoName
         else:
             logoName = 'logo.jpg'
-        self.logo_tag = portal.restrictedTraverse(logoName).tag()
+        try:
+            self.logo_tag = portal.restrictedTraverse(logoName).tag()
+        except KeyError:
+            self.logo_tag = ''
 
         self.portal_title = self.portal_state.portal_title()
 
