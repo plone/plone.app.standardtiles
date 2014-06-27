@@ -6,6 +6,7 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
+    <!-- html for related items tile -->
     <div class="relatedItems"
          tal:define="related view/related_items"
          tal:condition="related">
