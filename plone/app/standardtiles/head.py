@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_inner
+from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from Products.PythonScripts.standard import url_quote
 from cgi import escape
 from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
+from zope.component.hooks import getSite
+from zope import schema
+from zope.interface import Interface
+from zope.interface import implements
+from plone.app.standardtiles import PloneMessageFactory as _
 
 
 class TitleTile(Tile):
@@ -28,29 +34,53 @@ class TitleTile(Tile):
             self.site_title = u"%s &mdash; %s" % (page_title, portal_title)
 
 
+class IStylesheetsTile(Interface):
+
+    skinname = schema.TextLine(
+        title=_(u"Name of the skin."),
+        required=False
+    )
+
+
 class StylesheetsTile(Tile):
     """A stylesheets rendering tile."""
+
+    implements(IStylesheetsTile)
 
     def registry(self):
         return getToolByName(aq_inner(self.context), 'portal_css')
 
     def skinname(self):
-        return aq_inner(self.context).getCurrentSkinName()
+        # Return the explicitly given skinnam
+        skinname = self.data.get('skinname')
+        if skinname:
+            return skinname
+
+        # Or look up the skinname of the context or first parent with one
+        context = self.context
+        while context is not None:
+            try:
+                return aq_inner(context).getCurrentSkinName()
+            except AttributeError:
+                context = aq_parent(aq_inner(context))
+        return getSite().getCurrentSkinName()
 
     def styles(self):
         registry = self.registry()
         registry_url = registry.absolute_url()
         context = aq_inner(self.context)
 
-        styles = registry.getEvaluatedResources(context)
-        skinname = url_quote(self.skinname())
+        skinname = self.skinname()
+        styles = registry.getEvaluatedResources(context, theme=skinname)
+
+        skinpath = url_quote(skinname)
         result = []
         for style in styles:
             rendering = style.getRendering()
             if style.isExternalResource():
                 src = "%s" % style.getId()
             else:
-                src = "%s/%s/%s" % (registry_url, skinname, style.getId())
+                src = "%s/%s/%s" % (registry_url, skinpath, style.getId())
             if rendering == 'link':
                 data = {'rendering': rendering,
                         'media': style.getMedia(),
@@ -77,22 +107,46 @@ class StylesheetsTile(Tile):
         return result
 
 
+class IJavascriptsTile(Interface):
+
+    skinname = schema.TextLine(
+        title=_(u"Name of the skin."),
+        required=False
+    )
+
+
 class JavascriptsTile(Tile):
     """A javascripts rendering tile."""
+
+    implements(IJavascriptsTile)
 
     def registry(self):
         return getToolByName(aq_inner(self.context), 'portal_javascripts')
 
     def skinname(self):
-        return aq_inner(self.context).getCurrentSkinName()
+        # Return the explicitly given skinnam
+        skinname = self.data.get('skinname')
+        if skinname:
+            return skinname
+
+        # Or look up the skinname of the context or first parent with one
+        context = self.context
+        while context is not None:
+            try:
+                return aq_inner(context).getCurrentSkinName()
+            except AttributeError:
+                context = aq_parent(aq_inner(context))
+        return getSite().getCurrentSkinName()
 
     def scripts(self):
         registry = self.registry()
         registry_url = registry.absolute_url()
         context = aq_inner(self.context)
 
-        scripts = registry.getEvaluatedResources(context)
-        skinname = url_quote(self.skinname())
+        skinname = self.skinname()
+        scripts= registry.getEvaluatedResources(context, theme=skinname)
+
+        skinpath = url_quote(skinname)
         result = []
         for script in scripts:
             inline = bool(script.getInline())
@@ -105,7 +159,7 @@ class JavascriptsTile(Tile):
                 if script.isExternalResource():
                     src = "%s" % (script.getId(),)
                 else:
-                    src = "%s/%s/%s" % (registry_url, skinname, script.getId())
+                    src = "%s/%s/%s" % (registry_url, skinpath, script.getId())
                 data = {'inline': inline,
                         'conditionalcomment': script.getConditionalcomment(),
                         'src': src}
