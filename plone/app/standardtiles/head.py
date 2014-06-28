@@ -23,9 +23,9 @@ class TitleTile(Tile):
 
     def update(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         context_state = getMultiAdapter((self.context, self.request),
-                                         name=u'plone_context_state')
+                                        name=u'plone_context_state')
         page_title = escape(safe_unicode(context_state.object_title()))
         portal_title = escape(safe_unicode(portal_state.portal_title()))
         if page_title == portal_title:
@@ -101,8 +101,9 @@ class StylesheetsTile(Tile):
                         'content': content}
             else:
                 raise ValueError(
-                    "Unkown rendering method '%s' for style '%s'" % \
-                        (rendering, style.getId()))
+                    "Unkown rendering method '%s' for style '%s'" %
+                    (rendering, style.getId())
+                )
             result.append(data)
         return result
 
@@ -144,7 +145,7 @@ class JavascriptsTile(Tile):
         context = aq_inner(self.context)
 
         skinname = self.skinname()
-        scripts= registry.getEvaluatedResources(context, theme=skinname)
+        scripts = registry.getEvaluatedResources(context, theme=skinname)
 
         skinpath = url_quote(skinname)
         result = []
@@ -173,7 +174,7 @@ class FaviconLinkTile(Tile):
     @property
     def site_url(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         return portal_state.portal_url()
 
 
@@ -183,16 +184,16 @@ class AuthorLinkTile(Tile):
     @property
     def navigation_root_url(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         return portal_state.navigation_root_url()
 
     def show(self):
         tools = getMultiAdapter((self.context, self.request),
-                                 name='plone_tools')
+                                name='plone_tools')
         properties = tools.properties()
         site_properties = getattr(properties, 'site_properties')
         portal_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         anonymous = portal_state.anonymous()
         allowAnonymousViewAbout = site_properties.getProperty(
             'allowAnonymousViewAbout', True)
@@ -205,7 +206,7 @@ class NavigationLinkTile(Tile):
     @property
     def navigation_root_url(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         return portal_state.navigation_root_url()
 
 
@@ -215,7 +216,7 @@ class SearchLinkTile(Tile):
     @property
     def navigation_root_url(self):
         portal_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_portal_state')
+                                       name=u'plone_portal_state')
         return portal_state.navigation_root_url()
 
 
@@ -229,5 +230,5 @@ class RSSLinkTile(Tile):
     @property
     def url(self):
         context_state = getMultiAdapter((self.context, self.request),
-                                         name=u'plone_context_state')
+                                        name=u'plone_context_state')
         return '%s/RSS' % context_state.object_url()
