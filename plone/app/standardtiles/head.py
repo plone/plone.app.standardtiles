@@ -36,8 +36,8 @@ class TitleTile(Tile):
 
 class IStylesheetsTile(Interface):
 
-    skinname = schema.TextLine(
-        title=_(u"Name of the skin."),
+    theme = schema.TextLine(
+        title=_(u"Name of the theme"),
         required=False
     )
 
@@ -51,8 +51,8 @@ class StylesheetsTile(Tile):
         return getToolByName(aq_inner(self.context), 'portal_css')
 
     def skinname(self):
-        # Return the explicitly given skinnam
-        skinname = self.data.get('skinname')
+        # Return the explicitly given skinname
+        skinname = self.data.get('theme')
         if skinname:
             return skinname
 
@@ -110,8 +110,8 @@ class StylesheetsTile(Tile):
 
 class IJavascriptsTile(Interface):
 
-    skinname = schema.TextLine(
-        title=_(u"Name of the skin."),
+    theme = schema.TextLine(
+        title=_(u"Name of the theme"),
         required=False
     )
 
@@ -126,7 +126,7 @@ class JavascriptsTile(Tile):
 
     def skinname(self):
         # Return the explicitly given skinnam
-        skinname = self.data.get('skinname')
+        skinname = self.data.get('theme')
         if skinname:
             return skinname
 
