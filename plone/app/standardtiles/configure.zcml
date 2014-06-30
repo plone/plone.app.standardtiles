@@ -57,17 +57,10 @@
 
     <plone:tile
         name="plone.app.standardtiles.title"
-        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        class=".metadata.DublinCoreTitleTile"
+        for="Products.CMFCore.interfaces.IMinimalDublinCore"
         permission="zope2.View"
-        template="templates/legacytitle.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.title"
-        for="Products.ATContentTypes.interfaces.interfaces.IATContentType"
-        permission="zope2.View"
-        template="templates/legacytitle.pt"
-        zcml:condition="installed Products.ATContentTypes"
+        template="templates/title.pt"
         />
 
     <plone:tile
@@ -91,17 +84,10 @@
 
     <plone:tile
         name="plone.app.standardtiles.description"
-        for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+        class=".metadata.DublinCoreDescriptionTile"
+        for="Products.CMFCore.interfaces.IMinimalDublinCore"
         permission="zope2.View"
-        template="templates/legacydescription.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.description"
-        for="Products.ATContentTypes.interfaces.interfaces.IATContentType"
-        permission="zope2.View"
-        template="templates/legacydescription.pt"
-        zcml:condition="installed Products.ATContentTypes"
+        template="templates/description.pt"
         />
 
     <plone:tile

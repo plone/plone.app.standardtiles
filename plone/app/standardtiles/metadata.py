@@ -31,6 +31,20 @@ class DefaultDescriptionTile(BaseMetadataTile):
         return u"Insert the content description here"
 
 
+class DublinCoreTitleTile(BaseMetadataTile):
+    """A tile for dublin core content title."""
+
+    def get_value(self):
+        return self.context.Title()
+
+
+class DublinCoreDescriptionTile(BaseMetadataTile):
+    """A tile for dublin core content description."""
+
+    def get_value(self):
+        return self.context.Description()
+
+
 class DexterityTitleTile(BaseMetadataTile):
     """A tile for dexterity content title."""
 
