@@ -412,8 +412,11 @@ class GlobalStatusMessageTile(Tile):
         return self.index()
 
     def update(self):
-        self.status = IStatusMessage(self.request)
-        self.messages = self.status.show()
+        if not self.request.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+            self.status = IStatusMessage(self.request)
+            self.messages = self.status.show()
+        else:
+            self.messages = []
 
 
 class DocumentBylineTile(Tile):
