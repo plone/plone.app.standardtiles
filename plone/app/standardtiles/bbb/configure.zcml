@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="plone">
+
+  <plone:tile
+      name="plone.app.standardtiles.global_statusmessage"
+      class="..common.GlobalStatusMessageTile"
+      for="*"
+      permission="zope2.View"
+      template="templates/global_statusmessage.pt"
+      />
+
+</configure>

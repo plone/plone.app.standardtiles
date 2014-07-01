@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
+from datetime import date
+from urllib import unquote
+
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_unicode
-from datetime import date
+from Products.statusmessages.interfaces import IStatusMessage
 from plone.locking.interfaces import ITTWLockable
 from plone.memoize.view import memoize
-from plone.tiles.tile import Tile
-from urllib import unquote
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
+
+from plone.tiles.tile import Tile
 
 
 class TextTile(Tile):
@@ -399,6 +402,18 @@ class EditBarTile(Tile):
 
     def icon(self, action):
         return action.get('icon', None)
+
+
+class GlobalStatusMessageTile(Tile):
+    """Display messages to the current user"""
+
+    def __call__(self):
+        self.update()
+        return self.index()
+
+    def update(self):
+        self.status = IStatusMessage(self.request)
+        self.messages = self.status.show()
 
 
 class DocumentBylineTile(Tile):

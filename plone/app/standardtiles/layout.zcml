@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="plone">
 
     <plone:tile
@@ -74,6 +75,15 @@
         for="*"
         permission="zope2.View"
         template="templates/global_sections.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.global_statusmessage"
+        class=".common.GlobalStatusMessageTile"
+        for="*"
+        permission="zope2.View"
+        template="templates/global_statusmessage.pt"
+        zcml:condition="have plone-5"
         />
 
     <plone:tile
