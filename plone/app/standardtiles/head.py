@@ -225,7 +225,10 @@ class RSSLinkTile(Tile):
 
     def allowed(self):
         syntool = getToolByName(self.context, 'portal_syndication')
-        return syntool.isSyndicationAllowed(self.context)
+        try:
+            return syntool.isSyndicationAllowed(self.context)
+        except TypeError:  # Could not adapt
+            return False
 
     @property
     def url(self):
