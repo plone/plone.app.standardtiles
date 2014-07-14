@@ -6,9 +6,15 @@ from plone.app.standardtiles.tests.base import \
 from plone.testing import layered
 
 import doctest
-import interlude
 import pprint
 import unittest2 as unittest
+
+try:
+    import interlude
+    interlude_interact = interlude.interact
+except ImportError:
+    # interlude is only a development requirement
+    interlude_interact = None
 
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
@@ -28,7 +34,7 @@ def test_suite():
     suite.addTests([
         layered(doctest.DocFileSuite(test,
                                      optionflags=optionflags,
-                                     globs={'interact': interlude.interact,
+                                     globs={'interact': interlude_interact,
                                             'pprint': pprint.pprint,
                                             },
                                      ),
@@ -37,7 +43,7 @@ def test_suite():
     suite.addTests([
         layered(doctest.DocFileSuite(test,
                                      optionflags=optionflags,
-                                     globs={'interact': interlude.interact,
+                                     globs={'interact': interlude_interact,
                                             'pprint': pprint.pprint,
                                             },
                                      ),
