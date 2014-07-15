@@ -50,6 +50,7 @@ setup(name='plone.app.standardtiles',
       extras_require={
           'test': [
               'interlude',
+              'plone.app.blocks',
               'plone.app.testing',
               'plone.app.dexterity',
               ],

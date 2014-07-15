@@ -61,6 +61,14 @@ class PAStandardtiles(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         # load ZCML
+        import plone.app.intid
+        xmlconfig.file('configure.zcml', plone.app.intid,
+                       context=configurationContext)
+
+        import plone.app.dexterity
+        xmlconfig.file('configure.zcml', plone.app.dexterity,
+                       context=configurationContext)
+
         import plone.app.standardtiles
         xmlconfig.file('configure.zcml', plone.app.standardtiles,
                        context=configurationContext)
