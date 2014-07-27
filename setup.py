@@ -5,7 +5,7 @@ from setuptools import setup
 import os
 
 
-version = '0.9.0.dev0'
+version = '0.9.0.dev1'
 
 setup(name='plone.app.standardtiles',
       version=version,
