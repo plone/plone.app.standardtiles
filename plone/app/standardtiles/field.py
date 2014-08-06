@@ -1,43 +1,25 @@
 # -*- coding: utf-8 -*-
 from plone.app.standardtiles.utils import PermissionChecker
 from plone.autoform.interfaces import READ_PERMISSIONS_KEY
-from plone.autoform.interfaces import WIDGETS_KEY
-from plone.autoform.utils import resolveDottedName
-from plone.dexterity.utils import iterSchemata
+from plone.dexterity.browser.view import DefaultView
 from plone.supermodel.utils import mergedTaggedValueDict
 from plone.tiles import Tile
 from plone.z3cform import z2
-from z3c.form.form import DisplayForm
 from z3c.form.field import Fields
 
 
-class DexterityFieldTile(DisplayForm, Tile):
+class DexterityFieldTile(DefaultView, Tile):
     """Field tile for Dexterity content."""
 
     def __init__(self, context, request):
         Tile.__init__(self, context, request)
-        DisplayForm.__init__(self, context, request)
-        components = self.data['field'].split('-', 1)
-        self.schema = None
-        if len(components) > 1:
-            for schema in iterSchemata(self.context):
-                if schema.__identifier__.endswith(components[0]):
-                    self.schema = schema
-        else:
-            self.schema = tuple(iterSchemata(self.context))[0]
-        self.field = components[-1]
-        self.fields = Fields(self.schema).select(self.field)
-
-    def updateWidgets(self):
-        widgets = mergedTaggedValueDict(self.schema, WIDGETS_KEY)
-        if self.field in widgets:
-            factory = widgets[self.field]
-            if self.fields[self.field].widgetFactory.get(
-                        self.mode, None) is None:
-                if isinstance(factory, basestring):
-                    factory = resolveDottedName(factory)
-                self.fields[self.field].widgetFactory = factory
-        DisplayForm.updateWidgets(self)
+        DefaultView.__init__(self, context, request)
+        try:
+            components = self.data['field'].split('-', 1)
+            self.field = components[-1]
+            self.fields = Fields(self.schema).select(self.field)
+        except KeyError:
+            self.field = None
 
     @property
     def isVisible(self):
@@ -54,7 +36,7 @@ class DexterityFieldTile(DisplayForm, Tile):
 
     def __call__(self):
         z2.switch_on(self)
-        if self.isVisible:
+        if self.field and self.isVisible:
             self.update()
             return self._wrap_widget(self.widgets[self.field].render())
         else:
