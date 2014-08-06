@@ -14,12 +14,20 @@ class DexterityFieldTile(DefaultView, Tile):
     def __init__(self, context, request):
         Tile.__init__(self, context, request)
         DefaultView.__init__(self, context, request)
+
         try:
             components = self.data['field'].split('-', 1)
             self.field = components[-1]
-            self.fields = Fields(self.schema).select(self.field)
         except KeyError:
             self.field = None
+
+        if self.field is not None and self.field in self.schema:
+            self.fields = Fields(self.schema).select(self.field)
+        elif self.field is not None:
+            for schema in self.additionalSchemata:
+                if self.field in schema:
+                    self.fields = Fields(schema).select(self.field)
+                    break
 
     @property
     def isVisible(self):
