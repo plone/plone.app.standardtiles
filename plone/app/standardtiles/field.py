@@ -27,6 +27,7 @@ class DexterityFieldTile(DefaultView, Tile):
             for schema in self.additionalSchemata:
                 if self.field in schema:
                     self.fields = Fields(schema).select(self.field)
+                    self.field = '%s.%s' % (schema.__name__, self.field)
                     break
 
     @property
