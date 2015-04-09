@@ -1,5 +1,5 @@
 jQuery(function($) {
-   $('.calendar-tile-change-month').live('click', function(e) {
+   $('.calendar-tile-change-month').on('click', function(e) {
 
        e.preventDefault();
        $.ajax({
@@ -9,7 +9,7 @@ jQuery(function($) {
          dataType: 'html',
 
          success: function(data) {
-           domdata = $.deco.getDomTreeFromHtml(data).find('.temp_body_tag');
+           domdata = $.mosaic.getDomTreeFromHtml(data).find('.temp_body_tag');
            $(this).html(domdata.html());
          },
 
