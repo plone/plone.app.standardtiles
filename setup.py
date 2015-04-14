@@ -5,13 +5,13 @@ from setuptools import setup
 import os
 
 
-version = '0.9.0.dev0'
+version = '1.0a1.dev0'
 
 setup(name='plone.app.standardtiles',
       version=version,
       description="",
       long_description=open("README.rst").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.rst")).read(),
+                       open("CHANGES.rst").read(),
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
