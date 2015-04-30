@@ -17,7 +17,7 @@ from plone.app.standardtiles import PloneMessageFactory as _
 from plone.directives.form import Schema
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
-from plone.tiles import PersistentTile
+from plone.tiles import Tile
 from zope import schema
 from zope.component import adapts
 from zope.component import getMultiAdapter
@@ -80,7 +80,7 @@ class INavigationTile(Schema):
             required=False)
 
 
-class NavigationTile(PersistentTile):
+class NavigationTile(Tile):
 
     implements(INavigationTile)
 
@@ -158,7 +158,7 @@ class NavigationTile(PersistentTile):
         portal = self.urltool.getPortalObject()
         rootPath = self.getNavRootPath()
         if rootPath is None:
-            return rootPath
+            return portal
 
         if rootPath == self.urltool.getPortalPath():
             return portal
