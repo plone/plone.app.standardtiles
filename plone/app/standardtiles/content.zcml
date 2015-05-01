@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
 
@@ -65,6 +66,43 @@
         for="*"
         permission="zope2.View"
         template="templates/lockinfo.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.contentlisting"
+        title="Content listing"
+        description='A tile which displays the content listing of this item'
+        permission="zope2.View"
+        add_permission="plone.app.tiles.AddTile"
+        class=".contentlisting.ContentListingTile"
+        schema=".contentlisting.IContentListingTile"
+        for="*"
+        />
+
+    <utility
+        component="plone.app.standardtiles.contentlisting.availableListingViewsVocabulary"
+        name="Available Listing Views"
+        />
+
+    <browser:page
+        name="tabular_view"
+        for="*"
+        permission="zope2.View"
+        template="templates/tabular_view.pt"
+        />
+
+    <browser:page
+        name="listing_view"
+        for="*"
+        permission="zope2.View"
+        template="templates/listing_view.pt"
+        />
+
+    <browser:page
+        name="summary_view"
+        for="*"
+        permission="zope2.View"
+        template="templates/summary_view.pt"
         />
 
 </configure>

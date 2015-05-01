@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="plone">
+    <body>
+        <div tal:define="results context;
+                         original_context nocall:options/original_context|context;
+                         pas_member original_context/@@pas_member;">
+            <div tal:condition="not: results">
+                <p><strong>Nothing to list</strong></p>
+            </div>
+
+            <div tal:condition="results">
+
+                    <table class="listing" summary="Content listing" i18n:attributes="summary">
+                    <thead>
+                        <tr>
+                            <th class="nosort">&nbsp;
+                                <tal:title i18n:translate="">
+                                    Title
+                                </tal:title>&nbsp;
+                            </th>
+                            <th class="nosort">&nbsp;
+                                <tal:title i18n:translate="">
+                                    Author
+                                </tal:title>
+                                &nbsp;
+                            </th>
+                            <th class="nosort">
+                                &nbsp;
+                                <tal:title i18n:translate="">
+                                    Type
+                                </tal:title>
+                                &nbsp;
+                            </th>
+                            <th class="nosort">
+                                &nbsp;
+                                <tal:modified i18n:translate="">
+                                    Modified
+                                </tal:modified>&nbsp;
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tal:results repeat="item results">
+                            <tal:block tal:define="item_url item/getURL;
+                                                   item_title_or_id item/title_or_id;
+                                                   item_type item/Type;
+                                                   item_description item/Description;
+                                                   item_creator item/Creator;
+                                                   item_modified item/ModificationDate">
+
+                            <tr tal:define="oddrow repeat/item/odd;"
+                                tal:attributes="class python:oddrow and 'even' or 'odd'" >
+                                <td>
+                                    <a href="#" tal:attributes="href item_url" tal:content="item_title_or_id">
+                                        Item Title
+                                    </a>
+                                </td>
+                                <td>
+                                    <tal:name tal:condition="item_creator" tal:define="author python:pas_member.info(item_creator)">
+                                        <a href="#"
+                                           tal:attributes="href string:author/${author/username}"
+                                           tal:content="author/username"
+                                           tal:omit-tag="not:author">
+                                            Bob Dobalina
+                                        </a>
+                                    </tal:name>
+                                </td>
+                                <td tal:content="item_type">
+                                    Page
+                                </td>
+
+                                <td tal:content="item_modified">
+                                    Date
+                                </td>
+
+                            </tr>
+                        </tal:block>
+
+                        </tal:results>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
