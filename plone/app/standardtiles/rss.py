@@ -2,7 +2,7 @@
 from DateTime import DateTime
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.directives.form import Schema
-from plone.tiles.tile import PersistentTile
+from plone.tiles.tile import Tile
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.interface import Interface
@@ -51,7 +51,7 @@ class IRSSTile(Schema):
         default=100)
 
 
-class RSSTile(PersistentTile):
+class RSSTile(Tile):
     """The RSS tile displays a configured RSS feed."""
 
     def __call__(self):
@@ -81,7 +81,7 @@ class RSSTile(PersistentTile):
         return feed
 
     @property
-    def url(self):
+    def feedurl(self):
         """return url of feed for portlet"""
         return self._getFeed().url
 
