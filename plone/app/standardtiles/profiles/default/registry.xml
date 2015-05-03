@@ -37,7 +37,7 @@
       <element>plone.app.standardtiles.personal_bar</element>
       <element>plone.app.standardtiles.portlet</element>
       <element>plone.app.standardtiles.portletmanager</element>
-      <element>plone.app.standardtiles.proxy</element>
+      <element>plone.app.standardtiles.existingcontent</element>
       <element>plone.app.standardtiles.related_items</element>
       <element>plone.app.standardtiles.rss</element>
       <element>plone.app.standardtiles.rsslink</element>

@@ -17,21 +17,15 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.proxy"
-        title="Proxy"
-        description='A tile which displays a content object'
+        name="plone.app.standardtiles.existingcontent"
+        title="Existing content"
+        description="A tile which displays a content object"
         add_permission="zope2.View"
-        class=".proxy.ProxyTile"
+        class=".existingcontent.ExistingContentTile"
         for="*"
         permission="zope.Public"
-        schema=".proxy.IProxyTile"
-        />
-
-    <browser:page
-        name="proxy-view"
-        for="*"
-        permission="zope2.View"
-        class=".proxy.ProxyView"
+        schema=".existingcontent.IExistingContentTile"
+        template="templates/existingcontent_view.pt"
         />
 
     <plone:tile
