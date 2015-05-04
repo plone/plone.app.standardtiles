@@ -2,6 +2,7 @@
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
+from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.interface import IBrowserDefault
 from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
@@ -14,16 +15,42 @@ from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.directives.form import Schema
+from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
+from plone.supermodel.model import Schema
 from plone.tiles import Tile
+from plone.uuid.interfaces import IUUID
+from z3c.form.interfaces import IValue
+from z3c.form.util import getSpecification
 from zope import schema
+from zope.component import adapter
 from zope.component import adapts
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 from zope.interface import Interface
+from zope.interface import implementer
 from zope.interface import implements
+
+
+def uuidToFolderishPath(context, uuid):
+    """Return closest relative folderish path for the given UUID
+    or an empty string for the site root
+    """
+    if uuid:
+        catalog = getToolByName(context, 'portal_catalog')
+        res = catalog and catalog.unrestrictedSearchResults(UID=uuid)
+        if res and len(res) == 1:
+            ob = res[0]._unrestrictedGetObject()
+            # If not folderish, use its parent instead
+            if not IFolderish.providedBy(ob):
+                ob = aq_parent(ob)
+            return '/'.join(ob.getPhysicalPath()[2:])
+    return ''
+
+
+class CatalogSource(CatalogSourceBase):
+    """Navigation tile specific catalog source to allow targeted widget"""
 
 
 class INavigationTile(Schema):
@@ -33,13 +60,14 @@ class INavigationTile(Schema):
             title=_(u"Title"),
             description=_(u"The title of the navigation tree."),
             default=u"",
-            required=False)
+            required=False,)
 
-    root = schema.TextLine(
+    root = schema.Choice(
             title=_(u"Root node"),
             description=_(u"You may search for and choose a folder to act as "
                            "the root of the navigation tree.  Leave blank to "
                            "use the Plone site root."),
+            source=CatalogSource(),
             required=False)
 
     includeTop = schema.Bool(
@@ -78,6 +106,20 @@ class INavigationTile(Schema):
                            "includes the root folder."),
             default=0,
             required=False)
+
+
+@implementer(IValue)
+@adapter(None, None, None, getSpecification(INavigationTile['root']), None)
+class DefaultRoot(object):
+    def __init__(self, context, request, form, field, widget):
+        self.context = context
+
+    def get(self):
+        # Return UUID for the closest container or None for the site root
+        if not IFolderish.providedBy(self.context):
+            return IUUID(aq_parent(self.context), None)
+        else:
+            return IUUID(self.context, None)
 
 
 class NavigationTile(Tile):
@@ -149,9 +191,8 @@ class NavigationTile(Tile):
             self.properties.getProperty('currentFolderOnlyInNavtree', False)
         topLevel = self.data.get('topLevel') or \
             self.properties.getProperty('topLevel', 0)
-
-        return getRootPath(self.context, currentFolderOnly,
-                           topLevel, str(self.data.get('root')))
+        tileRoot = uuidToFolderishPath(self.context, self.data.get('root'))
+        return getRootPath(self.context, currentFolderOnly, topLevel, tileRoot)
 
     @memoize
     def getNavRoot(self, _marker=[]):
@@ -192,7 +233,8 @@ class QueryBuilder(NavtreeQueryBuilder):
         portal_properties = getToolByName(context, 'portal_properties')
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
-        rootPath = getNavigationRoot(context, relativeRoot=tile.data.get('root'))
+        tileRoot = uuidToFolderishPath(context, tile.data.get('root'))
+        rootPath = getNavigationRoot(context, relativeRoot=tileRoot)
         currentPath = '/'.join(context.getPhysicalPath())
 
         # override query path with tile path if needed
@@ -226,8 +268,9 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
                                     'currentFolderOnlyInNavtree', False)
         topLevel = tile.data.get('topLevel') or \
                    navtree_properties.getProperty('topLevel', 0)
+        tileRoot = uuidToFolderishPath(context, tile.data.get('root'))
         self.rootPath = getRootPath(context, currentFolderOnly,
-                                    topLevel, tile.data.get('root'))
+                                    topLevel, tileRoot)
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
