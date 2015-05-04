@@ -85,9 +85,7 @@
         />
 
     <adapter factory=".contentlisting.DefaultQuery" name="default" />
-    <!-- This adapter can be registered only after getObjPositionInParent is
-         enabled as sortable in plone.app.querystring: -->
-    <!-- <adapter factory=".contentlisting.DefaultSortOn" name="default" /> -->
+    <adapter factory=".contentlisting.DefaultSortOn" name="default" />
 
     <browser:page
         name="tabular_view"

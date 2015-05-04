@@ -54,4 +54,9 @@
       <element>plone.app.standardtiles.viewletmanager</element>
     </value>
   </record>
+
+  <records interface="plone.app.querystring.interfaces.IQueryField"
+           prefix="plone.app.querystring.field.getObjPositionInParent">
+    <value key="sortable">True</value>
+  </records>
 </registry>
