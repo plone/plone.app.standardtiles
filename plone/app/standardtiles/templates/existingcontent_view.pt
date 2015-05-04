@@ -3,7 +3,14 @@
       xml:lang="en"
       lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal">
-  <body tal:content="structure view/content_html">
-    Content.
+  <body tal:define="content_html view/content_html">
+    <p class="no-content"
+       i18n:translate=""
+       tal:condition="not:content_html">
+        No content found. Please, check selector and view name.
+    </p>
+    <div tal:replace="structure content_html">
+        CONTENT HERE.
+    </div>
   </body>
 </html>

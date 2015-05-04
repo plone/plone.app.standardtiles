@@ -5,7 +5,7 @@ from lxml import cssselect
 from plone.app.standardtiles import PloneMessageFactory as _ # noqa
 from plone.directives import form as directivesform
 from plone.tiles import Tile
-from plone.formwidget.contenttree import UUIDSourceBinder
+from plone.app.vocabularies.catalog import CatalogSource
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 
 from zope import schema
@@ -17,7 +17,7 @@ class IExistingContentTile(directivesform.Schema):
     content_uid = schema.Choice(
         title=_(u"Select an existing content"),
         required=True,
-        source=UUIDSourceBinder()
+        source=CatalogSource(),
     )
     css_selector = schema.TextLine(
         title=_(u'CSS selector'),
@@ -30,8 +30,8 @@ class IExistingContentTile(directivesform.Schema):
     view_name = schema.TextLine(
         title=_(u"View name"),
         required=False,
-        default=u'view',
-        # vocabulary='### what goes here???'
+        default=u'document_view',
+        # vocabulary='### what goes here??? should be dynamic'
     )
 
 
@@ -44,21 +44,28 @@ class ExistingContentTile(Tile):
         catalog = tools.catalog()
         content_uid = self.data.get('content_uid')
         brain = catalog(UID=content_uid)
-        return brain
+        return brain and brain[0] or None
 
-    def get_html(self, brain):
+    def content_html(self):
         brain = self.get_content()
+        if not brain:
+            return ''
+
+        ps = self.context.restrictedTraverse('@@plone_portal_state')
+        portal = ps.portal()
+
         view_name = self.data.get('view_name')
         path = '{path}/{view}'.format(path=brain.getPath(),
                                       view=view_name)
-        ps = self.context.restrictedTraverse('@@plone_portal_state')
-        portal = ps.portal()
-        out = portal.restrictedTraverse(path)
+
+        view = portal.restrictedTraverse(path)
         css_selector = self.data.get('css_selector')
 
         htmlparser = etree.HTMLParser()
-        tree = etree.fromstring(out, htmlparser)
+        tree = etree.fromstring(view(), htmlparser)
         sel = cssselect.CSSSelector(css_selector)
-        content = sel(tree)[0]
-        content_html = etree.tostring(content)
+        content = sel(tree)
+        content_html = ''
+        if content:
+            content_html = etree.tostring(content[0])
         return content_html
