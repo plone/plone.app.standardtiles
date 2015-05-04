@@ -53,7 +53,7 @@
         factory="plone.app.widgets.dx.RelatedItemsFieldWidget"
         for="zope.schema.interfaces.IChoice
              plone.app.standardtiles.navigation.CatalogSource
-             collective.portlet.fullview.interfaces.IThemeSpecific"
+             plone.app.widgets.interfaces.IWidgetsLayer"
         zcml:condition="not-have plone-5"
         />
 
