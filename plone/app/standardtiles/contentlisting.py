@@ -6,10 +6,14 @@ from plone.app.standardtiles import PloneMessageFactory as _
 from plone.directives import form as directivesform
 from plone.tiles import Tile
 from zope import schema
+from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.interface import directlyProvides
+from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
+from z3c.form.interfaces import IValue
+from z3c.form.util import getSpecification
 
 try:
     from plone.app.z3cform.widget import QueryStringFieldWidget
@@ -43,6 +47,30 @@ class IContentListingTile(directivesform.Schema):
     view_template = schema.Choice(title=_(u"Display mode"),
                                   source=_(u"Available Listing Views"),
                                   required=True)
+
+
+@implementer(IValue)
+@adapter(None, None, None, getSpecification(IContentListingTile['query']), None)  # noqa
+class DefaultQuery(object):
+    def __init__(self, context, request, form, field, widget):
+        pass
+
+    def get(self):
+        return [{
+            'i': 'path',
+            'o': 'plone.app.querystring.operation.string.relativePath',
+            'v': '::1'
+        }]
+
+
+@implementer(IValue)
+@adapter(None, None, None, getSpecification(IContentListingTile['sort_on']), None)  # noqa
+class DefaultSortOn(object):
+    def __init__(self, context, request, form, field, widget):
+        pass
+
+    def get(self):
+        return 'getObjPositionInParent'
 
 
 class ContentListingTile(Tile):
