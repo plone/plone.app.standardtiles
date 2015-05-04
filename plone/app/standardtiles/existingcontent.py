@@ -6,16 +6,16 @@ from plone.app.standardtiles import PloneMessageFactory as _ # noqa
 from plone.directives import form as directivesform
 from plone.tiles import Tile
 from plone.formwidget.contenttree import UUIDSourceBinder
+from plone.app.z3cform.widget import RelatedItemsFieldWidget
 
-from z3c.relationfield.schema import RelationChoice
 from zope import schema
 
 
 class IExistingContentTile(directivesform.Schema):
 
-    content_uid = RelationChoice(
+    directivesform.widget(content_uid=RelatedItemsFieldWidget)
+    content_uid = schema.Choice(
         title=_(u"Select an existing content"),
-        # description=_(u""),
         required=True,
         source=UUIDSourceBinder()
     )
