@@ -9,7 +9,9 @@ from plone.tiles import Tile
 from zope import schema
 from zope.component import adapter
 from zope.component import getMultiAdapter
+from zope.interface import alsoProvides
 from zope.interface import directlyProvides
+from zope.interface import Interface
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
@@ -50,6 +52,10 @@ class IContentListingTile(Schema):
     view_template = schema.Choice(title=_(u"Display mode"),
                                   source=_(u"Available Listing Views"),
                                   required=True)
+
+
+class IContentListingTileLayer(Interface):
+    """Layer (request marker interface) for content listing tile views"""
 
 
 @implementer(IValue)
@@ -102,6 +108,7 @@ class ContentListingTile(Tile):
         view = self.view_template
         view = view.encode('utf-8')
         options = dict(original_context=self.context)
+        alsoProvides(self.request, IContentListingTileLayer)
         return getMultiAdapter((accessor, self.request), name=view)(**options)
 
 

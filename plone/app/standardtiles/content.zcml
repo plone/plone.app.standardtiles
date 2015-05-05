@@ -90,6 +90,7 @@
     <browser:page
         name="tabular_view"
         for="*"
+        layer=".contentlisting.IContentListingTileLayer"
         permission="zope2.View"
         template="templates/tabular_view.pt"
         />
@@ -97,6 +98,7 @@
     <browser:page
         name="listing_view"
         for="*"
+        layer=".contentlisting.IContentListingTileLayer"
         permission="zope2.View"
         template="templates/listing_view.pt"
         />
@@ -104,6 +106,7 @@
     <browser:page
         name="summary_view"
         for="*"
+        layer=".contentlisting.IContentListingTileLayer"
         permission="zope2.View"
         template="templates/summary_view.pt"
         />
