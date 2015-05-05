@@ -3,7 +3,8 @@
 # from plone.registry.interfaces import IRegistry
 # from zope.component import getUtility
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.directives import form as directivesform
+from plone.autoform.directives import widget
+from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from zope import schema
 from zope.component import adapter
@@ -21,16 +22,18 @@ except ImportError:
     from plone.app.widgets.dx import QueryStringFieldWidget
 
 
-class IContentListingTile(directivesform.Schema):
+class IContentListingTile(Schema):
     """A tile that displays a listing of content items"""
-    directivesform.widget(query=QueryStringFieldWidget)
-    query = schema.List(title=_(u"Search terms"),
-                        value_type=schema.Dict(value_type=schema.Field(),
-                                               key_type=schema.TextLine()),
-                        description=_(u"Define the search terms for the items "
-                        "you want to list by choosing what to match on. The "
-                        "list of results will be dynamically updated"),
-                        required=False)
+    widget(query=QueryStringFieldWidget)
+    query = schema.List(
+        title=_(u"Search terms"),
+        value_type=schema.Dict(value_type=schema.Field(),
+                               key_type=schema.TextLine()),
+        description=_(u"Define the search terms for the items "
+                      u"you want to list by choosing what to match on. The "
+                      u"list of results will be dynamically updated"),
+        required=False
+    )
 
     sort_on = schema.TextLine(
         title=_(u'label_sort_on', default=u'Sort on'),
