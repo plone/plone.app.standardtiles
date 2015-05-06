@@ -11,6 +11,9 @@ from z3c.form.field import Fields
 class DexterityFieldTile(DefaultView, Tile):
     """Field tile for Dexterity content."""
 
+    behavior_schema = None
+    behavior_field = None
+
     def __init__(self, context, request):
         Tile.__init__(self, context, request)
         DefaultView.__init__(self, context, request)
@@ -23,11 +26,13 @@ class DexterityFieldTile(DefaultView, Tile):
 
         if self.field is not None and self.field in self.schema:
             self.fields = Fields(self.schema).select(self.field)
+
         elif self.field is not None:
             for schema in self.additionalSchemata:
                 if self.field in schema:
                     self.fields = Fields(schema).select(self.field)
-                    self.field = '%s.%s' % (schema.__name__, self.field)
+                    self.behavior_schema = schema
+                    self.behavior_field = '%s.%s' % (schema.__name__, self.field)  # noqa
                     break
 
     @property
@@ -36,7 +41,8 @@ class DexterityFieldTile(DefaultView, Tile):
         not the case, then the field is not displayed
         """
         return PermissionChecker(
-            mergedTaggedValueDict(self.schema, READ_PERMISSIONS_KEY),
+            mergedTaggedValueDict(self.behavior_schema or self.schema,
+                                  READ_PERMISSIONS_KEY),
             self.context,
         ).allowed(self.field)
 
@@ -47,6 +53,8 @@ class DexterityFieldTile(DefaultView, Tile):
         z2.switch_on(self)
         if self.field and self.isVisible:
             self.update()
-            return self._wrap_widget(self.widgets[self.field].render())
+            widget = self.widgets.get(self.behavior_field,
+                                      self.widgets.get(self.field))
+            return self._wrap_widget(widget.render())
         else:
             return self._wrap_widget(u'')
