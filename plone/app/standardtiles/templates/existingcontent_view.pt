@@ -5,8 +5,22 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal">
   <tal:block condition="nocall:view/content_context">
+  <tal:block condition="nocall:view/item_macros">
   <body tal:define="context nocall:view/content_context;
                     item_macro nocall:view/item_macros/content-core|nothing">
+
+    <h1 class="documentFirstHeading"
+        tal:define="title context/Title|nothing"
+        tal:condition="title"
+        tal:content="title">Title or id</h1>
+
+    <div class="documentDescription description"
+         tal:define="description context/Description|nothing"
+         tal:content="description"
+         tal:condition="description">
+        Description
+    </div>
+
     <tal:block condition="item_macro">
     <div tal:define="view nocall:view/default_view;
                      plone_view context/@@plone;
