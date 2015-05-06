@@ -50,5 +50,11 @@
     </tal:block>
   </body>
   </tal:block>
+  <tal:block condition="not:nocall:view/item_macros">
+  <div tal:repeat="panel view/item_panels" tal:replace="structure panel">
+      content
+  </div>
+  </tal:block>
+  </tal:block>
   <body condition="not:nocall:view/content_context"></body>
 </html>
