@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal">
+  <tal:block condition="nocall:view/content_context">
+  <tal:block condition="nocall:view/item_macros">
+  <body tal:define="context nocall:view/content_context;
+                    item_macro nocall:view/item_macros/content-core|nothing">
+
+    <h1 class="documentFirstHeading"
+        tal:define="title context/Title|nothing"
+        tal:condition="title"
+        tal:content="title">Title or id</h1>
+
+    <div class="documentDescription description"
+         tal:define="description context/Description|nothing"
+         tal:content="description"
+         tal:condition="description">
+        Description
+    </div>
+
+    <tal:block condition="item_macro">
+    <div tal:define="view nocall:view/default_view;
+                     plone_view context/@@plone;
+                     portal_state context/@@plone_portal_state;
+                     context_state context/@@plone_context_state;
+                     plone_layout context/@@plone_layout;
+                     lang portal_state/language;
+                     dummy python: plone_layout.mark_view(view);
+                     portal_url portal_state/portal_url;
+                     checkPermission nocall: context/portal_membership/checkPermission;
+                     site_properties context/portal_properties/site_properties;">
+        <div metal:use-macro="item_macro">
+            content
+        </div>
+    </div>
+    </tal:block>
+    <tal:block tal:condition="not:item_macro">
+        <metal:block use-macro="context/folder_listing/macros/listing">
+            <metal:entries fill-slot="entries">
+                <metal:block use-macro="context/folder_listing/macros/entries">
+                    <metal:entry fill-slot="entry">
+                        <div tal:replace="structure python:item.getObject().folder_full_view_item()" />
+                    </metal:entry>
+                </metal:block>
+            </metal:entries>
+        </metal:block>
+    </tal:block>
+  </body>
+  </tal:block>
+  <tal:block condition="not:nocall:view/item_macros">
+  <div tal:repeat="panel view/item_panels" tal:replace="structure panel">
+      content
+  </div>
+  </tal:block>
+  </tal:block>
+  <body condition="not:nocall:view/content_context"></body>
+</html>

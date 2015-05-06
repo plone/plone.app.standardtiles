@@ -17,21 +17,24 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.proxy"
-        title="Proxy"
-        description='A tile which displays a content object'
+        name="plone.app.standardtiles.existingcontent"
+        title="Existing content"
+        description="A tile which displays a content object"
         add_permission="zope2.View"
-        class=".proxy.ProxyTile"
+        class=".existingcontent.ExistingContentTile"
         for="*"
         permission="zope.Public"
-        schema=".proxy.IProxyTile"
+        schema=".existingcontent.IExistingContentTile"
+        template="templates/existingcontent_view.pt"
         />
 
-    <browser:page
-        name="proxy-view"
-        for="*"
-        permission="zope2.View"
-        class=".proxy.ProxyView"
+    <!-- Register RelatedItemsWidget for Plone 4 -->
+    <adapter
+        factory="plone.app.widgets.dx.RelatedItemsFieldWidget"
+        for="zope.schema.interfaces.IChoice
+             plone.app.standardtiles.existingcontent.CatalogSource
+             plone.app.widgets.interfaces.IWidgetsLayer"
+        zcml:condition="not-have plone-5"
         />
 
     <plone:tile
