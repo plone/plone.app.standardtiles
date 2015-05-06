@@ -1,6 +1,5 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:grok="http://namespaces.zope.org/grok"
     xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
@@ -9,9 +8,6 @@
 
     <!-- Include our dependencies -->
     <includeDependencies package="." />
-
-    <!-- Grok the package to initialise schema interfaces and content classes -->
-    <grok:grok package="." />
 
     <!-- Register an extension profile to make the product installable -->
     <genericsetup:registerProfile

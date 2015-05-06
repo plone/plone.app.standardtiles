@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.directives import form as directivesform
+from plone.supermodel.model import Schema
 from plone.tiles import PersistentTile
 from zope import schema
 
 import re
 
 
-class IVideoTile(directivesform.Schema):
+class IVideoTile(Schema):
     """Video tile."""
 
     youtubeURL = schema.TextLine(title=_(u"Youtube URL"), required=True)

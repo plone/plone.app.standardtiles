@@ -61,10 +61,6 @@ class PAStandardtiles(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         # load ZCML
-        import plone.app.intid
-        xmlconfig.file('configure.zcml', plone.app.intid,
-                       context=configurationContext)
-
         import plone.app.dexterity
         xmlconfig.file('configure.zcml', plone.app.dexterity,
                        context=configurationContext)
@@ -77,7 +73,6 @@ class PAStandardtiles(PloneSandboxLayer):
         # install into the Plone site
         applyProfile(portal, 'plone.app.registry:default')
         applyProfile(portal, 'plone.app.dexterity:default')
-        applyProfile(portal, 'plone.app.intid:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
 
         # register portlet manager and portlet manager renderer
@@ -101,7 +96,6 @@ class PAStandardtilesTestType(PloneSandboxLayer):
         # install into the Plone site
         applyProfile(portal, 'plone.app.registry:default')
         applyProfile(portal, 'plone.app.dexterity:default')
-        applyProfile(portal, 'plone.app.intid:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
 
         # Creates some users

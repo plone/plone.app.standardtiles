@@ -1,7 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:z3c="http://namespaces.zope.org/z3c"
-    xmlns:grok="http://namespaces.zope.org/grok"
     i18n_domain="plone.app.standardtiles">
 
   <include package="." file="configure.zcml" />
@@ -14,7 +13,5 @@
       layer="z3c.form.interfaces.IFormLayer"
       template="tests/funky_display.pt"
       />
-
-  <grok:grok package=".testing" />
 
 </configure>

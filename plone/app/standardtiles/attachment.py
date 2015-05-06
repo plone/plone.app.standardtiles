@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.directives import form as directivesform
+from plone.autoform.directives import widget
 from plone.formwidget.multifile.widget import MultiFileFieldWidget
-from plone.namedfile.interfaces import INamed
 from plone.namedfile.field import NamedFile
+from plone.namedfile.interfaces import INamed
 from plone.namedfile.utils import set_headers
 from plone.namedfile.utils import stream_data
+from plone.supermodel.model import Schema
 from plone.tiles import PersistentTile
 from zope import schema
 from zope.interface import implements
@@ -14,9 +15,9 @@ from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.interfaces import NotFound
 
 
-class IAttachmentTile(directivesform.Schema):
+class IAttachmentTile(Schema):
 
-    directivesform.widget(files=MultiFileFieldWidget)
+    widget(files=MultiFileFieldWidget)
     files = schema.List(
         title=_(u'Upload files'),
         value_type=NamedFile(title=_(u"Please upload a file"), required=True))

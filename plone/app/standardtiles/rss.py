@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.directives.form import Schema
+from plone.supermodel.model import Schema
 from plone.tiles.tile import Tile
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.interface import Interface
 from zope.interface import implements
-
 import feedparser
 import time
 
@@ -27,7 +26,7 @@ class IRSSTile(Schema):
     portlet_title = schema.TextLine(
         title=_(u"Title"),
         description=_(u"Title of the portlet. If omitted, the title of the "
-                       "feed will be used."),
+                      u"feed will be used."),
         required=False,
         default=u'')
 
@@ -46,7 +45,7 @@ class IRSSTile(Schema):
     timeout = schema.Int(
         title=_(u"Feed reload timeout"),
         description=_(u"Time in minutes after which the feed should be "
-                       "reloaded."),
+                      u"reloaded."),
         required=True,
         default=100)
 
@@ -249,7 +248,7 @@ class RSSFeed(object):
                         'title': item.title,
                         'url': link,
                         'summary': item.get('description', ''),
-                        }
+                    }
                     if hasattr(item, "updated"):
                         itemdict['updated'] = DateTime(item.updated)
                 except AttributeError:
