@@ -107,4 +107,7 @@
         permission="zope2.View"
         />
 
+    <adapter factory=".field.titleDisplayTemplate" name="display" />
+    <adapter factory=".field.descriptionDisplayTemplate" name="display" />
+
 </configure>

@@ -1,11 +1,20 @@
 # -*- coding: utf-8 -*-
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.app.dexterity.behaviors.metadata import IDublinCore
 from plone.app.standardtiles.utils import PermissionChecker
+from plone.app.tiles.interfaces import ITilesFormLayer
 from plone.autoform.interfaces import READ_PERMISSIONS_KEY
 from plone.dexterity.browser.view import DefaultView
 from plone.supermodel.utils import mergedTaggedValueDict
 from plone.tiles import Tile
 from plone.z3cform import z2
+from z3c.form.browser.text import TextWidget
+from z3c.form.browser.textarea import TextAreaWidget
 from z3c.form.field import Fields
+from z3c.form.util import getSpecification
+from zope.component import adapter
+from zope.interface import implementer
+from zope.pagetemplate.interfaces import IPageTemplate
 
 
 class DexterityFieldTile(DefaultView, Tile):
@@ -58,3 +67,23 @@ class DexterityFieldTile(DefaultView, Tile):
             return self._wrap_widget(widget.render())
         else:
             return self._wrap_widget(u'')
+
+
+_titleDisplayTemplate = ViewPageTemplateFile('templates/title.pt',
+                                             content_type='text/html')
+
+@implementer(IPageTemplate)
+@adapter(None, ITilesFormLayer, None,
+         getSpecification(IDublinCore['title']), TextWidget)
+def titleDisplayTemplate(context, request, form, field, widget):
+    return _titleDisplayTemplate
+
+
+_descriptionDisplayTemplate = ViewPageTemplateFile('templates/description.pt',
+                                                   content_type='text/html')
+
+@implementer(IPageTemplate)
+@adapter(None, ITilesFormLayer, None,
+         getSpecification(IDublinCore['description']), TextAreaWidget)
+def descriptionDisplayTemplate(context, request, form, field, widget):
+    return _descriptionDisplayTemplate
