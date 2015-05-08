@@ -2,21 +2,22 @@
 # from plone.app.standardtiles.interfaces import IStandardTilesSettings
 # from plone.registry.interfaces import IRegistry
 # from zope.component import getUtility
+from Products.CMFCore.interfaces import IFolderish
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.autoform.directives import widget
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
+from z3c.form.interfaces import IValue
+from z3c.form.util import getSpecification
 from zope import schema
 from zope.component import adapter
 from zope.component import getMultiAdapter
+from zope.interface import Interface
 from zope.interface import alsoProvides
 from zope.interface import directlyProvides
-from zope.interface import Interface
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
-from z3c.form.interfaces import IValue
-from z3c.form.util import getSpecification
 
 try:
     from plone.app.z3cform.widget import QueryStringFieldWidget
@@ -62,14 +63,21 @@ class IContentListingTileLayer(Interface):
 @adapter(None, None, None, getSpecification(IContentListingTile['query']), None)  # noqa
 class DefaultQuery(object):
     def __init__(self, context, request, form, field, widget):
-        pass
+        self.context = context
 
     def get(self):
-        return [{
-            'i': 'path',
-            'o': 'plone.app.querystring.operation.string.relativePath',
-            'v': '::1'
-        }]
+        if IFolderish.providedBy(self.context):
+            return [{
+                'i': 'path',
+                'o': 'plone.app.querystring.operation.string.relativePath',
+                'v': '::1'
+            }]
+        else:
+            return [{
+                'i': 'path',
+                'o': 'plone.app.querystring.operation.string.relativePath',
+                'v': '..::1'
+            }]
 
 
 @implementer(IValue)
