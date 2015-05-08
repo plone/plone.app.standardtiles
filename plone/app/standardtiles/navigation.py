@@ -96,7 +96,7 @@ class INavigationTile(Schema):
                            "of the site. 1 means the tree only shows up "
                            "inside folders located in the root and downwards, "
                            "never showing at the top level."),
-            default=1,
+            default=0,
             required=False)
 
     bottomLevel = schema.Int(
