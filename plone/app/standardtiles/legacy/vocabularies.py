@@ -48,6 +48,7 @@ class PortletsVocab(BaseVocabulary):
         # )
         # portlets = manager_renderer.addable_portlets()
         portlets = manager.getAddablePortletTypes()
+        yield SimpleTerm(value=None, token='', title=u'')
         for item in portlets:
             title = item.title
             token = value = item.addview
