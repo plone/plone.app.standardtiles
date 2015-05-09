@@ -35,7 +35,7 @@ class ExistingContentTile(Tile):
     @memoize
     def content_context(self):
         uuid = self.data.get('content_uid')
-        if uuid != IUUID(self.context):
+        if uuid != IUUID(self.context, None):
             item = uuidToObject(uuid)
             if item is not None:
                 return item
