@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.supermodel.model import Schema
-from plone.tiles import PersistentTile
+from plone.tiles import Tile
 from zope import schema
 
 import re
@@ -13,7 +13,7 @@ class IVideoTile(Schema):
     youtubeURL = schema.TextLine(title=_(u"Youtube URL"), required=True)
 
 
-class VideoTile(PersistentTile):
+class VideoTile(Tile):
     """A tile that displays a youtube movie. Purely as a proof of concept and
     to showcase possibilities of Deco."""
 
