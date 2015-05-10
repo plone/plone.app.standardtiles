@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 from plone.portlets.interfaces import IPortletManager
+from plone.app.standardtiles import PloneMessageFactory as _
 from zope.interface import implements
 from zope.component import getUtility
 from zope.globalrequest import getRequest
@@ -48,7 +49,8 @@ class PortletsVocab(BaseVocabulary):
         # )
         # portlets = manager_renderer.addable_portlets()
         portlets = manager.getAddablePortletTypes()
-        yield SimpleTerm(value=None, token='', title=u'')
+        yield SimpleTerm(value=None, token='',
+                         title=_(u'-- select type --'))
         for item in portlets:
             title = item.title
             token = value = item.addview

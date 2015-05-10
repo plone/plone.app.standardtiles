@@ -18,12 +18,12 @@ class IPortletTile(Interface):
 
     form.omitted('portlet_hash')
     portlet_hash = schema.TextLine(
-        title=_(u"The portlet hash"),
+        title=_(u"Portlet hash"),
         required=False
     )
 
     portlet_type = schema.Choice(
-        title=_(u"The portlet hash"),
+        title=_(u"Portlet type"),
         vocabulary=u'standardtiles.available_portlets',
         required=True
     )
