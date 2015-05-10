@@ -18,6 +18,13 @@ from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectCreatedEvent
 from zope.traversing.browser.absoluteurl import absoluteURL
 
+try:
+    from plone.protect.utils import addTokenToUrl
+    HAS_PLONE_PROTECT = True
+except ImportError:
+    HAS_PLONE_PROTECT = False
+
+
 class PortletAdding(BasePortletAdding):
     """Overrides portlet manager '+' view in order to get the hash of the
     portlet after creation and make the form redirect to the tile URL.
@@ -95,6 +102,8 @@ class PortletTileAddForm(DefaultAddForm):
             '++contextportlets++{0}/+'.format(mgr_name),
             data['portlet_type']
         ])
+        if HAS_PLONE_PROTECT:
+            add_portlet_url = addTokenToUrl(add_portlet_url, self.request)
         self.request.response.redirect(add_portlet_url)
 
     @button.buttonAndHandler(_(u'Cancel'), name='cancel')
