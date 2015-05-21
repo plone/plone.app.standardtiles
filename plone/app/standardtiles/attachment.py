@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from Products.CMFCore.utils import getToolByName
+from Products.MimetypesRegistry.common import MimeTypeException
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.autoform.directives import widget
 from plone.formwidget.multifile.widget import MultiFileFieldWidget
-from plone.namedfile.field import NamedFile
+from plone.namedfile.field import NamedBlobFile
 from plone.namedfile.interfaces import INamed
 from plone.namedfile.utils import set_headers
 from plone.namedfile.utils import stream_data
@@ -20,7 +21,7 @@ class IAttachmentTile(Schema):
     widget(files=MultiFileFieldWidget)
     files = schema.List(
         title=_(u'Upload files'),
-        value_type=NamedFile(title=_(u"Please upload a file"), required=True))
+        value_type=NamedBlobFile(title=_(u"Please upload a file"), required=True))
 
 
 class AttachmentTile(PersistentTile):
@@ -71,6 +72,19 @@ class AttachmentTile(PersistentTile):
             except (NotFound, KeyError, AttributeError):
                 pass
         return self.context.getIcon()
+
+    def lookupMime(self, name):
+        mtr = getToolByName(self.context, 'mimetypes_registry', None)
+        if mtr is None:
+            return name
+        try:
+            mimetypes = mtr.lookup(name)
+        except MimeTypeException:
+            mimetypes = ()
+        if len(mimetypes):
+            return mimetypes[0].name()
+        else:
+            return name
 
 
 class AttachmentTileDownload(object):

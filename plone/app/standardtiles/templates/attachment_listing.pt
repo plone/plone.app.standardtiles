@@ -24,7 +24,7 @@
               -
             </span>
             <span class="contentType"
-                  tal:replace="python:context.lookupMime(attachment.contentType)">
+                  tal:replace="python:view.lookupMime(attachment.contentType)">
               PDF document
             </span>
             <span class="separator">
