@@ -72,6 +72,32 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.image"
+        title="Image"
+        description='A tile which displays an uploaded image'
+        add_permission="zope2.View"
+        class=".image.ImageTile"
+        for="*"
+        permission="zope.Public"
+        schema=".image.IImageTile"
+        template="templates/image.pt"
+        />
+
+    <browser:page
+        name="download"
+        for=".image.ImageTile"
+        class=".image.ImageDownload"
+        permission="zope2.View"
+        />
+
+    <browser:page
+        name="scales"
+        for=".image.ImageTile"
+        class=".image.ImageScales"
+        permission="zope2.View"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.attachment"
         title="Attachment"
         description='A tile which displays a link to an uploaded file'
