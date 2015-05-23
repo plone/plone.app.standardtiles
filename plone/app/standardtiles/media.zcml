@@ -6,14 +6,14 @@
     i18n_domain="plone">
 
     <plone:tile
-        name="plone.app.standardtiles.video"
-        title="Video"
-        description='A tile which displays a video'
+        name="plone.app.standardtiles.embed"
+        title="Embed"
+        description='A tile which embeds a media'
         add_permission="zope.Public"
-        class=".video.VideoTile"
+        class=".embed.EmbedTile"
         for="*"
         permission="zope2.View"
-        schema=".video.IVideoTile"
+        schema=".embed.IEmbedTile"
         />
 
     <plone:tile

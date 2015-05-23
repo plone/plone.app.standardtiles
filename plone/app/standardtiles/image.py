@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from plone.app.imaging.interfaces import IImagingSchema
-from plone.app.standardtiles import PloneMessageFactory as _
+
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
+
+from plone.app.standardtiles import _PMF as _
 from plone.namedfile.field import NamedBlobFile
 from plone.supermodel.model import Schema
 from plone.tiles import PersistentTile
 from zope import schema
-from zope.component.hooks import getSite
+from zope.component import getUtility
 from zope.interface import alsoProvides
 from zope.interface import provider
 from zope.schema.interfaces import IContextSourceBinder
@@ -19,10 +22,18 @@ except ImportError:
     HAS_PLONE_PROTECT = False
 
 
+def get_settings():
+    registry = getUtility(IRegistry)
+    settings = registry.forInterface(IImagingSchema,
+                                     prefix="plone",
+                                     check=False)
+    return settings
+
+
 @provider(IContextSourceBinder)
-def imageScales(context):
+def image_scales(context):
     values = []
-    settings = IImagingSchema(getSite())
+    settings = get_settings()
     for allowed_size in settings.allowed_sizes:
         name = allowed_size.split()[0]
         if name not in ("thumb", "tile", "icon", "listing"):
@@ -38,7 +49,7 @@ class IImageTile(Schema):
 
     scale = schema.Choice(
         title=_(u'Select maximum display size'),
-        source=imageScales
+        source=image_scales
     )
 
 

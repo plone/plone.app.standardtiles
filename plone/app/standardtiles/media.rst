@@ -2,7 +2,7 @@ Media tiles
 ===========
 
 Here we introduce and exercise some tiles like navigation, proxy or
-video.
+embed.
 
 First, we set up a browser instance and get Manager privileges::
 
@@ -37,16 +37,16 @@ We create a page in the site to use it in tests later::
     'http://nohost/plone/a-simple-page'
 
 
-Video tile
+Embed tile
 ----------
 
-The video tile is a persistent tile which takes a YouTube video URL
-and displays the associated video::
+The embed tile is a transient tile which takes a media URL
+and displays the associated embedded code::
 
-    >>> browser.open(portalURL+ '/@@add-tile/plone.app.standardtiles.video/video-tile')
-    >>> browser.getControl(name='youtubeURL').value = 'http://www.youtube.com/watch?v=ayPKvFNz8aE'
+    >>> browser.open(portalURL+ '/@@add-tile/plone.app.standardtiles.embed/embed-tile')
+    >>> browser.getControl(name='media_url').value = 'http://www.youtube.com/watch?v=ayPKvFNz8aE'
     >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.video/video-tile')
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.embed/embed-tile')
     >>> browser.contents
     '<html><body><object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/ayPKvFNz8aE&hl=en_GB&fs=1&" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object></body></html>'
 

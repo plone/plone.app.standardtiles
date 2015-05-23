@@ -50,7 +50,7 @@
       <element>plone.app.standardtiles.tableofcontents</element>
       <element>plone.app.standardtiles.text</element>
       <element>plone.app.standardtiles.title</element>
-      <element>plone.app.standardtiles.video</element>
+      <element>plone.app.standardtiles.embed</element>
       <element>plone.app.standardtiles.viewletmanager</element>
     </value>
   </record>

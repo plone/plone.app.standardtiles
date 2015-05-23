@@ -29,6 +29,7 @@ setup(name='plone.app.standardtiles',
       install_requires=[
           'setuptools',
           'lxml',
+          'requests',
           'plone.app.dexterity',
           'plone.app.tiles',
           'plone.app.discussion',
