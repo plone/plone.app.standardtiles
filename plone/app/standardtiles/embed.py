@@ -33,4 +33,4 @@ class EmbedTile(Tile):
         rr = requests.get(url)
         if rr.ok:
             data = rr.json()
-        return data['html']
+        return u"<html><body>%s</body></html>" % data['html']
