@@ -1,19 +1,25 @@
 # -*- coding: utf-8 -*-
 
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
-
 from plone.app.standardtiles import _PMF as _
 from plone.namedfile.field import NamedBlobFile
 from plone.supermodel.model import Schema
 from plone.tiles import PersistentTile
 from zope import schema
 from zope.component import getUtility
+from zope.component.hooks import getSite
 from zope.interface import alsoProvides
 from zope.interface import provider
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+
+try:
+    from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
+    HAS_PLONE_5 = True
+except ImportError:
+    from plone.app.imaging.interfaces import IImagingSchema
+    HAS_PLONE_5 = False
 
 try:
     from plone.protect.interfaces import IDisableCSRFProtection
@@ -33,7 +39,10 @@ def get_settings():
 @provider(IContextSourceBinder)
 def image_scales(context):
     values = []
-    settings = get_settings()
+    if HAS_PLONE_5:
+        settings = get_settings()
+    else:
+        settings = IImagingSchema(getSite())
     for allowed_size in settings.allowed_sizes:
         name = allowed_size.split()[0]
         if name not in ("thumb", "tile", "icon", "listing"):
