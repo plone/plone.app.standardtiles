@@ -4,8 +4,8 @@ Changelog
 1.0a3 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix import error on Plone 4 without plone.app.contenttypes
+  [datakurre]
 
 1.0a2 (2015-05-27)
 ------------------
