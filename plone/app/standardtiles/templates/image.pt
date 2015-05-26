@@ -10,7 +10,6 @@
                      thumbnail python: scales.scale('image', scale=scale);"
          tal:condition="thumbnail"
          tal:attributes="src thumbnail/url;
-                         width thumbnail/width;
-                         height thumbnail/height" />
+                         width thumbnail/width;" />
   </body>
 </html>
