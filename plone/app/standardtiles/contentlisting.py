@@ -22,7 +22,15 @@ from zope.schema.vocabulary import SimpleVocabulary
 try:
     from plone.app.z3cform.widget import QueryStringFieldWidget
 except ImportError:
-    from plone.app.widgets.dx import QueryStringFieldWidget
+    try:
+        from plone.app.widgets.dx import QueryStringFieldWidget
+    except ImportError:
+        from z3c.form.interfaces import IFieldWidget
+        from z3c.form.widget import FieldWidget
+        from plone.app.widgets.dx import QueryStringWidget
+        @implementer(IFieldWidget)
+        def QueryStringFieldWidget(field, request):
+                    return FieldWidget(field, QueryStringWidget(request))
 
 
 class IContentListingTile(Schema):
