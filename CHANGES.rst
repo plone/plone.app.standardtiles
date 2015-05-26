@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a2 (unreleased)
+1.0a2 (2015-05-27)
 ------------------
 
 - Fix image tile to only set image width to allow proportional scaling within
