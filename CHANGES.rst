@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a3 (unreleased)
+1.0a3 (2015-05-27)
 ------------------
 
 - Fix import error on Plone 4 without plone.app.contenttypes
