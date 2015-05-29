@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
 
@@ -11,21 +12,24 @@
         template="templates/headtitle.pt"
         />
 
-    <plone:tile
-        name="plone.app.standardtiles.stylesheets"
-        class=".head.StylesheetsTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/stylesheets.pt"
-        />
+    <!-- Important: stylesheets and javascripts are within
+         condition, because legacy tiles contain similarly
+         named versions for Plone 4 -->
+    <configure zcml:condition="have plone-5">
+      <plone:tile
+          name="plone.app.standardtiles.stylesheets"
+          class=".head.StylesheetsTile"
+          for="*"
+          permission="zope2.View"
+          />
 
-    <plone:tile
-        name="plone.app.standardtiles.javascripts"
-        class=".head.JavascriptsTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/javascripts.pt"
-        />
+      <plone:tile
+          name="plone.app.standardtiles.javascripts"
+          class=".head.JavascriptsTile"
+          for="*"
+          permission="zope2.View"
+          />
+    </configure>
 
     <plone:tile
         name="plone.app.standardtiles.faviconlink"

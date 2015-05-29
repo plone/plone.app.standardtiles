@@ -94,13 +94,40 @@
         template="templates/path_bar.pt"
         />
 
-    <plone:tile
-        name="plone.app.standardtiles.edit_bar"
-        class=".common.EditBarTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/edit_bar.pt"
-        />
+    <!-- Plone 5 has no edit_bar and Plone 4 no toolbar, so register
+         them for both versions so that site layouts can support both
+         versions -->
+    <configure zcml:condition="have plone-5">
+      <plone:tile
+          name="plone.app.standardtiles.edit_bar"
+          class=".common.ToolbarTile"
+          for="*"
+          permission="zope2.View"
+          />
+      <plone:tile
+          name="plone.app.standardtiles.toolbar"
+          class=".common.ToolbarTile"
+          for="*"
+          permission="zope2.View"
+          />
+    </configure>
+
+    <configure zcml:condition="not-have plone-5">
+      <plone:tile
+          name="plone.app.standardtiles.edit_bar"
+          class=".common.EditBarTile"
+          for="*"
+          permission="zope2.View"
+          template="templates/edit_bar.pt"
+          />
+      <plone:tile
+          name="plone.app.standardtiles.toolbar"
+          class=".common.EditBarTile"
+          for="*"
+          permission="zope2.View"
+          template="templates/edit_bar.pt"
+          />
+    </configure>
 
     <plone:tile
         name="plone.app.standardtiles.nextprevious"

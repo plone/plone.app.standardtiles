@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from datetime import date
-from urllib import unquote
-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Products.CMFCore.utils import _checkPermission
@@ -9,12 +6,15 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import base_hasattr
 from Products.CMFPlone.utils import safe_unicode
 from Products.statusmessages.interfaces import IStatusMessage
+from datetime import date
+from plone.app.layout.globals.interfaces import IViewView
 from plone.locking.interfaces import ITTWLockable
 from plone.memoize.view import memoize
+from plone.tiles.tile import Tile
+from urllib import unquote
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
-
-from plone.tiles.tile import Tile
+from zope.interface import alsoProvides
 
 
 class TextTile(Tile):
@@ -404,6 +404,16 @@ class EditBarTile(Tile):
         return action.get('icon', None)
 
 
+class ToolbarTile(Tile):
+    """A Plone 5 toolbar tile."""
+
+    def __call__(self):
+        toolbar = getMultiAdapter((self.context, self.request),
+                                  name=u'render-toolbar')
+        alsoProvides(toolbar, IViewView)
+        return u'<html><body>%s</body></html>' % toolbar()
+
+
 class GlobalStatusMessageTile(Tile):
     """Display messages to the current user"""
 
@@ -467,7 +477,10 @@ class DocumentBylineTile(Tile):
             return ""
 
         portal = self.portal_state.portal()
-        icon = portal.restrictedTraverse('lock_icon.gif')
+        try:
+            icon = portal.restrictedTraverse('lock_icon.gif')
+        except KeyError:
+            icon = portal.restrictedTraverse('lock_icon.png')
         return icon.tag(title='Locked')
 
     def creator(self):
