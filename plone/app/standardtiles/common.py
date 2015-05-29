@@ -408,9 +408,13 @@ class ToolbarTile(Tile):
     """A Plone 5 toolbar tile."""
 
     def __call__(self):
-        toolbar = getMultiAdapter((self.context, self.request),
-                                  name=u'render-toolbar')
-        alsoProvides(toolbar, IViewView)
+        mtool = getToolByName(self.context, 'portal_membership')
+        if mtool.isAnonymousUser():
+            toolbar = lambda: u''
+        else:
+            toolbar = getMultiAdapter((self.context, self.request),
+                                      name=u'render-toolbar')
+            alsoProvides(toolbar, IViewView)
         return u'<html><body>%s</body></html>' % toolbar()
 
 
