@@ -4,8 +4,12 @@ Changelog
 1.0a4 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix issue where byline title was broken on Plone 5 because of removed locked_icon.gif
+  [datakurre]
+- Fix scripts and stylesheets tiles for Plone 5
+  [datakurre]
+- Add toolbar tile for Plone 5
+  [datakurre]
 
 1.0a3 (2015-05-27)
 ------------------
