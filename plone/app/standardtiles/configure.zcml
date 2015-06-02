@@ -7,7 +7,8 @@
     i18n_domain="plone">
 
     <!-- Include our dependencies -->
-    <includeDependencies package="." />
+    <include package="plone.tiles" />
+    <include package="plone.app.tiles" />
 
     <!-- Register an extension profile to make the product installable -->
     <genericsetup:registerProfile
