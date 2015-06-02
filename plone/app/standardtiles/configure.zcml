@@ -89,16 +89,6 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.text"
-        title="Text"
-        description="A tile which adds text"
-        add_permission="zope.Public"
-        class=".common.TextTile"
-        for="*"
-        permission="zope2.View"
-        />
-
-    <plone:tile
         name="plone.app.standardtiles.field"
         title="Field"
         description='A tile which displays a field'

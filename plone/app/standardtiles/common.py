@@ -17,9 +17,6 @@ from zope.component import queryMultiAdapter
 from zope.interface import alsoProvides
 
 
-class TextTile(Tile):
-    """A text tile."""
-
 
 class FooterTile(Tile):
     """A footer tile."""
