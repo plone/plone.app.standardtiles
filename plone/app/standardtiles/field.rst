@@ -131,17 +131,18 @@ about Santa Claus' identity). ::
 
     >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=topsecret')
     >>> browser.contents
-    '...<html><body></body></html>...'
+    ''
 
 As we can see the tile is emp[ty and, after merging from the blocks engine,
 will result in the field simply not being present.
 
 If, however, we do log in as a user that has the right permissions: ::
 
-    >>> from plone.app.standardtiles.tests.base import PASTANDARDTILES_TESTTYPE_FIXTURE
+    >>> from plone.app.standardtiles.testing import EDITOR_USER_NAME
+    >>> from plone.app.standardtiles.testing import EDITOR_USER_PASSWORD
     >>> browser.open(layer['portal'].absolute_url() + '/login_form')
-    >>> browser.getControl(name='__ac_name').value = PASTANDARDTILES_TESTTYPE_FIXTURE.EDITOR_USER_NAME
-    >>> browser.getControl(name='__ac_password').value = PASTANDARDTILES_TESTTYPE_FIXTURE.EDITOR_USER_PASSWORD
+    >>> browser.getControl(name='__ac_name').value = EDITOR_USER_NAME
+    >>> browser.getControl(name='__ac_password').value = EDITOR_USER_PASSWORD
     >>> browser.getControl(name='submit').click()
 
 Now, we have the proper permissions so we should be able to see the highly
@@ -163,7 +164,7 @@ Right now, we have always operated on fields that were, in Dexterity terms,
 onto the "main schema". But what about fields that are in behavior fields
 associated to the content type?
 
-The field tile can handle them aswell, although the name's prefixed with the
+The field tile can handle them as well, although the name's prefixed with the
 schema name (or dotted name, depending on the fact that collision occur or
 not).
 
@@ -172,6 +173,6 @@ been filled in. Let's try to display it: ::
 
     >>> browser.open(content.absolute_url() + '/@@plone.app.standardtiles.field?field=IDublinCore-contributors')
     >>> browser.contents
-    '...<span id="form-widgets-contributors" ...>Jane Doe\nJohn Doe</span>...'
+    '...<span id="form-widgets-IDublinCore-contributors" ...>Jane Doe;John Doe</span>...'
 
 Andf we can see that the field is correctly displayed.

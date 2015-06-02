@@ -1,0 +1,32 @@
+<span id="" class="" i18n:domain="plone.formwidget.namedfile"
+      tal:attributes="id view/id;
+                      class view/klass;
+                      style view/style;
+                      title view/title;
+                      lang view/lang;
+                      onclick view/onclick;
+                      ondblclick view/ondblclick;
+                      onmousedown view/onmousedown;
+                      onmouseup view/onmouseup;
+                      onmouseover view/onmouseover;
+                      onmousemove view/onmousemove;
+                      onmouseout view/onmouseout;
+                      onkeypress view/onkeypress;
+                      onkeydown view/onkeydown;
+                      onkeyup view/onkeyup"
+        tal:define="value view/value;
+                    exists python:value is not None;
+                    scales context/@@images;
+                    title context/title | nothing;
+                    fieldname view/field/__name__ | nothing;"
+        tal:condition="fieldname">
+        <img tal:define="thumbnail python:scales.scale(fieldname, width=320, direction='down')"
+             tal:condition="thumbnail"
+             tal:attributes="alt title;
+                             title title;
+                             src thumbnail/url;
+                             width thumbnail/width" />
+        <span tal:condition="not:exists" class="discreet" i18n:translate="no_image">
+            No image
+        </span>
+</span>
