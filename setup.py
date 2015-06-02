@@ -53,6 +53,7 @@ setup(
             'plone.app.blocks',
             'plone.app.testing',
             'plone.app.dexterity',
+            'plone.app.widgets',
         ],
     },
     entry_points="""

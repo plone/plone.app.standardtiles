@@ -1,6 +1,9 @@
-
 *.egg-info
 *.mo
 *.pyc
-
-build/
+.idea
+.installed.cfg
+bin
+develop-eggs
+parts
+build

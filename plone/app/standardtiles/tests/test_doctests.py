@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-from plone.app.standardtiles.tests.base import \
-    PASTANDARDTILES_FUNCTIONAL_TESTING
-from plone.app.standardtiles.tests.base import \
-    PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING
+from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING  # noqa
+from plone.app.standardtiles.testing import PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING  # noqa
 from plone.testing import layered
-
 import doctest
 import pprint
 import unittest2 as unittest
@@ -19,10 +16,10 @@ except ImportError:
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 normal_testfiles = [
-    '../content.rst',
-    '../media.rst',
-    '../layout.rst',
-    '../head.rst',
+    # '../content.rst',
+    # '../media.rst',
+    # '../layout.rst',
+    # '../head.rst',
 ]
 testtype_testfiles = [
     '../field.rst',
