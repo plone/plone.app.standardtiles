@@ -110,5 +110,8 @@
 
     <adapter factory=".field.titleDisplayTemplate" name="display" />
     <adapter factory=".field.descriptionDisplayTemplate" name="display" />
+    <adapter factory=".field.namedImageDisplayTemplate" name="display" />
+
+    <include file="upgrades.zcml" />
 
 </configure>
