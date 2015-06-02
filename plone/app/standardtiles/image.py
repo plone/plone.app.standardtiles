@@ -56,6 +56,11 @@ class IImageTile(Schema):
         title=_(u'Please, upload an image'),
     )
 
+    title = schema.TextLine(
+        title=_(u'Set optional title'),
+        required=False
+    )
+
     scale = schema.Choice(
         title=_(u'Select maximum display size'),
         source=image_scales
@@ -74,12 +79,3 @@ class ImageTile(PersistentTile):
               @@images/bcc7be5d-75cc-4cfd-9d3a-4ad231aa01de.png" />
 
     """
-
-    def __call__(self):
-        self.update()
-        return self.index()
-
-    def update(self):
-        # Disable CSRF, because imagescales may save a new scale into ZODB
-        if HAS_PLONE_PROTECT:
-            alsoProvides(self.request, IDisableCSRFProtection)
