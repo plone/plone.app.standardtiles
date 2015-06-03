@@ -1,57 +1,119 @@
 # -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
+from DateTime.DateTime import DateTime
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import base_hasattr
-from Products.CMFPlone.utils import safe_unicode
-from Products.statusmessages.interfaces import IStatusMessage
-from datetime import date
+from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.globals.interfaces import IViewView
-from plone.locking.interfaces import ITTWLockable
 from plone.memoize.view import memoize
 from plone.tiles.tile import Tile
-from urllib import unquote
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.interface import alsoProvides
-
+from zope.viewlet.interfaces import IViewlet
+from zope.viewlet.interfaces import IViewletManager
 
 
 class FooterTile(Tile):
     """A footer tile."""
 
-    @property
-    def year(self):
-        return date.today().year
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalfooter'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.footer'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
+
+
+class ColophonTile(Tile):
+    """A colophon tile."""
+
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalfooter'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.colophon'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class SiteActionsTile(Tile):
     """A site actions tile."""
 
-    def site_actions(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
-        return context_state.actions('site_actions')
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalfooter'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.site_actions'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class AnalyticsTile(Tile):
     """A analytics tile."""
 
     def __call__(self):
-        ptool = getToolByName(self.context, "portal_properties")
-        snippet = safe_unicode(ptool.site_properties.webstats_js)
-        return "<html><body>%s</body></html>" % snippet
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalfooter'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.analytics'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class SkipLinksTile(Tile):
     """A skip links tile."""
 
-    @property
-    def current_page_url(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
-        return context_state.current_page_url
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalheader'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.skip_links'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class LoginTile(Tile):
@@ -138,267 +200,120 @@ class PersonalBarTile(Tile):
     """A personal bar tile."""
 
     def __call__(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
-        self.navigation_root_url = self.portal_state.navigation_root_url()
-
-        self.update()
-        return self.index()
-
-    def update(self):
-        context = aq_inner(self.context)
-
-        context_state = getMultiAdapter((context, self.request),
-                                        name=u'plone_context_state')
-
-        sm = getSecurityManager()
-        self.user_actions = context_state.actions('user')
-        self.anonymous = self.portal_state.anonymous()
-
-        if not self.anonymous:
-            member = self.portal_state.member()
-            userid = member.getId()
-
-            if sm.checkPermission('Portlets: View dashboard', context):
-                self.homelink_url = self.navigation_root_url + '/dashboard'
-            else:
-                self.homelink_url = self.navigation_root_url + \
-                    '/personalize_form'
-
-            membership = getToolByName(context, 'portal_membership')
-            member_info = membership.getMemberInfo(member.getId())
-            # member_info is None if there's no Plone user object, as when
-            # using OpenID.
-            if member_info:
-                fullname = member_info.get('fullname', '')
-            else:
-                fullname = None
-            if fullname:
-                self.user_name = fullname
-            else:
-                self.user_name = userid
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalheader'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.personal_bar'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class SearchBoxTile(Tile):
     """A search box tile."""
 
     def __call__(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
-        self.navigation_root_url = self.portal_state.navigation_root_url()
-
-        self.update()
-        return self.index()
-
-    def update(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
-
-        props = getToolByName(self.context, 'portal_properties')
-        livesearch = props.site_properties.getProperty('enable_livesearch',
-                                                       False)
-        if livesearch:
-            self.search_input_id = "searchGadget"
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalheader'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.searchbox'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            self.search_input_id = "nolivesearchGadget"  # don't use "" here!
+            return u''
 
-        folder = context_state.folder()
-        self.folder_path = '/'.join(folder.getPhysicalPath())
+
+class AnonToolsTile(Tile):
+    """An anon tools tile."""
+
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalheader'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.anontools'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class LogoTile(Tile):
     """A logo tile."""
 
     def __call__(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
-        self.navigation_root_url = self.portal_state.navigation_root_url()
-
-        self.update()
-        return self.index()
-
-    def update(self):
-        portal = self.portal_state.portal()
-        bprops = portal.restrictedTraverse('base_properties', None)
-        if bprops is not None:
-            logoName = bprops.logoName
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalheader'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.logo'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            logoName = 'logo.jpg'
-        try:
-            self.logo_tag = portal.restrictedTraverse(logoName).tag()
-        except KeyError:
-            self.logo_tag = ''
-
-        self.portal_title = self.portal_state.portal_title()
+            return u''
 
 
 class GlobalSectionsTile(Tile):
     """A global sections tile."""
 
     def __call__(self):
-        self.update()
-        return self.index()
-
-    def update(self):
-        context = aq_inner(self.context)
-        portal_tabs_view = getMultiAdapter((context, self.request),
-                                           name='portal_tabs_view')
-        self.portal_tabs = portal_tabs_view.topLevelTabs()
-
-        self.selected_tabs = self.selectedTabs(portal_tabs=self.portal_tabs)
-        self.selected_portal_tab = self.selected_tabs['portal']
-
-    def selectedTabs(self, default_tab='index_html', portal_tabs=()):
-        plone_url = getToolByName(self.context, 'portal_url')()
-        plone_url_len = len(plone_url)
-        request = self.request
-        valid_actions = []
-
-        url = request['URL']
-        path = url[plone_url_len:]
-
-        for action in portal_tabs:
-            if not action['url'].startswith(plone_url):
-                # In this case the action url is an external link. Then, we
-                # avoid issues (bad portal_tab selection) continuing with next
-                # action.
-                continue
-            action_path = action['url'][plone_url_len:]
-            if not action_path.startswith('/'):
-                action_path = '/' + action_path
-            if path.startswith(action_path):
-                # Make a list of the action ids, along with the path length
-                # for choosing the longest (most relevant) path.
-                valid_actions.append((len(action_path), action['id']))
-
-        # Sort by path length, the longest matching path wins
-        valid_actions.sort()
-        if valid_actions:
-            return {'portal': valid_actions[-1][1]}
-
-        return {'portal': default_tab}
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.mainnavigation'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.global_sections'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class PathBarTile(Tile):
     """A path bar tile."""
 
     def __call__(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
-        self.navigation_root_url = self.portal_state.navigation_root_url()
-
-        self.update()
-        return self.index()
-
-    def update(self):
-        self.is_rtl = self.portal_state.is_rtl()
-
-        breadcrumbs_view = getMultiAdapter((self.context, self.request),
-                                           name='breadcrumbs_view')
-        self.breadcrumbs = breadcrumbs_view.breadcrumbs()
-
-
-class MenuLinkTile(Tile):
-    """An menu link tile."""
-
-    def getLink(self):
-        return self.context.absolute_url()+"/@@cmsui-menu"
-
-    def showCMSUI(self):
-        if not _checkPermission('Plone: View CMS UI',
-                                self.context):
-            return False
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.abovecontent'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.path_bar'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return True
-
-class EditBarTile(Tile):
-    """A edit bar tile."""
-
-    @memoize
-    def prepareObjectTabs(self, default_tab='view',
-                          sort_first=['folderContents']):
-        """Prepare the object tabs by determining their order and working
-        out which tab is selected. Used in global_contentviews.pt
-        """
-        context = aq_inner(self.context)
-        context_url = context.absolute_url()
-        context_fti = context.getTypeInfo()
-
-        context_state = getMultiAdapter(
-            (context, self.request), name=u'plone_context_state')
-        actions = context_state.actions
-
-        action_list = []
-        if context_state.is_structural_folder():
-            action_list = actions('folder')
-        action_list.extend(actions('object'))
-
-        tabs = []
-        found_selected = False
-        fallback_action = None
-
-        # we use the context-acquired request object here, which is
-        # different from the request fetching the tile HTML
-        request_url = self.context.REQUEST['ACTUAL_URL']
-        request_url_path = request_url[len(context_url):]
-
-        if request_url_path.startswith('/'):
-            request_url_path = request_url_path[1:]
-
-        for action in action_list:
-            item = {'title': action['title'],
-                    'id': action['id'],
-                    'url': '',
-                    'selected': False}
-
-            action_url = action['url'].strip()
-            starts = action_url.startswith
-            if starts('http') or starts('javascript'):
-                item['url'] = action_url
-            else:
-                item['url'] = '%s/%s' % (context_url, action_url)
-
-            action_method = item['url'].split('/')[-1]
-
-            # Action method may be a method alias:
-            # Attempt to resolve to a template.
-            action_method = context_fti.queryMethodID(
-                action_method, default=action_method)
-            if action_method:
-                request_action = unquote(request_url_path)
-                request_action = context_fti.queryMethodID(
-                    request_action, default=request_action)
-                if action_method == request_action:
-                    item['selected'] = True
-                    found_selected = True
-
-            current_id = item['id']
-            if current_id == default_tab:
-                fallback_action = item
-
-            tabs.append(item)
-
-        if not found_selected and fallback_action is not None:
-            fallback_action['selected'] = True
-
-        def sortOrder(tab):
-            try:
-                return sort_first.index(tab['id'])
-            except ValueError:
-                return 255
-
-        tabs.sort(key=sortOrder)
-        return tabs
-
-    def object_actions(self):
-        context = aq_inner(self.context)
-        context_state = getMultiAdapter((context, self.request),
-                                        name=u'plone_context_state')
-
-        return context_state.actions('object_actions')
-
-    def icon(self, action):
-        return action.get('icon', None)
+            return u''
 
 
 class ToolbarTile(Tile):
@@ -407,11 +322,11 @@ class ToolbarTile(Tile):
     def __call__(self):
         mtool = getToolByName(self.context, 'portal_membership')
         if mtool.isAnonymousUser():
-            toolbar = lambda: u''
-        else:
-            toolbar = getMultiAdapter((self.context, self.request),
-                                      name=u'render-toolbar')
-            alsoProvides(toolbar, IViewView)
+            return u''
+
+        toolbar = getMultiAdapter((self.context, self.request),
+                                  name=u'render-toolbar')
+        alsoProvides(toolbar, IViewView)
         return u'<html><body>%s</body></html>' % toolbar()
 
 
@@ -419,15 +334,20 @@ class GlobalStatusMessageTile(Tile):
     """Display messages to the current user"""
 
     def __call__(self):
-        self.update()
-        return self.index()
-
-    def update(self):
-        if not self.request.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
-            self.status = IStatusMessage(self.request)
-            self.messages = self.status.show()
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.globalstatusmessage'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.globalstatusmessage'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            self.messages = []
+            return u''
 
 
 class DocumentBylineTile(Tile):
@@ -452,11 +372,13 @@ class DocumentBylineTile(Tile):
         return not self.anonymous or allowAnonymousViewAbout
 
     def show_history(self):
-        if not _checkPermission('CMFEditions: Access previous versions',
-                                self.context):
+        if not _checkPermission('CMFEditions: Access previous versions', self.context):
             return False
-        else:
+        if IViewView.providedBy(self.__parent__):
             return True
+        if IFolderContentsView.providedBy(self.__parent__):
+            return True
+        return False
 
     def locked_icon(self):
         if not getSecurityManager().checkPermission('Modify portal content',
@@ -470,18 +392,14 @@ class DocumentBylineTile(Tile):
             locked = lock_info.is_locked()
         else:
             context = aq_inner(self.context)
-            lockable = getattr(context.aq_explicit,
-                               'wl_isLocked', None) is not None
+            lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
             locked = lockable and context.wl_isLocked()
 
         if not locked:
             return ""
 
         portal = self.portal_state.portal()
-        try:
-            icon = portal.restrictedTraverse('lock_icon.gif')
-        except KeyError:
-            icon = portal.restrictedTraverse('lock_icon.png')
+        icon = portal.restrictedTraverse('lock_icon.png')
         return icon.tag(title='Locked')
 
     def creator(self):
@@ -500,35 +418,52 @@ class DocumentBylineTile(Tile):
             return self.context.expires().isPast()
         return False
 
-    def toLocalizedTime(self, time, long_format=None, time_only=None):
+    def toLocalizedTime(self, time, long_format=None, time_only = None):
         """Convert time to localized time
         """
         util = getToolByName(self.context, 'translation_service')
         return util.ulocalized_time(time, long_format, time_only, self.context,
                                     domain='plonelocales')
 
+    def pub_date(self):
+        """Return object effective date.
+
+        Return None if publication date is switched off in global site settings
+        or if Effective Date is not set on object.
+        """
+        # check if we are allowed to display publication date
+        properties = getToolByName(self.context, 'portal_properties')
+        site_properties = getattr(properties, 'site_properties')
+        if not site_properties.getProperty('displayPublicationDateInByline',
+           False):
+            return None
+
+        # check if we have Effective Date set
+        date = self.context.EffectiveDate()
+        if not date or date == 'None':
+            return None
+
+        return DateTime(date)
+
 
 class LockInfoTile(Tile):
     """A lockinfo tile."""
 
     def __call__(self):
-        if not self.available() or not ITTWLockable.providedBy(self.context):
-            return '<html></html>'
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
-        self.update()
-        return self.index()
-
-    def available(self):
-        membership = getToolByName(self.context, 'portal_membership')
-        return membership.checkPermission('Modify portal content',
-                                          self.context)
-
-    def update(self):
-        self.info = getMultiAdapter((self.context, self.request),
-                                    name='plone_lock_info')
-        self.lock_is_stealable = self.info.lock_is_stealable()
-        self.lock_info = self.info.lock_info
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.abovecontent'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.lockinfo'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class NextPreviousTile(Tile):
@@ -537,38 +472,76 @@ class NextPreviousTile(Tile):
     """
 
     def __call__(self):
-        self.update()
-        return self.index()
-
-    def update(self):
-        self.npview = self.context.restrictedTraverse(
-            '@@plone_nextprevious_view')
+        alsoProvides(self, IViewView)
+        links_manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead.links'
+        )
+        links_viewlet = queryMultiAdapter(
+            (self.context, self.request, self, links_manager),
+            IViewlet, name='plone.nextprevious.links'
+        )
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.belowcontent'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.nextprevious'
+        )
+        if links_viewlet and viewlet:
+            links_viewlet.update()
+            viewlet.update()
+            try:
+                # XXX: We need to cheat viewlet.isViewTemplate:
+                url = self.request.get('ACTUAL_URL')
+                self.request.set('ACTUAL_URL', self.context.absolute_url())
+                return u'<html><head>%s</head><body>%s</body></html>' % (
+                    links_viewlet.render(), viewlet.render())
+            finally:
+                self.request.set('ACTUAL_URL', url)
+        else:
+            return u''
 
 
 class DocumentActionsTile(Tile):
     """Shows the document actions."""
 
     def __call__(self):
-        self.update()
-        return self.index()
-
-    def update(self):
-        self.context_state = getMultiAdapter((self.context, self.request),
-                                             name=u'plone_context_state')
-        self.actions = self.context_state.actions('document_actions')
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.belowcontentbody'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.abovecontenttitle.documentactions'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class RelatedItemsTile(Tile):
     """A related items tile."""
 
-    def related_items(self):
-        context = aq_inner(self.context)
-        related = ()
-
-        if base_hasattr(context, 'relatedItems'):
-            related = context.relatedItems
-
-        return related
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.belowcontentbody'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.belowcontenttitle.relateditems'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class HistoryTile(Tile):
@@ -578,64 +551,30 @@ class HistoryTile(Tile):
     """
 
     def __call__(self):
-        view = self.context.restrictedTraverse('@@contenthistorypopup')
-        return view()
+        return self.context.restrictedTraverse('@@contenthistorypopup')()
 
 
 class LanguageSelectorTile(Tile):
     """Shows the language selector."""
 
     def __call__(self):
-        self.update()
-        return self.index()
-
-    def update(self):
-        self.tool = getToolByName(self.context, 'portal_languages', None)
-
-    def available(self):
-        if self.tool is not None:
-            return self.tool.showSelector()
-        return False
-
-    def portal_url(self):
-        portal_tool = getToolByName(self.context, 'portal_url', None)
-        if portal_tool is not None:
-            return portal_tool.getPortalObject().absolute_url()
-        return None
-
-    def languages(self):
-        """Returns list of languages."""
-        if self.tool is None:
-            return []
-
-        bound = self.tool.getLanguageBindings()
-        current = bound[0]
-
-        def merge(lang, info):
-            info["code"] = lang
-            if lang == current:
-                info['selected'] = True
-            else:
-                info['selected'] = False
-            return info
-
-        languages = [merge(lang, info) for (lang, info) in
-                        self.tool.getAvailableLanguageInformation().items()
-                        if info["selected"]]
-
-        # sort supported languages by index in portal_languages tool
-        supported_langs = self.tool.getSupportedLanguages()
-
-        def index(info):
-            try:
-                return supported_langs.index(info["code"])
-            except ValueError:
-                return len(supported_langs)
-
-        return sorted(languages, key=index)
-
-    def showFlags(self):
-        """XXX: Do we use flags?."""
-        if self.tool is not None:
-            return self.tool.showFlags()
-        return False
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalheader'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.app.multilingual.languageselector'
+        )
+        # BBB: Plone 4 or no plone.app.multilingual
+        if viewlet is None:
+            viewlet = queryMultiAdapter(
+                (self.context, self.request, self, manager),
+                IViewlet, name='plone.app.i18n.locales.languageselector'
+            )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''

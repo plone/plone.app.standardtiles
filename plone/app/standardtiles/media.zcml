@@ -103,17 +103,6 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.calendar"
-        title="Calendar"
-        description="A tile displaying a calendar"
-        add_permission="zope.Public"
-        class=".calendar.CalendarTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/calendar.pt"
-        />
-
-    <plone:tile
         name="plone.app.standardtiles.rss"
         title="RSS Feed"
         description="A tile which displays a RSS feed"

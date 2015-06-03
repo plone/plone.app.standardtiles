@@ -1,21 +1,27 @@
 # -*- coding: utf-8 -*-
-from plone.app.standardtiles.utils import getNavigationRoot
-from plone.tiles import PersistentTile
-from urllib import quote
+from plone.app.layout.globals.interfaces import IViewView
+from plone.tiles import Tile
+from zope.component import queryMultiAdapter
+from zope.interface import alsoProvides
+from zope.viewlet.interfaces import IViewlet
+from zope.viewlet.interfaces import IViewletManager
 
 
-class KeywordsTile(PersistentTile):
+class KeywordsTile(Tile):
     """A tile that displays the context's keywords, if any."""
 
-    @property
-    def categories(self):
-        """Return context's categories."""
-
-        return self.context.Subject()
-
-    def catUrl(self, category):
-        """Safely quote URL."""
-
-        return "%s/search?Subject:list=%s" % \
-               (getNavigationRoot(self.context).absolute_url(),
-                quote(category))
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.belowcontent'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.belowcontenttitle.keywords'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''

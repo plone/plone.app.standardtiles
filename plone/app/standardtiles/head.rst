@@ -19,6 +19,12 @@ Most of these tiles should (also) be available to Anonymous users::
 
     >>> unprivileged_browser = Browser(app)
 
+Title::
+
+    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.headtitle')
+    >>> unprivileged_browser.contents
+    '...<head...<title...>...</title>...</head>...'
+
 Stylesheets::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.stylesheets')
@@ -37,3 +43,34 @@ Favicon link::
     >>> unprivileged_browser.contents
     '...<head...<link...favicon.ico.../>...</head>...'
 
+Search link::
+
+    >>> unprivileged_browser.open(portalURL +'/@@plone.app.standardtiles.searchlink')
+    >>> unprivileged_browser.contents
+    '...<head...<link rel="search".../>...</head>...'
+
+Navigation link::
+
+    >>> unprivileged_browser.open(portalURL +'/@@plone.app.standardtiles.navigationlink')
+    >>> unprivileged_browser.contents
+    '...<head...<link rel="home".../>...</head>...'
+    >>> unprivileged_browser.contents
+    '...<head...<link rel="contents".../>...</head>...'
+
+RSS link::
+
+    >>> unprivileged_browser.open(portalURL +'/@@plone.app.standardtiles.rsslink')
+    >>> unprivileged_browser.contents
+    '...<head...<link ... type="application/rss+xml" />...</head>...'
+
+Canonical URL link::
+
+    >>> unprivileged_browser.open(portalURL +'/@@plone.app.standardtiles.canonical_url')
+    >>> unprivileged_browser.contents
+    '...<head...<link rel="canonical".../>...</head>...'
+
+Author link::
+
+    >>> browser.open(portalURL + '/@@plone.app.standardtiles.authorlink')
+    >>> browser.contents
+    '...<head...<link rel="author".../>...</head>...'

@@ -1,94 +1,111 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
-from cgi import escape
-from plone.app.layout.viewlets.interfaces import IHtmlHeadLinks
-try:
-    from plone.app.layout.viewlets.interfaces import IScripts
-except ImportError:
-    # BBB for Plone 4
-    IScripts = ()
+from plone.app.layout.globals.interfaces import IViewView
 from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
-from zope.interface import implementer
+from zope.component import queryMultiAdapter
+from zope.interface import alsoProvides
 from zope.viewlet.interfaces import IViewlet
+from zope.viewlet.interfaces import IViewletManager
 
 
 class TitleTile(Tile):
     """A tile rendering the title tag to be inserted in the HTML headers."""
 
     def __call__(self):
-        self.update()
-        return self.index()
-
-    def update(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
-        page_title = escape(safe_unicode(context_state.object_title()))
-        portal_title = escape(safe_unicode(portal_state.portal_title()))
-        if page_title == portal_title:
-            self.site_title = portal_title
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.htmlhead.title'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            self.site_title = u"%s &mdash; %s" % (page_title, portal_title)
+            return u''
 
 
-@implementer(IHtmlHeadLinks)
 class StylesheetsTile(Tile):
     """A stylesheets rendering tile."""
 
     def __call__(self):
-        viewlet = getMultiAdapter(
-            (self.context, self.request, self, self),
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead.links'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
             IViewlet, name='plone.resourceregistries.styles'
         )
-        viewlet.update()
-        return u'<html><head>%s</head></html>' % viewlet()
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
+        else:
+            return u''
 
 
-@implementer(IScripts)
 class JavascriptsTile(Tile):
     """A javascripts rendering tile."""
+
     def __call__(self):
-        viewlet = getMultiAdapter(
-            (self.context, self.request, self, self),
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.scripts'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
             IViewlet, name='plone.resourceregistries.scripts'
         )
-        viewlet.update()
-        return u'<html><head>%s</head></html>' % viewlet()
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class FaviconLinkTile(Tile):
     """Favicon link tile implementation."""
 
-    @property
-    def site_url(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
-        return portal_state.portal_url()
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead.links'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.links.favicon'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class AuthorLinkTile(Tile):
     """Author link tile implementation."""
 
-    @property
-    def navigation_root_url(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
-        return portal_state.navigation_root_url()
-
-    def show(self):
-        tools = getMultiAdapter((self.context, self.request),
-                                name='plone_tools')
-        properties = tools.properties()
-        site_properties = getattr(properties, 'site_properties')
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
-        anonymous = portal_state.anonymous()
-        allowAnonymousViewAbout = site_properties.getProperty(
-            'allowAnonymousViewAbout', True)
-        return not anonymous or allowAnonymousViewAbout
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead.links'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.links.author'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class NavigationLinkTile(Tile):
@@ -104,25 +121,58 @@ class NavigationLinkTile(Tile):
 class SearchLinkTile(Tile):
     """Search link tile implementation."""
 
-    @property
-    def navigation_root_url(self):
-        portal_state = getMultiAdapter((self.context, self.request),
-                                       name=u'plone_portal_state')
-        return portal_state.navigation_root_url()
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead.links'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.links.search'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
+        else:
+            return u''
 
 
 class RSSLinkTile(Tile):
     """RSS link tile implementation."""
 
-    def allowed(self):
-        syntool = getToolByName(self.context, 'portal_syndication')
-        try:
-            return syntool.isSyndicationAllowed(self.context)
-        except TypeError:  # Could not adapt
-            return False
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead.links'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.links.RSS'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
+        else:
+            return u''
 
-    @property
-    def url(self):
-        context_state = getMultiAdapter((self.context, self.request),
-                                        name=u'plone_context_state')
-        return '%s/RSS' % context_state.object_url()
+
+class CanonicalUrlTile(Tile):
+    """Canonical url tile implementation."""
+
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead.links'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.links.canonical_url'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
+        else:
+            return u''

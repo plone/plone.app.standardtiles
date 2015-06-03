@@ -18,8 +18,8 @@ optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 normal_testfiles = [
     # '../content.rst',
     # '../media.rst',
-    # '../layout.rst',
-    # '../head.rst',
+    '../layout.rst',
+    '../head.rst',
 ]
 testtype_testfiles = [
     '../field.rst',

@@ -30,6 +30,17 @@ from zope.interface import implements
 from zope.interface import implementsOnly
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
+import pkg_resources
+
+HAS_PLONE_5 = \
+    int(pkg_resources.get_distribution('Products.CMFPlone').version[0]) > 4
+
+try:
+    pkg_resources.get_distribution('plone.app.theming')
+except pkg_resources.DistributionNotFound:
+    HAS_PLONE_APP_THEMING = False
+else:
+    HAS_PLONE_APP_THEMING = True
 
 NORMAL_USER_NAME = 'user'
 NORMAL_USER_PASSWORD = 'secret'
@@ -133,11 +144,28 @@ class PAStandardtiles(PloneSandboxLayer):
         xmlconfig.file('configure.zcml', plone.app.standardtiles,
                        context=configurationContext)
 
+        if HAS_PLONE_5:
+            import plone.app.contenttypes
+            xmlconfig.file('configure.zcml', plone.app.contenttypes,
+                           context=configurationContext)
+
     def setUpPloneSite(self, portal):
         # install into the Plone site
         applyProfile(portal, 'plone.app.dexterity:default')
         applyProfile(portal, 'plone.app.widgets:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
+
+        if HAS_PLONE_5:
+            applyProfile(portal, 'plone.app.contenttypes:default')
+
+        # ensure plone.app.theming disabled
+        if HAS_PLONE_APP_THEMING:
+            from plone.registry.interfaces import IRegistry
+            from zope.component import getUtility
+            registry = getUtility(IRegistry)
+            key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
+            if key in registry:
+                registry[key] = False
 
         # register portlet manager and portlet manager renderer
         sm = getSiteManager(portal)
@@ -198,7 +226,6 @@ class PAStandardtilesTestType(PloneSandboxLayer):
         fti.schema = u'plone.app.standardtiles.testing.ITestType1'
         fti.behaviors = ('plone.app.dexterity.behaviors.metadata.IDublinCore',)
         portal.portal_types._setObject('DecoTestType1', fti)
-        schema = fti.lookupSchema()
 
         # inserts the content of the types defined above
         login(portal, MANAGER_USER_NAME)

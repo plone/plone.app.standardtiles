@@ -27,13 +27,14 @@ you're not logged in::
 
 We create a page in the site to use it in tests later::
 
-    >>> browser.open(portalURL + '/createObject?type_name=Document')
-    >>> browser.getControl(name='title').value = 'A simple page'
-    >>> browser.getControl(name='description').value = 'A description'
-    >>> browser.getControl('Save').click()
-    >>> pageURL = browser.url
+    >>> portal.invokeFactory('Document', 'a-simple-page',
+    ...     title=u'A simple page', description=u'A description')
+    'a-simple-page'
+    >>> pageURL = portal['a-simple-page'].absolute_url()
     >>> pageURL
     'http://nohost/plone/a-simple-page'
+    >>> transaction.commit()
+
 
 Basic layout
 ------------
@@ -54,7 +55,7 @@ And on a content object with title::
 
     >>> browser.open(pageURL + '/@@plone.app.standardtiles.headtitle')
     >>> browser.contents
-    '...<title>A simple page &#8212; Plone site</title>...'
+    '...<title>A simple page &mdash; Plone site</title>...'
 
 The author link tile renders a link tag pointing to a page with info
 about the creator of the context::
@@ -74,13 +75,13 @@ The search link tile renders a link tag pointing to the site search form::
 
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.searchlink')
     >>> browser.contents
-    '...<link rel="search" href="http://nohost/plone/search_form" title="Search this site" />...'
+    '...<link rel="search" href="http://nohost/plone/@@search" title="Search this site" />...'
 
 Footer tile::
 
     >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.footer')
     >>> unprivileged_browser.contents
-    '...id="portal-footer"...and the Plone logo are registered trademarks of the...'
+    '...id="portal-footer...Plone Foundation...and friends...'
 
 Site actions tile::
 
@@ -160,7 +161,12 @@ Document byline tile (test as logged in user)::
 
 Table of contents tile::
 
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.tableofcontents')
+    >>> try:
+    ...     portal['a-simple-page'].setTableContents(True)  # AT
+    ... except AttributeError:
+    ...     portal['a-simple-page'].table_of_contents = True  # DX
+    >>> transaction.commit()
+    >>> browser.open(portalURL + '/a-simple-page/@@plone.app.standardtiles.tableofcontents')
     >>> browser.contents
     '...id="document-toc"...'
 
@@ -179,32 +185,15 @@ site. Since the language selection depends on cookies, this tile will
 be only available if the corresponding setting is set in the
 portal_languages tool.
 
-By default, this setting set and the selector shows up::
-
-    >>> lt = getToolByName(portal, 'portal_languages')
-    >>> lt.use_cookie_negotiation
-    True
+By default, the selector won't show up::
 
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.languageselector')
-    >>> browser.contents
-    '...language-en...'
-
-However, anonymous won't see the selector by default:
-
-    >>> unprivileged_browser.open('/@@plone.app.standardtiles.languageselector')
-    >>> 'language-en' in unprivileged_browser.contents
+    >>> 'language-en' in browser.contents
     False
-
-But the ``always_show_selector`` flag is still obeyed::
-
-    >>> lt.always_show_selector = True
-    >>> transaction.commit()
-    >>> unprivileged_browser.open(portalURL + '/@@plone.app.standardtiles.languageselector')
-    >>> unprivileged_browser.contents
-    '...language-en...'
 
 Adding supported languages will show them in the tile::
 
+    >>> lt = getToolByName(portal, 'portal_languages')
     >>> lt.addSupportedLanguage('ca')
     >>> transaction.commit()
     >>> browser.open(portalURL + '/@@plone.app.standardtiles.languageselector')
@@ -237,7 +226,7 @@ Let's add a folder and add three pages for testing the tile::
     >>> folder.invokeFactory('Document', 'page-three', title='Page three')
     'page-three'
     >>> page3 = folder.get('page-three')
-
+    >>> transaction.commit()
 
 Test the tile on the first page. It should not be there since next
 previous is still disabled (default configuration).
@@ -245,40 +234,43 @@ previous is still disabled (default configuration).
     >>> page1.restrictedTraverse('@@plone_nextprevious_view').enabled()
     False
 
-    >>> tile_view = '@@plone.app.standardtiles.nextprevious'
-
-    >>> html = page1.restrictedTraverse(tile_view)()
-    >>> assert '<div' not in html, 'Next / previous is disabled ' + \
+    >>> browser.open(portalURL + '/next-previous-folder/page-one/@@plone.app.standardtiles.nextprevious')
+    >>> assert '<div' not in browser.contents, 'Next / previous is disabled ' + \
     ...     'but the tile has contents.'
 
 Then we activate next previous and we should see a next-link when
 rendering the tile on the first page::
 
-    >>> folder.getField('nextPreviousEnabled').set(folder, True)
+    >>> try:
+    ...     folder.setNextPreviousEnabled(True)  # AT
+    ... except AttributeError:
+    ...     folder.nextPreviousEnabled = True  # DX
+    >>> transaction.commit()
     >>> page1.restrictedTraverse('@@plone_nextprevious_view').enabled()
     True
 
-    >>> html = page1.restrictedTraverse(tile_view)()
-    >>> assert '<div' in html, 'Next / previous is enabled ' + \
+    >>> browser.open(portalURL + '/next-previous-folder/page-one/@@plone.app.standardtiles.nextprevious')
+    >>> assert '<div' in browser.contents, 'Next / previous is enabled ' + \
     ...     'but the tiles is empty'
-    >>> assert 'class="next"' in html, 'Expected "next" link'
-    >>> assert 'class="previous"' not in html, 'Didn\'t expect "previous" link'
+    >>> assert 'class="next"' in browser.contents, 'Expected "next" link'
+    >>> assert 'class="previous"' not in browser.contents, 'Didn\'t expect "previous" link'
 
-    >>> html = page2.restrictedTraverse(tile_view)()
-    >>> assert '<div' in html, 'Next / previous is enabled ' + \
+    >>> browser.open(portalURL + '/next-previous-folder/page-two/@@plone.app.standardtiles.nextprevious')
+    >>> assert '<div' in browser.contents, 'Next / previous is enabled ' + \
     ...     'but the tiles is empty'
-    >>> assert 'class="next"' in html, 'Expected "next" link'
-    >>> assert 'class="previous"' in html, 'Expected "previous" link'
+    >>> assert 'class="next"' in browser.contents, 'Expected "next" link'
+    >>> assert 'class="previous"' in browser.contents, 'Expected "previous" link'
 
-    >>> html = page3.restrictedTraverse(tile_view)()
-    >>> assert '<div' in html, 'Next / previous is enabled ' + \
+    >>> browser.open(portalURL + '/next-previous-folder/page-three/@@plone.app.standardtiles.nextprevious')
+    >>> assert '<div' in browser.contents, 'Next / previous is enabled ' + \
     ...     'but the tiles is empty'
-    >>> assert 'class="next"' not in html, 'Didn\'t expect "next" link'
-    >>> assert 'class="previous"' in html, 'Expected "previous" link'
+    >>> assert 'class="next"' not in browser.contents, 'Didn\'t expect "next" link'
+    >>> assert 'class="previous"' in browser.contents, 'Expected "previous" link'
 
 Cleanup::
 
     >>> portal.manage_delObjects(['next-previous-folder'])
+    >>> transaction.commit()
 
 
 Login tile
@@ -313,43 +305,24 @@ But if we enable self-registration, it should show up::
     '...<a...@@register...New user...</a>...'
 
 
-Configlets tile
----------------
-
-The configlets tile renders a list of the available config dialogs::
-
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.configlets')
-    >>> browser.contents
-    '...Site Setup...Add-ons...Calendar...Collections...'
-
-
 Discussion tile
 ---------------
 
-Add a discussion tile and add a comment thru this tile.
+Discussion tile is visible only when discussion is enabled:
 
-    >>> browser.open(pageURL + '/@@add-tile/plone.app.standardtiles.discussion/discussion-tile')
-    >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.discussion/discussion-pageURL')
+    >>> browser.open(pageURL + '/@@plone.app.standardtiles.discussion')
+    >>> 'You can add a comment by filling out the form below' in browser.contents
+    False
 
+    >>> from zope.component import queryUtility
+    >>> from plone.registry.interfaces import IRegistry
+    >>> from plone.app.discussion.interfaces import IDiscussionSettings
+    >>> registry = queryUtility(IRegistry)
+    >>> settings = registry.forInterface(IDiscussionSettings)
+    >>> settings.globally_enabled = True
+    >>> portal['a-simple-page'].allow_discussion = True
+    >>> transaction.commit()
+
+    >>> browser.open(pageURL + '/@@plone.app.standardtiles.discussion')
     >>> 'You can add a comment by filling out the form below' in browser.contents
     True
-
-
-Menu link tile
---------------
-
-Add a menu_link tile:
-
-    >>> browser.open(portalURL + '/@@add-tile/plone.app.standardtiles.menu_link/menu_link-tile')
-
-    >>> browser.getControl(label='Save').click()
-    >>> browser.open(portalURL + '/@@plone.app.standardtiles.menu_link/menu_link-tile')
-
-Currently the menu link only shows a 'manage page' link and some javascript:
-
-    >>> """<a id="plone-cmsui-menu-link" href="http://nohost/plone/@@cmsui-menu">Manage page</a>""" in browser.contents
-    True
-
-
-
