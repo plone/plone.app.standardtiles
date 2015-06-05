@@ -47,6 +47,7 @@
         class=".common.PersonalBarTile"
         for="*"
         permission="zope2.View"
+        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -61,6 +62,7 @@
         class=".common.AnonToolsTile"
         for="*"
         permission="zope2.View"
+        zcml:condition="have plone-5"
         />
 
     <plone:tile

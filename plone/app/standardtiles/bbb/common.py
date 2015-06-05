@@ -8,6 +8,26 @@ from zope.viewlet.interfaces import IViewlet
 from plone.tiles import Tile
 
 
+class PersonalBarTile(Tile):
+    """A personal bar tile."""
+
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.portalheader'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.personal_bar'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><body>%s</body></html>' % viewlet.render()
+        else:
+            return u''
+
+
 class GlobalSectionsTile(Tile):
     """A global sections tile."""
 

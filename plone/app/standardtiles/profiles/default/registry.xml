@@ -17,6 +17,7 @@
       <element>plone.app.standardtiles.discussion</element>
       <element>plone.app.standardtiles.document_actions</element>
       <element>plone.app.standardtiles.document_byline</element>
+      <element>plone.app.standardtiles.dublincore</element>
       <element>plone.app.standardtiles.edit_bar</element>
       <element>plone.app.standardtiles.embed</element>
       <element>plone.app.standardtiles.existingcontent</element>

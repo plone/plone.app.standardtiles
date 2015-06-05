@@ -20,6 +20,20 @@
       />
 
   <plone:tile
+      name="plone.app.standardtiles.anontools"
+      class=".common.PersonalBarTile"
+      for="*"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.personal_bar"
+      class=".common.PersonalBarTile"
+      for="*"
+      permission="zope2.View"
+      />
+
+  <plone:tile
       name="plone.app.standardtiles.global_sections"
       class=".common.GlobalSectionsTile"
       for="*"

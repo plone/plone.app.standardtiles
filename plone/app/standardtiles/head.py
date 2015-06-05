@@ -176,3 +176,21 @@ class CanonicalUrlTile(Tile):
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
             return u''
+
+
+class DublinCoreTile(Tile):
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.htmlhead.dublincore'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
+        else:
+            return u''

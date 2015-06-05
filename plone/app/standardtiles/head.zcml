@@ -42,6 +42,13 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.dublincore"
+        class=".head.DublinCoreTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.navigationlink"
         class=".head.NavigationLinkTile"
         for="*"

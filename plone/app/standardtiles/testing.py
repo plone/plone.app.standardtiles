@@ -167,6 +167,27 @@ class PAStandardtiles(PloneSandboxLayer):
             if key in registry:
                 registry[key] = False
 
+        # creates some users
+        acl_users = getToolByName(portal, 'acl_users')
+        acl_users.userFolderAddUser(
+            NORMAL_USER_NAME,
+            NORMAL_USER_PASSWORD,
+            ['Member'],
+            [],
+        )
+        acl_users.userFolderAddUser(
+            EDITOR_USER_NAME,
+            EDITOR_USER_PASSWORD,
+            ['Editor'],
+            [],
+        )
+        acl_users.userFolderAddUser(
+            MANAGER_USER_NAME,
+            MANAGER_USER_PASSWORD,
+            ['Manager'],
+            [],
+        )
+
         # register portlet manager and portlet manager renderer
         sm = getSiteManager(portal)
         sm.registerUtility(component=MockPortletManager(),
@@ -200,7 +221,16 @@ class PAStandardtilesTestType(PloneSandboxLayer):
         applyProfile(portal, 'plone.app.widgets:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
 
-        # Creates some users
+        # ensure plone.app.theming disabled
+        if HAS_PLONE_APP_THEMING:
+            from plone.registry.interfaces import IRegistry
+            from zope.component import getUtility
+            registry = getUtility(IRegistry)
+            key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
+            if key in registry:
+                registry[key] = False
+
+        # creates some users
         acl_users = getToolByName(portal, 'acl_users')
         acl_users.userFolderAddUser(
             NORMAL_USER_NAME,
@@ -221,7 +251,7 @@ class PAStandardtilesTestType(PloneSandboxLayer):
             [],
         )
 
-        # Define the dexterity "junk" type
+        # define the dexterity "junk" type
         fti = DexterityFTI('DecoTestType1')
         fti.schema = u'plone.app.standardtiles.testing.ITestType1'
         fti.behaviors = ('plone.app.dexterity.behaviors.metadata.IDublinCore',)

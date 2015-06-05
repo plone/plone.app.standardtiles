@@ -203,7 +203,7 @@ class PersonalBarTile(Tile):
         alsoProvides(self, IViewView)
         manager = queryMultiAdapter(
             (self.context, self.request, self),
-            IViewletManager, name='plone.portalheader'
+            IViewletManager, name='plone.toolbar'
         )
         viewlet = queryMultiAdapter(
             (self.context, self.request, self, manager),
@@ -535,7 +535,7 @@ class RelatedItemsTile(Tile):
         )
         viewlet = queryMultiAdapter(
             (self.context, self.request, self, manager),
-            IViewlet, name='plone.belowcontenttitle.relateditems'
+            IViewlet, name='plone.belowcontentbody.relateditems'
         )
         if viewlet is not None:
             viewlet.update()
