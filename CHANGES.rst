@@ -4,11 +4,21 @@ Changelog
 1.0a4 (unreleased)
 ------------------
 
-- Fix issue where byline title was broken on Plone 5 because of removed locked_icon.gif
+- Remove text, calendar and configlets tiles
   [datakurre]
-- Fix scripts and stylesheets tiles for Plone 5
+- Add scripts, stylesheets and toolbar tiles for Plone 5
   [datakurre]
-- Add toolbar tile for Plone 5
+- Add dublincore layout tile
+  [datakurre]
+- Add title field for image tile
+  [datakurre]
+- Refactor most layout tiles to re-use viewlets' for shared codebase
+  [datakurre]
+- Fix issue where byline tile was broken on Plone 5
+  [datakurre]
+- Fix issue where field tile ignored widget directive
+  [datakurre]
+- Fix profile version (no upgrade step; upgrade by reinstall)
   [datakurre]
 
 1.0a3 (2015-05-27)
