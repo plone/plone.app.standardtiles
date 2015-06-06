@@ -9,34 +9,29 @@
         class=".head.TitleTile"
         for="*"
         permission="zope2.View"
-        template="templates/headtitle.pt"
         />
 
-    <!-- Important: stylesheets and javascripts are within
-         condition, because legacy tiles contain similarly
-         named versions for Plone 4 -->
-    <configure zcml:condition="have plone-5">
-      <plone:tile
-          name="plone.app.standardtiles.stylesheets"
-          class=".head.StylesheetsTile"
-          for="*"
-          permission="zope2.View"
-          />
+    <plone:tile
+        name="plone.app.standardtiles.stylesheets"
+        class=".head.StylesheetsTile"
+        for="*"
+        permission="zope2.View"
+        zcml:condition="have plone-5"
+        />
 
-      <plone:tile
-          name="plone.app.standardtiles.javascripts"
-          class=".head.JavascriptsTile"
-          for="*"
-          permission="zope2.View"
-          />
-    </configure>
+    <plone:tile
+        name="plone.app.standardtiles.javascripts"
+        class=".head.JavascriptsTile"
+        for="*"
+        permission="zope2.View"
+        zcml:condition="have plone-5"
+        />
 
     <plone:tile
         name="plone.app.standardtiles.faviconlink"
         class=".head.FaviconLinkTile"
         for="*"
         permission="zope2.View"
-        template="templates/faviconlink.pt"
         />
 
     <plone:tile
@@ -44,7 +39,13 @@
         class=".head.AuthorLinkTile"
         for="*"
         permission="zope2.View"
-        template="templates/authorlink.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.dublincore"
+        class=".head.DublinCoreTile"
+        for="*"
+        permission="zope2.View"
         />
 
     <plone:tile
@@ -60,7 +61,6 @@
         class=".head.SearchLinkTile"
         for="*"
         permission="zope2.View"
-        template="templates/searchlink.pt"
         />
 
     <plone:tile
@@ -68,7 +68,13 @@
         class=".head.RSSLinkTile"
         for="*"
         permission="zope2.View"
-        template="templates/rsslink.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.canonical_url"
+        class=".head.CanonicalUrlTile"
+        for="*"
+        permission="zope2.View"
         />
 
 </configure>

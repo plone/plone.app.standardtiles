@@ -2,9 +2,9 @@
 from zope import schema
 from zope.interface import Interface
 from zope.interface import implements
-from zope.component import getUtility
+from zope.component import queryUtility
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.app.standardtiles.legacy.utils import findView
+from plone.app.standardtiles.portlets.utils import findView
 from plone.portlets.interfaces import IPortletManager
 from plone.tiles import Tile
 
@@ -31,7 +31,9 @@ class PortletManagerTile(Tile):
 
         manager = self.data.get('manager')
         viewName = self.data.get('view')
-        managerObj = getUtility(IPortletManager, name=manager)
+        managerObj = queryUtility(IPortletManager, name=manager)
+        if managerObj is None:
+            return u'<html><body></body></html>'
         view = findView(self, viewName)
 
         # set redirection view

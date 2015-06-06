@@ -7,9 +7,9 @@
 
     <plone:tile
         name="plone.app.standardtiles.colophon"
+        class=".common.ColophonTile"
         for="*"
         permission="zope2.View"
-        template="templates/colophon.pt"
         />
 
     <plone:tile
@@ -17,7 +17,6 @@
         class=".common.FooterTile"
         for="*"
         permission="zope2.View"
-        template="templates/footer.pt"
         />
 
     <plone:tile
@@ -25,7 +24,6 @@
         class=".common.SiteActionsTile"
         for="*"
         permission="zope2.View"
-        template="templates/site_actions.pt"
         />
 
     <plone:tile
@@ -41,7 +39,6 @@
         class=".common.SkipLinksTile"
         for="*"
         permission="zope2.View"
-        template="templates/skip_links.pt"
         />
 
     <!-- layout tiles -->
@@ -50,7 +47,7 @@
         class=".common.PersonalBarTile"
         for="*"
         permission="zope2.View"
-        template="templates/personal_bar.pt"
+        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -58,7 +55,14 @@
         class=".common.SearchBoxTile"
         for="*"
         permission="zope2.View"
-        template="templates/searchbox.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.anontools"
+        class=".common.AnonToolsTile"
+        for="*"
+        permission="zope2.View"
+        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -66,7 +70,6 @@
         class=".common.LogoTile"
         for="*"
         permission="zope2.View"
-        template="templates/logo.pt"
         />
 
     <plone:tile
@@ -74,7 +77,7 @@
         class=".common.GlobalSectionsTile"
         for="*"
         permission="zope2.View"
-        template="templates/global_sections.pt"
+        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -82,7 +85,6 @@
         class=".common.GlobalStatusMessageTile"
         for="*"
         permission="zope2.View"
-        template="templates/global_statusmessage.pt"
         zcml:condition="have plone-5"
         />
 
@@ -91,50 +93,29 @@
         class=".common.PathBarTile"
         for="*"
         permission="zope2.View"
-        template="templates/path_bar.pt"
         />
 
-    <!-- Plone 5 has no edit_bar and Plone 4 no toolbar, so register
-         them for both versions so that site layouts can support both
-         versions -->
-    <configure zcml:condition="have plone-5">
-      <plone:tile
-          name="plone.app.standardtiles.edit_bar"
-          class=".common.ToolbarTile"
-          for="*"
-          permission="zope2.View"
-          />
-      <plone:tile
-          name="plone.app.standardtiles.toolbar"
-          class=".common.ToolbarTile"
-          for="*"
-          permission="zope2.View"
-          />
-    </configure>
+    <plone:tile
+        name="plone.app.standardtiles.edit_bar"
+        class=".common.ToolbarTile"
+        for="*"
+        permission="zope2.View"
+        zcml:condition="have plone-5"
+        />
 
-    <configure zcml:condition="not-have plone-5">
-      <plone:tile
-          name="plone.app.standardtiles.edit_bar"
-          class=".common.EditBarTile"
-          for="*"
-          permission="zope2.View"
-          template="templates/edit_bar.pt"
-          />
-      <plone:tile
-          name="plone.app.standardtiles.toolbar"
-          class=".common.EditBarTile"
-          for="*"
-          permission="zope2.View"
-          template="templates/edit_bar.pt"
-          />
-    </configure>
+    <plone:tile
+        name="plone.app.standardtiles.toolbar"
+        class=".common.ToolbarTile"
+        for="*"
+        permission="zope2.View"
+        zcml:condition="have plone-5"
+        />
 
     <plone:tile
         name="plone.app.standardtiles.nextprevious"
         class=".common.NextPreviousTile"
         for="*"
         permission="zope2.View"
-        template="templates/nextprevious.pt"
         />
 
     <plone:tile
@@ -142,7 +123,6 @@
         class=".common.DocumentActionsTile"
         for="*"
         permission="zope2.View"
-        template="templates/document_actions.pt"
         />
 
     <plone:tile
@@ -150,9 +130,7 @@
         class=".common.LanguageSelectorTile"
         for="*"
         permission="zope2.View"
-        template="templates/languageselector.pt"
         />
-
 
     <plone:tile
         name="plone.app.standardtiles.login"
@@ -173,33 +151,6 @@
         class=".discussion.DiscussionTile"
         for="*"
         permission="zope.Public"
-        />
-
-     <browser:page
-        name="conversation_view"
-        for="plone.dexterity.interfaces.IDexterityContainer"
-        layer="plone.app.blocks.interfaces.IBlocksLayer"
-        class=".discussion.ConversationView"
-        permission="zope2.View"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.menu_link"
-        title="Menu link"
-        description="Show menu link"
-        class=".common.MenuLinkTile"
-        for="*"
-        add_permission="zope.Public"
-        permission="zope2.View"
-        template="templates/menu_link.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.configlets"
-        class=".configlets.ConfigletsTile"
-        for="*"
-        permission="zope2.View"
-        template="templates/configlets.pt"
         />
 
 </configure>

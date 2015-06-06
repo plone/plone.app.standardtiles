@@ -19,49 +19,59 @@
         <tal:name tal:define="creator_long_form string:?author=${creator_short_form};
                               creator_is_openid python:'/' in creator_short_form;
                               creator_id python:(creator_short_form, creator_long_form)[creator_is_openid];">
-          <span class="documentAuthor"
-                i18n:translate="">
+          <span class="documentAuthor">
+            <tal:i18n i18n:translate="label_by_author">
             by
             <a href="#"
                tal:attributes="href string:${context/@@plone_portal_state/navigation_root_url}/author/${creator_id}"
                tal:content="view/authorname"
                tal:omit-tag="python:view.author() is None"
-               i18n:name="author">
-              Bob Dobalina
-            </a>
+               i18n:name="author">Roland Barthes</a>
+            </tal:i18n>
+               —
           </span>
         </tal:name>
       </tal:creator>
-      <span class="documentModified">
-        &mdash;
-        <span i18n:translate="">
+      <tal:dates define="published view/pub_date;
+                         modified context/ModificationDate">
+      <span class="documentPublished"
+            tal:condition="published">
+        <span i18n:translate="box_published">
+          published
+        </span>
+        <span tal:replace="python:view.toLocalizedTime(published,long_format=1)">
+          August 16, 2001 at 23:35:59
+        </span><tal:sep condition="modified">,</tal:sep>
+      </span>
+
+      <span class="documentModified"
+            tal:condition="modified">
+        <span i18n:translate="box_last_modified">
           last modified
         </span>
-        <span tal:replace="python:view.toLocalizedTime(context.ModificationDate(),long_format=1)">
+        <span tal:replace="python:view.toLocalizedTime(modified,long_format=1)">
           August 16, 2001 at 23:35:59
         </span>
       </span>
+      </tal:dates>
+
       <tal:expired tal:condition="view/isExpired">
-        &mdash;
+        —
         <span class="state-expired"
-              i18n:translate="">
-          expired
-        </span>
+              i18n:translate="time_expired">expired</span>
       </tal:expired>
-      <span class="contentHistory"
-            id="content-history"
+
+      <span class="contentHistory" id="content-history"
             tal:condition="view/show_history">
-        &mdash;
+        —
         <a href="#"
            tal:attributes="href string:${here/absolute_url}/@@historyview"
-           i18n:translate="">
-          History
-        </a>
+           i18n:translate="label_history">History</a>
       </span>
       <div class="documentContributors"
            tal:define="contributors context/Contributors"
            tal:condition="contributors"
-           i18n:translate="">
+           i18n:translate="text_contributors">
         Contributors:
         <span i18n:name="name"
               tal:omit-tag=""

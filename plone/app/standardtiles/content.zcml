@@ -1,5 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
@@ -13,6 +14,7 @@
         class=".common.DocumentBylineTile"
         permission="zope2.View"
         template="templates/document_byline.pt"
+        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -21,7 +23,6 @@
         description="A tile which display a Table of contents"
         add_permission="cmf.ManagePortal"
         class="plone.app.standardtiles.tableofcontents.TableOfContentsTile"
-        template="templates/tableofcontents.pt"
         permission="zope.Public"
         />
 
@@ -33,7 +34,6 @@
         class=".keywords.KeywordsTile"
         for="*"
         permission="zope2.View"
-        template="templates/keywords.pt"
         />
 
     <plone:tile
@@ -44,7 +44,6 @@
         for="*"
         add_permission="zope.Public"
         permission="zope2.View"
-        template="templates/related_items.pt"
         />
 
     <plone:tile
@@ -65,7 +64,6 @@
         add_permission="zope.Public"
         for="*"
         permission="zope2.View"
-        template="templates/lockinfo.pt"
         />
 
     <plone:tile

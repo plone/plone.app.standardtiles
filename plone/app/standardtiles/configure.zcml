@@ -1,7 +1,6 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:zcml="http://namespaces.zope.org/zcml"
-    xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
@@ -19,20 +18,24 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         />
 
-    <!-- register a resource directory for javascripts -->
-    <browser:resourceDirectory
-        name="plone.app.standardtiles.javascripts"
-        directory="javascripts"
-        />
-
     <!-- Tiles are divided in four zcml files -->
     <include file="content.zcml" />
     <include file="head.zcml" />
     <include file="layout.zcml" />
     <include file="media.zcml" />
-    <include package=".legacy" />
 
-    <include package=".bbb" zcml:condition="not-have plone-5" />
+    <include package=".portlets" />
+
+    <plone:tile
+        name="plone.app.standardtiles.viewletmanager"
+        title="Viewlet Manager Tile"
+        description="A tile which displays a specified viewlet manager"
+        add_permission="zope.Public"
+        class=".viewletmanager.ViewletManagerTile"
+        for="*"
+        permission="zope2.View"
+        schema=".viewletmanager.IViewletManagerTile"
+        />
 
     <plone:tile
         name="plone.app.standardtiles.title"
@@ -101,6 +104,8 @@
     <adapter factory=".field.titleDisplayTemplate" name="display" />
     <adapter factory=".field.descriptionDisplayTemplate" name="display" />
     <adapter factory=".field.namedImageDisplayTemplate" name="display" />
+
+    <include package=".bbb" zcml:condition="not-have plone-5" />
 
     <include file="upgrades.zcml" />
 

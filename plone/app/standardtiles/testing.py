@@ -30,6 +30,17 @@ from zope.interface import implements
 from zope.interface import implementsOnly
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
+import pkg_resources
+
+HAS_PLONE_5 = \
+    int(pkg_resources.get_distribution('Products.CMFPlone').version[0]) > 4
+
+try:
+    pkg_resources.get_distribution('plone.app.theming')
+except pkg_resources.DistributionNotFound:
+    HAS_PLONE_APP_THEMING = False
+else:
+    HAS_PLONE_APP_THEMING = True
 
 NORMAL_USER_NAME = 'user'
 NORMAL_USER_PASSWORD = 'secret'
@@ -37,6 +48,20 @@ EDITOR_USER_NAME = 'editor'
 EDITOR_USER_PASSWORD = 'confidential'
 MANAGER_USER_NAME = 'manager'
 MANAGER_USER_PASSWORD = 'topsecret'
+
+
+class RequestsGetMock(object):
+
+    ok = True
+    url = None
+
+    def __init__(self, url):
+        self.url = url
+
+    def json(self):
+        return {
+            'html': u'<p>%s</p>' % self.url
+        }
 
 
 class IFunkyWidget(interfaces.IWidget):
@@ -133,11 +158,53 @@ class PAStandardtiles(PloneSandboxLayer):
         xmlconfig.file('configure.zcml', plone.app.standardtiles,
                        context=configurationContext)
 
+        import plone.app.standardtiles
+        xmlconfig.file('testing.zcml', plone.app.standardtiles,
+                       context=configurationContext)
+
+        if HAS_PLONE_5:
+            import plone.app.contenttypes
+            xmlconfig.file('configure.zcml', plone.app.contenttypes,
+                           context=configurationContext)
+
     def setUpPloneSite(self, portal):
         # install into the Plone site
         applyProfile(portal, 'plone.app.dexterity:default')
         applyProfile(portal, 'plone.app.widgets:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
+
+        if HAS_PLONE_5:
+            applyProfile(portal, 'plone.app.contenttypes:default')
+
+        # ensure plone.app.theming disabled
+        if HAS_PLONE_APP_THEMING:
+            from plone.registry.interfaces import IRegistry
+            from zope.component import getUtility
+            registry = getUtility(IRegistry)
+            key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
+            if key in registry:
+                registry[key] = False
+
+        # creates some users
+        acl_users = getToolByName(portal, 'acl_users')
+        acl_users.userFolderAddUser(
+            NORMAL_USER_NAME,
+            NORMAL_USER_PASSWORD,
+            ['Member'],
+            [],
+        )
+        acl_users.userFolderAddUser(
+            EDITOR_USER_NAME,
+            EDITOR_USER_PASSWORD,
+            ['Editor'],
+            [],
+        )
+        acl_users.userFolderAddUser(
+            MANAGER_USER_NAME,
+            MANAGER_USER_PASSWORD,
+            ['Manager'],
+            [],
+        )
 
         # register portlet manager and portlet manager renderer
         sm = getSiteManager(portal)
@@ -145,6 +212,9 @@ class PAStandardtiles(PloneSandboxLayer):
                            provided=IMockPortletManager,
                            name='mock.portletmanager')
         provideAdapter(MockPortletManagerRenderer)
+
+        from plone.app.standardtiles import embed
+        embed.requests.get = RequestsGetMock
 
 
 class PAStandardtilesTestType(PloneSandboxLayer):
@@ -172,7 +242,16 @@ class PAStandardtilesTestType(PloneSandboxLayer):
         applyProfile(portal, 'plone.app.widgets:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
 
-        # Creates some users
+        # ensure plone.app.theming disabled
+        if HAS_PLONE_APP_THEMING:
+            from plone.registry.interfaces import IRegistry
+            from zope.component import getUtility
+            registry = getUtility(IRegistry)
+            key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
+            if key in registry:
+                registry[key] = False
+
+        # creates some users
         acl_users = getToolByName(portal, 'acl_users')
         acl_users.userFolderAddUser(
             NORMAL_USER_NAME,
@@ -193,12 +272,11 @@ class PAStandardtilesTestType(PloneSandboxLayer):
             [],
         )
 
-        # Define the dexterity "junk" type
+        # define the dexterity "junk" type
         fti = DexterityFTI('DecoTestType1')
         fti.schema = u'plone.app.standardtiles.testing.ITestType1'
         fti.behaviors = ('plone.app.dexterity.behaviors.metadata.IDublinCore',)
         portal.portal_types._setObject('DecoTestType1', fti)
-        schema = fti.lookupSchema()
 
         # inserts the content of the types defined above
         login(portal, MANAGER_USER_NAME)
