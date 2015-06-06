@@ -220,6 +220,12 @@ class ContentTileTests(TestCase):
             + '/@@plone.app.standardtiles.image/test'
         )
 
+        # Confirm pass CSRF protection on Plone 5
+        try:
+            self.browser.getControl(name='form.button.confirm').click()
+        except LookupError:
+            pass
+
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//img')
         self.assertEqual(len(nodes), 1)
