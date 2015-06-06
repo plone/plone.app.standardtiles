@@ -76,7 +76,7 @@ class RSSTile(Tile):
             # create it
             feed = FEED_DATA[self.data.get('url')] = RSSFeed(
                 self.data.get('url'),
-                self.data.get('timeout'))
+                self.data.get('timeout') or 100)
         return feed
 
     @property

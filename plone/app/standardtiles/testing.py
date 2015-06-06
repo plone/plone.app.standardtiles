@@ -50,6 +50,20 @@ MANAGER_USER_NAME = 'manager'
 MANAGER_USER_PASSWORD = 'topsecret'
 
 
+class RequestsGetMock(object):
+
+    ok = True
+    url = None
+
+    def __init__(self, url):
+        self.url = url
+
+    def json(self):
+        return {
+            'html': u'<p>%s</p>' % self.url
+        }
+
+
 class IFunkyWidget(interfaces.IWidget):
     """Funky, useless widget for testing."""
 
@@ -144,6 +158,10 @@ class PAStandardtiles(PloneSandboxLayer):
         xmlconfig.file('configure.zcml', plone.app.standardtiles,
                        context=configurationContext)
 
+        import plone.app.standardtiles
+        xmlconfig.file('testing.zcml', plone.app.standardtiles,
+                       context=configurationContext)
+
         if HAS_PLONE_5:
             import plone.app.contenttypes
             xmlconfig.file('configure.zcml', plone.app.contenttypes,
@@ -194,6 +212,9 @@ class PAStandardtiles(PloneSandboxLayer):
                            provided=IMockPortletManager,
                            name='mock.portletmanager')
         provideAdapter(MockPortletManagerRenderer)
+
+        from plone.app.standardtiles import embed
+        embed.requests.get = RequestsGetMock
 
 
 class PAStandardtilesTestType(PloneSandboxLayer):
