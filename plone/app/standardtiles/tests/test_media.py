@@ -3,8 +3,10 @@ from PIL import Image
 from PIL import ImageDraw
 from lxml import html
 from persistent.dict import PersistentDict
+from plone.app.textfield import RichTextValue
 from plone.app.standardtiles.embed import NOEMBED_ENDPOINT
-from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING  # noqa
+from plone.app.standardtiles.testing import HAS_PLONE_5
+from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
@@ -98,6 +100,9 @@ class ContentTileTests(TestCase):
             title=u'An another page', description=u'A description',
             text=u'Hello World!'
         )
+        if HAS_PLONE_5:
+            self.portal[page_id].text = RichTextValue(u'Hello World!')
+
         page_uuid = IUUID(self.portal[page_id])
 
         transaction.commit()
