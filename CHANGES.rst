@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b1 (unreleased)
+1.0b1 (2015-06-08)
 ------------------
 
 - Fix field tile backwards compatibility with plone.app.blocks < 2.1.1
