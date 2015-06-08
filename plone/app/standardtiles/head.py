@@ -25,7 +25,7 @@ class TitleTile(Tile):
             viewlet.update()
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class StylesheetsTile(Tile):
@@ -45,7 +45,7 @@ class StylesheetsTile(Tile):
             viewlet.update()
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class JavascriptsTile(Tile):
@@ -65,7 +65,7 @@ class JavascriptsTile(Tile):
             viewlet.update()
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class FaviconLinkTile(Tile):
@@ -85,7 +85,7 @@ class FaviconLinkTile(Tile):
             viewlet.update()
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class AuthorLinkTile(Tile):
@@ -105,7 +105,7 @@ class AuthorLinkTile(Tile):
             viewlet.update()
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class NavigationLinkTile(Tile):
@@ -135,7 +135,7 @@ class SearchLinkTile(Tile):
             viewlet.update()
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class RSSLinkTile(Tile):
@@ -155,7 +155,7 @@ class RSSLinkTile(Tile):
             viewlet.update()
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class CanonicalUrlTile(Tile):
@@ -175,7 +175,7 @@ class CanonicalUrlTile(Tile):
             viewlet.update()
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class DublinCoreTile(Tile):
@@ -193,4 +193,4 @@ class DublinCoreTile(Tile):
             viewlet.update()
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'

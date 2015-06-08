@@ -33,7 +33,7 @@ class FooterTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class ColophonTile(Tile):
@@ -53,7 +53,7 @@ class ColophonTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class SiteActionsTile(Tile):
@@ -73,7 +73,7 @@ class SiteActionsTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class AnalyticsTile(Tile):
@@ -93,7 +93,7 @@ class AnalyticsTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class SkipLinksTile(Tile):
@@ -113,7 +113,7 @@ class SkipLinksTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class LoginTile(Tile):
@@ -213,7 +213,7 @@ class PersonalBarTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class SearchBoxTile(Tile):
@@ -233,7 +233,7 @@ class SearchBoxTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class AnonToolsTile(Tile):
@@ -253,7 +253,7 @@ class AnonToolsTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class LogoTile(Tile):
@@ -273,7 +273,7 @@ class LogoTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class GlobalSectionsTile(Tile):
@@ -293,7 +293,7 @@ class GlobalSectionsTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class PathBarTile(Tile):
@@ -313,7 +313,7 @@ class PathBarTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class ToolbarTile(Tile):
@@ -322,7 +322,7 @@ class ToolbarTile(Tile):
     def __call__(self):
         mtool = getToolByName(self.context, 'portal_membership')
         if mtool.isAnonymousUser():
-            return u''
+            return u'<html></html>'
 
         toolbar = getMultiAdapter((self.context, self.request),
                                   name=u'render-toolbar')
@@ -347,7 +347,7 @@ class GlobalStatusMessageTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class DocumentBylineTile(Tile):
@@ -463,7 +463,7 @@ class LockInfoTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class NextPreviousTile(Tile):
@@ -501,7 +501,7 @@ class NextPreviousTile(Tile):
             finally:
                 self.request.set('ACTUAL_URL', url)
         else:
-            return u''
+            return u'<html></html>'
 
 
 class DocumentActionsTile(Tile):
@@ -521,7 +521,7 @@ class DocumentActionsTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class RelatedItemsTile(Tile):
@@ -541,7 +541,7 @@ class RelatedItemsTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class HistoryTile(Tile):
@@ -577,4 +577,4 @@ class LanguageSelectorTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'

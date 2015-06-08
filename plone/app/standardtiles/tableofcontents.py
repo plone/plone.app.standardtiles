@@ -24,4 +24,4 @@ class TableOfContentsTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'

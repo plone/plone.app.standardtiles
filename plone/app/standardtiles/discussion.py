@@ -37,4 +37,4 @@ class DiscussionTile(Tile):
 
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'

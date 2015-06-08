@@ -216,7 +216,7 @@ class TestFieldTile(TestCase):
             self.content.absolute_url()
             + '/@@plone.app.standardtiles.field?field=topsecret'
         )
-        self.assertEqual('', self.browser.contents)
+        self.assertEqual('<html></html>', self.browser.contents)
 
         # As we can see the tile is emp[ty and, after merging from the blocks
         # engine, will result in the field simply not being present.

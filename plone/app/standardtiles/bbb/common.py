@@ -25,7 +25,7 @@ class PersonalBarTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class GlobalSectionsTile(Tile):
@@ -45,7 +45,7 @@ class GlobalSectionsTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class GlobalStatusMessageTile(Tile):
@@ -60,7 +60,7 @@ class GlobalStatusMessageTile(Tile):
             self.status = IStatusMessage(self.request)
             self.messages = self.status.show()
         else:
-            return u''
+            return u'<html></html>'
 
 
 class EditBarTile(Tile):
@@ -88,7 +88,7 @@ class EditBarTile(Tile):
                        viewlet.render(), actions_viewlet.render()
                    )
         else:
-            return u''
+            return u'<html></html>'
 
 
 class DocumentBylineTile(Tile):
@@ -108,4 +108,4 @@ class DocumentBylineTile(Tile):
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
         else:
-            return u''
+            return u'<html></html>'

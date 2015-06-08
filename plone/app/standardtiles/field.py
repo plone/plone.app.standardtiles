@@ -121,7 +121,7 @@ class DexterityFieldTile(WidgetsView, Tile):
                 widget = group.widgets.get(self.field)
                 if widget is not None:
                     return self._wrap_widget(widget.render())
-        return u''
+        return u'<html></html>'
 
 
 _titleDisplayTemplate = ViewPageTemplateFile('templates/title.pt',
