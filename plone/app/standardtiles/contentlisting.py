@@ -118,10 +118,10 @@ class ContentListingTile(Tile):
         """Search results"""
         builder = getMultiAdapter((self.context, self.request),
                                   name='querybuilderresults')
-        accessor = builder(query=self.query,
-                           sort_on=self.sort_on,
+        accessor = builder(query=self.query or [],
+                           sort_on=self.sort_on or 'getObjPositionInParent',
                            sort_order=self.sort_order)
-        view = self.view_template
+        view = self.view_template or 'listing_view'
         view = view.encode('utf-8')
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
