@@ -128,16 +128,17 @@ class TestLayoutTiles(TestCase):
         nodes = root.xpath('//body/script')
         self.assertEqual(len(nodes), 1)
 
-    def test_skip_links_tile(self):
-        self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.skip_links'
-        )
-
-        self.assertIn('Skip to content',
-                      self.unprivileged_browser.contents)
-        self.assertIn('Skip to navigation',
-                      self.unprivileged_browser.contents)
+    if not HAS_PLONE_5:
+        # skip links is gone in plone 5
+        def test_skip_links_tile(self):
+            self.unprivileged_browser.open(
+                self.portalURL
+                + '/@@plone.app.standardtiles.skip_links'
+            )
+            self.assertIn('Skip to content',
+                          self.unprivileged_browser.contents)
+            self.assertIn('Skip to navigation',
+                          self.unprivileged_browser.contents)
 
     def test_anontools_tile(self):
         self.unprivileged_browser.open(
@@ -155,21 +156,23 @@ class TestLayoutTiles(TestCase):
         self.assertEqual(len(nodes), 1)
         self.assertEqual(nodes[0].text.strip(), 'Log in')
 
-    def test_personal_bar_tile(self):
-        self.browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.personal_bar'
-        )
+    if not HAS_PLONE_5:
+        # personal is gone in plone 5
+        def test_personal_bar_tile(self):
+            self.browser.open(
+                self.portalURL
+                + '/@@plone.app.standardtiles.personal_bar'
+            )
 
-        self.assertIn('Log out', self.browser.contents)
+            self.assertIn('Log out', self.browser.contents)
 
-        root = fromstring(self.browser.contents)
-        if HAS_PLONE_5:
-            nodes = root.xpath('//body//a[@title="Log out"]')
-        else:
-            nodes = root.xpath('//body//li[@id="personaltools-logout"]/a')
-        self.assertEqual(len(nodes), 1)
-        self.assertEqual(nodes[0].text.strip(), 'Log out')
+            root = fromstring(self.browser.contents)
+            if HAS_PLONE_5:
+                nodes = root.xpath('//body//a[@title="Log out"]')
+            else:
+                nodes = root.xpath('//body//li[@id="personaltools-logout"]/a')
+            self.assertEqual(len(nodes), 1)
+            self.assertEqual(nodes[0].text.strip(), 'Log out')
 
     def test_logo_tile(self):
         self.browser.open(
