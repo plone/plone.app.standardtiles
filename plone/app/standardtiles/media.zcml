@@ -114,4 +114,15 @@
         template="templates/rss.pt"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.rawhtml"
+        title="Rich text"
+        description=""
+        add_permission="zope.Public"
+        class=".raw.RawHTMLTile"
+        for="*"
+        permission="zope2.View"
+        schema=".raw.IRawHTMLTile"
+        />
+
 </configure>
