@@ -7,10 +7,7 @@ from zope import schema
 
 import requests
 
-NOEMBED_ENDPOINT = ''.join([
-    'http://noembed.com/embed',
-    '?callback=embed_data=&url=',
-])
+NOEMBED_ENDPOINT = 'https://noembed.com/embed?callback=embed_data=&url='
 
 
 class IEmbedTile(Schema):
