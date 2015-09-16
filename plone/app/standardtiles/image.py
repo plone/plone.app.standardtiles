@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-
-from plone.registry.interfaces import IRegistry
 from plone.app.standardtiles import _PMF as _
+from plone.autoform.directives import widget
 from plone.namedfile.field import NamedBlobFile
+from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import PersistentTile
+from z3c.form.browser.radio import RadioFieldWidget
 from zope import schema
 from zope.component import getUtility
 from zope.component.hooks import getSite
-from zope.interface import alsoProvides
 from zope.interface import provider
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleTerm
@@ -61,6 +61,7 @@ class IImageTile(Schema):
         required=False
     )
 
+    widget(scale=RadioFieldWidget)
     scale = schema.Choice(
         title=_(u'Select maximum display size'),
         source=image_scales
