@@ -6,7 +6,9 @@ Changelog
 
 - Add ``plone.app.standardtiles.rawhtml`` tile
   [vangheem]
-- provide default values for rendering the content listing tile
+- Change image tile to use radio widget for image scale selection
+  [datakurre]
+- Fix default values for rendering the content listing tile
   [vangheem]
 
 1.0b1 (2015-06-08)
