@@ -4,9 +4,10 @@ Changelog
 1.0b2 (unreleased)
 ------------------
 
+- Add ``plone.app.standardtiles.rawhtml`` tile
+  [vangheem]
 - provide default values for rendering the content listing tile
   [vangheem]
-
 
 1.0b1 (2015-06-08)
 ------------------
