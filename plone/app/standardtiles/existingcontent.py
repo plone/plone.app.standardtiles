@@ -74,6 +74,8 @@ class ExistingContentTile(Tile):
     def item_panels(self):
         default_view = self.default_view
         html = default_view()
+        if isinstance(html, unicode):
+            html = html.encode('utf-8')
         serializer = getHTMLSerializer([html], pretty_print=False,
                                        encoding='utf-8')
         panels = dict(
