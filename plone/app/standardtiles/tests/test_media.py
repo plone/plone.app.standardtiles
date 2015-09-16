@@ -23,6 +23,7 @@ import plone.app.standardtiles.tests as test_dir
 import random
 import transaction
 
+
 def fromstring(s):
     html_parser = html.HTMLParser(encoding='utf-8')
     return html.fromstring(s, parser=html_parser).getroottree().getroot()
@@ -173,7 +174,7 @@ class ContentTileTests(TestCase):
             + '/@@plone.app.standardtiles.attachment/test'
         )
 
-        self.assertIn(u'hello_world.txt',self.browser.contents)
+        self.assertIn(u'hello_world.txt', self.browser.contents)
         self.assertIn(u'foobar.txt', self.browser.contents)
 
         root = fromstring(self.browser.contents)
@@ -229,3 +230,20 @@ class ContentTileTests(TestCase):
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//img')
         self.assertEqual(len(nodes), 1)
+
+    def test_rawhtml_tile(self):
+        annotations = IAnnotations(self.page)
+        annotations['plone.tiles.data.test'] = PersistentDict({
+            'content': '<p>Hello World!</p>'
+        })
+
+        transaction.commit()
+
+        self.browser.open(
+            self.pageURL
+            + '/@@plone.app.standardtiles.rawhtml/test'
+        )
+
+        root = fromstring(self.browser.contents)
+        nodes = root.xpath('//body/p')
+        self.assertEqual(nodes[0].text, 'Hello World!')
