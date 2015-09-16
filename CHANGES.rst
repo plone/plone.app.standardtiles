@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b2 (unreleased)
+1.0b2 (2015-09-16)
 ------------------
 
 - Add ``plone.app.standardtiles.rawhtml`` tile
