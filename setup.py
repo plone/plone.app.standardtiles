@@ -2,7 +2,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-version = '1.0b3'
+version = '1.0b4.dev0'
 
 
 setup(
