@@ -4,7 +4,8 @@ Changelog
 1.0b4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add socialtags tile
+  [vangheem]
 
 
 1.0b3 (2015-09-16)
