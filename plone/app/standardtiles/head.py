@@ -194,3 +194,21 @@ class DublinCoreTile(Tile):
             return u'<html><head>%s</head></html>' % viewlet.render()
         else:
             return u'<html></html>'
+
+
+class SocialTile(Tile):
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager, name='plone.htmlhead'
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet, name='plone.htmlhead.socialtags'
+        )
+        if viewlet is not None:
+            viewlet.update()
+            return u'<html><head>%s</head></html>' % viewlet.render()
+        else:
+            return u'<html></html>'

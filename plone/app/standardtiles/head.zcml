@@ -77,4 +77,11 @@
         permission="zope2.View"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.socialtags"
+        class=".head.SocialTile"
+        for="*"
+        permission="zope2.View"
+        />
+
 </configure>
