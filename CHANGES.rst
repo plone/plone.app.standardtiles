@@ -4,8 +4,14 @@ Changelog
 1.0b4 (unreleased)
 ------------------
 
+- Change navigation tile to not use deprecated defaults from portal_properties
+  [datakurre]
+
 - Add socialtags tile
   [vangheem]
+
+- Fix sitemap tile to read correct setting on Plone 5
+  [datakurre]
 
 
 1.0b3 (2015-09-16)
