@@ -129,11 +129,9 @@ class NavigationTile(Tile):
     def __init__(self, *arg, **kw):
         super(NavigationTile, self).__init__(*arg, **kw)
         self.urltool = getToolByName(self.context, 'portal_url')
-        portal_properties = getToolByName(self.context, 'portal_properties')
-        self.properties = portal_properties.navtree_properties
 
     def title(self):
-        return self.data.get('name', self.properties.name)
+        return self.data.get('name', u'')
 
     @property
     def available(self):
@@ -145,7 +143,7 @@ class NavigationTile(Tile):
         return len(tree['children']) > 0
 
     def include_top(self):
-        return self.data.get('includeTop', self.properties.includeTop)
+        return self.data.get('includeTop', False)
 
     def navigation_root(self):
         return self.getNavRoot()
@@ -176,8 +174,7 @@ class NavigationTile(Tile):
 
     def createNavTree(self):
         data = self.getNavTree()
-        bottomLevel = self.data.get('bottomLevel') or \
-                      self.properties.getProperty('bottomLevel', 0)
+        bottomLevel = self.data.get('bottomLevel') or 0
         return self.recurse(children=data.get('children', []),
                             level=1, bottomLevel=bottomLevel)
 
@@ -187,10 +184,8 @@ class NavigationTile(Tile):
 
     @memoize
     def getNavRootPath(self):
-        currentFolderOnly = self.data.get('currentFolderOnly') or \
-            self.properties.getProperty('currentFolderOnlyInNavtree', False)
-        topLevel = self.data.get('topLevel') or \
-            self.properties.getProperty('topLevel', 0)
+        currentFolderOnly = self.data.get('currentFolderOnly') or False
+        topLevel = self.data.get('topLevel') or 0
         tileRoot = uuidToFolderishPath(self.context, self.data.get('root'))
         return getRootPath(self.context, currentFolderOnly, topLevel, tileRoot)
 

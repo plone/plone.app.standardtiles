@@ -147,12 +147,11 @@ class ContentTileTests(TestCase):
             + '/@@plone.app.standardtiles.sitemap'
         )
 
-        self.assertIn('Home', self.browser.contents)
         self.assertIn('A simple page', self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//ul[@class="navTree navTreeLevel0"]/li')
-        self.assertEqual(len(nodes), 2)  # both home and simple page
+        self.assertEqual(len(nodes), 1)  # Only simple page
 
     def test_attachment_tile(self):
         """This persistent tile renders a link pointing to a file stored in the
