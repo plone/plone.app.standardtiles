@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b4 (unreleased)
+1.0b4 (2015-10-04)
 ------------------
 
 - Change navigation tile to not use deprecated defaults from portal_properties
