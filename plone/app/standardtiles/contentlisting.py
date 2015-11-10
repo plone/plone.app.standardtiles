@@ -58,6 +58,15 @@ class IContentListingTile(Schema):
         required=False,
     )
 
+    limit = schema.Int(
+        title=_(u'Limit'),
+        description=_(u'Limit Search Results'),
+        required=False,
+        default=1000,
+        min=1,
+    )
+
+
     view_template = schema.Choice(title=_(u"Display mode"),
                                   source=_(u"Available Listing Views"),
                                   required=True)
@@ -107,6 +116,7 @@ class ContentListingTile(Tile):
 
     def update(self):
         self.query = self.data.get('query')
+        self.limit = self.data.get('limit')
         if self.data.get('sort_reversed'):
             self.sort_order = 'reverse'
         else:
@@ -120,7 +130,7 @@ class ContentListingTile(Tile):
                                   name='querybuilderresults')
         accessor = builder(query=self.query or [],
                            sort_on=self.sort_on or 'getObjPositionInParent',
-                           sort_order=self.sort_order)
+                           sort_order=self.sort_order, limit=self.limit)
         view = self.view_template or 'listing_view'
         view = view.encode('utf-8')
         options = dict(original_context=self.context)
