@@ -3,6 +3,7 @@
 from plone.app.standardtiles import _PMF as _
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
+from plone.memoize import ram
 from zope import schema
 
 import requests
@@ -24,6 +25,7 @@ class EmbedTile(Tile):
     """ A tile that embeds media.
     """
 
+    @ram.cache(lambda method, obj: obj.data.get('media_url'))
     def __call__(self):
         media_url = self.data.get('media_url')
         url = NOEMBED_ENDPOINT + media_url
