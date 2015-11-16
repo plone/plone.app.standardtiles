@@ -25,11 +25,13 @@ class RawHTMLTile(PersistentTile):
     def __call__(self):
         content = self.data.get('content')
         if content:
-            # Here we skip legacy portal_transforms and call
-            # plone.outputfilters directly by purpose
-            filters = [f for _, f
-                       in getAdapters((self.context, self.request), IFilter)]
-            content = apply_filters(filters, content)
+            # only transform is not rendering for layout editor
+            if not self.request.get('_layouteditor'):
+                # Here we skip legacy portal_transforms and call
+                # plone.outputfilters directly by purpose
+                filters = [f for _, f
+                           in getAdapters((self.context, self.request), IFilter)]
+                content = apply_filters(filters, content)
         else:
             content = u'<p></p>'
         return u"<html><body>%s</body></html>" % content

@@ -4,7 +4,8 @@ Changelog
 1.0b5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Do not transform rawhtml output if rendered within mosaic layouteditor
+  [vangheem]
 
 
 1.0b4 (2015-10-04)
