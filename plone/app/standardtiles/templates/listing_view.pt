@@ -14,9 +14,10 @@
       <tal:listing condition="results">
         <dl>
           <tal:entry repeat="item results">
-            <dt>
+            <dt tal:define="item_has_image python:item.getIcon">
               <span class="summary">
-                <img tal:replace="structure item/getIcon" />
+                <img tal:condition="item_has_image"                          
+                             tal:attributes="src string:${item/getURL}/@@images/image/tile" />
                 <a href="#"
                    tal:attributes="href item/getURL;
                                    class string:${item/ContentTypeClass} ${item/review_state}"

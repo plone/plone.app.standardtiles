@@ -4,6 +4,9 @@ Changelog
 1.0b5 (unreleased)
 ------------------
 
+- fix getting lead image
+  [vangheem]
+
 - Do not transform rawhtml output if rendered within mosaic layouteditor
   [vangheem]
 
