@@ -8,7 +8,7 @@
       i18n:domain="plone">
   <body>
     <div tal:define="results context;
-                     registry original_context/portal_registry;
+                     registry options/original_context/portal_registry;
                      view_types python: registry.get('plone.types_use_view_action_in_listings', [])"
          tal:repeat="item results">
       <tal:block tal:define="item_url python: item.portal_type in view_types and item.getURL() + '/view' or item.getURL();
