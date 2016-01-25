@@ -2,16 +2,14 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
 
-  <!--
-  <genericsetup:upgradeSteps
+  <genericsetup:upgradeStep
+      title="Upgrade registry"
+      description="provide additional registry configuration"
       source="1"
-      destination="2"
-      profile="plone.app.standardtiles:default">
-    <genericsetup:upgradeDepends
-        title=""
-        import_profile="plone.app.standardtiles:upgrade_to_2"
-        />
-  </genericsetup:upgradeSteps>
-  -->
+      destination="1000"
+      handler="plone.app.standardtiles.upgrades.upgrade_registry"
+      sortkey="1"
+      profile="plone.app.standardtiles:default"
+      />
 
 </configure>

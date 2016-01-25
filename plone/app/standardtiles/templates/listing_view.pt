@@ -10,16 +10,19 @@
                          original_context nocall:options/original_context|context;
                          toLocalizedTime nocall:original_context/@@plone/toLocalizedTime;
                          pas_member original_context/@@pas_member;
-                         show_about python:True">
+                         show_about python:True;
+                         registry original_context/portal_registry;
+                         view_types python: registry.get('plone.types_use_view_action_in_listings', [])">
       <tal:listing condition="results">
         <dl>
           <tal:entry repeat="item results">
-            <dt tal:define="item_has_image python:item.getIcon">
+            <dt tal:define="item_has_image python:item.getIcon;
+                            item_url python: item.portal_type in view_types and item.getURL() + '/view' or item.getURL()">
               <span class="summary">
                 <img tal:condition="item_has_image"                          
                              tal:attributes="src string:${item/getURL}/@@images/image/tile" />
                 <a href="#"
-                   tal:attributes="href item/getURL;
+                   tal:attributes="href item_url;
                                    class string:${item/ContentTypeClass} ${item/review_state}"
                    tal:content="item/Title|item/getId" />
               </span>

@@ -4,6 +4,12 @@ Changelog
 1.0b5 (unreleased)
 ------------------
 
+- fix listings not including /view on urls
+  [vangheem]
+
+- be able to specify additional content listing views
+  [vangheem]
+
 - better error handling in summary_view
   [vangheem]
 

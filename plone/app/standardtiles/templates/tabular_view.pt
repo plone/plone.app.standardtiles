@@ -8,7 +8,9 @@
     <body>
         <div tal:define="results context;
                          original_context nocall:options/original_context|context;
-                         pas_member original_context/@@pas_member;">
+                         pas_member original_context/@@pas_member;
+                         registry original_context/portal_registry;
+                         view_types python: registry.get('plone.types_use_view_action_in_listings', [])">
             <div tal:condition="not: results">
                 <p><strong>Nothing to list</strong></p>
             </div>
@@ -46,7 +48,7 @@
                     </thead>
                     <tbody>
                         <tal:results repeat="item results">
-                            <tal:block tal:define="item_url item/getURL;
+                            <tal:block tal:define="item_url python: item.portal_type in view_types and item.getURL() + '/view' or item.getURL();
                                                    item_title_or_id item/title_or_id;
                                                    item_type item/Type;
                                                    item_description item/Description;
@@ -73,12 +75,9 @@
                                 <td tal:content="item_type">
                                     Page
                                 </td>
-
-                                <td tal:content="item_modified">
-                                    Date
-                                </td>
-
-                            </tr>
+                                <td class="pat-moment" tal:content="python: item.modified.fCommon()"
+                                   data-pat-moment="format:MMMM Do, YYYY h:mm a;"
+                                   data-date="${python: item.modified.ISO8601()}" />
                         </tal:block>
 
                         </tal:results>

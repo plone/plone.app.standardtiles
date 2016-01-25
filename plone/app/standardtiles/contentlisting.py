@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# from plone.app.standardtiles.interfaces import IStandardTilesSettings
-# from plone.registry.interfaces import IRegistry
-# from zope.component import getUtility
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
 from Products.CMFCore.interfaces import IFolderish
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.autoform.directives import widget
@@ -65,7 +64,6 @@ class IContentListingTile(Schema):
         default=1000,
         min=1,
     )
-
 
     view_template = schema.Choice(title=_(u"Display mode"),
                                   source=_(u"Available Listing Views"),
@@ -140,15 +138,15 @@ class ContentListingTile(Tile):
 
 def availableListingViewsVocabulary(context):
     """Get available views for listing content as vocabulary"""
-    # TODO: listing_views should be stored in a registry somehow
-    listing_views = {
-        'listing_view': u'Listing view',
-        'summary_view': u'Summary view',
-        'tabular_view': u'Tabular view'
-    }
-    # registry = getUtility(IRegistry)
-    # proxy = registry.forInterface(IStandardTilesSettings)
-    # sorted = proxy.listing_views.items()
+
+    registry = getUtility(IRegistry)
+    listing_views = registry.get('plone.app.standardtiles.listing_views', {})
+    if len(listing_views) == 0:
+        listing_views = {
+            'listing_view': u'Listing view',
+            'summary_view': u'Summary view',
+            'tabular_view': u'Tabular view'
+        }
     sorted = listing_views.items()
     sorted.sort(lambda a, b: cmp(a[1], b[1]))
     voc = []
@@ -157,22 +155,3 @@ def availableListingViewsVocabulary(context):
     return SimpleVocabulary(voc)
 
 directlyProvides(availableListingViewsVocabulary, IVocabularyFactory)
-
-# XXX There used to be registry settings for plone.app.standardtiles:
-#
-# class IStandardTilesSettings(Interface):
-#     """Settings for standard tiles."""
-#     listing_views = schema.Dict(title=_(u"Listing views"),
-#                                 description=_(u"Listing views available for "
-#                                                "the content listing tile"),
-#                                 key_type=schema.TextLine(),
-#                                 value_type=schema.TextLine())
-#
-# <record interface="plone.app.standardtiles.interfaces.IStandardTilesSettings"
-#         field="listing_views">
-#   <value>
-#       <element key="listing_view">Listing view</element>
-#       <element key="summary_view">Summary view</element>
-#       <element key="tabular_view">Tabular view</element>
-#   </value>
-# </record>
