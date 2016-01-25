@@ -136,7 +136,7 @@
         name="plone.app.standardtiles.login"
         title="Login"
         description="A tile which displays a loginbox"
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         class=".common.LoginTile"
         for="*"
         permission="zope2.View"

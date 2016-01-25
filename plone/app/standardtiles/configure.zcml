@@ -30,7 +30,7 @@
         name="plone.app.standardtiles.viewletmanager"
         title="Viewlet Manager Tile"
         description="A tile which displays a specified viewlet manager"
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         class=".viewletmanager.ViewletManagerTile"
         for="*"
         permission="zope2.View"
@@ -41,7 +41,7 @@
         name="plone.app.standardtiles.title"
         title="Title"
         description='A tile which displays the context title'
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         class=".metadata.DefaultTitleTile"
         for="*"
         permission="zope2.View"
@@ -68,7 +68,7 @@
         name="plone.app.standardtiles.description"
         title="Description"
         description='A tile which displays the context description'
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         class=".metadata.DefaultDescriptionTile"
         for="*"
         permission="zope2.View"
@@ -95,7 +95,7 @@
         name="plone.app.standardtiles.field"
         title="Field"
         description='A tile which displays a field'
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         class=".field.DexterityFieldTile"
         for="plone.dexterity.interfaces.IDexterityContent"
         permission="zope2.View"
