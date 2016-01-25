@@ -16,13 +16,13 @@
                              item_description item/Description;
                              item_modified item/ModificationDate">
         <div class="tileItem visualIEFloatFix"
-             tal:define="item_object item/getObject;">
+             tal:define="item_has_image python:item.getIcon">
           <a href="#"
-             tal:condition="exists:item_object/image_thumb"
+             class="summary-image"
+             tal:condition="item_has_image"
              tal:attributes="href item_url">
-            <img src=""
-                 alt=""
-                 tal:replace="structure python: path('nocall:item_object/tag')(scale='thumb', css_class='tileImage')" />
+            <img tal:condition="item_has_image"                          
+                 tal:attributes="src string:${item/getURL}/@@images/image/thumb" />
           </a>
           <h2 class="tileHeadline"
               metal:define-macro="listitem">
@@ -77,8 +77,8 @@
             <tal:newsitem condition="python: item_type == 'News Item'">
               <tal:name tal:condition="item_creator" tal:define="author item_creator">
                 <a href="#"
-                   tal:attributes="href string:author/${author/username}"
-                   tal:content="author/username"
+                   tal:attributes="href string:author/${author/username|nothing}"
+                   tal:content="author/username|nothing"
                    tal:omit-tag="not:author">
                   Bob Dobalina
                 </a>

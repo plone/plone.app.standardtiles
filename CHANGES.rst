@@ -4,6 +4,9 @@ Changelog
 1.0b5 (unreleased)
 ------------------
 
+- better error handling in summary_view
+  [vangheem]
+
 - fix getting lead image
   [vangheem]
 
