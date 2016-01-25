@@ -10,7 +10,8 @@
                          original_context nocall:options/original_context|context;
                          pas_member original_context/@@pas_member;
                          registry original_context/portal_registry;
-                         view_types python: registry.get('plone.types_use_view_action_in_listings', [])">
+                         view_types python: registry.get('plone.types_use_view_action_in_listings', []);
+                         view_about python: registry.get('plone.allow_anon_views_about', False)">
             <div tal:condition="not: results">
                 <p><strong>Nothing to list</strong></p>
             </div>
@@ -25,7 +26,7 @@
                                     Title
                                 </tal:title>&nbsp;
                             </th>
-                            <th class="nosort">&nbsp;
+                            <th class="nosort" tal:condition="view_about">&nbsp;
                                 <tal:title i18n:translate="">
                                     Author
                                 </tal:title>
@@ -62,7 +63,7 @@
                                         Item Title
                                     </a>
                                 </td>
-                                <td>
+                                <td tal:condition="view_about">
                                     <tal:name tal:condition="item_creator" tal:define="author python:pas_member.info(item_creator)">
                                         <a href="#"
                                            tal:attributes="href string:author/${author/username}"
