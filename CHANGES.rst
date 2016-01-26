@@ -4,6 +4,9 @@ Changelog
 1.0b5 (unreleased)
 ------------------
 
+- fix Event to work with summary_view content listing tile
+  [vangheem]
+
 - fix listings not including /view on urls
   [vangheem]
 

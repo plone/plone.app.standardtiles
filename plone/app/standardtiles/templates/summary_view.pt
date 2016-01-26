@@ -16,7 +16,9 @@
                              item_type item/Type;
                              item_creator item/Creator;
                              item_description item/Description;
-                             item_modified item/ModificationDate">
+                             item_modified item/ModificationDate;
+                             item_start item/start;
+                             item_end item/end;">
         <div class="tileItem visualIEFloatFix"
              tal:define="item_has_image python:item.getIcon">
           <a href="#"
@@ -44,35 +46,37 @@
                       i18n:name="location">
                   Oslo
                 </span>, from
-                <abbr class="dtstart"
-                      tal:attributes="title python:item_start"
-                      tal:content="item_modified"
+                <abbr class="dtstart pat-moment"
+                      title="${python:item_start.isoformat()}"
+                      data-pat-moment="format:MMMM Do, YYYY h:mm a;"
+                      data-date="${python: item_start.isoformat()}"
                       i18n:name="start">
-                  from date
+                  ${python: item_start.ctime()}
                 </abbr>
                 to
-                <abbr class="dtend"
-                      tal:attributes="title python:item_end"
-                      tal:content="item_modified"
+                <abbr class="dtend pat-moment"
+                      title="${python:item_end.isoformat()}"
+                      data-date="${python: item_end.isoformat()}"
                       i18n:name="end">
-                  to date
+                    ${python: item_end.ctime()}
                 </abbr>)
               </span>
               <span tal:condition="python: item_type == 'Event' and not item.location"
                     i18n:translate="">
                 (from
-                <abbr class="dtstart"
-                      tal:attributes="title python:item_start"
-                      tal:content="item_modified"
+                <abbr class="dtstart pat-moment"
+                      title="${python:item_start.isoformat()}"
+                      data-pat-moment="format:MMMM Do, YYYY h:mm a;"
+                      data-date="${python: item_start.isoformat()}"
                       i18n:name="start">
-                  from date
+                  ${python: item_start.ctime()}
                 </abbr>
                 to
-                <abbr class="dtend"
-                      tal:attributes="title python:item_end"
-                      tal:content="item_modified"
+                <abbr class="dtend pat-moment"
+                      title="${python:item_end.isoformat()}"
+                      data-date="${python: item_end.isoformat()}"
                       i18n:name="end">
-                  to date
+                  ${python: item_end.ctime()}
                 </abbr>)
               </span>
             </tal:event>
