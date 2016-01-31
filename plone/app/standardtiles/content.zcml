@@ -9,7 +9,7 @@
         name="plone.app.standardtiles.document_byline"
         title="Document byline"
         description='Shows the document byline with author name and date'
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         for="*"
         class=".common.DocumentBylineTile"
         permission="zope2.View"
@@ -21,7 +21,7 @@
         name="plone.app.standardtiles.tableofcontents"
         title="Table of contents"
         description="A tile which display a Table of contents"
-        add_permission="cmf.ManagePortal"
+        add_permission="cmf.ModifyPortalContent"
         class="plone.app.standardtiles.tableofcontents.TableOfContentsTile"
         permission="zope.Public"
         />
@@ -30,7 +30,7 @@
         name="plone.app.standardtiles.keywords"
         title="Context keywords"
         description='A tile which displays the keywords of this item'
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         class=".keywords.KeywordsTile"
         for="*"
         permission="zope2.View"
@@ -42,7 +42,7 @@
         description="Show related items"
         class=".common.RelatedItemsTile"
         for="*"
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         permission="zope2.View"
         />
 
@@ -51,7 +51,7 @@
         class=".common.HistoryTile"
         title="History"
         description="Show the edit history on content"
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         for="*"
         permission="zope2.View"
         />
@@ -61,9 +61,9 @@
         class=".common.LockInfoTile"
         title="Lock info"
         description="Shows the lock info on content"
-        add_permission="zope.Public"
+        add_permission="cmf.ModifyPortalContent"
         for="*"
-        permission="zope2.View"
+        permission="cmf.ModifyPortalContent"
         />
 
     <plone:tile
@@ -71,7 +71,7 @@
         title="Content listing"
         description='A tile which displays the content listing of this item'
         permission="zope2.View"
-        add_permission="plone.app.tiles.AddTile"
+        add_permission="cmf.ModifyPortalContent"
         class=".contentlisting.ContentListingTile"
         schema=".contentlisting.IContentListingTile"
         for="*"
