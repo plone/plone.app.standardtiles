@@ -37,6 +37,7 @@ setup(
         'setuptools',
         'lxml',
         'requests',
+        'plone.app.blocks',
         'plone.app.dexterity',
         'plone.app.tiles',
         'plone.app.discussion',
@@ -49,7 +50,6 @@ setup(
     ],
     extras_require={
         'test': [
-            'plone.app.blocks',
             'plone.app.testing',
             'plone.app.dexterity',
             'plone.app.widgets',
