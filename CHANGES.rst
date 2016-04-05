@@ -4,25 +4,31 @@ Changelog
 1.0b5 (unreleased)
 ------------------
 
-- fix permission definitions to not use public permissions for add
+- Add registry configuration to specify additional content listing views
   [vangheem]
 
-- fix Event to work with summary_view content listing tile
+- Add limit to contentlisting
+  [martior]
+
+- Fix embed tile to ram.cache oembed code by URL
+  [datakurre]
+
+- Fix permission definitions to not use public permissions for add
   [vangheem]
 
-- fix listings not including /view on urls
+- Fix Event to work with summary_view content listing tile
   [vangheem]
 
-- be able to specify additional content listing views
+- Fix listings not including /view on urls
   [vangheem]
 
-- better error handling in summary_view
+- Add better error handling in summary_view
   [vangheem]
 
-- fix getting lead image
+- Fix getting lead image
   [vangheem]
 
-- Do not transform rawhtml output if rendered within mosaic layouteditor
+- Fix to not transform rawhtml output if rendered within mosaic layouteditor
   [vangheem]
 
 
