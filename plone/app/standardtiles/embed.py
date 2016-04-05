@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-
 from plone.app.standardtiles import _PMF as _
+from plone.memoize import ram
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from zope import schema
-
 import requests
 
 NOEMBED_ENDPOINT = 'https://noembed.com/embed?callback=embed_data=&url='
@@ -24,6 +23,7 @@ class EmbedTile(Tile):
     """ A tile that embeds media.
     """
 
+    @ram.cache(lambda method, obj: obj.data.get('media_url'))
     def __call__(self):
         media_url = self.data.get('media_url')
         url = NOEMBED_ENDPOINT + media_url
