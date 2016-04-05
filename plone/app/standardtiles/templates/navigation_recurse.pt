@@ -7,7 +7,7 @@
 <li tal:define="show_children   node/show_children;
                 children        node/children;
                 item_url        node/getURL;
-                item_icon       nocall:node/item_icon;
+                item_icon       nocall:node/item_icon|nothing;
                 item_type       node/portal_type;
                 is_current      node/currentItem;
                 is_in_path      node/currentParent;
@@ -26,7 +26,7 @@
         <a tal:attributes="href python:item_url;
                            title node/Description;
                            class string:$item_class${li_class}${li_extr_class}${li_folder_class} $item_type_class">
-            <img tal:replace="structure item_icon/html_tag" />
+            <img tal:condition="item_icon" tal:replace="structure item_icon/html_tag" />
             <span tal:content="node/Title">Selected Item Title</span></a>
 
     <ul tal:attributes="class python:'navTree navTreeLevel'+str(level)"
