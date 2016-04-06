@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b5 (unreleased)
+1.0b5 (2016-04-06)
 ------------------
 
 - Add registry configuration to specify additional content listing views
