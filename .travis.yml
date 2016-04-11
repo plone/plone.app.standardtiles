@@ -5,7 +5,6 @@ cache:
   directories:
   - eggs
 env:
-- PLONE_VERSION=4.3.x
 - PLONE_VERSION=5.x
 install:
 - python bootstrap.py -v 1.7.1 -c test-$PLONE_VERSION.cfg

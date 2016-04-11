@@ -2,7 +2,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-version = '1.0.1.dev0'
+version = '2.0.0.dev0'
 
 
 setup(
@@ -15,7 +15,6 @@ setup(
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Framework :: Plone',
-        'Framework :: Plone :: 4.3',
         'Framework :: Plone :: 5.0',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Programming Language :: Python',
@@ -37,6 +36,7 @@ setup(
         'setuptools',
         'lxml',
         'requests',
+        'Products.CMFPlone>=5.0.4',
         'plone.app.blocks',
         'plone.app.dexterity',
         'plone.app.tiles',
