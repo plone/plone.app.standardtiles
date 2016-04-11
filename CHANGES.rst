@@ -4,7 +4,7 @@ Changelog
 1.0b6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Nothing changed.
 
 
 1.0b5 (2016-04-06)
