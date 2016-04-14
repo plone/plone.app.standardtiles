@@ -11,15 +11,15 @@ from plone.autoform.interfaces import WIDGETS_KEY
 from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
 from plone.autoform.utils import mergedTaggedValuesForIRO
 from plone.supermodel.utils import mergedTaggedValueDict
-from z3c.form.interfaces import IEditForm
-from z3c.form.interfaces import IFieldWidget
 from z3c.form.interfaces import DISPLAY_MODE
 from z3c.form.interfaces import HIDDEN_MODE
+from z3c.form.interfaces import IEditForm
+from z3c.form.interfaces import IFieldWidget
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 from zope.interface import Interface
-from zope.security.interfaces import IPermission
 from zope.schema.interfaces import IField
+from zope.security.interfaces import IPermission
 
 
 def getNavigationRoot(context):

@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.dexterity.behaviors.metadata import IDublinCore
 from plone.app.standardtiles.utils import PermissionChecker
 from plone.app.tiles.interfaces import ITilesFormLayer
@@ -9,8 +7,10 @@ from plone.autoform.view import WidgetsView
 from plone.dexterity.interfaces import IDexterityFTI
 from plone.dexterity.utils import getAdditionalSchemata
 from plone.formwidget.namedfile import NamedImageWidget
+from plone.protect.interfaces import IDisableCSRFProtection
 from plone.supermodel.utils import mergedTaggedValueDict
 from plone.tiles import Tile
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.browser.text import TextWidget
 from z3c.form.browser.textarea import TextAreaWidget
 from z3c.form.field import Fields
@@ -22,11 +22,6 @@ from zope.component import getUtility
 from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.pagetemplate.interfaces import IPageTemplate
-try:
-    from plone.protect.interfaces import IDisableCSRFProtection
-    HAS_PLONE_PROTECT = True
-except ImportError:
-    HAS_PLONE_PROTECT = False
 
 
 @implementer(IAddForm)
@@ -49,6 +44,7 @@ class DexterityFieldTile(WidgetsView, Tile):
             return getAdditionalSchemata(context=self.context)
 
     def __init__(self, context, request):
+        # xxx usually a super is the way to go here? why not?
         Tile.__init__(self, context, request)
         WidgetsView.__init__(self, context, request)
 
@@ -91,7 +87,7 @@ class DexterityFieldTile(WidgetsView, Tile):
         ).allowed(self.field)
 
     def _wrap_widget(self, render):
-        return u"<html><body>%s</body></html>" % render
+        return ''.join([u'<html><body>', render, '</body></html>'])
 
     def updateWidgets(self, prefix=None):
         if self.field is not None:
@@ -124,8 +120,18 @@ class DexterityFieldTile(WidgetsView, Tile):
         return u'<html></html>'
 
 
-_titleDisplayTemplate = ViewPageTemplateFile('templates/title.pt',
-                                             content_type='text/html')
+_titleDisplayTemplate = ViewPageTemplateFile(
+    'templates/title.pt',
+    content_type='text/html'
+)
+_descriptionDisplayTemplate = ViewPageTemplateFile(
+    'templates/description.pt',
+    content_type='text/html'
+)
+_namedImageDisplayTemplate = ViewPageTemplateFile(
+    'templates/namedimage.pt',
+    content_type='text/html')
+
 
 @implementer(IPageTemplate)
 @adapter(None, ITilesFormLayer, DexterityFieldTile,
@@ -134,9 +140,6 @@ def titleDisplayTemplate(context, request, form, field, widget):
     return _titleDisplayTemplate
 
 
-_descriptionDisplayTemplate = ViewPageTemplateFile('templates/description.pt',
-                                                   content_type='text/html')
-
 @implementer(IPageTemplate)
 @adapter(None, ITilesFormLayer, DexterityFieldTile,
          getSpecification(IDublinCore['description']), TextAreaWidget)
@@ -144,14 +147,10 @@ def descriptionDisplayTemplate(context, request, form, field, widget):
     return _descriptionDisplayTemplate
 
 
-_namedImageDisplayTemplate= ViewPageTemplateFile('templates/namedimage.pt',
-                                                 content_type='text/html')
-
 @implementer(IPageTemplate)
 @adapter(None, ITilesFormLayer, DexterityFieldTile,
          None, NamedImageWidget)
 def namedImageDisplayTemplate(context, request, form, field, widget):
     # Disable CSRF, because imagescales may save a new scale into ZODB
-    if HAS_PLONE_PROTECT:
-        alsoProvides(request, IDisableCSRFProtection)
+    alsoProvides(request, IDisableCSRFProtection)
     return _namedImageDisplayTemplate

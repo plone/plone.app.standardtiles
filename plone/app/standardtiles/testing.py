@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
-from plone.app.testing import PLONE_FIXTURE
-from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import login
 from plone.app.testing import logout
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import PloneSandboxLayer
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
 from plone.autoform import directives
@@ -13,6 +12,7 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.manager import PortletManager
 from plone.portlets.manager import PortletManagerRenderer
 from plone.supermodel.model import Schema
+from Products.CMFCore.utils import getToolByName
 from z3c.form import interfaces
 from z3c.form.browser import widget
 from z3c.form.widget import FieldWidget
@@ -24,23 +24,13 @@ from zope.component import getSiteManager
 from zope.component import provideAdapter
 from zope.configuration import xmlconfig
 from zope.contentprovider.interfaces import UpdateNotCalled
-from zope.interface import Interface
 from zope.interface import implementer
 from zope.interface import implements
 from zope.interface import implementsOnly
+from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
-import pkg_resources
 
-HAS_PLONE_5 = \
-    int(pkg_resources.get_distribution('Products.CMFPlone').version[0]) > 4
-
-try:
-    pkg_resources.get_distribution('plone.app.theming')
-except pkg_resources.DistributionNotFound:
-    HAS_PLONE_APP_THEMING = False
-else:
-    HAS_PLONE_APP_THEMING = True
 
 NORMAL_USER_NAME = 'user'
 NORMAL_USER_PASSWORD = 'secret'
@@ -162,28 +152,24 @@ class PAStandardtiles(PloneSandboxLayer):
         xmlconfig.file('testing.zcml', plone.app.standardtiles,
                        context=configurationContext)
 
-        if HAS_PLONE_5:
-            import plone.app.contenttypes
-            xmlconfig.file('configure.zcml', plone.app.contenttypes,
-                           context=configurationContext)
+        import plone.app.contenttypes
+        xmlconfig.file('configure.zcml', plone.app.contenttypes,
+                       context=configurationContext)
 
     def setUpPloneSite(self, portal):
         # install into the Plone site
         applyProfile(portal, 'plone.app.dexterity:default')
         applyProfile(portal, 'plone.app.widgets:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
-
-        if HAS_PLONE_5:
-            applyProfile(portal, 'plone.app.contenttypes:default')
+        applyProfile(portal, 'plone.app.contenttypes:default')
 
         # ensure plone.app.theming disabled
-        if HAS_PLONE_APP_THEMING:
-            from plone.registry.interfaces import IRegistry
-            from zope.component import getUtility
-            registry = getUtility(IRegistry)
-            key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
-            if key in registry:
-                registry[key] = False
+        from plone.registry.interfaces import IRegistry
+        from zope.component import getUtility
+        registry = getUtility(IRegistry)
+        key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
+        if key in registry:
+            registry[key] = False
 
         # creates some users
         acl_users = getToolByName(portal, 'acl_users')
@@ -243,13 +229,12 @@ class PAStandardtilesTestType(PloneSandboxLayer):
         applyProfile(portal, 'plone.app.standardtiles:default')
 
         # ensure plone.app.theming disabled
-        if HAS_PLONE_APP_THEMING:
-            from plone.registry.interfaces import IRegistry
-            from zope.component import getUtility
-            registry = getUtility(IRegistry)
-            key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
-            if key in registry:
-                registry[key] = False
+        from plone.registry.interfaces import IRegistry
+        from zope.component import getUtility
+        registry = getUtility(IRegistry)
+        key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
+        if key in registry:
+            registry[key] = False
 
         # creates some users
         acl_users = getToolByName(portal, 'acl_users')

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from plone.app.tiles.browser.delete import DefaultDeleteView
 
 
@@ -12,4 +11,3 @@ class PortletTileDeleteView(DefaultDeleteView):
         result = super(PortletTileDeleteView, self).__call__()
         # delete the portlet
         # TODO
-

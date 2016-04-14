@@ -5,44 +5,30 @@ from plone.namedfile.field import NamedBlobFile
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import PersistentTile
+from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from z3c.form.browser.radio import RadioFieldWidget
 from zope import schema
 from zope.component import getUtility
-from zope.component.hooks import getSite
 from zope.interface import provider
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
-try:
-    from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
-    HAS_PLONE_5 = True
-except ImportError:
-    from plone.app.imaging.interfaces import IImagingSchema
-    HAS_PLONE_5 = False
-
-try:
-    from plone.protect.interfaces import IDisableCSRFProtection
-    HAS_PLONE_PROTECT = True
-except ImportError:
-    HAS_PLONE_PROTECT = False
-
 
 def get_settings():
     registry = getUtility(IRegistry)
-    settings = registry.forInterface(IImagingSchema,
-                                     prefix="plone",
-                                     check=False)
+    settings = registry.forInterface(
+        IImagingSchema,
+        prefix="plone",
+        check=False
+    )
     return settings
 
 
 @provider(IContextSourceBinder)
 def image_scales(context):
     values = []
-    if HAS_PLONE_5:
-        settings = get_settings()
-    else:
-        settings = IImagingSchema(getSite())
+    settings = get_settings()
     for allowed_size in settings.allowed_sizes:
         name = allowed_size.split()[0]
         if name not in ("thumb", "tile", "icon", "listing"):

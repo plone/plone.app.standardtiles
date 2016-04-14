@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
-from PIL import Image
-from PIL import ImageDraw
 from lxml import html
 from persistent.dict import PersistentDict
-from plone.app.textfield import RichTextValue
+from PIL import Image
+from PIL import ImageDraw
 from plone.app.standardtiles.embed import NOEMBED_ENDPOINT
-from plone.app.standardtiles.testing import HAS_PLONE_5
 from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import setRoles
+from plone.app.textfield import RichTextValue
 from plone.namedfile import NamedFile, NamedImage
 from plone.testing.z2 import Browser
 from plone.uuid.interfaces import IUUID
 from unittest import TestCase
 from urllib import quote
 from zope.annotation import IAnnotations
-import StringIO
+
 import os
 import plone.app.standardtiles.tests as test_dir
 import random
+import StringIO
 import transaction
 
 
@@ -77,9 +77,9 @@ class ContentTileTests(TestCase):
         media_url = 'http://www.youtube.com/watch?v=ayPKvFNz8aE'
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.embed/unique?media_url='
-            + quote(media_url)
+            self.portalURL +
+            '/@@plone.app.standardtiles.embed/unique?media_url=' +
+            quote(media_url)
         )
 
         self.assertIn(NOEMBED_ENDPOINT + media_url,
@@ -101,17 +101,16 @@ class ContentTileTests(TestCase):
             title=u'An another page', description=u'A description',
             text=u'Hello World!'
         )
-        if HAS_PLONE_5:
-            self.portal[page_id].text = RichTextValue(u'Hello World!')
+        self.portal[page_id].text = RichTextValue(u'Hello World!')
 
         page_uuid = IUUID(self.portal[page_id])
 
         transaction.commit()
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
+            self.portalURL +
+            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
+            page_uuid
         )
 
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
@@ -125,8 +124,8 @@ class ContentTileTests(TestCase):
 
         """
         self.browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.navigation'
+            self.portalURL +
+            '/@@plone.app.standardtiles.navigation'
         )
 
         self.assertIn('A simple page', self.browser.contents)
@@ -143,8 +142,8 @@ class ContentTileTests(TestCase):
 
         """
         self.browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.sitemap'
+            self.portalURL +
+            '/@@plone.app.standardtiles.sitemap'
         )
 
         self.assertIn('A simple page', self.browser.contents)
@@ -169,8 +168,8 @@ class ContentTileTests(TestCase):
         transaction.commit()
 
         self.browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.attachment/test'
+            self.pageURL +
+            '/@@plone.app.standardtiles.attachment/test'
         )
 
         self.assertIn(u'hello_world.txt', self.browser.contents)
@@ -194,10 +193,10 @@ class ContentTileTests(TestCase):
 
         # Create the RSS tile, with the local RSS URI:
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.rss/unique?url='
-            + quote(path)
-            + '&portlet_title=TEST_RSS_TILE'
+            self.portalURL +
+            '/@@plone.app.standardtiles.rss/unique?url=' +
+            quote(path) +
+            '&portlet_title=TEST_RSS_TILE'
         )
 
         self.assertIn('TEST_RSS_TILE', self.unprivileged_browser.contents)
@@ -216,8 +215,8 @@ class ContentTileTests(TestCase):
         transaction.commit()
 
         self.browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.image/test'
+            self.pageURL +
+            '/@@plone.app.standardtiles.image/test'
         )
 
         # Confirm pass CSRF protection on Plone 5
@@ -239,8 +238,8 @@ class ContentTileTests(TestCase):
         transaction.commit()
 
         self.browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.rawhtml/test'
+            self.pageURL +
+            '/@@plone.app.standardtiles.rawhtml/test'
         )
 
         root = fromstring(self.browser.contents)

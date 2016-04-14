@@ -1,24 +1,20 @@
 # -*- coding: utf-8 -*-
 from lxml import html
-from Products.CMFCore.utils import getToolByName
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
 from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import setRoles
+from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.interfaces import ISecuritySchema
+from Products.CMFPlone.interfaces import ISiteSchema
 from unittest import TestCase
+from zope.component import getUtility
+
 import transaction
 
-try:
-    from Products.CMFPlone.interfaces import ISecuritySchema
-    from Products.CMFPlone.interfaces import ISiteSchema
-    HAS_PLONE_5 = True
-except ImportError:
-    from plone.app.controlpanel.security import ISecuritySchema
-    HAS_PLONE_5 = False
 
 def fromstring(s):
     html_parser = html.HTMLParser(encoding='utf-8')

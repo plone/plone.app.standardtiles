@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.navigation import NavigationTile
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
+from Products.CMFCore.utils import getToolByName
 from zope import schema
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 
 try:
     from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
@@ -25,9 +25,8 @@ class ISitemapTile(Schema):
     )
 
 
+@implementer(ISitemapTile)
 class SitemapTile(NavigationTile):
-
-    implements(ISitemapTile)
 
     def __init__(self, *arg, **kw):
         super(SitemapTile, self).__init__(*arg, **kw)

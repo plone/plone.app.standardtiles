@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 from plone.app.standardtiles.interfaces import IMetadataTile
 from plone.tiles.tile import Tile
-from zope.interface import implements
+from zope.interface import implementer
 
 
+@implementer(IMetadataTile)
 class BaseMetadataTile(Tile):
     """The base class for metadata tiles (such as title and description)."""
-
-    implements(IMetadataTile)
 
     def get_value(self):
         return u""

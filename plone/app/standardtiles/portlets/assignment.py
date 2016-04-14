@@ -5,8 +5,8 @@ from plone.app.standardtiles.interfaces import IPortletManager
 from plone.app.standardtiles.interfaces import IPortletManagerAssignment
 from plone.portlets.constants import CONTEXT_ASSIGNMENT_KEY
 from plone.portlets.constants import CONTEXT_CATEGORY
-from plone.portlets.interfaces import IPortletAssignmentMapping
 from plone.portlets.interfaces import ILocalPortletAssignable
+from plone.portlets.interfaces import IPortletAssignmentMapping
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter
 from zope.interface import implementer
@@ -15,6 +15,7 @@ from zope.interface import implementer
 # is applied on the assignment not on the manager itself.
 # We need a custom marker interface for the assignment
 # of our portlet manager... here is it!
+
 
 @implementer(IPortletManagerAssignment)
 class Mapping(PortletAssignmentMapping):

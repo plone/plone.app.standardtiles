@@ -1,27 +1,26 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
 from lxml import html
-from plone.app.standardtiles.image import HAS_PLONE_5
 from plone.app.standardtiles.testing import EDITOR_USER_NAME
 from plone.app.standardtiles.testing import EDITOR_USER_PASSWORD
 from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING  # noqa
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import setRoles
 from plone.locking.interfaces import ILockable
 from plone.testing.z2 import Browser
+from Products.CMFCore.utils import getToolByName
 from unittest import TestCase
+from z3c.relationfield import RelationValue
+from zope.component import getUtility
+from zope.intid import IIntIds
+
 import transaction
+
 
 def fromstring(s):
     html_parser = html.HTMLParser(encoding='utf-8')
     return html.fromstring(s, parser=html_parser).getroottree().getroot()
-
-if HAS_PLONE_5:
-    from z3c.relationfield import RelationValue
-    from zope.component import getUtility
-    from zope.intid import IIntIds
 
 
 class ContentTileTests(TestCase):
@@ -72,8 +71,8 @@ class ContentTileTests(TestCase):
         transaction.commit()
 
         self.unprivileged_browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.document_actions'
+            self.pageURL +
+            '/@@plone.app.standardtiles.document_actions'
         )
 
         self.assertIn('document-action-print',
@@ -88,12 +87,12 @@ class ContentTileTests(TestCase):
         assigned to the context.
 
         """
-        # We will use the page we created before for the tests. Since we have not
-        # added any keyword to it yet, the tile contents are empty:
+        # We will use the page we created before for the tests. Since we have
+        # not added any keyword to it yet, the tile contents are empty:
 
         self.unprivileged_browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.keywords'
+            self.pageURL +
+            '/@@plone.app.standardtiles.keywords'
         )
 
         self.assertNotIn('category', self.unprivileged_browser.contents)
@@ -111,8 +110,8 @@ class ContentTileTests(TestCase):
 
         # The tile will show them:
         self.unprivileged_browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.keywords'
+            self.pageURL +
+            '/@@plone.app.standardtiles.keywords'
         )
 
         self.assertIn('category', self.unprivileged_browser.contents)
@@ -125,8 +124,8 @@ class ContentTileTests(TestCase):
 
     def test_related_items_tiles(self):
         self.browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.related_items'
+            self.pageURL +
+            '/@@plone.app.standardtiles.related_items'
         )
 
         self.assertNotIn('relatedItems', self.browser.contents)
@@ -137,23 +136,17 @@ class ContentTileTests(TestCase):
 
         self.portal.invokeFactory('Document', 'doc1', title='Document 1')
         self.portal.invokeFactory('Document', 'doc2', title='Document 2')
-        if HAS_PLONE_5:
-            int_ids = getUtility(IIntIds)
-            self.page.relatedItems = [
-                RelationValue(int_ids.getId(self.portal.doc1)),
-                RelationValue(int_ids.getId(self.portal.doc2))
-            ]
-        else:
-            self.page.setRelatedItems([
-                self.portal.doc1,
-                self.portal.doc2
-            ])
+        int_ids = getUtility(IIntIds)
+        self.page.relatedItems = [
+            RelationValue(int_ids.getId(self.portal.doc1)),
+            RelationValue(int_ids.getId(self.portal.doc2))
+        ]
 
         transaction.commit()
 
         self.browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.related_items'
+            self.pageURL +
+            '/@@plone.app.standardtiles.related_items'
         )
 
         self.assertIn('relatedItems', self.browser.contents)
@@ -164,27 +157,21 @@ class ContentTileTests(TestCase):
         nodes = root.xpath('//body//*[@class="relatedItems"]')
         self.assertEqual(len(nodes), 1)
 
-        if HAS_PLONE_5:
-            nodes = root.xpath('//body//*[@class="relatedItems"]//ul/li')
-        else:
-            nodes = root.xpath('//body//*[@class="relatedItems"]//dl/dd')
+        nodes = root.xpath('//body//*[@class="relatedItems"]//ul/li')
         self.assertEqual(len(nodes), 2)
 
     def test_history_tile(self):
         # First edit a page so we have an edit history:
         self.browser.open(self.pageURL + '/edit')
 
-        if HAS_PLONE_5:
-            self.browser.getControl(name='form.widgets.IDublinCore.title').value = 'A different title'  # noqa
-        else:
-            self.browser.getControl(name='title').value = 'A different title'
+        self.browser.getControl(name='form.widgets.IDublinCore.title').value = 'A different title'  # noqa
         self.browser.getControl(label='Save').click()
         self.assertIn('A different title', self.browser.contents)
 
         # The tile will show them:
         self.browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.history'
+            self.pageURL +
+            '/@@plone.app.standardtiles.history'
         )
 
         self.assertIn('content-history', self.browser.contents)
@@ -199,8 +186,8 @@ class ContentTileTests(TestCase):
 
     def test_lockinfo_tile(self):
         self.other_browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.lockinfo'
+            self.pageURL +
+            '/@@plone.app.standardtiles.lockinfo'
         )
 
         self.assertIn('plone-lock-status', self.other_browser.contents)
@@ -217,8 +204,8 @@ class ContentTileTests(TestCase):
 
         # The tile will show them:
         self.other_browser.open(
-            self.pageURL
-            + '/@@plone.app.standardtiles.lockinfo'
+            self.pageURL +
+            '/@@plone.app.standardtiles.lockinfo'
         )
 
         self.assertIn('plone-lock-status', self.other_browser.contents)
