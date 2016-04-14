@@ -20,6 +20,7 @@ class BaseViewletTile(Tile):
 
     manager = None
     viewlet = None
+    section = u'body'
 
     def __call__(self):
         alsoProvides(self, IViewView)
@@ -33,10 +34,14 @@ class BaseViewletTile(Tile):
             IViewlet,
             name=self.viewlet
         )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        return u'<html></html>'
+        if viewlet is None:
+            return u'<html></html>'
+
+        viewlet.update()
+        return u'<html><{section}>{rendered}</{section}></html>'.format(
+            rendered=viewlet.render(),
+            section=self.section
+        )
 
 
 class FooterTile(BaseViewletTile):
