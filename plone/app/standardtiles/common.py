@@ -16,104 +16,62 @@ from zope.viewlet.interfaces import IViewlet
 from zope.viewlet.interfaces import IViewletManager
 
 
-class FooterTile(Tile):
+class BaseViewletTile(Tile):
+
+    manager = None
+    viewlet = None
+    section = u'body'
+
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        manager = queryMultiAdapter(
+            (self.context, self.request, self),
+            IViewletManager,
+            name=self.manager
+        )
+        viewlet = queryMultiAdapter(
+            (self.context, self.request, self, manager),
+            IViewlet,
+            name=self.viewlet
+        )
+        if viewlet is None:
+            return u'<html></html>'
+
+        viewlet.update()
+        return u'<html><{section}>{rendered}</{section}></html>'.format(
+            rendered=viewlet.render(),
+            section=self.section
+        )
+
+
+class FooterTile(BaseViewletTile):
     """A footer tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.portalfooter'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.footer'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.portalfooter'
+    viewlet = 'plone.footer'
 
 
-class ColophonTile(Tile):
+class ColophonTile(BaseViewletTile):
     """A colophon tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.portalfooter'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.colophon'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.portalfooter'
+    viewlet = 'plone.colophon'
 
 
-class SiteActionsTile(Tile):
+class SiteActionsTile(BaseViewletTile):
     """A site actions tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.portalfooter'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.site_actions'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.portalfooter'
+    viewlet = 'plone.site_actions'
 
 
-class AnalyticsTile(Tile):
+class AnalyticsTile(BaseViewletTile):
     """A analytics tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.portalfooter'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.analytics'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.portalfooter'
+    viewlet = 'plone.analytics'
 
 
-class SkipLinksTile(Tile):
+class SkipLinksTile(BaseViewletTile):
     """A skip links tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.portalheader'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.skip_links'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.portalheader'
+    viewlet = 'plone.skip_links'
 
 
 class LoginTile(Tile):
@@ -196,124 +154,40 @@ class LoginTile(Tile):
         pass
 
 
-class PersonalBarTile(Tile):
+class PersonalBarTile(BaseViewletTile):
     """A personal bar tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.toolbar'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.personal_bar'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.portalheader'
+    viewlet = 'plone.personal_bar'
 
 
-class SearchBoxTile(Tile):
+class SearchBoxTile(BaseViewletTile):
     """A search box tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.portalheader'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.searchbox'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.portalheader'
+    viewlet = 'plone.searchbox'
 
 
-class AnonToolsTile(Tile):
+class AnonToolsTile(BaseViewletTile):
     """An anon tools tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.portalheader'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.anontools'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.portalheader'
+    viewlet = 'plone.anontools'
 
 
-class LogoTile(Tile):
+class LogoTile(BaseViewletTile):
     """A logo tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.portalheader'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.logo'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.portalheader'
+    viewlet = 'plone.logo'
 
 
-class GlobalSectionsTile(Tile):
+class GlobalSectionsTile(BaseViewletTile):
     """A global sections tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.mainnavigation'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.global_sections'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.mainnavigation'
+    viewlet = 'plone.global_sections'
 
 
-class PathBarTile(Tile):
+class PathBarTile(BaseViewletTile):
     """A path bar tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.abovecontent'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.path_bar'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.abovecontent'
+    viewlet = 'plone.path_bar'
 
 
 class ToolbarTile(Tile):
@@ -330,24 +204,10 @@ class ToolbarTile(Tile):
         return u'<html><body>%s</body></html>' % toolbar()
 
 
-class GlobalStatusMessageTile(Tile):
+class GlobalStatusMessageTile(BaseViewletTile):
     """Display messages to the current user"""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.globalstatusmessage'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.globalstatusmessage'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.globalstatusmessage'
+    viewlet = 'plone.globalstatusmessage'
 
 
 class DocumentBylineTile(Tile):
@@ -372,7 +232,10 @@ class DocumentBylineTile(Tile):
         return not self.anonymous or allowAnonymousViewAbout
 
     def show_history(self):
-        if not _checkPermission('CMFEditions: Access previous versions', self.context):
+        if not _checkPermission(
+            'CMFEditions: Access previous versions',
+            self.context
+        ):
             return False
         if IViewView.providedBy(self.__parent__):
             return True
@@ -392,7 +255,8 @@ class DocumentBylineTile(Tile):
             locked = lock_info.is_locked()
         else:
             context = aq_inner(self.context)
-            lockable = getattr(context.aq_explicit, 'wl_isLocked', None) is not None
+            is_locked = getattr(context.aq_explicit, 'wl_isLocked', None)
+            lockable = is_locked is not None
             locked = lockable and context.wl_isLocked()
 
         if not locked:
@@ -418,7 +282,7 @@ class DocumentBylineTile(Tile):
             return self.context.expires().isPast()
         return False
 
-    def toLocalizedTime(self, time, long_format=None, time_only = None):
+    def toLocalizedTime(self, time, long_format=None, time_only=None):
         """Convert time to localized time
         """
         util = getToolByName(self.context, 'translation_service')
@@ -446,24 +310,10 @@ class DocumentBylineTile(Tile):
         return DateTime(date)
 
 
-class LockInfoTile(Tile):
+class LockInfoTile(BaseViewletTile):
     """A lockinfo tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.abovecontent'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.lockinfo'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.abovecontent'
+    viewlet = 'plone.lockinfo'
 
 
 class NextPreviousTile(Tile):
@@ -504,44 +354,28 @@ class NextPreviousTile(Tile):
             return u'<html></html>'
 
 
-class DocumentActionsTile(Tile):
+class KeywordsTile(BaseViewletTile):
+    """A tile that displays the context's keywords, if any."""
+    manager = 'plone.belowcontent'
+    viewlet = 'plone.belowcontenttitle.keywords'
+
+
+class TableOfContentsTile(BaseViewletTile):
+    """A Table of contents tile."""
+    manager = 'plone.abovecontentbody'
+    viewlet = 'plone.tableofcontents'
+
+
+class DocumentActionsTile(BaseViewletTile):
     """Shows the document actions."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.belowcontentbody'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.abovecontenttitle.documentactions'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.belowcontentbody'
+    viewlet = 'plone.abovecontenttitle.documentactions'
 
 
-class RelatedItemsTile(Tile):
+class RelatedItemsTile(BaseViewletTile):
     """A related items tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.belowcontentbody'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.belowcontentbody.relateditems'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.belowcontentbody'
+    viewlet = 'plone.belowcontentbody.relateditems'
 
 
 class HistoryTile(Tile):
@@ -576,5 +410,4 @@ class LanguageSelectorTile(Tile):
         if viewlet is not None:
             viewlet.update()
             return u'<html><body>%s</body></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+        return u'<html></html>'

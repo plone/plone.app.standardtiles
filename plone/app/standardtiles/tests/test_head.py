@@ -1,24 +1,19 @@
 # -*- coding: utf-8 -*-
 from lxml import html
-from Products.CMFCore.utils import getToolByName
-from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
 from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING
+from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.testing import setRoles
+from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
+from Products.CMFPlone.interfaces import ISecuritySchema
+from Products.CMFPlone.interfaces import ISiteSchema
 from unittest import TestCase
+from zope.component import getUtility
+
 import transaction
 
-try:
-    from Products.CMFPlone.interfaces import ISecuritySchema
-    from Products.CMFPlone.interfaces import ISiteSchema
-    HAS_PLONE_5 = True
-except ImportError:
-    from plone.app.controlpanel.security import ISecuritySchema
-    HAS_PLONE_5 = False
 
 def fromstring(s):
     html_parser = html.HTMLParser(encoding='utf-8')
@@ -54,8 +49,8 @@ class TestHeadTiles(TestCase):
 
     def test_title_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.headtitle'
+            self.portalURL +
+            '/@@plone.app.standardtiles.headtitle'
         )
 
         self.assertIn('<title', self.unprivileged_browser.contents)
@@ -66,8 +61,8 @@ class TestHeadTiles(TestCase):
 
     def test_stylesheets_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.stylesheets'
+            self.portalURL +
+            '/@@plone.app.standardtiles.stylesheets'
         )
 
         self.assertIn('<link', self.unprivileged_browser.contents)
@@ -78,8 +73,8 @@ class TestHeadTiles(TestCase):
 
     def test_javascripts_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.javascripts'
+            self.portalURL +
+            '/@@plone.app.standardtiles.javascripts'
         )
 
         self.assertIn('<script', self.unprivileged_browser.contents)
@@ -90,8 +85,8 @@ class TestHeadTiles(TestCase):
 
     def test_favicon_link_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.faviconlink'
+            self.portalURL +
+            '/@@plone.app.standardtiles.faviconlink'
         )
 
         self.assertIn('<link', self.unprivileged_browser.contents)
@@ -102,8 +97,8 @@ class TestHeadTiles(TestCase):
 
     def test_search_link_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.searchlink'
+            self.portalURL +
+            '/@@plone.app.standardtiles.searchlink'
         )
 
         self.assertIn('<link', self.unprivileged_browser.contents)
@@ -114,8 +109,8 @@ class TestHeadTiles(TestCase):
 
     def test_navigation_link_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.navigationlink'
+            self.portalURL +
+            '/@@plone.app.standardtiles.navigationlink'
         )
 
         self.assertIn('<link', self.unprivileged_browser.contents)
@@ -129,8 +124,8 @@ class TestHeadTiles(TestCase):
 
     def test_rss_link_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.rsslink'
+            self.portalURL +
+            '/@@plone.app.standardtiles.rsslink'
         )
 
         self.assertIn('<link', self.unprivileged_browser.contents)
@@ -141,8 +136,8 @@ class TestHeadTiles(TestCase):
 
     def test_canonical_url_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.canonical_url'
+            self.portalURL +
+            '/@@plone.app.standardtiles.canonical_url'
         )
 
         self.assertIn('<link', self.unprivileged_browser.contents)
@@ -153,8 +148,8 @@ class TestHeadTiles(TestCase):
 
     def test_author_link_tile(self):
         self.browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.authorlink'
+            self.portalURL +
+            '/@@plone.app.standardtiles.authorlink'
         )
 
         self.assertIn('<link', self.browser.contents)
@@ -165,8 +160,8 @@ class TestHeadTiles(TestCase):
 
     def test_dublincore_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.dublincore'
+            self.portalURL +
+            '/@@plone.app.standardtiles.dublincore'
         )
 
         self.assertNotIn('<meta', self.unprivileged_browser.contents)
@@ -176,12 +171,8 @@ class TestHeadTiles(TestCase):
         self.assertEqual(len(nodes), 0)
 
         registry = getUtility(IRegistry)
-        if HAS_PLONE_5:
-            site_settings = registry.forInterface(ISiteSchema, prefix="plone")
-            site_settings.exposeDCMetaTags = True
-        else:
-            ptool = getToolByName(self.portal, 'portal_properties')
-            ptool.site_properties.exposeDCMetaTags = True
+        site_settings = registry.forInterface(ISiteSchema, prefix="plone")
+        site_settings.exposeDCMetaTags = True
 
         security_settings = ISecuritySchema(self.portal)
         security_settings.set_allow_anon_views_about(True)
@@ -189,8 +180,8 @@ class TestHeadTiles(TestCase):
         transaction.commit()
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.dublincore'
+            self.portalURL +
+            '/@@plone.app.standardtiles.dublincore'
         )
 
         self.assertIn('<meta', self.unprivileged_browser.contents)

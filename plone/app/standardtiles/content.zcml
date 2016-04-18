@@ -22,7 +22,7 @@
         title="Table of contents"
         description="A tile which display a Table of contents"
         add_permission="cmf.ModifyPortalContent"
-        class="plone.app.standardtiles.tableofcontents.TableOfContentsTile"
+        class=".common.TableOfContentsTile"
         permission="zope.Public"
         />
 
@@ -31,7 +31,7 @@
         title="Context keywords"
         description='A tile which displays the keywords of this item'
         add_permission="cmf.ModifyPortalContent"
-        class=".keywords.KeywordsTile"
+        class=".common.KeywordsTile"
         for="*"
         permission="zope2.View"
         />

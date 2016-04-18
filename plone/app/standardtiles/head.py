@@ -1,111 +1,42 @@
 # -*- coding: utf-8 -*-
-from plone.app.layout.globals.interfaces import IViewView
 from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
-from zope.component import queryMultiAdapter
-from zope.interface import alsoProvides
-from zope.viewlet.interfaces import IViewlet
-from zope.viewlet.interfaces import IViewletManager
+from plone.app.standardtiles.common import BaseViewletTile
 
 
-class TitleTile(Tile):
+class TitleTile(BaseViewletTile):
     """A tile rendering the title tag to be inserted in the HTML headers."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.htmlhead.title'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.htmlhead'
+    viewlet = 'plone.htmlhead.title'
+    section = u'head'
 
 
-class StylesheetsTile(Tile):
+class StylesheetsTile(BaseViewletTile):
     """A stylesheets rendering tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead.links'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.resourceregistries.styles'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.htmlhead.links'
+    viewlet = 'plone.resourceregistries.styles'
+    section = u'head'
 
 
-class JavascriptsTile(Tile):
-    """A javascripts rendering tile."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.scripts'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.resourceregistries.scripts'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+class JavascriptsTile(BaseViewletTile):
+    """A stylesheets rendering tile."""
+    manager = 'plone.scripts'
+    viewlet = 'plone.resourceregistries.scripts'
+    section = u'head'
 
 
-class FaviconLinkTile(Tile):
+class FaviconLinkTile(BaseViewletTile):
     """Favicon link tile implementation."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead.links'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.links.favicon'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.htmlhead.links'
+    viewlet = 'plone.links.favicon'
+    section = u'head'
 
 
-class AuthorLinkTile(Tile):
+class AuthorLinkTile(BaseViewletTile):
     """Author link tile implementation."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead.links'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.links.author'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.htmlhead.links'
+    viewlet = 'plone.links.author'
+    section = u'head'
 
 
 class NavigationLinkTile(Tile):
@@ -118,97 +49,34 @@ class NavigationLinkTile(Tile):
         return portal_state.navigation_root_url()
 
 
-class SearchLinkTile(Tile):
+class SearchLinkTile(BaseViewletTile):
     """Search link tile implementation."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead.links'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.links.search'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.htmlhead.links'
+    viewlet = 'plone.links.search'
+    section = u'head'
 
 
-class RSSLinkTile(Tile):
+class RSSLinkTile(BaseViewletTile):
     """RSS link tile implementation."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead.links'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.links.RSS'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.htmlhead.links'
+    viewlet = 'plone.links.RSS'
+    section = u'head'
 
 
-class CanonicalUrlTile(Tile):
+class CanonicalUrlTile(BaseViewletTile):
     """Canonical url tile implementation."""
-
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead.links'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.links.canonical_url'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+    manager = 'plone.htmlhead.links'
+    viewlet = 'plone.links.canonical_url'
+    section = u'head'
 
 
-class DublinCoreTile(Tile):
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.htmlhead.dublincore'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+class DublinCoreTile(BaseViewletTile):
+    manager = 'plone.htmlhead'
+    viewlet = 'plone.htmlhead.dublincore'
+    section = u'head'
 
 
-class SocialTile(Tile):
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.htmlhead.socialtags'
-        )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><head>%s</head></html>' % viewlet.render()
-        else:
-            return u'<html></html>'
+class SocialTile(BaseViewletTile):
+    manager = 'plone.htmlhead'
+    viewlet = 'plone.htmlhead.socialtags'
+    section = u'head'

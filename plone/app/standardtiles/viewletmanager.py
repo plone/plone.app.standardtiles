@@ -1,11 +1,11 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.portlets.utils import findView
 from plone.tiles import Tile
 from zope import schema
-from zope.interface import Interface
-from zope.interface import implements
 from zope.component import queryMultiAdapter
+from zope.interface import implementer
+from zope.interface import Interface
 from zope.viewlet.interfaces import IViewletManager
 
 
@@ -34,10 +34,9 @@ class IViewletManagerTile(Interface):
     )
 
 
+@implementer(IViewletManagerTile)
 class ViewletManagerTile(Tile):
     """A tile that renders a viewlet manager."""
-
-    implements(IViewletManagerTile)
 
     def __call__(self):
         """Return the rendered contents of the viewlet manager specified."""

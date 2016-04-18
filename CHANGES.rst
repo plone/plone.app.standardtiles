@@ -4,8 +4,18 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Housekeeping and minor cleanup.
+  [jensens]
+
+- Moved KeywordTile and TableOfContentsTile to common.py.
+  [jensens]
+
+- Simplify basic viewlet proxy tiles.
+  [jensens]
+
 - Removed support for Plone 4.3. For Plone 4.3 support, please use
   plone.app.standardtiles < 2.0.
+  [datakurre, jensens]
 
 
 1.0 (2016-04-11)

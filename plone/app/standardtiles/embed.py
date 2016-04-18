@@ -4,6 +4,7 @@ from plone.memoize import ram
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from zope import schema
+
 import requests
 
 NOEMBED_ENDPOINT = 'https://noembed.com/embed?callback=embed_data=&url='

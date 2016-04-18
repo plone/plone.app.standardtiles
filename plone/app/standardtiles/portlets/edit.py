@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from zope.component import getUtility
-from plone.uuid.interfaces import IUUIDGenerator
-
-from plone.portlets.utils import unhashPortletInfo
 from plone.app.tiles.browser.edit import DefaultEditView
+from plone.portlets.utils import unhashPortletInfo
+from plone.uuid.interfaces import IUUIDGenerator
+from zope.component import getUtility
 
 import urllib
 
@@ -15,8 +14,10 @@ class PortletTileEditView(DefaultEditView):
     def __call__(self):
         portlet_hash = self.request['portlet_hash']
         info = unhashPortletInfo(portlet_hash)
-        url = '{}/++contextportlets++plone.app.standardtiles.portletManager/{}/edit'.format(self.context.absolute_url(), info['name'])
-
+        url = (
+            '{0}/++contextportlets++plone.app.standardtiles.portletManager/'
+            '{1}/edit'.format(self.context.absolute_url(), info['name'])
+        )
         if not self.tileId:
             generator = getUtility(IUUIDGenerator)
             tileId = generator()
@@ -24,7 +25,14 @@ class PortletTileEditView(DefaultEditView):
             tileId = self.tileId
 
         typeName = 'plone.app.standardtiles.portlet'
-        tile_url = '{}/@@{}/{}?portlet_hash={}'.format(self.context.absolute_url(), typeName, tileId, portlet_hash)
-
+        tile_url = '{0}/@@{1}/{2}?portlet_hash={3}'.format(
+            self.context.absolute_url(),
+            typeName,
+            tileId,
+            portlet_hash
+        )
         self.request.form['referer'] = tile_url
-        self.request.response.redirect('{}?referer={}'.format(url, urllib.quote(tile_url)))
+        self.request.response.redirect(
+            '{0}?referer={0}'.format(url, urllib.quote(tile_url))
+        )
+

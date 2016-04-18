@@ -2,13 +2,6 @@
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from Products.CMFCore.interfaces import IFolderish
-from Products.CMFCore.utils import getToolByName
-from Products.CMFDynamicViewFTI.interface import IBrowserDefault
-from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
-from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
-from Products.CMFPlone.interfaces import INonStructuralFolder
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.layout.navigation.defaultpage import isDefaultPage
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
@@ -21,16 +14,21 @@ from plone.memoize.instance import memoize
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
+from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.utils import getToolByName
+from Products.CMFDynamicViewFTI.interface import IBrowserDefault
+from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
+from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
+from Products.CMFPlone.interfaces import INonStructuralFolder
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.interfaces import IValue
 from z3c.form.util import getSpecification
 from zope import schema
 from zope.component import adapter
-from zope.component import adapts
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
-from zope.interface import Interface
 from zope.interface import implementer
-from zope.interface import implements
+from zope.interface import Interface
 
 
 def uuidToFolderishPath(context, uuid):
@@ -64,46 +62,54 @@ class INavigationTile(Schema):
 
     root = schema.Choice(
             title=_(u"Root node"),
-            description=_(u"You may search for and choose a folder to act as "
-                           "the root of the navigation tree.  Leave blank to "
-                           "use the Plone site root."),
+            description=_(
+                u'You may search for and choose a folder to act as the root '
+                u'of the navigation tree. Leave blank to use the Plone site '
+                u'root.'
+            ),
             source=CatalogSource(),
             required=False)
 
     includeTop = schema.Bool(
             title=_(u"Include top node"),
-            description=_(u"Whether or not to show the top, or 'root', node "
-                           "in the navigation tree. This is affected by the "
-                           "'Start level' setting."),
+            description=_(
+                u"Whether or not to show the top, or 'root', node in the "
+                u"navigation tree. This is affected by the 'Start level' "
+                u"setting."
+            ),
             default=False,
             required=False)
 
     currentFolderOnly = schema.Bool(
             title=_(u"Only show the contents of the current folder."),
-            description=_(u"If selected, the navigation tree will only show "
-                           "the current folder and its children at all "
-                           "times."),
+            description=_(
+                u"If selected, the navigation tree will only show the current "
+                u"folder and its children at all times."
+            ),
             default=False,
             required=False)
 
     topLevel = schema.Int(
             title=_(u"Start level"),
-            description=_(u"An integer value that specifies the number of "
-                           "folder levels below the site root that must be "
-                           "exceeded before the navigation tree will display. "
-                           "0 means that the navigation tree should be "
-                           "displayed everywhere including pages in the root "
-                           "of the site. 1 means the tree only shows up "
-                           "inside folders located in the root and downwards, "
-                           "never showing at the top level."),
+            description=_(
+                u"An integer value that specifies the number of folder levels "
+                u"below the site root that must be exceeded before the "
+                u"navigation tree will display. 0 means that the navigation "
+                u"tree should be displayed everywhere including pages in the "
+                u"root of the site. 1 means the tree only shows up inside "
+                u"folders located in the root and downwards, never showing at "
+                u"the top level."
+            ),
             default=0,
             required=False)
 
     bottomLevel = schema.Int(
             title=_(u"Navigation tree depth"),
-            description=_(u"How many folders should be included before the "
-                           "navigation tree stops. 0 means no limit. 1 only "
-                           "includes the root folder."),
+            description=_(
+                u"How many folders should be included before the navigation "
+                u"tree stops. 0 means no limit. 1 only includes the root "
+                u"folder."
+            ),
             default=0,
             required=False)
 
@@ -122,9 +128,8 @@ class DefaultRoot(object):
             return IUUID(self.context, None)
 
 
+@implementer(INavigationTile)
 class NavigationTile(Tile):
-
-    implements(INavigationTile)
 
     def __init__(self, *arg, **kw):
         super(NavigationTile, self).__init__(*arg, **kw)
@@ -156,9 +161,12 @@ class NavigationTile(Tile):
         context = aq_inner(self.context)
         root = self.getNavRoot()
         container = aq_parent(context)
-        if (aq_base(root) is aq_base(context) or
-                (aq_base(root) is aq_base(container) and
-                isDefaultPage(container, context))):
+        if (
+            aq_base(root) is aq_base(context) or (
+                aq_base(root) is aq_base(container) and
+                isDefaultPage(container, context)
+            )
+        ):
             return 'navTreeCurrentItem'
         return ''
 
@@ -198,29 +206,29 @@ class NavigationTile(Tile):
 
         if rootPath == self.urltool.getPortalPath():
             return portal
-        else:
-            try:
-                return portal.unrestrictedTraverse(rootPath)
-            except (AttributeError, KeyError,):
-                return portal
+        try:
+            return portal.unrestrictedTraverse(rootPath)
+        except (AttributeError, KeyError,):
+            return portal
 
     @memoize
     def getNavTree(self, _marker=[]):
         context = aq_inner(self.context)
-        queryBuilder = getMultiAdapter((context, self),
-                                       INavigationQueryBuilder)
+        queryBuilder = getMultiAdapter(
+            (context, self),
+            INavigationQueryBuilder
+        )
         strategy = getMultiAdapter((context, self), INavtreeStrategy)
-
         return buildFolderTree(context, obj=context,
                                query=queryBuilder(), strategy=strategy)
 
 
+@implementer(INavigationQueryBuilder)
+@adapter(Interface, INavigationTile)
 class QueryBuilder(NavtreeQueryBuilder):
     """Build a navtree query based on the settings in navtree_properties
     and those set on the tile.
     """
-    implements(INavigationQueryBuilder)
-    adapts(Interface, INavigationTile)
 
     def __init__(self, context, tile):
         super(QueryBuilder, self).__init__(context)
@@ -239,15 +247,16 @@ class QueryBuilder(NavtreeQueryBuilder):
         else:
             self.query['path'] = {'query': currentPath, 'navtree': 1}
 
-        topLevel = tile.data.get('topLevel') or navtree_properties.getProperty('topLevel', 0)
+        topLevel = (tile.data.get('topLevel') or
+                    navtree_properties.getProperty('topLevel', 0))
         if topLevel and topLevel > 0:
             self.query['path']['navtree_start'] = topLevel + 1
 
 
+@implementer(INavtreeStrategy)
+@adapter(Interface, INavigationTile)
 class NavtreeStrategy(SitemapNavtreeStrategy):
     """The navtree strategy used for the default navigation tile."""
-    implements(INavtreeStrategy)
-    adapts(Interface, INavigationTile)
 
     def __init__(self, context, tile):
         SitemapNavtreeStrategy.__init__(self, context, tile)
@@ -255,36 +264,38 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
         navtree_properties = getattr(portal_properties, 'navtree_properties')
 
         # XXX: We can't do this with a 'depth' query to EPI...
-        self.bottomLevel = tile.data.get('bottomLevel') or \
-                           navtree_properties.getProperty('bottomLevel', 0)
-
-        currentFolderOnly = tile.data.get('currentFolderOnly') or \
-                            navtree_properties.getProperty(
-                                    'currentFolderOnlyInNavtree', False)
-        topLevel = tile.data.get('topLevel') or \
-                   navtree_properties.getProperty('topLevel', 0)
+        self.bottomLevel = (
+            tile.data.get('bottomLevel') or
+            navtree_properties.getProperty('bottomLevel', 0)
+        )
+        currentFolderOnly = (
+            tile.data.get('currentFolderOnly') or
+            navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
+        )
+        topLevel = (
+            tile.data.get('topLevel') or
+            navtree_properties.getProperty('topLevel', 0)
+        )
         tileRoot = uuidToFolderishPath(context, tile.data.get('root'))
         self.rootPath = getRootPath(context, currentFolderOnly,
                                     topLevel, tileRoot)
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
-        if sitemapDecision == False:
+        if not sitemapDecision:
             return False
         depth = node.get('depth', 0)
-        if depth > 0 and self.bottomLevel > 0 and depth >= self.bottomLevel:
-            return False
-        else:
-            return True
+        return not (
+            depth > 0 and self.bottomLevel > 0 and depth >= self.bottomLevel
+        )
 
 
 def getRootPath(context, currentFolderOnly, topLevel, root):
     """Helper function to calculate the real root path."""
     context = aq_inner(context)
     if currentFolderOnly:
-        folderish = getattr(aq_base(context),
-                            'isPrincipiaFolderish', False) and \
-                    not INonStructuralFolder.providedBy(context)
+        folderish = getattr(aq_base(context), 'isPrincipiaFolderish', False)
+        folderish &= not INonStructuralFolder.providedBy(context)
         parent = aq_parent(context)
 
         is_default_page = False
@@ -306,13 +317,10 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
         if not contextPath.startswith(rootPath):
             return None
         contextSubPathElements = contextPath[len(rootPath) + 1:]
-        if contextSubPathElements:
-            contextSubPathElements = contextSubPathElements.split('/')
-            if len(contextSubPathElements) < topLevel:
-                return None
-            rootPath = '%s/%s' % (rootPath,
-                            '/'.join(contextSubPathElements[:topLevel]))
-        else:
+        if not contextSubPathElements:
             return None
-
+        contextSubPathElements = contextSubPathElements.split('/')
+        if len(contextSubPathElements) < topLevel:
+            return None
+        rootPath = '/'.join([rootPath] + contextSubPathElements[:topLevel])
     return rootPath

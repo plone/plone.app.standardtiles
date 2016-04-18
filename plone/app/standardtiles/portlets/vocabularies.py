@@ -1,19 +1,19 @@
-#-*- coding: utf-8 -*-
-from plone.portlets.interfaces import IPortletManager
+# -*- coding: utf-8 -*-
 from plone.app.standardtiles import PloneMessageFactory as _
-from zope.interface import implements
+from plone.portlets.interfaces import IPortletManager
 from zope.component import getUtility
 from zope.globalrequest import getRequest
+from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
-from zope.schema.interfaces import IVocabularyFactory
 
 
 PORTLET_MANAGER = 'plone.app.standardtiles.portletManager'
 
 
+@implementer(IVocabularyFactory)
 class BaseVocabulary(object):
-    implements(IVocabularyFactory)
 
     def __call__(self, context):
         terms = self.get_terms(context)

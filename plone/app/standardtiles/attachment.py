@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
-from Products.MimetypesRegistry.common import MimeTypeException
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.autoform.directives import widget
 from plone.formwidget.multifile.widget import MultiFileFieldWidget
@@ -10,8 +8,10 @@ from plone.namedfile.utils import set_headers
 from plone.namedfile.utils import stream_data
 from plone.supermodel.model import Schema
 from plone.tiles import PersistentTile
+from Products.CMFCore.utils import getToolByName
+from Products.MimetypesRegistry.common import MimeTypeException
 from zope import schema
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.interfaces import NotFound
 
@@ -21,7 +21,11 @@ class IAttachmentTile(Schema):
     widget(files=MultiFileFieldWidget)
     files = schema.List(
         title=_(u'Upload files'),
-        value_type=NamedBlobFile(title=_(u"Please upload a file"), required=True))
+        value_type=NamedBlobFile(
+            title=_(u"Please upload a file"),
+            required=True
+        )
+    )
 
 
 class AttachmentTile(PersistentTile):
@@ -87,13 +91,13 @@ class AttachmentTile(PersistentTile):
             return name
 
 
+@implementer(IPublishTraverse)
 class AttachmentTileDownload(object):
     """Implementation of the @@download view on the attachment tile.
 
     This is a view onto the AttachmentTile tile view.
     """
 
-    implements(IPublishTraverse)
     index = None
 
     def publishTraverse(self, request, name):

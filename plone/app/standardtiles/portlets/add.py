@@ -1,13 +1,14 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from plone.app.portlets.browser.adding import PortletAdding as BasePortletAdding
+from plone.app.portlets.browser.adding import PortletAdding as BasePortletAdding  # noqa
 from plone.app.portlets.interfaces import IPortletPermissionChecker
 from plone.app.tiles import MessageFactory as _
 from plone.app.tiles.browser.add import DefaultAddForm
 from plone.app.tiles.browser.add import DefaultAddView
 from plone.portlets.utils import hashPortletInfo
+from plone.protect.utils import addTokenToUrl
 from plone.tiles.interfaces import ITileDataManager
 from plone.uuid.interfaces import IUUIDGenerator
 from z3c.form import button
@@ -17,12 +18,6 @@ from zope.event import notify
 from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectCreatedEvent
 from zope.traversing.browser.absoluteurl import absoluteURL
-
-try:
-    from plone.protect.utils import addTokenToUrl
-    HAS_PLONE_PROTECT = True
-except ImportError:
-    HAS_PLONE_PROTECT = False
 
 
 class PortletAdding(BasePortletAdding):
@@ -102,8 +97,7 @@ class PortletTileAddForm(DefaultAddForm):
             '++contextportlets++{0}/+'.format(mgr_name),
             data['portlet_type']
         ])
-        if HAS_PLONE_PROTECT:
-            add_portlet_url = addTokenToUrl(add_portlet_url, self.request)
+        add_portlet_url = addTokenToUrl(add_portlet_url, self.request)
         self.request.response.redirect(add_portlet_url)
 
     @button.buttonAndHandler(_(u'Cancel'), name='cancel')

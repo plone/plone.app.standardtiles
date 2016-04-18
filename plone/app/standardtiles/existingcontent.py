@@ -39,10 +39,7 @@ class ExistingContentTile(Tile):
             item = uuidToObject(uuid)
             if item is not None:
                 return item
-            else:
-                return None
-        else:
-            return None
+        return None
 
     @property
     @memoize
@@ -52,8 +49,7 @@ class ExistingContentTile(Tile):
             item_layout = context.getLayout()
             default_view = context.restrictedTraverse(item_layout)
             return default_view
-        else:
-            return None
+        return None
 
     @property
     def item_macros(self):
@@ -62,13 +58,10 @@ class ExistingContentTile(Tile):
             # IBrowserView
             if getattr(default_view, 'index', None):
                 return default_view.index.macros
-            else:
-                return None
         elif default_view:
             # FSPageTemplate
             return default_view.macros
-        else:
-            return None
+        return None
 
     @property
     def item_panels(self):
@@ -93,5 +86,4 @@ class ExistingContentTile(Tile):
             return [''.join([serializer.serializer(child)
                              for child in node.getchildren()])
                     for name, node in panels.items()] + [clear]
-        else:
-            return []
+        return []

@@ -5,8 +5,9 @@ from plone.supermodel.model import Schema
 from plone.tiles.tile import Tile
 from zope import schema
 from zope.component import getMultiAdapter
+from zope.interface import implementer
 from zope.interface import Interface
-from zope.interface import implements
+
 import feedparser
 import time
 
@@ -157,10 +158,9 @@ class IFeed(Interface):
         """Is this feed ok to display?"""
 
 
+@implementer(IFeed)
 class RSSFeed(object):
     """An RSS feed."""
-
-    implements(IFeed)
 
     # TODO: discuss whether we want an increasing update time here, probably
     # not though
