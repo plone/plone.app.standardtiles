@@ -19,14 +19,12 @@ from z3c.form.widget import FieldWidget
 from z3c.form.widget import Widget
 from zope import schema
 from zope.component import adapter
-from zope.component import adapts
 from zope.component import getSiteManager
 from zope.component import provideAdapter
 from zope.configuration import xmlconfig
 from zope.contentprovider.interfaces import UpdateNotCalled
 from zope.interface import implementer
-from zope.interface import implements
-from zope.interface import implementsOnly
+from zope.interface import implementer_only
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
@@ -58,9 +56,9 @@ class IFunkyWidget(interfaces.IWidget):
     """Funky, useless widget for testing."""
 
 
+@implementer_only(IFunkyWidget)
 class FunkyWidget(widget.HTMLTextInputWidget, Widget):
     """Funky widget implementation."""
-    implementsOnly(IFunkyWidget)
 
     klass = u'funky-widget'
     value = u''
@@ -108,16 +106,14 @@ class IMockPortletManager(IPortletManager):
     """Marker interface for the mock portlet manager."""
 
 
+@implementer(IMockPortletManager)
 class MockPortletManager(PortletManager):
     """Mock portlet manager to use in tests."""
 
-    implements(IMockPortletManager)
 
-
+@adapter(Interface, IBrowserRequest, IBrowserView, IMockPortletManager)
 class MockPortletManagerRenderer(PortletManagerRenderer):
     """Mock portlet manager renderer to use in tests."""
-
-    adapts(Interface, IBrowserRequest, IBrowserView, IMockPortletManager)
 
     def __init__(self, context, request, view, manager):
         self.__updated = False

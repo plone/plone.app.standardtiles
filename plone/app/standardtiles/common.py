@@ -1,39 +1,76 @@
 # -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
+from AccessControl.ZopeGuards import guarded_hasattr
 from Acquisition import aq_inner
+from Acquisition.interfaces import IAcquirer
 from DateTime.DateTime import DateTime
+from plone.app.content.browser.interfaces import IFolderContentsView
+from plone.app.layout.globals.interfaces import IViewView
+from plone.app.viewletmanager.interfaces import IViewletSettingsStorage
+from plone.memoize.view import memoize
+from plone.tiles.tile import Tile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import base_hasattr
-from plone.app.content.browser.interfaces import IFolderContentsView
-from plone.app.layout.globals.interfaces import IViewView
-from plone.memoize.view import memoize
-from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
+from zope.component import queryUtility
 from zope.interface import alsoProvides
 from zope.viewlet.interfaces import IViewlet
 from zope.viewlet.interfaces import IViewletManager
 
+import logging
+
+
+logger = logging.getLogger(__name__)
+
 
 class BaseViewletTile(Tile):
 
-    manager = None
-    viewlet = None
-    section = u'body'
+    def get_viewlet(self, manager_name, viewlet_name):
+        # check visibility
+        storage = queryUtility(IViewletSettingsStorage)
+        if storage is None:
+            return None
+        skinname = self.context.getCurrentSkinName()
+        hidden = frozenset(storage.getHidden(manager_name, skinname))
+        if viewlet_name in hidden:
+            return None
 
-    def __call__(self):
-        alsoProvides(self, IViewView)
+        # get viewlet instance
         manager = queryMultiAdapter(
             (self.context, self.request, self),
             IViewletManager,
-            name=self.manager
+            name=manager_name
         )
         viewlet = queryMultiAdapter(
             (self.context, self.request, self, manager),
             IViewlet,
-            name=self.viewlet
+            name=viewlet_name
         )
+
+        # check permissions - same as in plone.app.viewletmanager
+        if IAcquirer.providedBy(viewlet):
+            viewlet = viewlet.__of__(viewlet.context)
+        if not guarded_hasattr(viewlet, 'render'):
+            logger.warn(
+                'Blocked attempt to render tile {0} in manager {1}. '
+                'Permission denied.'.format(viewlet_name, manager_name)
+            )
+            return None
+
+        return viewlet
+
+
+class ProxyViewletTile(BaseViewletTile):
+
+    section = u'body'
+    manager = None
+    viewlet = None
+
+    def __call__(self):
+        alsoProvides(self, IViewView)
+        viewlet = self.get_viewlet(self.manager, self.viewlet)
         if viewlet is None:
             return u'<html></html>'
 
@@ -44,31 +81,31 @@ class BaseViewletTile(Tile):
         )
 
 
-class FooterTile(BaseViewletTile):
+class FooterTile(ProxyViewletTile):
     """A footer tile."""
     manager = 'plone.portalfooter'
     viewlet = 'plone.footer'
 
 
-class ColophonTile(BaseViewletTile):
+class ColophonTile(ProxyViewletTile):
     """A colophon tile."""
     manager = 'plone.portalfooter'
     viewlet = 'plone.colophon'
 
 
-class SiteActionsTile(BaseViewletTile):
+class SiteActionsTile(ProxyViewletTile):
     """A site actions tile."""
     manager = 'plone.portalfooter'
     viewlet = 'plone.site_actions'
 
 
-class AnalyticsTile(BaseViewletTile):
+class AnalyticsTile(ProxyViewletTile):
     """A analytics tile."""
     manager = 'plone.portalfooter'
     viewlet = 'plone.analytics'
 
 
-class SkipLinksTile(BaseViewletTile):
+class SkipLinksTile(ProxyViewletTile):
     """A skip links tile."""
     manager = 'plone.portalheader'
     viewlet = 'plone.skip_links'
@@ -154,37 +191,37 @@ class LoginTile(Tile):
         pass
 
 
-class PersonalBarTile(BaseViewletTile):
+class PersonalBarTile(ProxyViewletTile):
     """A personal bar tile."""
     manager = 'plone.portalheader'
     viewlet = 'plone.personal_bar'
 
 
-class SearchBoxTile(BaseViewletTile):
+class SearchBoxTile(ProxyViewletTile):
     """A search box tile."""
     manager = 'plone.portalheader'
     viewlet = 'plone.searchbox'
 
 
-class AnonToolsTile(BaseViewletTile):
+class AnonToolsTile(ProxyViewletTile):
     """An anon tools tile."""
     manager = 'plone.portalheader'
     viewlet = 'plone.anontools'
 
 
-class LogoTile(BaseViewletTile):
+class LogoTile(ProxyViewletTile):
     """A logo tile."""
     manager = 'plone.portalheader'
     viewlet = 'plone.logo'
 
 
-class GlobalSectionsTile(BaseViewletTile):
+class GlobalSectionsTile(ProxyViewletTile):
     """A global sections tile."""
     manager = 'plone.mainnavigation'
     viewlet = 'plone.global_sections'
 
 
-class PathBarTile(BaseViewletTile):
+class PathBarTile(ProxyViewletTile):
     """A path bar tile."""
     manager = 'plone.abovecontent'
     viewlet = 'plone.path_bar'
@@ -204,7 +241,7 @@ class ToolbarTile(Tile):
         return u'<html><body>%s</body></html>' % toolbar()
 
 
-class GlobalStatusMessageTile(BaseViewletTile):
+class GlobalStatusMessageTile(ProxyViewletTile):
     """Display messages to the current user"""
     manager = 'plone.globalstatusmessage'
     viewlet = 'plone.globalstatusmessage'
@@ -310,34 +347,30 @@ class DocumentBylineTile(Tile):
         return DateTime(date)
 
 
-class LockInfoTile(BaseViewletTile):
+class LockInfoTile(ProxyViewletTile):
     """A lockinfo tile."""
     manager = 'plone.abovecontent'
     viewlet = 'plone.lockinfo'
 
+    def __call(self):
+        import ipdb; ipdb.set_trace()
+        return super(LockInfoTile, self).__call__()
 
-class NextPreviousTile(Tile):
+
+class NextPreviousTile(BaseViewletTile):
     """Tile for showing the next / previous links, based on nextprevious
     viewlets in p.a.layout.
     """
 
     def __call__(self):
         alsoProvides(self, IViewView)
-        links_manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.htmlhead.links'
+        links_viewlet = self.get_viewlet(
+            'plone.htmlhead.links',
+            'plone.nextprevious.links'
         )
-        links_viewlet = queryMultiAdapter(
-            (self.context, self.request, self, links_manager),
-            IViewlet, name='plone.nextprevious.links'
-        )
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.belowcontent'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.nextprevious'
+        viewlet = self.get_viewlet(
+            'plone.belowcontent',
+            'plone.nextprevious'
         )
         if links_viewlet and viewlet:
             links_viewlet.update()
@@ -354,25 +387,25 @@ class NextPreviousTile(Tile):
             return u'<html></html>'
 
 
-class KeywordsTile(BaseViewletTile):
+class KeywordsTile(ProxyViewletTile):
     """A tile that displays the context's keywords, if any."""
     manager = 'plone.belowcontent'
     viewlet = 'plone.belowcontenttitle.keywords'
 
 
-class TableOfContentsTile(BaseViewletTile):
+class TableOfContentsTile(ProxyViewletTile):
     """A Table of contents tile."""
     manager = 'plone.abovecontentbody'
     viewlet = 'plone.tableofcontents'
 
 
-class DocumentActionsTile(BaseViewletTile):
+class DocumentActionsTile(ProxyViewletTile):
     """Shows the document actions."""
     manager = 'plone.belowcontentbody'
     viewlet = 'plone.abovecontenttitle.documentactions'
 
 
-class RelatedItemsTile(BaseViewletTile):
+class RelatedItemsTile(ProxyViewletTile):
     """A related items tile."""
     manager = 'plone.belowcontentbody'
     viewlet = 'plone.belowcontentbody.relateditems'
@@ -388,26 +421,8 @@ class HistoryTile(Tile):
         return self.context.restrictedTraverse('@@contenthistorypopup')()
 
 
-class LanguageSelectorTile(Tile):
+class LanguageSelectorTile(ProxyViewletTile):
     """Shows the language selector."""
 
-    def __call__(self):
-        alsoProvides(self, IViewView)
-        manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager, name='plone.portalheader'
-        )
-        viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.app.multilingual.languageselector'
-        )
-        # BBB: Plone 4 or no plone.app.multilingual
-        if viewlet is None:
-            viewlet = queryMultiAdapter(
-                (self.context, self.request, self, manager),
-                IViewlet, name='plone.app.i18n.locales.languageselector'
-            )
-        if viewlet is not None:
-            viewlet.update()
-            return u'<html><body>%s</body></html>' % viewlet.render()
-        return u'<html></html>'
+    manager = 'plone.portalheader'
+    viewlet = 'plone.app.multilingual.languageselector'
