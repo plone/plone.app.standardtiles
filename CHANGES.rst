@@ -4,6 +4,12 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Take permissions and visibility of viewlets in tiles into account.
+  [jensens]
+
+- Drop Plone 4 fallback for language selector
+  [jensens]
+
 - Housekeeping and minor cleanup.
   [jensens]
 

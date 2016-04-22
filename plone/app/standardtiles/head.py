@@ -1,38 +1,38 @@
 # -*- coding: utf-8 -*-
 from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
-from plone.app.standardtiles.common import BaseViewletTile
+from plone.app.standardtiles.common import ProxyViewletTile
 
 
-class TitleTile(BaseViewletTile):
+class TitleTile(ProxyViewletTile):
     """A tile rendering the title tag to be inserted in the HTML headers."""
     manager = 'plone.htmlhead'
     viewlet = 'plone.htmlhead.title'
     section = u'head'
 
 
-class StylesheetsTile(BaseViewletTile):
+class StylesheetsTile(ProxyViewletTile):
     """A stylesheets rendering tile."""
     manager = 'plone.htmlhead.links'
     viewlet = 'plone.resourceregistries.styles'
     section = u'head'
 
 
-class JavascriptsTile(BaseViewletTile):
+class JavascriptsTile(ProxyViewletTile):
     """A stylesheets rendering tile."""
     manager = 'plone.scripts'
     viewlet = 'plone.resourceregistries.scripts'
     section = u'head'
 
 
-class FaviconLinkTile(BaseViewletTile):
+class FaviconLinkTile(ProxyViewletTile):
     """Favicon link tile implementation."""
     manager = 'plone.htmlhead.links'
     viewlet = 'plone.links.favicon'
     section = u'head'
 
 
-class AuthorLinkTile(BaseViewletTile):
+class AuthorLinkTile(ProxyViewletTile):
     """Author link tile implementation."""
     manager = 'plone.htmlhead.links'
     viewlet = 'plone.links.author'
@@ -49,34 +49,34 @@ class NavigationLinkTile(Tile):
         return portal_state.navigation_root_url()
 
 
-class SearchLinkTile(BaseViewletTile):
+class SearchLinkTile(ProxyViewletTile):
     """Search link tile implementation."""
     manager = 'plone.htmlhead.links'
     viewlet = 'plone.links.search'
     section = u'head'
 
 
-class RSSLinkTile(BaseViewletTile):
+class RSSLinkTile(ProxyViewletTile):
     """RSS link tile implementation."""
     manager = 'plone.htmlhead.links'
     viewlet = 'plone.links.RSS'
     section = u'head'
 
 
-class CanonicalUrlTile(BaseViewletTile):
+class CanonicalUrlTile(ProxyViewletTile):
     """Canonical url tile implementation."""
     manager = 'plone.htmlhead.links'
     viewlet = 'plone.links.canonical_url'
     section = u'head'
 
 
-class DublinCoreTile(BaseViewletTile):
+class DublinCoreTile(ProxyViewletTile):
     manager = 'plone.htmlhead'
     viewlet = 'plone.htmlhead.dublincore'
     section = u'head'
 
 
-class SocialTile(BaseViewletTile):
+class SocialTile(ProxyViewletTile):
     manager = 'plone.htmlhead'
     viewlet = 'plone.htmlhead.socialtags'
     section = u'head'
