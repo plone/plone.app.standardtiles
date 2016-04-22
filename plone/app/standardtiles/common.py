@@ -352,10 +352,6 @@ class LockInfoTile(ProxyViewletTile):
     manager = 'plone.abovecontent'
     viewlet = 'plone.lockinfo'
 
-    def __call(self):
-        import ipdb; ipdb.set_trace()
-        return super(LockInfoTile, self).__call__()
-
 
 class NextPreviousTile(BaseViewletTile):
     """Tile for showing the next / previous links, based on nextprevious
