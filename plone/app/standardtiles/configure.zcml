@@ -105,8 +105,6 @@
     <adapter factory=".field.descriptionDisplayTemplate" name="display" />
     <adapter factory=".field.namedImageDisplayTemplate" name="display" />
 
-    <include package=".bbb" zcml:condition="not-have plone-5" />
-
     <include file="upgrades.zcml" />
 
 </configure>

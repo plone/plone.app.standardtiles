@@ -16,7 +16,6 @@
         class=".head.StylesheetsTile"
         for="*"
         permission="zope2.View"
-        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -24,7 +23,6 @@
         class=".head.JavascriptsTile"
         for="*"
         permission="zope2.View"
-        zcml:condition="have plone-5"
         />
 
     <plone:tile

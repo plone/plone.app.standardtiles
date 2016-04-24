@@ -21,7 +21,7 @@ Changelog
 
 - Removed support for Plone 4.3. For Plone 4.3 support, please use
   plone.app.standardtiles < 2.0.
-  [datakurre, jensens]
+  [datakurre, jensens, thet]
 
 
 1.0 (2016-04-11)

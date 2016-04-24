@@ -28,15 +28,6 @@
         template="templates/existingcontent_view.pt"
         />
 
-    <!-- Register RelatedItemsWidget for Plone 4 -->
-    <adapter
-        factory="plone.app.widgets.dx.RelatedItemsFieldWidget"
-        for="zope.schema.interfaces.IChoice
-             plone.app.standardtiles.existingcontent.CatalogSource
-             plone.app.widgets.interfaces.IWidgetsLayer"
-        zcml:condition="not-have plone-5"
-        />
-
     <plone:tile
         name="plone.app.standardtiles.navigation"
         title="Navigation tree"
@@ -50,15 +41,6 @@
     <adapter factory=".navigation.DefaultRoot" name="default" />
     <adapter factory=".navigation.QueryBuilder" />
     <adapter factory=".navigation.NavtreeStrategy" />
-
-    <!-- Register RelatedItemsWidget for Plone 4 -->
-    <adapter
-        factory="plone.app.widgets.dx.RelatedItemsFieldWidget"
-        for="zope.schema.interfaces.IChoice
-             plone.app.standardtiles.navigation.CatalogSource
-             plone.app.widgets.interfaces.IWidgetsLayer"
-        zcml:condition="not-have plone-5"
-        />
 
     <plone:tile
         name="plone.app.standardtiles.sitemap"
