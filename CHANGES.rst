@@ -4,6 +4,11 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Move tile registrations from ``media.zcml`` to more appropriate places:
+  - ``existingcontent``, ``rss`` and ``rawhtml`` tiles into ``content.zcml``,
+  - ``navigation`` and ``sitemap`` tiles in to ``layout.zcml``.
+  [thet]
+
 - Take permissions and visibility of viewlets in tiles into account.
   [jensens]
 
@@ -21,7 +26,7 @@ Changelog
 
 - Removed support for Plone 4.3. For Plone 4.3 support, please use
   plone.app.standardtiles < 2.0.
-  [datakurre, jensens]
+  [datakurre, jensens, thet]
 
 
 1.0 (2016-04-11)

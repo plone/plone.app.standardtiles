@@ -6,6 +6,31 @@
     i18n_domain="plone">
 
     <plone:tile
+        name="plone.app.standardtiles.navigation"
+        title="Navigation tree"
+        description="A tile which displays a navigation tree"
+        class=".navigation.NavigationTile"
+        schema=".navigation.INavigationTile"
+        template="templates/navigation.pt"
+        add_permission="cmf.ManagePortal"
+        permission="zope.Public"
+        />
+    <adapter factory=".navigation.DefaultRoot" name="default" />
+    <adapter factory=".navigation.QueryBuilder" />
+    <adapter factory=".navigation.NavtreeStrategy" />
+
+    <plone:tile
+        name="plone.app.standardtiles.sitemap"
+        title="Sitemap"
+        description="A tile which displays a sitemap"
+        class=".sitemap.SitemapTile"
+        schema=".sitemap.ISitemapTile"
+        template="templates/navigation.pt"
+        add_permission="cmf.ManagePortal"
+        permission="zope.Public"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.colophon"
         class=".common.ColophonTile"
         for="*"
@@ -47,7 +72,6 @@
         class=".common.PersonalBarTile"
         for="*"
         permission="zope2.View"
-        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -62,7 +86,6 @@
         class=".common.AnonToolsTile"
         for="*"
         permission="zope2.View"
-        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -77,7 +100,6 @@
         class=".common.GlobalSectionsTile"
         for="*"
         permission="zope2.View"
-        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -85,7 +107,6 @@
         class=".common.GlobalStatusMessageTile"
         for="*"
         permission="zope2.View"
-        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -100,7 +121,6 @@
         class=".common.ToolbarTile"
         for="*"
         permission="zope2.View"
-        zcml:condition="have plone-5"
         />
 
     <plone:tile
@@ -108,7 +128,6 @@
         class=".common.ToolbarTile"
         for="*"
         permission="zope2.View"
-        zcml:condition="have plone-5"
         />
 
     <plone:tile
