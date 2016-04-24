@@ -17,43 +17,6 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.existingcontent"
-        title="Existing content"
-        description="A tile which displays a content object"
-        add_permission="cmf.ModifyPortalContent"
-        class=".existingcontent.ExistingContentTile"
-        for="*"
-        permission="zope.Public"
-        schema=".existingcontent.IExistingContentTile"
-        template="templates/existingcontent_view.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.navigation"
-        title="Navigation tree"
-        description="A tile which displays a navigation tree"
-        class=".navigation.NavigationTile"
-        schema=".navigation.INavigationTile"
-        template="templates/navigation.pt"
-        add_permission="cmf.ManagePortal"
-        permission="zope.Public"
-        />
-    <adapter factory=".navigation.DefaultRoot" name="default" />
-    <adapter factory=".navigation.QueryBuilder" />
-    <adapter factory=".navigation.NavtreeStrategy" />
-
-    <plone:tile
-        name="plone.app.standardtiles.sitemap"
-        title="Sitemap"
-        description="A tile which displays a sitemap"
-        class=".sitemap.SitemapTile"
-        schema=".sitemap.ISitemapTile"
-        template="templates/navigation.pt"
-        add_permission="cmf.ManagePortal"
-        permission="zope.Public"
-        />
-
-    <plone:tile
         name="plone.app.standardtiles.image"
         title="Image"
         description='A tile which displays an uploaded image'
@@ -82,29 +45,6 @@
         for=".attachment.AttachmentTile"
         permission="zope2.View"
         class=".attachment.AttachmentTileDownload"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.rss"
-        title="RSS Feed"
-        description="A tile which displays a RSS feed"
-        add_permission="cmf.ModifyPortalContent"
-        class=".rss.RSSTile"
-        for="*"
-        permission="zope2.View"
-        schema=".rss.IRSSTile"
-        template="templates/rss.pt"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.rawhtml"
-        title="Rich text"
-        description=""
-        add_permission="cmf.ModifyPortalContent"
-        class=".raw.RawHTMLTile"
-        for="*"
-        permission="zope2.View"
-        schema=".raw.IRawHTMLTile"
         />
 
 </configure>

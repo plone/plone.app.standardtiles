@@ -4,6 +4,11 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Move tile registrations from ``media.zcml`` to more appropriate places:
+  - ``existingcontent``, ``rss`` and ``rawhtml`` tiles into ``content.zcml``,
+  - ``navigation`` and ``sitemap`` tiles in to ``layout.zcml``.
+  [thet]
+
 - Take permissions and visibility of viewlets in tiles into account.
   [jensens]
 

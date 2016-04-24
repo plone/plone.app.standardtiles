@@ -6,6 +6,18 @@
     i18n_domain="plone">
 
     <plone:tile
+        name="plone.app.standardtiles.existingcontent"
+        title="Existing content"
+        description="A tile which displays a content object"
+        add_permission="cmf.ModifyPortalContent"
+        class=".existingcontent.ExistingContentTile"
+        for="*"
+        permission="zope.Public"
+        schema=".existingcontent.IExistingContentTile"
+        template="templates/existingcontent_view.pt"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.document_byline"
         title="Document byline"
         description='Shows the document byline with author name and date'
@@ -63,6 +75,29 @@
         add_permission="cmf.ModifyPortalContent"
         for="*"
         permission="cmf.ModifyPortalContent"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.rss"
+        title="RSS Feed"
+        description="A tile which displays a RSS feed"
+        add_permission="cmf.ModifyPortalContent"
+        class=".rss.RSSTile"
+        for="*"
+        permission="zope2.View"
+        schema=".rss.IRSSTile"
+        template="templates/rss.pt"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.rawhtml"
+        title="Rich text"
+        description=""
+        add_permission="cmf.ModifyPortalContent"
+        class=".raw.RawHTMLTile"
+        for="*"
+        permission="zope2.View"
+        schema=".raw.IRawHTMLTile"
         />
 
     <plone:tile
