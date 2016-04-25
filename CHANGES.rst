@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- When calling ``@@plone.app.standardtiles.contentlisting`` directly without having it configured via a form, get the ``query`` and ``sort_on`` values from it's default factories.
+  [thet]
+
 - Move tile registrations from ``media.zcml`` to more appropriate places:
   - ``existingcontent``, ``rss`` and ``rawhtml`` tiles into ``content.zcml``,
   - ``navigation`` and ``sitemap`` tiles in to ``layout.zcml``.

@@ -5,6 +5,7 @@ from plone.autoform.directives import widget
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
+from plone.tiles.interfaces import ITileType
 from Products.CMFCore.interfaces import IFolderish
 from z3c.form.interfaces import IValue
 from z3c.form.util import getSpecification
@@ -12,10 +13,12 @@ from zope import schema
 from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import getUtility
+from zope.component import queryUtility
 from zope.interface import alsoProvides
 from zope.interface import directlyProvides
 from zope.interface import implementer
 from zope.interface import Interface
+from zope.schema import getFields
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
 
@@ -102,21 +105,47 @@ class ContentListingTile(Tile):
 
     def update(self):
         self.query = self.data.get('query')
+        self.sort_on = self.data.get('sort_on')
+
+        if self.query is None or self.sort_on is None:
+            # Get defaults
+            tileType = queryUtility(ITileType, name=self.__name__)
+            fields = getFields(tileType.schema)
+            if self.query is None:
+                self.query = getMultiAdapter((
+                    self.context,
+                    self.request,
+                    None,
+                    fields['query'],
+                    None
+                ), name="default").get()
+            if self.sort_on is None:
+                self.sort_on = getMultiAdapter((
+                    self.context,
+                    self.request,
+                    None,
+                    fields['sort_on'],
+                    None
+                ), name="default").get()
+
         self.limit = self.data.get('limit')
         if self.data.get('sort_reversed'):
             self.sort_order = 'reverse'
         else:
             self.sort_order = 'ascending'
-        self.sort_on = self.data.get('sort_on')
         self.view_template = self.data.get('view_template')
 
     def contents(self):
         """Search results"""
-        builder = getMultiAdapter((self.context, self.request),
-                                  name='querybuilderresults')
-        accessor = builder(query=self.query or [],
-                           sort_on=self.sort_on or 'getObjPositionInParent',
-                           sort_order=self.sort_order, limit=self.limit)
+        builder = getMultiAdapter(
+            (self.context, self.request), name='querybuilderresults'
+        )
+        accessor = builder(
+            query=self.query,
+            sort_on=self.sort_on or 'getObjPositionInParent',
+            sort_order=self.sort_order,
+            limit=self.limit
+        )
         view = self.view_template or 'listing_view'
         view = view.encode('utf-8')
         options = dict(original_context=self.context)
