@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Handle unicode error when applying filters on raw tile
+  [vangheem]
+
 - When calling ``@@plone.app.standardtiles.contentlisting`` directly without having it configured via a form, get the ``query`` and ``sort_on`` values from it's default factories.
   [thet]
 

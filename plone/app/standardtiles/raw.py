@@ -35,7 +35,10 @@ class RawHTMLTile(PersistentTile):
                         IFilter
                     )
                 ]
-                content = apply_filters(filters, content)
+                try:
+                    content = apply_filters(filters, content)
+                except UnicodeDecodeError:
+                    pass
         else:
             content = u'<p></p>'
         return u"<html><body>%s</body></html>" % content
