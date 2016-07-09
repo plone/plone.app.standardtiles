@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- use safe html transform for raw tile output
+  [vangheem]
+
 - Handle unicode error when applying filters on raw tile
   [vangheem]
 
