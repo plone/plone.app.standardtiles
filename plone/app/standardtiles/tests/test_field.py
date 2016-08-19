@@ -7,6 +7,7 @@ from plone.testing.z2 import Browser
 from unittest import TestCase
 import transaction
 
+
 def fromstring(s):
     html_parser = html.HTMLParser(encoding='utf-8')
     return html.fromstring(s, parser=html_parser).getroottree().getroot()
@@ -58,8 +59,10 @@ class TestFieldTile(TestCase):
 
         """
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=test_text'
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'test_text',
+            )
         )
         self.assertIn('<span id="form-widgets-test_text"',
                       self.browser.contents)
@@ -77,8 +80,10 @@ class TestFieldTile(TestCase):
 
         # And rerender the tile:
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=test_text'
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'test_text',
+            )
         )
         self.assertIn('<span id="form-widgets-test_text"',
                       self.browser.contents)
@@ -92,8 +97,10 @@ class TestFieldTile(TestCase):
 
     def test_int_field(self):
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=test_int'
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'test_int',
+            )
         )
         self.assertIn('<span id="form-widgets-test_int"',
                       self.browser.contents)
@@ -111,8 +118,10 @@ class TestFieldTile(TestCase):
 
         # And rerender the tile:
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=test_int'
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'test_int',
+            )
         )
         self.assertIn('<span id="form-widgets-test_int"',
                       self.browser.contents)
@@ -126,8 +135,10 @@ class TestFieldTile(TestCase):
 
     def test_bool_field(self):
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=test_bool'
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'test_bool',
+            )
         )
         self.assertIn('<span id="form-widgets-test_bool"',
                       self.browser.contents)
@@ -145,8 +156,10 @@ class TestFieldTile(TestCase):
 
         # And rerender the tile:
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=test_bool'
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'test_bool',
+            )
         )
         self.assertIn('<span id="form-widgets-test_bool"',
                       self.browser.contents)
@@ -179,8 +192,10 @@ class TestFieldTile(TestCase):
 
         # And then looking up the relative field tile:
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=funky'
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'funky',
+            )
         )
         self.assertIn('<h1 id="form-widgets-funky" class="funky-widget',
                       self.browser.contents)
@@ -213,8 +228,10 @@ class TestFieldTile(TestCase):
         # really should not be spoiled about Santa Claus' identity).
 
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=topsecret'
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'topsecret',
+            )
         )
         self.assertEqual('<html></html>', self.browser.contents)
 
@@ -230,8 +247,10 @@ class TestFieldTile(TestCase):
         # knowledge at all): ::
 
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=topsecret'
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'topsecret',
+            )
         )
         self.assertIn('<span id="form-widgets-topsecret"',
                       self.browser.contents)
@@ -257,14 +276,19 @@ class TestFieldTile(TestCase):
 
         """
         self.browser.open(
-            self.content.absolute_url()
-            + '/@@plone.app.standardtiles.field?field=IDublinCore-contributors')  # noqa
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'IDublinCore-contributors',
+            )
+        )
         self.assertIn('<span id="form-widgets-IDublinCore-contributors"',
                       self.browser.contents)
         self.assertIn('>Jane Doe;John Doe</span>',
                       self.browser.contents)
 
         root = fromstring(self.browser.contents)
-        nodes = root.xpath('//body//*[@id="form-widgets-IDublinCore-contributors"]')  # noqa
+        nodes = root.xpath(
+            '//body//*[@id="form-widgets-IDublinCore-contributors"]'
+        )
         self.assertEqual(len(nodes), 1)
         self.assertEqual('Jane Doe;John Doe', nodes[0].text)

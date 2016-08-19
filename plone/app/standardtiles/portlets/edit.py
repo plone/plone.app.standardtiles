@@ -35,4 +35,3 @@ class PortletTileEditView(DefaultEditView):
         self.request.response.redirect(
             '{0}?referer={0}'.format(url, urllib.quote(tile_url))
         )
-

@@ -8,6 +8,6 @@ class PortletTileDeleteView(DefaultDeleteView):
     """
 
     def __call__(self):
-        result = super(PortletTileDeleteView, self).__call__()
+        super(PortletTileDeleteView, self).__call__()
         # delete the portlet
         # TODO
