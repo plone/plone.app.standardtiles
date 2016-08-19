@@ -2,23 +2,10 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_chain
 from Acquisition import aq_inner
-from plone.app.blocks.interfaces import IOmittedField
 from plone.app.layout.navigation.interfaces import INavigationRoot
-from plone.autoform.interfaces import MODES_KEY
-from plone.autoform.interfaces import OMITTED_KEY
-from plone.autoform.interfaces import READ_PERMISSIONS_KEY
-from plone.autoform.interfaces import WIDGETS_KEY
-from plone.autoform.interfaces import WRITE_PERMISSIONS_KEY
-from plone.autoform.utils import mergedTaggedValuesForIRO
-from plone.supermodel.utils import mergedTaggedValueDict
-from z3c.form.interfaces import DISPLAY_MODE
-from z3c.form.interfaces import HIDDEN_MODE
-from z3c.form.interfaces import IEditForm
 from z3c.form.interfaces import IFieldWidget
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
-from zope.interface import Interface
-from zope.schema.interfaces import IField
 from zope.security.interfaces import IPermission
 
 
@@ -70,47 +57,3 @@ def isVisible(name, omitted):
         return value == 'false'
     else:
         return not bool(value)
-
-
-def extractFieldInformation(schema, context, request, prefix):
-    iro = [IEditForm, Interface]
-    if prefix != '':
-        prefix += '-'
-    omitted = mergedTaggedValuesForIRO(schema, OMITTED_KEY, iro)
-    modes = mergedTaggedValuesForIRO(schema, MODES_KEY, iro)
-    widgets = mergedTaggedValueDict(schema, WIDGETS_KEY)
-
-    if context is not None:
-        read_permissionchecker = PermissionChecker(
-            mergedTaggedValueDict(schema, READ_PERMISSIONS_KEY),
-            context,
-        )
-        write_permissionchecker = PermissionChecker(
-            mergedTaggedValueDict(schema, WRITE_PERMISSIONS_KEY),
-            context,
-        )
-
-    read_only = []
-    for name, mode in modes.items():
-        if mode == HIDDEN_MODE:
-            omitted[name] = True
-        elif mode == DISPLAY_MODE:
-            read_only.append(name)
-    for name in schema.names(True):
-        if context is not None:
-            if not read_permissionchecker.allowed(name):
-                omitted[name] = True
-            if not write_permissionchecker.allowed(name):
-                read_only.append(name)
-        if isVisible(name, omitted):
-            field = schema[name]
-            if not IField.providedBy(field):
-                continue
-            if not IOmittedField.providedBy(field):
-                yield {
-                    'id': "%s.%s" % (schema.__identifier__, name),
-                    'name': prefix + name,
-                    'title': schema[name].title,
-                    'widget': _getWidgetName(schema[name], widgets, request),
-                    'readonly': name in read_only,
-                }
