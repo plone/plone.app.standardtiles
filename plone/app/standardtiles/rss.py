@@ -164,8 +164,8 @@ class RSSFeed(object):
 
     # TODO: discuss whether we want an increasing update time here, probably
     # not though
-    FAILURE_DELAY = 10  # time in minutes after which we retry to load it
-                        # after a failure
+    # time in minutes after which we retry to load it after a failure
+    FAILURE_DELAY = 10
 
     def __init__(self, url, timeout):
         self.url = url
@@ -260,15 +260,14 @@ class RSSFeed(object):
 
         self._loaded = True
         self._failed = True  # no url set means failed
-        return False  # no url set, although that actually should not really
-                      # happen
+        # no url set, although that actually should not really happen
+        return False
 
     @property
     def items(self):
         return self._items
 
     # convenience methods for displaying
-    #
 
     @property
     def feed_link(self):

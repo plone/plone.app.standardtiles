@@ -2,7 +2,6 @@
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.portlets.interfaces import IPortletManager
 from zope.component import getUtility
-from zope.globalrequest import getRequest
 from zope.interface import implementer
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
@@ -29,10 +28,12 @@ class BaseVocabulary(object):
 class PortletsVocab(BaseVocabulary):
 
     def get_terms(self, context):
-        if hasattr(context, 'REQUEST'):
-            request = context.REQUEST
-        else:
-            request = getRequest()
+        # XXX: not working (see below the other XXX)
+        # from zope.globalrequest import getRequest
+        # if hasattr(context, 'REQUEST'):
+        #     request = context.REQUEST
+        # else:
+        #     request = getRequest()
 
         manager = getUtility(IPortletManager,
                              name=PORTLET_MANAGER)

@@ -70,4 +70,3 @@ class ViewletManagerTile(Tile):
             return u"<html><head>%s</head></html>" % obj_to_render.render()
         else:
             return u"<html><body>%s</body></html>" % obj_to_render.render()
-

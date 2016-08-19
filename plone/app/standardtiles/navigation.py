@@ -55,63 +55,69 @@ class INavigationTile(Schema):
     """A tile which can render the navigation tree."""
 
     name = schema.TextLine(
-            title=_(u"Title"),
-            description=_(u"The title of the navigation tree."),
-            default=u"",
-            required=False,)
+        title=_(u'Title'),
+        description=_(u'The title of the navigation tree.'),
+        default=u'',
+        required=False,
+    )
 
     root = schema.Choice(
-            title=_(u"Root node"),
-            description=_(
-                u'You may search for and choose a folder to act as the root '
-                u'of the navigation tree. Leave blank to use the Plone site '
-                u'root.'
-            ),
-            source=CatalogSource(),
-            required=False)
+        title=_(u'Root node'),
+        description=_(
+            u'You may search for and choose a folder to act as the root '
+            u'of the navigation tree. Leave blank to use the Plone site '
+            u'root.'
+        ),
+        source=CatalogSource(),
+        required=False,
+    )
 
     includeTop = schema.Bool(
-            title=_(u"Include top node"),
-            description=_(
-                u"Whether or not to show the top, or 'root', node in the "
-                u"navigation tree. This is affected by the 'Start level' "
-                u"setting."
-            ),
-            default=False,
-            required=False)
+        title=_(u'Include top node'),
+        description=_(
+            u'Whether or not to show the top, or "root", node in the '
+            u'navigation tree. This is affected by the "Start level" '
+            u'setting.'
+        ),
+        default=False,
+        required=False,
+    )
 
     currentFolderOnly = schema.Bool(
-            title=_(u"Only show the contents of the current folder."),
-            description=_(
-                u"If selected, the navigation tree will only show the current "
-                u"folder and its children at all times."
-            ),
-            default=False,
-            required=False)
+        title=_(u'Only show the contents of the current folder.'),
+        description=_(
+            u'If selected, the navigation tree will only show the current '
+            u'folder and its children at all times.'
+        ),
+        default=False,
+        required=False,
+    )
 
     topLevel = schema.Int(
-            title=_(u"Start level"),
-            description=_(
-                u"An integer value that specifies the number of folder levels "
-                u"below the site root that must be exceeded before the "
-                u"navigation tree will display. 0 means that the navigation "
-                u"tree should be displayed everywhere including pages in the "
-                u"root of the site. 1 means the tree only shows up inside "
-                u"folders located in the root and downwards, never showing at "
-                u"the top level."
-            ),
-            default=0,
-            required=False)
+        title=_(u'Start level'),
+        description=_(
+            u'An integer value that specifies the number of folder levels '
+            u'below the site root that must be exceeded before the '
+            u'navigation tree will display. 0 means that the navigation '
+            u'tree should be displayed everywhere including pages in the '
+            u'root of the site. 1 means the tree only shows up inside '
+            u'folders located in the root and downwards, never showing at '
+            u'the top level.'
+        ),
+        default=0,
+        required=False,
+    )
 
     bottomLevel = schema.Int(
-            title=_(u"Navigation tree depth"),
-            description=_(
-                u"How many folders should be included before the navigation "
-                u"tree stops. 0 means no limit. 1 only includes the root "
-                u"folder."
-            ),
-            default=0,
-            required=False)
+        title=_(u'Navigation tree depth'),
+        description=_(
+            u'How many folders should be included before the navigation '
+            u'tree stops. 0 means no limit. 1 only includes the root '
+            u'folder.'
+        ),
+        default=0,
+        required=False,
+    )
 
 
 @implementer(IValue)

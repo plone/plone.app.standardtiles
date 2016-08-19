@@ -37,6 +37,8 @@ Changelog
   plone.app.standardtiles < 2.0.
   [datakurre, jensens, thet]
 
+- Enable coveralls and code analysis.
+  [gforcada]
 
 1.0 (2016-04-11)
 ----------------
