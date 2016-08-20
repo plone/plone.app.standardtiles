@@ -40,6 +40,9 @@ Changelog
 - Enable coveralls and code analysis.
   [gforcada]
 
+- Adapt travis to all other mosaic realted packages.
+  [gforcada]
+
 1.0 (2016-04-11)
 ----------------
 
