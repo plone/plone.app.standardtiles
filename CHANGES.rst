@@ -43,6 +43,9 @@ Changelog
 - Adapt travis to all other mosaic realted packages.
   [gforcada]
 
+- Remove unused function.
+  [gforcada]
+
 1.0 (2016-04-11)
 ----------------
 
