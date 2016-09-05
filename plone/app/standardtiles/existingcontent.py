@@ -26,6 +26,11 @@ class IExistingContentTile(model.Schema):
         source=CatalogSource(),
     )
 
+    view_name = schema.TextLine(
+        title=_(u"Name of custom view"),
+        required=False,
+        default=None
+    )
 
 class ExistingContentTile(Tile):
     """Existing content tile
