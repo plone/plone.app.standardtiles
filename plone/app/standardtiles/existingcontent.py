@@ -20,8 +20,12 @@ from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 def get_available_views(context):
     items = list()    
-    for name, title in context.getAvailableLayouts():
-        items.append(SimpleTerm(name, name, title))
+    uuid = context.get('content_uid')
+    if uuid != IUUID(context, None):
+        item = uuidToObject(uuid)
+        if item is not None:
+            for name, title in item.getAvailableLayouts():
+                items.append(SimpleTerm(name, name, title))
     return SimpleVocabulary(items)
 
 
