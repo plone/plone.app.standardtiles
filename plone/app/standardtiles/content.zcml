@@ -94,10 +94,20 @@
         title="Rich text"
         description=""
         add_permission="cmf.ModifyPortalContent"
-        class=".raw.RawHTMLTile"
+        class=".html.HTMLTile"
         for="*"
         permission="zope2.View"
-        schema=".raw.IRawHTMLTile"
+        schema=".html.IHTMLTile"
+        />
+    <plone:tile
+        name="plone.app.standardtiles.html"
+        title="Rich text"
+        description=""
+        add_permission="cmf.ModifyPortalContent"
+        class=".html.HTMLTile"
+        for="*"
+        permission="zope2.View"
+        schema=".html.IHTMLTile"
         />
 
     <plone:tile
