@@ -13,6 +13,20 @@ from zope import schema
 from zope.browser.interfaces import IBrowserView
 
 
+from zope.schema.interfaces import IContextSourceBinder
+import zope.interface
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+
+
+def get_available_views(context):
+    items = list()    
+    for name, title in context.getAvailableLayouts():
+        items.append(SimpleTerm(name, name, title))
+    return SimpleVocabulary(items)
+
+
+zope.interface.directlyProvides(get_available_views, IContextSourceBinder)
+
 class CatalogSource(CatalogSourceBase):
     """ExistingContentTile specific catalog source to allow targeted widget
     """
@@ -26,8 +40,9 @@ class IExistingContentTile(model.Schema):
         source=CatalogSource(),
     )
 
-    view_name = schema.TextLine(
+    view_name = schema.Choice(
         title=_(u"Name of custom view"),
+        source=get_available_views,
         required=False,
         default=None
     )
@@ -66,6 +81,7 @@ class ExistingContentTile(Tile):
         elif default_view:
             # FSPageTemplate
             return default_view.macros
+        print None
         return None
 
     @property
