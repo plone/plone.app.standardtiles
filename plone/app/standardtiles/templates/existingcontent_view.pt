@@ -4,11 +4,30 @@
       lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal">
+
+
+    <div tal:define="macro view/template_view" >
+        <body tal:define="context nocall:view/content_context">
+            <div tal:define="view nocall:view/default_view;
+                             plone_view context/@@plone;
+                             portal_state context/@@plone_portal_state;
+                             context_state context/@@plone_context_state;
+                             plone_layout context/@@plone_layout;
+                             lang portal_state/language;
+                             dummy python: plone_layout.mark_view(view);
+                             portal_url portal_state/portal_url;
+                             checkPermission nocall: context/portal_membership/checkPermission;
+                             site_properties context/portal_properties/site_properties;">
+                <div metal:use-macro="macro"> content </div>
+            </div>
+        </body>
+    </div>
+
+    <!--
   <tal:block condition="nocall:view/content_context">
   <tal:block condition="nocall:view/item_macros">
   <body tal:define="context nocall:view/content_context;
                     item_macro nocall:view/item_macros/content-core|nothing">
-
     <h1 class="documentFirstHeading"
         tal:define="title context/Title|nothing"
         tal:condition="title"
@@ -51,10 +70,11 @@
   </body>
   </tal:block>
   <tal:block condition="not:nocall:view/item_macros">
-  <div tal:repeat="panel view/item_panels" tal:replace="structure panel">
+      <div tal:repeat="panel view/item_panels" tal:replace="structure panel">
       content
   </div>
   </tal:block>
   </tal:block>
+  -->
   <body condition="not:nocall:view/content_context"></body>
 </html>

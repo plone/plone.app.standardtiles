@@ -55,6 +55,18 @@ class ExistingContentTile(Tile):
     """Existing content tile
     """
 
+
+    def template_view(self):
+        context = self.content_context
+        print context
+        print self.data
+        view_name = self.data.get('view_name')
+        print view_name
+        macro = context.restrictedTraverse(str(view_name)).index.macros['content-core']
+        print macro
+        return macro
+
+
     @property
     @memoize
     def content_context(self):
@@ -85,7 +97,6 @@ class ExistingContentTile(Tile):
         elif default_view:
             # FSPageTemplate
             return default_view.macros
-        print None
         return None
 
     @property
