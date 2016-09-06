@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- rename rawhtml to html and deprecate rawhtml tile
+  [vangheem]
+
 - use safe html transform for raw tile output
   [vangheem]
 
