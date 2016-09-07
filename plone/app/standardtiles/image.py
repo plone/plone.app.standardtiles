@@ -9,6 +9,7 @@ from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from z3c.form.browser.radio import RadioFieldWidget
 from zope import schema
 from zope.component import getUtility
+from zope.deprecation import deprecated
 from zope.interface import provider
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleTerm
@@ -66,3 +67,7 @@ class ImageTile(PersistentTile):
               @@images/bcc7be5d-75cc-4cfd-9d3a-4ad231aa01de.png" />
 
     """
+
+
+deprecated(ImageTile, 'ImageTile is now deprecated and will be completely '
+                      'removed in 3.0.0')

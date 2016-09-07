@@ -4,6 +4,10 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Mark `plone.app.standardtiles.image` and `plone.app.standardtiles.attachment`
+  as deprecated.
+  [vangheem]
+
 - rename rawhtml to html and deprecate rawhtml tile
   [vangheem]
 
