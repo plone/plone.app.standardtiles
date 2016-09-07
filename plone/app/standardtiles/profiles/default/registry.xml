@@ -8,7 +8,6 @@
     <value purge="false">
       <element>plone.app.standardtiles.analytics</element>
       <element>plone.app.standardtiles.anontools</element>
-      <element>plone.app.standardtiles.attachment</element>
       <element>plone.app.standardtiles.authorlink</element>
       <element>plone.app.standardtiles.canonical_url</element>
       <element>plone.app.standardtiles.colophon</element>
@@ -27,7 +26,6 @@
       <element>plone.app.standardtiles.global_sections</element>
       <element>plone.app.standardtiles.headtitle</element>
       <element>plone.app.standardtiles.history</element>
-      <element>plone.app.standardtiles.image</element>
       <element>plone.app.standardtiles.javascripts</element>
       <element>plone.app.standardtiles.keywords</element>
       <element>plone.app.standardtiles.languageselector</element>

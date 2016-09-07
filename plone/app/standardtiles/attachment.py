@@ -11,6 +11,7 @@ from plone.tiles import PersistentTile
 from Products.CMFCore.utils import getToolByName
 from Products.MimetypesRegistry.common import MimeTypeException
 from zope import schema
+from zope.deprecation import deprecated
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
 from zope.publisher.interfaces import NotFound
@@ -89,6 +90,9 @@ class AttachmentTile(PersistentTile):
             return mimetypes[0].name()
         else:
             return name
+
+deprecated(AttachmentTile, 'AttachmentTile is now deprecated and will be '
+                           'completely removed in 3.0.0')
 
 
 @implementer(IPublishTraverse)
