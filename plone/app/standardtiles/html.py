@@ -15,6 +15,11 @@ class IHTMLTile(Schema):
 
 
 class HTMLTile(PersistentTile):
+    """
+    A persistent HTML content tile that can be used for
+    re-usable layouts in the mosaic editor
+    """
+
     def __call__(self):
         content = self.data.get('content')
         if content:
