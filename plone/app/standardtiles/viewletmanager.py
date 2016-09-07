@@ -7,6 +7,7 @@ from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.viewlet.interfaces import IViewletManager
+from Products.CMFCore.interfaces import IFolderish
 
 
 class IViewletManagerTile(Interface):
@@ -46,6 +47,9 @@ class ViewletManagerTile(Tile):
         viewlet = self.data.get('viewlet', None)
 
         view = findView(self, viewName)
+
+        if not IFolderish.providedBy(self.context):
+            self.context = self.context.aq_parent
 
         managerObj = queryMultiAdapter(
             (self.context, self.request, view),

@@ -4,20 +4,25 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Rename rawhtml to html and deprecate rawhtml tile
+  [vangheem]
+
 - Mark `plone.app.standardtiles.image` and `plone.app.standardtiles.attachment`
   as deprecated.
   [vangheem]
 
-- rename rawhtml to html and deprecate rawhtml tile
-  [vangheem]
+- Remove deprecated skip-links viewlet
+  [datakurre]
 
-- use safe html transform for raw tile output
+- Use safe html transform for raw tile output
   [vangheem]
 
 - Handle unicode error when applying filters on raw tile
   [vangheem]
 
-- When calling ``@@plone.app.standardtiles.contentlisting`` directly without having it configured via a form, get the ``query`` and ``sort_on`` values from it's default factories.
+- When calling ``@@plone.app.standardtiles.contentlisting`` directly without
+  having it configured via a form, get the ``query`` and ``sort_on`` values from
+  it's default factories.
   [thet]
 
 - Move tile registrations from ``media.zcml`` to more appropriate places:
@@ -30,6 +35,13 @@ Changelog
 
 - Drop Plone 4 fallback for language selector
   [jensens]
+
+- Fix issue where layout tiles failed on portlet manager context
+  [datakurre, agitator]
+
+- Replace misleading warnings on missing viewlet tiles with silent
+  debug level logging
+  [datakurre]
 
 - Housekeeping and minor cleanup.
   [jensens]

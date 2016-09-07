@@ -6,6 +6,8 @@ from zope.component import queryUtility
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.portlets.utils import findView
 from plone.portlets.interfaces import IPortletManager
+
+from plone.app.standardtiles.utils import getContentishContext
 from plone.tiles import Tile
 
 
@@ -28,6 +30,7 @@ class PortletManagerTile(Tile):
 
     def __call__(self):
         """Return the rendered contents of the portlet manager specified."""
+        context = getContentishContext(self.context)
 
         manager = self.data.get('manager')
         viewName = self.data.get('view')
@@ -38,7 +41,7 @@ class PortletManagerTile(Tile):
 
         # set redirection view
         self.request['viewname'] = '@@manage-portlets'
-        rendererObj = managerObj(self.context, self.request, view)
+        rendererObj = managerObj(context, self.request, view)
         rendererObj.update()
 
         return u"<html><body>%s</body></html>" % rendererObj.render()
