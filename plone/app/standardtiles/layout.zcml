@@ -58,14 +58,6 @@
         permission="zope2.View"
         />
 
-    <!-- legacy tile -->
-    <plone:tile
-        name="plone.app.standardtiles.skip_links"
-        class=".common.SkipLinksTile"
-        for="*"
-        permission="zope2.View"
-        />
-
     <!-- layout tiles -->
     <plone:tile
         name="plone.app.standardtiles.personal_bar"

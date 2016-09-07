@@ -2,9 +2,12 @@
 from zope.browser.interfaces import IView
 from zope.component import queryMultiAdapter
 
+from plone.app.standardtiles.utils import getContentishContext
+
 
 def findView(tile, viewName):
     """Find the view to use for portlet/viewlet context lookup."""
+    context = getContentishContext(tile)
 
     view = tile
     prequest = tile.request.get('PARENT_REQUEST', None)
@@ -17,7 +20,6 @@ def findView(tile, viewName):
         if IView.providedBy(ppublished):
             viewName = prequest['PUBLISHED'].__name__
 
-    context = tile.context
     request = tile.request
     if prequest is not None:
         request = prequest

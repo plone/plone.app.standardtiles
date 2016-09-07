@@ -12,6 +12,7 @@ from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.supermodel.model import Schema
+from plone.app.standardtiles.utils import getContentishContext
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.interfaces import IFolderish
@@ -139,6 +140,7 @@ class NavigationTile(Tile):
 
     def __init__(self, *arg, **kw):
         super(NavigationTile, self).__init__(*arg, **kw)
+        self.context = getContentishContext(self.context)
         self.urltool = getToolByName(self.context, 'portal_url')
 
     def title(self):

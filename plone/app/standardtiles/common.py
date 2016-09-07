@@ -8,6 +8,7 @@ from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.viewletmanager.interfaces import IViewletSettingsStorage
 from plone.memoize.view import memoize
+from plone.app.standardtiles.utils import getContentishContext
 from plone.tiles.tile import Tile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
@@ -27,12 +28,18 @@ logger = logging.getLogger(__name__)
 
 class BaseViewletTile(Tile):
 
+    def __init__(self, *args, **kwargs):
+        super(BaseViewletTile, self).__init__(*args, **kwargs)
+        self.context = getContentishContext(self.context)
+
     def get_viewlet(self, manager_name, viewlet_name):
         # check visibility
         storage = queryUtility(IViewletSettingsStorage)
         if storage is None:
             return None
+
         skinname = self.context.getCurrentSkinName()
+
         hidden = frozenset(storage.getHidden(manager_name, skinname))
         if viewlet_name in hidden:
             return None
@@ -48,6 +55,12 @@ class BaseViewletTile(Tile):
             IViewlet,
             name=viewlet_name
         )
+        if viewlet is None:
+            logger.debug(
+                'Viewlet tile {0} in manager {1}. '
+                'Was not found.'.format(viewlet_name, manager_name)
+            )
+            return None
 
         # check permissions - same as in plone.app.viewletmanager
         if IAcquirer.providedBy(viewlet):
@@ -105,17 +118,11 @@ class AnalyticsTile(ProxyViewletTile):
     viewlet = 'plone.analytics'
 
 
-class SkipLinksTile(ProxyViewletTile):
-    """A skip links tile."""
-    manager = 'plone.portalheader'
-    viewlet = 'plone.skip_links'
-
-
 class LoginTile(Tile):
     """Login tile."""
 
     def __call__(self):
-        context = aq_inner(self.context)
+        context = getContentishContext(self.context)
         request = self.request
         self.membership = getToolByName(context, 'portal_membership')
         self.context_state = getMultiAdapter((context, request),
@@ -231,11 +238,13 @@ class ToolbarTile(Tile):
     """A Plone 5 toolbar tile."""
 
     def __call__(self):
+        context = getContentishContext(self.context)
+
         mtool = getToolByName(self.context, 'portal_membership')
         if mtool.isAnonymousUser():
             return u'<html></html>'
 
-        toolbar = getMultiAdapter((self.context, self.request),
+        toolbar = getMultiAdapter((context, self.request),
                                   name=u'render-toolbar')
         alsoProvides(toolbar, IViewView)
         return u'<html><body>%s</body></html>' % toolbar()
