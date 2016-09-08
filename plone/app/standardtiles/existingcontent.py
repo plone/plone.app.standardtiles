@@ -30,6 +30,16 @@ class IExistingContentTile(model.Schema):
         source=CatalogSource(),
     )
 
+    show_title = schema.Bool(
+        title=_(u'Show content title'),
+        default=True
+    )
+
+    show_description = schema.Bool(
+        title=_(u'Show content description'),
+        default=True
+    )
+
 
 class SameContentValidator(validator.SimpleFieldValidator):
     def validate(self, content_uid):
