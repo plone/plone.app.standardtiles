@@ -113,13 +113,26 @@
     <plone:tile
         name="plone.app.standardtiles.contentlisting"
         title="Content listing"
-        description='A tile which displays the content listing of this item'
+        description="A tile which displays the content listing of this item"
         permission="zope2.View"
         add_permission="cmf.ModifyPortalContent"
         class=".contentlisting.ContentListingTile"
         schema=".contentlisting.IContentListingTile"
         for="*"
         />
+
+    <plone:tile
+        name="plone.app.standardtiles.calendar"
+        title="Calendar"
+        description="A tile displaying a calendar."
+        add_permission="cmf.ModifyPortalContent"
+        for="*"
+        class=".calendar.CalendarTile"
+        permission="zope2.View"
+        schema=".calendar.ICalendarTile"
+        template="templates/calendar.pt"
+        />
+
 
     <utility
         component="plone.app.standardtiles.contentlisting.availableListingViewsVocabulary"

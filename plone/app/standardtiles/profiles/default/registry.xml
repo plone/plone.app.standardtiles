@@ -9,6 +9,7 @@
       <element>plone.app.standardtiles.analytics</element>
       <element>plone.app.standardtiles.anontools</element>
       <element>plone.app.standardtiles.authorlink</element>
+      <element>plone.app.standardtiles.calendar</element>
       <element>plone.app.standardtiles.canonical_url</element>
       <element>plone.app.standardtiles.colophon</element>
       <element>plone.app.standardtiles.contentlisting</element>

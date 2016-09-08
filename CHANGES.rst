@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Add calendar tile
+  [rodfersou]
+
 - Fix case where html tile would not transform content correctly for html tile
   [vangheem]
 
