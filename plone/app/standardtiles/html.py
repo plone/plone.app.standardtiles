@@ -5,6 +5,7 @@ from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from Products.CMFCore.utils import getToolByName
 from zope import schema
+from plone.subrequest import ISubRequest
 
 
 class IHTMLTile(Schema):
@@ -26,7 +27,8 @@ class HTMLTile(Tile):
         content = self.data.get('content')
         if content:
             # only transform is not rendering for layout editor
-            if not self.request.get('_layouteditor'):
+            if (not self.request.get('_layouteditor') or
+                    ISubRequest.providedBy(self.request)):
                 transforms = getToolByName(self.context, 'portal_transforms')
                 data = transforms.convertTo('text/x-html-safe', content, mimetype='text/html',
                                             context=self.context)

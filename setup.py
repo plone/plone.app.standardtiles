@@ -48,6 +48,7 @@ setup(
         'plone.formwidget.multifile',
         'plone.app.registry',
         'z3c.form',
+        'plone.subrequest'
     ],
     extras_require={
         'test': [
