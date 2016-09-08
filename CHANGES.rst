@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Be able to show/hide title/description with existing content tile
+  [vangheem]
+
 - Validate selected content for existing content is not the current context
   the tile is being rendered against.
   [vangheem]
