@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Fix case where html tile would not transform content correctly for html tile
+  [vangheem]
+
 - Be able to show/hide title/description with existing content tile
   [vangheem]
 
