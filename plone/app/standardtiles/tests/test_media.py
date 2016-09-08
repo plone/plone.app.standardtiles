@@ -115,6 +115,47 @@ class ContentTileTests(TestCase):
 
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
 
+    def test_edit_existing_content_tile(self):
+        """The existing content tile takes the uuid of a content object in the
+        site and displays the result of calling its default view's content-core
+        macro
+
+        """
+        page_id = self.portal.invokeFactory('Document', 'an-another-page')
+        page = self.portal[page_id]
+        page_uuid = IUUID(page)
+        page.text = RichTextValue(u'Hello World!')
+
+        transaction.commit()
+
+        self.browser.open(
+            '{}/@@edit-tile/plone.app.standardtiles.existingcontent/unique'.format(
+                page.absolute_url()
+            )
+        )
+        self.browser.getControl(
+            name='plone.app.standardtiles.existingcontent.content_uid'
+        ).value = page_uuid
+        self.browser.getControl(name='buttons.save').click()
+
+        self.assertIn(u'not select the same content', self.browser.contents)
+
+        page2_id = self.portal.invokeFactory(
+            'Document', 'an-another-page-2',
+            title=u'An another page', description=u'A description',
+            text=u'Hello World!')
+        page2 = self.portal[page2_id]
+        page2_uuid = IUUID(page2)
+        page2.text = RichTextValue(u'Hello World!')
+
+        transaction.commit()
+
+        self.browser.getControl(
+            name='plone.app.standardtiles.existingcontent.content_uid'
+        ).value = page2_uuid
+        self.browser.getControl(name='buttons.save').click()
+        self.assertIn(u'Hello World!', self.browser.contents)
+
     def test_navigation_tile(self):
         """The navigation tree tile displays a navigation tree for the context
         where it's inserted and take no configuration parameters.
