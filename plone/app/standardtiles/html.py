@@ -1,20 +1,22 @@
 # -*- coding: utf-8 -*-
+from plone.supermodel.directives import primary
 from plone.app.standardtiles import _PMF as _
 from plone.supermodel.model import Schema
-from plone.tiles import PersistentTile
+from plone.tiles import Tile
 from Products.CMFCore.utils import getToolByName
 from zope import schema
 
 
 class IHTMLTile(Schema):
 
+    primary('content')
     content = schema.Text(
         title=_(u"HTML"),
         required=True
     )
 
 
-class HTMLTile(PersistentTile):
+class HTMLTile(Tile):
     """
     A persistent HTML content tile that can be used for
     re-usable layouts in the mosaic editor
