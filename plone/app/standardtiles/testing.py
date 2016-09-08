@@ -152,12 +152,27 @@ class PAStandardtiles(PloneSandboxLayer):
         xmlconfig.file('configure.zcml', plone.app.contenttypes,
                        context=configurationContext)
 
+        try:
+            import plone.app.drafts
+            xmlconfig.file('configure.zcml', plone.app.drafts,
+                           context=configurationContext)
+        except ImportError:
+            pass
+
     def setUpPloneSite(self, portal):
         # install into the Plone site
         applyProfile(portal, 'plone.app.dexterity:default')
         applyProfile(portal, 'plone.app.widgets:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
         applyProfile(portal, 'plone.app.contenttypes:default')
+
+        try:
+            # testing support when plone.app.drafts is installed in the env.
+            # it needs to also be configured for these tests...
+            import plone.app.drafts  # noqa
+            applyProfile(portal, 'plone.app.drafts:default')
+        except ImportError:
+            pass
 
         # ensure plone.app.theming disabled
         from plone.registry.interfaces import IRegistry

@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from Acquisition import aq_parent
+from zope.component import provideAdapter
+from zope.interface import Invalid
 from plone.app.blocks import utils
 from plone.app.blocks.tiles import renderTiles
 from plone.app.standardtiles import PloneMessageFactory as _
@@ -11,6 +14,7 @@ from plone.uuid.interfaces import IUUID
 from repoze.xmliter.utils import getHTMLSerializer
 from zope import schema
 from zope.browser.interfaces import IBrowserView
+from z3c.form import validator
 
 
 class CatalogSource(CatalogSourceBase):
@@ -25,6 +29,21 @@ class IExistingContentTile(model.Schema):
         required=True,
         source=CatalogSource(),
     )
+
+
+class SameContentValidator(validator.SimpleFieldValidator):
+    def validate(self, content_uid):
+        super(SameContentValidator, self).validate(content_uid)
+        context = aq_parent(self.context)  # default context is tile data
+        if content_uid and IUUID(context, None) == content_uid:
+            raise Invalid("You can not select the same content as "
+                          "the page you are currently on.")
+
+
+# Register validator
+validator.WidgetValidatorDiscriminators(
+    SameContentValidator, field=IExistingContentTile['content_uid'])
+provideAdapter(SameContentValidator)
 
 
 class ExistingContentTile(Tile):

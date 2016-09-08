@@ -4,6 +4,10 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Validate selected content for existing content is not the current context
+  the tile is being rendered against.
+  [vangheem]
+
 - Fix batching urls on existing content tiles
   [vangheem]
 
