@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Change initial limit for listing tile to 100 instead of 1000
+  [vangheem]
+
 - Rename rawhtml to html and deprecate rawhtml tile
   [vangheem]
 

@@ -52,7 +52,7 @@ class IContentListingTile(Schema):
         title=_(u'Limit'),
         description=_(u'Limit Search Results'),
         required=False,
-        default=1000,
+        default=100,
         min=1,
     )
 
