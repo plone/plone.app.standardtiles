@@ -22,6 +22,7 @@ import plone.app.standardtiles.tests as test_dir
 import random
 import StringIO
 import transaction
+import urllib
 
 
 def fromstring(s):
@@ -271,16 +272,15 @@ class ContentTileTests(TestCase):
         self.assertEqual(len(nodes), 1)
 
     def test_rawhtml_tile(self):
-        annotations = IAnnotations(self.page)
-        annotations['plone.tiles.data.test'] = PersistentDict({
-            'content': '<p>Hello World!</p>'
-        })
+        content = '<p>Hello World!</p>'
 
         transaction.commit()
 
         self.browser.open(
             self.pageURL +
-            '/@@plone.app.standardtiles.rawhtml/test'
+            '/@@plone.app.standardtiles.rawhtml/test?content={0:s}'.format(
+                urllib.quote(content)
+            )
         )
 
         root = fromstring(self.browser.contents)

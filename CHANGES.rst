@@ -17,7 +17,8 @@ Changelog
 - Change initial limit for listing tile to 100 instead of 1000
   [vangheem]
 
-- Rename rawhtml to html and deprecate rawhtml tile
+- Rename rawhtml to html, deprecate rawhtml tile and make it normal
+  tile (not persisted into annotation)
   [vangheem]
 
 - Mark `plone.app.standardtiles.image` and `plone.app.standardtiles.attachment`
