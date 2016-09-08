@@ -31,7 +31,8 @@
                      dummy python: plone_layout.mark_view(view);
                      portal_url portal_state/portal_url;
                      checkPermission nocall: context/portal_membership/checkPermission;
-                     site_properties context/portal_properties/site_properties;">
+                     site_properties context/portal_properties/site_properties;
+                     fix python:request.set('ACTUAL_URL', context.absolute_url())">
         <div metal:use-macro="item_macro">
             content
         </div>

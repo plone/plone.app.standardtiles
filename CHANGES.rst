@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Fix batching urls on existing content tiles
+  [vangheem]
+
 - Change initial limit for listing tile to 100 instead of 1000
   [vangheem]
 
