@@ -116,3 +116,8 @@ class ExistingContentTile(Tile):
                              for child in node.getchildren()])
                     for name, node in panels.items()] + [clear]
         return []
+
+    def __getattr__(self, name):
+        # proxy attributes for this view to the selected view of the content
+        # item so views work
+        return getattr(self.default_view, name)
