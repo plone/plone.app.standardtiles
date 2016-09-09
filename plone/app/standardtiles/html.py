@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
-from plone.supermodel.directives import primary
 from plone.app.standardtiles import _PMF as _
+from plone.subrequest import ISubRequest
+from plone.supermodel.directives import primary
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
+from plone.tiles.directives import ignore_querystring
 from Products.CMFCore.utils import getToolByName
 from zope import schema
-from plone.subrequest import ISubRequest
 
 
 class IHTMLTile(Schema):
 
+    ignore_querystring('content')
     primary('content')
     content = schema.Text(
         title=_(u"HTML"),

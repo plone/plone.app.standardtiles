@@ -4,6 +4,9 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Added raw embed tile
+  [agitator]
+
 - Fix existing content tile to work with collections.
   This fixes https://github.com/plone/plone.app.mosaic/issues/202
   [vangheem]

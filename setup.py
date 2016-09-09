@@ -41,6 +41,7 @@ setup(
         'plone.app.blocks',
         'plone.app.dexterity',
         'plone.app.tiles',
+        'plone.tiles>=1.8.0.dev0',
         'plone.app.discussion',
         'plone.app.contentlisting',
         'plone.app.imaging',
