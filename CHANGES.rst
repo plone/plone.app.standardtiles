@@ -4,6 +4,10 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
+- Fix existing content tile to work with collections.
+  This fixes https://github.com/plone/plone.app.mosaic/issues/202
+  [vangheem]
+
 - Fix case where html tile would not transform content correctly for html tile
   [vangheem]
 
