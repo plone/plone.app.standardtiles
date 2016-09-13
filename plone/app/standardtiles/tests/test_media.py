@@ -10,7 +10,9 @@ from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.textfield import RichTextValue
-from plone.namedfile import NamedFile, NamedImage
+from plone.namedfile import NamedFile
+from plone.namedfile import NamedImage
+from plone.protect.authenticator import createToken
 from plone.testing.z2 import Browser
 from plone.uuid.interfaces import IUUID
 from unittest import TestCase
@@ -90,6 +92,21 @@ class ContentTileTests(TestCase):
         nodes = root.xpath('//body/p')
         self.assertEqual(len(nodes), 1)
         self.assertEqual(nodes[0].text, NOEMBED_ENDPOINT + media_url)
+
+    def test_rawembed_tile(self):
+        """The rawembed tile display a html snippet with title::
+        """
+        tile_title = u'Hello'
+        html_snippet = u'<strong>Hello</strong>'
+        self.unprivileged_browser.open(
+            self.portalURL +
+            '/@@plone.app.standardtiles.rawembed/unique',
+            data='html_snippet=' +
+                 quote(html_snippet) + '&tile_title=' + quote(tile_title)
+        )
+        contents = self.unprivileged_browser.contents
+        self.assertTrue(tile_title in contents)
+        self.assertTrue(html_snippet in contents)
 
     def test_existing_content_tile(self):
         """The existing content tile takes the uuid of a content object in the
@@ -258,7 +275,9 @@ class ContentTileTests(TestCase):
 
         self.browser.open(
             self.pageURL +
-            '/@@plone.app.standardtiles.image/test'
+            '/@@plone.app.standardtiles.image/test?_authenticator={}'.format(
+                createToken()
+            )
         )
 
         # Confirm pass CSRF protection on Plone 5
@@ -278,9 +297,8 @@ class ContentTileTests(TestCase):
 
         self.browser.open(
             self.pageURL +
-            '/@@plone.app.standardtiles.rawhtml/test?content={0:s}'.format(
-                urllib.quote(content)
-            )
+            '/@@plone.app.standardtiles.rawhtml/test',
+            data='content={0:s}'.format(urllib.quote(content))
         )
 
         root = fromstring(self.browser.contents)

@@ -387,7 +387,7 @@ class TestLayoutTiles(TestCase):
         self.assertNotIn('loginform', self.browser.contents)
 
         root = fromstring(self.browser.contents)
-        nodes = root.xpath('//body/*')
+        nodes = root.xpath('//body//*[@id="loginform"]')
         self.assertEqual(len(nodes), 0)
 
         # When we are not logged in, we should get the form::

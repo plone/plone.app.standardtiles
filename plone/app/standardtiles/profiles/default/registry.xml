@@ -19,6 +19,7 @@
       <element>plone.app.standardtiles.dublincore</element>
       <element>plone.app.standardtiles.edit_bar</element>
       <element>plone.app.standardtiles.embed</element>
+      <element>plone.app.standardtiles.rawembed</element>
       <element>plone.app.standardtiles.existingcontent</element>
       <element>plone.app.standardtiles.faviconlink</element>
       <element>plone.app.standardtiles.field</element>

@@ -16,6 +16,18 @@
         schema=".embed.IEmbedTile"
         />
 
+    <plone:tile
+        name="plone.app.standardtiles.rawembed"
+        title="Raw Embed"
+        description='A tile which embeds raw html snippet.'
+        add_permission="cmf.ModifyPortalContent"
+        class=".rawembed.RawEmbedTile"
+        for="*"
+        permission="zope2.View"
+        schema=".rawembed.IRawEmbedTile"
+        template="templates/rawembed.pt"
+        />
+
     <!-- XXX Everything from here on down is deprecated.
          We no longer provide support for persistent tiles that store
          images and attachments.
