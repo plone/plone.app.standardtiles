@@ -4,28 +4,11 @@ Changelog
 2.0.0 (unreleased)
 ------------------
 
-- Added raw embed tile
-  [agitator]
+Breaking changes:
 
-- Fix existing content tile to work with collections.
-  This fixes https://github.com/plone/plone.app.mosaic/issues/202
-  [vangheem]
-
-- Fix case where html tile would not transform content correctly for html tile
-  [vangheem]
-
-- Be able to show/hide title/description with existing content tile
-  [vangheem]
-
-- Validate selected content for existing content is not the current context
-  the tile is being rendered against.
-  [vangheem]
-
-- Fix batching urls on existing content tiles
-  [vangheem]
-
-- Change initial limit for listing tile to 100 instead of 1000
-  [vangheem]
+- Removed support for Plone 4.3. For Plone 4.3 support, please use
+  plone.app.standardtiles < 2.0.
+  [datakurre, jensens, thet]
 
 - Rename rawhtml to html, deprecate rawhtml tile and make it normal
   tile (not persisted into annotation)
@@ -35,37 +18,65 @@ Changelog
   as deprecated.
   [vangheem]
 
-- Remove deprecated skip-links viewlet
+- Remove deprecated skip-links tile, because there's no such viewlet feature on
+  Plone 5
   [datakurre]
 
-- Use safe html transform for raw tile output
+- Drop Plone 4 fallback for language selector
+  [jensens]
+
+New features:
+
+- Added a new raw embed tile
+  [agitator]
+
+- Use safe html transform for html (was raw) tile output
   [vangheem]
 
-- Handle unicode error when applying filters on raw tile
+- Be able to show/hide title/description with existing content tile
+  [vangheem]
+
+Bug fixes:
+
+- Fix existing content tile to work with collections.
+  This fixes https://github.com/plone/plone.app.mosaic/issues/202
+  [vangheem]
+
+
+- Validate selected content for existing content is not the current context
+  the tile is being rendered against.
+  [vangheem]
+
+- Fix batching urls on existing content tiles
   [vangheem]
 
 - When calling ``@@plone.app.standardtiles.contentlisting`` directly without
-  having it configured via a form, get the ``query`` and ``sort_on`` values from
-  it's default factories.
+  having it configured via a form, get the ``query`` and ``sort_on`` values
+  from it's default factories.
   [thet]
+
+- Change initial limit for listing tile to 100 instead of 1000
+  [vangheem]
+
+- Handle unicode error when applying filters on html (was raw) tile
+  [vangheem]
+
+- Take permissions and visibility of viewlets in tiles into account.
+  [jensens]
+
+- Replace misleading warnings on missing viewlet tiles with silent
+  debug level logging
+  [datakurre]
+
+- Fix issue where layout tiles failed on portlet manager context
+  [datakurre, agitator]
+
+Refactoring:
 
 - Move tile registrations from ``media.zcml`` to more appropriate places:
   - ``existingcontent``, ``rss`` and ``rawhtml`` tiles into ``content.zcml``,
   - ``navigation`` and ``sitemap`` tiles in to ``layout.zcml``.
   [thet]
-
-- Take permissions and visibility of viewlets in tiles into account.
-  [jensens]
-
-- Drop Plone 4 fallback for language selector
-  [jensens]
-
-- Fix issue where layout tiles failed on portlet manager context
-  [datakurre, agitator]
-
-- Replace misleading warnings on missing viewlet tiles with silent
-  debug level logging
-  [datakurre]
 
 - Housekeeping and minor cleanup.
   [jensens]
@@ -75,10 +86,6 @@ Changelog
 
 - Simplify basic viewlet proxy tiles.
   [jensens]
-
-- Removed support for Plone 4.3. For Plone 4.3 support, please use
-  plone.app.standardtiles < 2.0.
-  [datakurre, jensens, thet]
 
 - Enable coveralls and code analysis.
   [gforcada]
