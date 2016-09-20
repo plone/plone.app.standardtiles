@@ -130,4 +130,3 @@ class ExistingContentTile(Tile):
                     ) or name.startswith(('_', 'im_', 'func_')):
             return Tile.__getattr__(self, name)
         return getattr(self.default_view, name)
-
