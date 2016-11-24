@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.0rc2 (unreleased)
+2.0.0rc2 (2016-11-24)
 ---------------------
 
 - Fix recursion loop in existingcontent tile (#48)
