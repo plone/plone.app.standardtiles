@@ -74,7 +74,7 @@
         description="Shows the lock info on content"
         add_permission="cmf.ModifyPortalContent"
         for="*"
-        permission="cmf.ModifyPortalContent"
+        permission="zope2.View"
         />
 
     <plone:tile
