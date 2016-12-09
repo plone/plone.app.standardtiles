@@ -64,5 +64,5 @@
   </div>
   </tal:block>
   </tal:block>
-  <body condition="not:nocall:view/content_context"></body>
+  <body tal:condition="not:nocall:view/content_context"></body>
 </html>

@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- Nothing changed yet.
+- Fix issue where existing content did not render on edit form and
+  logged error when target content object was deleted
+  [datakurre]
 
 
 2.0.0rc2 (2016-11-24)
