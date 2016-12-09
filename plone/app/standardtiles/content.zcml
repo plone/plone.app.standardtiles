@@ -26,7 +26,6 @@
         for="*"
         class=".common.DocumentBylineTile"
         permission="zope2.View"
-        template="templates/document_byline.pt"
         />
 
     <plone:tile

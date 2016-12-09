@@ -17,6 +17,11 @@ Bug fixes:
 - Minor cleanup in contentlisting and existingcontent.
   [jensens]
 
+- Fix byline tile to base on respective Plone 5 viewlet
+  (but note that it only renders for anonymous users when they are allowed
+  to view it)
+  [datakurre]
+
 
 2.0.0 (2016-12-13)
 ------------------
