@@ -14,6 +14,9 @@ New features:
 
 Bug fixes:
 
+- Fix portlet tile (broken by regression)
+  [datakurre]
+
 - Fix issue where existing content did not render on edit form and
   logged error when target content object was deleted
   [datakurre]
