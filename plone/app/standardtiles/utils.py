@@ -2,14 +2,14 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_chain
 from Acquisition import aq_inner
-
-import Acquisition
-from Products.CMFCore.interfaces import IContentish
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from Products.CMFCore.interfaces import IContentish
 from z3c.form.interfaces import IFieldWidget
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 from zope.security.interfaces import IPermission
+
+import Acquisition
 
 
 def getNavigationRoot(context):

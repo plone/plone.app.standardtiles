@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
+from plone.app.standardtiles.utils import getContentishContext
 from zope.browser.interfaces import IView
 from zope.component import queryMultiAdapter
-
-from plone.app.standardtiles.utils import getContentishContext
 
 
 def findView(tile, viewName):

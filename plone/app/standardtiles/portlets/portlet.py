@@ -10,8 +10,8 @@ from plone.tiles import Tile
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from zope.interface import Interface
 from zope.interface import implements
+from zope.interface import Interface
 
 
 class IPortletTile(Interface):

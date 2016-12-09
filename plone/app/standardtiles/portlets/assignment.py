@@ -11,6 +11,7 @@ from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter
 from zope.interface import implementer
 
+
 # The '+' view of the portlet manager
 # is applied on the assignment not on the manager itself.
 # We need a custom marker interface for the assignment

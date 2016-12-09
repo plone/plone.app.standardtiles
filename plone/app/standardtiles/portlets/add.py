@@ -4,7 +4,6 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from plone.app.portlets.browser.adding import PortletAdding as BasePortletAdding  # noqa
 from plone.app.portlets.interfaces import IPortletPermissionChecker
-from zope.i18nmessageid import MessageFactory
 from plone.app.tiles.browser.add import DefaultAddForm
 from plone.app.tiles.browser.add import DefaultAddView
 from plone.portlets.utils import hashPortletInfo
@@ -15,9 +14,11 @@ from z3c.form import button
 from zope.component import getUtility
 from zope.container.interfaces import INameChooser
 from zope.event import notify
+from zope.i18nmessageid import MessageFactory
 from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectCreatedEvent
 from zope.traversing.browser.absoluteurl import absoluteURL
+
 
 _ = MessageFactory('plone')
 

@@ -8,11 +8,11 @@ from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.standardtiles import PloneMessageFactory as _
+from plone.app.standardtiles.utils import getContentishContext
 from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.supermodel.model import Schema
-from plone.app.standardtiles.utils import getContentishContext
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.interfaces import IFolderish

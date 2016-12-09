@@ -6,9 +6,9 @@ from Acquisition.interfaces import IAcquirer
 from DateTime.DateTime import DateTime
 from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.globals.interfaces import IViewView
+from plone.app.standardtiles.utils import getContentishContext
 from plone.app.viewletmanager.interfaces import IViewletSettingsStorage
 from plone.memoize.view import memoize
-from plone.app.standardtiles.utils import getContentishContext
 from plone.tiles.tile import Tile
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName

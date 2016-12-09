@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-from zope import schema
-from zope.interface import Interface
-from zope.interface import implements
-from zope.component import queryUtility
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.portlets.utils import findView
-from plone.portlets.interfaces import IPortletManager
-
 from plone.app.standardtiles.utils import getContentishContext
+from plone.portlets.interfaces import IPortletManager
 from plone.tiles import Tile
+from zope import schema
+from zope.component import queryUtility
+from zope.interface import implements
+from zope.interface import Interface
 
 
 class IPortletManagerTile(Interface):

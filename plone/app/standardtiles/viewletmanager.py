@@ -2,12 +2,12 @@
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.portlets.utils import findView
 from plone.tiles import Tile
+from Products.CMFCore.interfaces import IFolderish
 from zope import schema
 from zope.component import queryMultiAdapter
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.viewlet.interfaces import IViewletManager
-from Products.CMFCore.interfaces import IFolderish
 
 
 class IViewletManagerTile(Interface):

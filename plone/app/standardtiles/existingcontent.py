@@ -12,10 +12,10 @@ from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.utils import getHTMLSerializer
 from z3c.form import validator
 from zExceptions import Unauthorized
-from zope.browser.interfaces import IBrowserView
-from zope.component.hooks import getSite
-from zope.component import provideAdapter
 from zope import schema
+from zope.browser.interfaces import IBrowserView
+from zope.component import provideAdapter
+from zope.component.hooks import getSite
 from zope.interface import Invalid
 
 

@@ -8,6 +8,7 @@ from zope import schema
 from zope.component import getUtility
 from zope.interface import implementer
 
+
 try:
     from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
     HAS_PLONE_5 = True

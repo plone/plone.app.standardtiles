@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
+from plone.app.standardtiles.common import ProxyViewletTile
 from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
-from plone.app.standardtiles.common import ProxyViewletTile
 
 
 class TitleTile(ProxyViewletTile):

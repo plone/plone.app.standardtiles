@@ -5,6 +5,7 @@ from plone.app.standardtiles.testing import EDITOR_USER_PASSWORD
 from plone.app.standardtiles.testing import PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING  # noqa
 from plone.testing.z2 import Browser
 from unittest import TestCase
+
 import transaction
 
 
