@@ -26,6 +26,10 @@ class IPortletManagerTile(Interface):
 class PortletManagerTile(Tile):
     """A tile that renders a portlet manager."""
 
+    # Needed to support plone.memoize.view.memoize called through findView
+    def absolute_url(self):
+        return self.url
+
     def __call__(self):
         """Return the rendered contents of the portlet manager specified."""
         context = getContentishContext(self.context)
@@ -42,4 +46,4 @@ class PortletManagerTile(Tile):
         rendererObj = managerObj(context, self.request, view)
         rendererObj.update()
 
-        return u'<html><body>%s</body></html>'.format(rendererObj.render())
+        return u'<html><body>{0:s}</body></html>'.format(rendererObj.render())
