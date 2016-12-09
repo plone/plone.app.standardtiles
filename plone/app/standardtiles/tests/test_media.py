@@ -133,6 +133,35 @@ class ContentTileTests(TestCase):
 
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
 
+    def test_existing_content_tile_private(self):
+        """When the current user does not have enough permissions to view
+        the content linked to existing content tile, the tile renders
+        empty"""
+        self.portal.portal_workflow.setDefaultChain(
+            'simple_publication_workflow')
+
+        page_id = self.portal.invokeFactory(
+            'Document', 'an-another-page',
+            title=u'An another page', description=u'A description',
+            text=u'Hello World!'
+        )
+        self.portal[page_id].text = RichTextValue(u'Hello World!')
+
+        page_uuid = IUUID(self.portal[page_id])
+
+        transaction.commit()
+
+        browser = Browser(self.layer['app'])
+        browser.handleErrors = False
+        browser.open(
+            self.portalURL +
+            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
+            page_uuid
+        )
+
+        self.assertNotIn(u'Hello World!', browser.contents)
+        self.assertIn(u'<body></body>', browser.contents)
+
     def test_edit_existing_content_tile(self):
         """The existing content tile takes the uuid of a content object in the
         site and displays the result of calling its default view's content-core

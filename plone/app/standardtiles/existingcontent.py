@@ -1,25 +1,62 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
-from zope.component import provideAdapter
-from zope.interface import Invalid
 from plone.app.blocks import utils
 from plone.app.blocks.tiles import renderTiles
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.app.uuid.utils import uuidToObject
 from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
 from plone.memoize.view import memoize
 from plone.supermodel import model
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
+from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.utils import getHTMLSerializer
-from zope import schema
-from zope.browser.interfaces import IBrowserView
 from z3c.form import validator
+from zExceptions import Unauthorized
+from zope.browser.interfaces import IBrowserView
+from zope.component.hooks import getSite
+from zope.component import provideAdapter
+from zope import schema
+from zope.interface import Invalid
+
+
+def uuidToObject(uuid):
+    """Given a UUID, attempt to return a content object. Will return
+    None if the UUID can't be found. Raises Unauthorized if the current
+    user is not allowed to access the object.
+    """
+
+    brain = uuidToCatalogBrainUnrestricted(uuid)
+    if brain is None:
+        return None
+
+    return brain.getObject()
+
+
+def uuidToCatalogBrainUnrestricted(uuid):
+    """Given a UUID, attempt to return a catalog brain even when the object is
+    not visible for the logged in user (e.g. during anonymous traversal)
+    """
+
+    site = getSite()
+    if site is None:
+        return None
+
+    catalog = getToolByName(site, 'portal_catalog', None)
+    if catalog is None:
+        return None
+
+    result = catalog.unrestrictedSearchResults(UID=uuid)
+    if len(result) != 1:
+        return None
+
+    return result[0]
 
 
 class CatalogSource(CatalogSourceBase):
     """ExistingContentTile specific catalog source to allow targeted widget
     """
+    def __contains__(self, value):
+        return True  # Always contains to allow lazy handling of removed objs
 
 
 class IExistingContentTile(model.Schema):
@@ -65,7 +102,12 @@ class ExistingContentTile(Tile):
     def content_context(self):
         uuid = self.data.get('content_uid')
         if uuid != IUUID(self.context, None):
-            item = uuidToObject(uuid)
+            try:
+                item = uuidToObject(uuid)
+            except Unauthorized:
+                item = None
+                if not self.request.get('PUBLISHED'):
+                    raise  # Should raise while still traversing
             if item is not None:
                 return item
         return None
