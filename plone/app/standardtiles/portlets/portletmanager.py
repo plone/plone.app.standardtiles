@@ -6,26 +6,25 @@ from plone.portlets.interfaces import IPortletManager
 from plone.tiles import Tile
 from zope import schema
 from zope.component import queryUtility
-from zope.interface import implements
+from zope.interface import implementer
 from zope.interface import Interface
 
 
 class IPortletManagerTile(Interface):
     manager = schema.TextLine(
-        title=u"Name of the portlet manager to render.",
+        title=u'Name of the portlet manager to render.',
         required=True
     )
 
     view = schema.TextLine(
-        title=_(u"Name of the view"),
+        title=_(u'Name of the view'),
         required=False
     )
 
 
+@implementer(IPortletManagerTile)
 class PortletManagerTile(Tile):
     """A tile that renders a portlet manager."""
-
-    implements(IPortletManagerTile)
 
     def __call__(self):
         """Return the rendered contents of the portlet manager specified."""
@@ -43,4 +42,4 @@ class PortletManagerTile(Tile):
         rendererObj = managerObj(context, self.request, view)
         rendererObj.update()
 
-        return u"<html><body>%s</body></html>" % rendererObj.render()
+        return u'<html><body>%s</body></html>'.format(rendererObj.render())

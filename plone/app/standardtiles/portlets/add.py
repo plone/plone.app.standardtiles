@@ -107,7 +107,7 @@ class PortletTileAddForm(DefaultAddForm):
     def handleCancel(self, action):
         # TODO
         tileDataJson = {}
-        tileDataJson['action'] = "cancel"
+        tileDataJson['action'] = 'cancel'
         url = self.request.getURL()
         self.request.response.redirect(url)
 

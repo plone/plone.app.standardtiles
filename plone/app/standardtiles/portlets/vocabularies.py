@@ -35,8 +35,7 @@ class PortletsVocab(BaseVocabulary):
         # else:
         #     request = getRequest()
 
-        manager = getUtility(IPortletManager,
-                             name=PORTLET_MANAGER)
+        manager = getUtility(IPortletManager, name=PORTLET_MANAGER)
 
         # view = context.restrictedTraverse('@@plone')
 
@@ -50,8 +49,7 @@ class PortletsVocab(BaseVocabulary):
         # )
         # portlets = manager_renderer.addable_portlets()
         portlets = manager.getAddablePortletTypes()
-        yield SimpleTerm(value=None, token='',
-                         title=_(u'-- select type --'))
+        yield SimpleTerm(value=None, token='', title=_(u'-- select type --'))
         for item in portlets:
             title = item.title
             token = value = item.addview

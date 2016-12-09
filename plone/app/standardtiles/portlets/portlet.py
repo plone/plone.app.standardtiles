@@ -10,7 +10,7 @@ from plone.tiles import Tile
 from zope import schema
 from zope.component import getMultiAdapter
 from zope.component import getUtility
-from zope.interface import implements
+from zope.interface import implementer
 from zope.interface import Interface
 
 
@@ -18,21 +18,20 @@ class IPortletTile(Interface):
 
     form.omitted('portlet_hash')
     portlet_hash = schema.TextLine(
-        title=_(u"Portlet hash"),
+        title=_(u'Portlet hash'),
         required=False
     )
 
     portlet_type = schema.Choice(
-        title=_(u"Portlet type"),
+        title=_(u'Portlet type'),
         vocabulary=u'standardtiles.available_portlets',
         required=True
     )
 
 
+@implementer(IPortletTile)
 class PortletTile(Tile):
     """A tile that renders a portlet."""
-
-    implements(IPortletTile)
 
     def __call__(self):
         """Return the rendered contents of the portlet specified."""
@@ -65,4 +64,4 @@ class PortletTile(Tile):
             # if this is a deferred load, prepare now the data
             renderer.deferred_update()
 
-        return u"<html><body>%s</body></html>" % renderer.render()
+        return u'<html><body>%s</body></html>'.format(renderer.render())
