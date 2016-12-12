@@ -17,6 +17,7 @@ from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
 from zope.interface import alsoProvides
+from zope.security import checkPermission
 from zope.viewlet.interfaces import IViewlet
 from zope.viewlet.interfaces import IViewletManager
 
@@ -360,6 +361,12 @@ class LockInfoTile(ProxyViewletTile):
     """A lockinfo tile."""
     manager = 'plone.abovecontent'
     viewlet = 'plone.lockinfo'
+
+    def __call__(self):
+        if checkPermission('cmf.ModifyPortalContent', self.context):
+            return super(LockInfoTile, self).__call__()
+        else:
+            return u'<html></html>'
 
 
 class NextPreviousTile(BaseViewletTile):

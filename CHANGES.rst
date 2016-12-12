@@ -14,6 +14,10 @@ New features:
 
 Bug fixes:
 
+- Fix lockinfo to not log Unauthorized-errors by protecting its registration
+  only with zope2.View, but render it empty without cmf.ModifyPortalContent
+  [datakurre]
+
 - Fix portlet tile (broken by regression)
   [datakurre]
 
