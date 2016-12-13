@@ -1,39 +1,7 @@
 Changelog
 =========
 
-2.0.0rc3 (unreleased)
----------------------
-
-Breaking changes:
-
-- Nothing changed yet.
-
-New features:
-
-- Nothing changed yet.
-
-Bug fixes:
-
-- Fix lockinfo to not log Unauthorized-errors by protecting its registration
-  only with zope2.View, but render it empty without cmf.ModifyPortalContent
-  [datakurre]
-
-- Fix portlet tile (broken by regression)
-  [datakurre]
-
-- Fix issue where existing content did not render on edit form and
-  logged error when target content object was deleted
-  [datakurre]
-
-
-2.0.0rc2 (2016-11-24)
----------------------
-
-- Fix recursion loop in existingcontent tile (#48)
-  [tomgross]
-
-
-2.0.0rc1 (2016-09-15)
+2.0.0rc1 (unreleased)
 ---------------------
 
 Breaking changes:
@@ -74,7 +42,6 @@ Bug fixes:
   This fixes https://github.com/plone/plone.app.mosaic/issues/202
   [vangheem]
 
-
 - Validate selected content for existing content is not the current context
   the tile is being rendered against.
   [vangheem]
@@ -102,6 +69,20 @@ Bug fixes:
 
 - Fix issue where layout tiles failed on portlet manager context
   [datakurre, agitator]
+
+- Fix lockinfo to not log Unauthorized-errors by protecting its registration
+  only with zope2.View, but render it empty without cmf.ModifyPortalContent
+  [datakurre]
+
+- Fix portlet tile (broken by regression)
+  [datakurre]
+
+- Fix issue where existing content did not render on edit form and
+  logged error when target content object was deleted
+  [datakurre]
+
+- Fix recursion loop in existingcontent tile (#48)
+  [tomgross]
 
 Refactoring:
 
