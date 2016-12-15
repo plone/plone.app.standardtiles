@@ -3,10 +3,14 @@ from AccessControl import getSecurityManager
 from Acquisition import aq_chain
 from Acquisition import aq_inner
 from plone.app.layout.navigation.interfaces import INavigationRoot
+from Products.CMFCore.interfaces import IContentish
 from z3c.form.interfaces import IFieldWidget
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
+from zope.deprecation import deprecate
 from zope.security.interfaces import IPermission
+
+import Acquisition
 
 
 def getNavigationRoot(context):
@@ -57,3 +61,30 @@ def isVisible(name, omitted):
         return value == 'false'
     else:
         return not bool(value)
+
+
+@deprecate('is no longer used internally and will be removed in 3.0.0')
+def getContentishContext(context):
+    """Tile context may not always be a real contentish content, which some
+    tiles require.
+
+    Return first IContentish context from the current context by traversing
+    up in acquisition chain
+
+    """
+    original_context = context
+    context = Acquisition.aq_inner(context)
+
+    while context is not None:
+        if IContentish.providedBy(context):
+            return context
+
+        funcObject = getattr(context, "im_self", None)
+        if funcObject is not None:
+            context = Acquisition.aq_inner(funcObject)
+        else:
+            # Don't use Acquisition.aq_inner() since portal_factory (and
+            # probably other) things, depends on being able to wrap itself in a
+            # fake context.
+            context = Acquisition.aq_parent(context)
+    return original_context
