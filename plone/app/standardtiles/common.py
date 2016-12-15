@@ -1,18 +1,12 @@
 # -*- coding: utf-8 -*-
-from AccessControl import getSecurityManager
 from AccessControl.ZopeGuards import guarded_hasattr
-from Acquisition import aq_inner
 from Acquisition.interfaces import IAcquirer
-from DateTime.DateTime import DateTime
-from plone.app.content.browser.interfaces import IFolderContentsView
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.standardtiles.utils import getContentishContext
 from plone.app.viewletmanager.interfaces import IViewletSettingsStorage
 from plone.memoize.view import memoize
 from plone.tiles.tile import Tile
-from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import base_hasattr
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
@@ -22,7 +16,6 @@ from zope.viewlet.interfaces import IViewlet
 from zope.viewlet.interfaces import IViewletManager
 
 import logging
-
 
 logger = logging.getLogger(__name__)
 
@@ -257,104 +250,10 @@ class GlobalStatusMessageTile(ProxyViewletTile):
     viewlet = 'plone.globalstatusmessage'
 
 
-class DocumentBylineTile(Tile):
+class DocumentBylineTile(ProxyViewletTile):
     """A document byline tile."""
-
-    def __call__(self):
-        self.update()
-        return self.index()
-
-    def update(self):
-        self.portal_state = getMultiAdapter((self.context, self.request),
-                                            name=u'plone_portal_state')
-        self.context_state = getMultiAdapter((self.context, self.request),
-                                             name=u'plone_context_state')
-        self.anonymous = self.portal_state.anonymous()
-
-    def show(self):
-        properties = getToolByName(self.context, 'portal_properties')
-        site_properties = getattr(properties, 'site_properties')
-        allowAnonymousViewAbout = site_properties.getProperty(
-            'allowAnonymousViewAbout', True)
-        return not self.anonymous or allowAnonymousViewAbout
-
-    def show_history(self):
-        if not _checkPermission(
-            'CMFEditions: Access previous versions',
-            self.context
-        ):
-            return False
-        if IViewView.providedBy(self.__parent__):
-            return True
-        if IFolderContentsView.providedBy(self.__parent__):
-            return True
-        return False
-
-    def locked_icon(self):
-        if not getSecurityManager().checkPermission('Modify portal content',
-                                                    self.context):
-            return ""
-
-        locked = False
-        lock_info = queryMultiAdapter((self.context, self.request),
-                                      name='plone_lock_info')
-        if lock_info is not None:
-            locked = lock_info.is_locked()
-        else:
-            context = aq_inner(self.context)
-            is_locked = getattr(context.aq_explicit, 'wl_isLocked', None)
-            lockable = is_locked is not None
-            locked = lockable and context.wl_isLocked()
-
-        if not locked:
-            return ""
-
-        portal = self.portal_state.portal()
-        icon = portal.restrictedTraverse('lock_icon.png')
-        return icon.tag(title='Locked')
-
-    def creator(self):
-        return self.context.Creator()
-
-    def author(self):
-        membership = getToolByName(self.context, 'portal_membership')
-        return membership.getMemberInfo(self.creator())
-
-    def authorname(self):
-        author = self.author()
-        return author and author['fullname'] or self.creator()
-
-    def isExpired(self):
-        if base_hasattr(self.context, 'expires'):
-            return self.context.expires().isPast()
-        return False
-
-    def toLocalizedTime(self, time, long_format=None, time_only=None):
-        """Convert time to localized time
-        """
-        util = getToolByName(self.context, 'translation_service')
-        return util.ulocalized_time(time, long_format, time_only, self.context,
-                                    domain='plonelocales')
-
-    def pub_date(self):
-        """Return object effective date.
-
-        Return None if publication date is switched off in global site settings
-        or if Effective Date is not set on object.
-        """
-        # check if we are allowed to display publication date
-        properties = getToolByName(self.context, 'portal_properties')
-        site_properties = getattr(properties, 'site_properties')
-        if not site_properties.getProperty('displayPublicationDateInByline',
-           False):
-            return None
-
-        # check if we have Effective Date set
-        date = self.context.EffectiveDate()
-        if not date or date == 'None':
-            return None
-
-        return DateTime(date)
+    manager = 'plone.belowcontenttitle'
+    viewlet = 'plone.belowcontenttitle.documentbyline'
 
 
 class LockInfoTile(ProxyViewletTile):
