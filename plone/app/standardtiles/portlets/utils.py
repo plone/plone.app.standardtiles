@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
-from plone.app.standardtiles.utils import getContentishContext
 from zope.browser.interfaces import IView
 from zope.component import queryMultiAdapter
 
 
 def findView(tile, viewName):
     """Find the view to use for portlet/viewlet context lookup."""
-    context = getContentishContext(tile)
-
     view = tile
     prequest = tile.request.get('PARENT_REQUEST', None)
 
@@ -24,14 +21,14 @@ def findView(tile, viewName):
         request = prequest
 
     if viewName is not None:
-        view = queryMultiAdapter((context, request), name=viewName)
+        view = queryMultiAdapter((tile.context, request), name=viewName)
 
     if view is None:
         view = tile
 
     # Decide whether to mark the view
     # XXX: Again, this probably won't work well if not using plone.subrequest
-    layoutPolicy = queryMultiAdapter((context, request), name='plone_layout')
+    layoutPolicy = queryMultiAdapter((tile.context, request), name='plone_layout')  # noqa
     if layoutPolicy is not None:
         layoutPolicy.mark_view(view)
 

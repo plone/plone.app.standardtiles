@@ -3,11 +3,14 @@ from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.portlets.utils import findView
 from plone.tiles import Tile
 from Products.CMFCore.interfaces import IFolderish
-from zope import schema
+from zope.browser.interfaces import IBrowserView
 from zope.component import queryMultiAdapter
+from zope import schema
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.viewlet.interfaces import IViewletManager
+
+import Acquisition
 
 
 class IViewletManagerTile(Interface):
@@ -38,6 +41,16 @@ class IViewletManagerTile(Interface):
 @implementer(IViewletManagerTile)
 class ViewletManagerTile(Tile):
     """A tile that renders a viewlet manager."""
+
+    def __init__(self, context, request):
+        # Fix issue where context is a template based view class
+        while IBrowserView.providedBy(context) and context is not None:
+            context = Acquisition.aq_parent(Acquisition.aq_inner(context))
+        super(ViewletManagerTile, self).__init__(context, request)
+
+    # Needed to support plone.memoize.view.memoize called through findView
+    def absolute_url(self):
+        return self.url
 
     def __call__(self):
         """Return the rendered contents of the viewlet manager specified."""

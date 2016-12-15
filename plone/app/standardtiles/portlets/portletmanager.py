@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.portlets.utils import findView
-from plone.app.standardtiles.utils import getContentishContext
 from plone.portlets.interfaces import IPortletManager
 from plone.tiles import Tile
-from zope import schema
+from zope.browser.interfaces import IBrowserView
 from zope.component import queryUtility
+from zope import schema
 from zope.interface import implementer
 from zope.interface import Interface
+
+import Acquisition
 
 
 class IPortletManagerTile(Interface):
@@ -26,14 +28,18 @@ class IPortletManagerTile(Interface):
 class PortletManagerTile(Tile):
     """A tile that renders a portlet manager."""
 
+    def __init__(self, context, request):
+        # Fix issue where context is a template based view class
+        while IBrowserView.providedBy(context) and context is not None:
+            context = Acquisition.aq_parent(Acquisition.aq_inner(context))
+        super(PortletManagerTile, self).__init__(context, request)
+
     # Needed to support plone.memoize.view.memoize called through findView
     def absolute_url(self):
         return self.url
 
     def __call__(self):
         """Return the rendered contents of the portlet manager specified."""
-        context = getContentishContext(self.context)
-
         manager = self.data.get('manager')
         viewName = self.data.get('view')
         managerObj = queryUtility(IPortletManager, name=manager)
@@ -43,7 +49,7 @@ class PortletManagerTile(Tile):
 
         # set redirection view
         self.request['viewname'] = '@@manage-portlets'
-        rendererObj = managerObj(context, self.request, view)
+        rendererObj = managerObj(self.context, self.request, view)
         rendererObj.update()
 
         return u'<html><body>{0:s}</body></html>'.format(rendererObj.render())

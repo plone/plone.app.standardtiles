@@ -7,6 +7,7 @@ from Products.CMFCore.interfaces import IContentish
 from z3c.form.interfaces import IFieldWidget
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
+from zope.deprecation import deprecate
 from zope.security.interfaces import IPermission
 
 import Acquisition
@@ -62,6 +63,7 @@ def isVisible(name, omitted):
         return not bool(value)
 
 
+@deprecate('is no longer used internally and will be removed in 3.0.0')
 def getContentishContext(context):
     """Tile context may not always be a real contentish content, which some
     tiles require.
