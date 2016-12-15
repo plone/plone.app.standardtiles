@@ -2,11 +2,11 @@
 from AccessControl.ZopeGuards import guarded_hasattr
 from Acquisition.interfaces import IAcquirer
 from plone.app.layout.globals.interfaces import IViewView
-from plone.app.standardtiles.utils import getContentishContext
 from plone.app.viewletmanager.interfaces import IViewletSettingsStorage
 from plone.memoize.view import memoize
 from plone.tiles.tile import Tile
 from Products.CMFCore.utils import getToolByName
+from zope.browser.interfaces import IBrowserView
 from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.component import queryUtility
@@ -15,6 +15,7 @@ from zope.security import checkPermission
 from zope.viewlet.interfaces import IViewlet
 from zope.viewlet.interfaces import IViewletManager
 
+import Acquisition
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,9 +23,11 @@ logger = logging.getLogger(__name__)
 
 class BaseViewletTile(Tile):
 
-    def __init__(self, *args, **kwargs):
-        super(BaseViewletTile, self).__init__(*args, **kwargs)
-        self.context = getContentishContext(self.context)
+    def __init__(self, context, *args, **kwargs):
+        # Fix issue where context is a template based view class
+        while IBrowserView.providedBy(context) and context is not None:
+            context = Acquisition.aq_parent(Acquisition.aq_inner(context))
+        super(BaseViewletTile, self).__init__(context, *args, **kwargs)
 
     def get_viewlet(self, manager_name, viewlet_name):
         # check visibility
@@ -115,15 +118,21 @@ class AnalyticsTile(ProxyViewletTile):
 class LoginTile(Tile):
     """Login tile."""
 
+    def __init__(self, context, request):
+        # Fix issue where context is a template based view class
+        while IBrowserView.providedBy(context) and context is not None:
+            context = Acquisition.aq_parent(Acquisition.aq_inner(context))
+        super(LoginTile, self).__init__(context, request)
+
     def __call__(self):
-        context = getContentishContext(self.context)
         request = self.request
-        self.membership = getToolByName(context, 'portal_membership')
-        self.context_state = getMultiAdapter((context, request),
+        self.membership = getToolByName(self.context, 'portal_membership')
+        self.context_state = getMultiAdapter((self.context, request),
                                              name=u'plone_context_state')
-        self.portal_state = getMultiAdapter((context, request),
+        self.portal_state = getMultiAdapter((self.context, request),
                                             name=u'plone_portal_state')
-        self.pas_info = getMultiAdapter((context, request), name=u'pas_info')
+        self.pas_info = getMultiAdapter((self.context, request),
+                                        name=u'pas_info')
         self.navigation_root_url = self.portal_state.navigation_root_url()
 
         self.update()
@@ -231,14 +240,18 @@ class PathBarTile(ProxyViewletTile):
 class ToolbarTile(Tile):
     """A Plone 5 toolbar tile."""
 
-    def __call__(self):
-        context = getContentishContext(self.context)
+    def __init__(self, context, request):
+        # Fix issue where context is a template based view class
+        while IBrowserView.providedBy(context) and context is not None:
+            context = Acquisition.aq_parent(Acquisition.aq_inner(context))
+        super(ToolbarTile, self).__init__(context, request)
 
+    def __call__(self):
         mtool = getToolByName(self.context, 'portal_membership')
         if mtool.isAnonymousUser():
             return u'<html></html>'
 
-        toolbar = getMultiAdapter((context, self.request),
+        toolbar = getMultiAdapter((self.context, self.request),
                                   name=u'render-toolbar')
         alsoProvides(toolbar, IViewView)
         return u'<html><body>%s</body></html>' % toolbar()

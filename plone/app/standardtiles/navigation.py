@@ -8,7 +8,6 @@ from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.app.standardtiles.utils import getContentishContext
 from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
@@ -24,10 +23,11 @@ from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.interfaces import IValue
 from z3c.form.util import getSpecification
-from zope import schema
+from zope.browser.interfaces import IBrowserView
 from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
+from zope import schema
 from zope.interface import implementer
 from zope.interface import Interface
 
@@ -138,9 +138,11 @@ class DefaultRoot(object):
 @implementer(INavigationTile)
 class NavigationTile(Tile):
 
-    def __init__(self, *arg, **kw):
-        super(NavigationTile, self).__init__(*arg, **kw)
-        self.context = getContentishContext(self.context)
+    def __init__(self, context, *args, **kwargs):
+        # Fix issue where context is a template based view class
+        while IBrowserView.providedBy(context) and context is not None:
+            context = aq_parent(aq_inner(context))
+        super(NavigationTile, self).__init__(context, *args, **kwargs)
         self.urltool = getToolByName(self.context, 'portal_url')
 
     def title(self):
