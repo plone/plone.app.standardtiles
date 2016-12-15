@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from operator import itemgetter
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
@@ -15,9 +16,9 @@ from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
 from zope.interface import alsoProvides
-from zope.interface import directlyProvides
 from zope.interface import implementer
 from zope.interface import Interface
+from zope.interface import provider
 from zope.schema import getFields
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
@@ -28,17 +29,19 @@ class IContentListingTile(Schema):
     widget(query=QueryStringFieldWidget)
     query = schema.List(
         title=_(u"Search terms"),
-        value_type=schema.Dict(value_type=schema.Field(),
-                               key_type=schema.TextLine()),
-        description=_(u"Define the search terms for the items "
-                      u"you want to list by choosing what to match on. The "
-                      u"list of results will be dynamically updated"),
+        value_type=schema.Dict(
+            value_type=schema.Field(),
+            key_type=schema.TextLine()
+        ),
+        description=_(u'Define the search terms for the items '
+                      u'you want to list by choosing what to match on. The '
+                      u'list of results will be dynamically updated'),
         required=False
     )
 
     sort_on = schema.TextLine(
         title=_(u'label_sort_on', default=u'Sort on'),
-        description=_(u"Sort the collection on this index"),
+        description=_(u'Sort the collection on this index'),
         required=False,
     )
 
@@ -56,9 +59,11 @@ class IContentListingTile(Schema):
         min=1,
     )
 
-    view_template = schema.Choice(title=_(u"Display mode"),
-                                  source=_(u"Available Listing Views"),
-                                  required=True)
+    view_template = schema.Choice(
+        title=_(u'Display mode'),
+        source=_(u'Available Listing Views'),
+        required=True
+    )
 
 
 class IContentListingTileLayer(Interface):
@@ -66,28 +71,37 @@ class IContentListingTileLayer(Interface):
 
 
 @implementer(IValue)
-@adapter(None, None, None, getSpecification(IContentListingTile['query']), None)  # noqa
+@adapter(
+    None,
+    None,
+    None,
+    getSpecification(IContentListingTile['query']),
+    None
+)
 class DefaultQuery(object):
     def __init__(self, context, request, form, field, widget):
         self.context = context
 
     def get(self):
         if IFolderish.providedBy(self.context):
-            return [{
-                'i': 'path',
-                'o': 'plone.app.querystring.operation.string.relativePath',
-                'v': '::1'
-            }]
+            value = '::1'
         else:
-            return [{
-                'i': 'path',
-                'o': 'plone.app.querystring.operation.string.relativePath',
-                'v': '..::1'
-            }]
+            value = '..::1'
+        return [{
+            'i': 'path',
+            'o': 'plone.app.querystring.operation.string.relativePath',
+            'v': value
+        }]
 
 
 @implementer(IValue)
-@adapter(None, None, None, getSpecification(IContentListingTile['sort_on']), None)  # noqa
+@adapter(
+    None,
+    None,
+    None,
+    getSpecification(IContentListingTile['sort_on']),
+    None
+)
 class DefaultSortOn(object):
     def __init__(self, context, request, form, field, widget):
         pass
@@ -118,7 +132,7 @@ class ContentListingTile(Tile):
                     None,
                     fields['query'],
                     None
-                ), name="default").get()
+                ), name='default').get()
             if self.sort_on is None:
                 self.sort_on = getMultiAdapter((
                     self.context,
@@ -126,7 +140,7 @@ class ContentListingTile(Tile):
                     None,
                     fields['sort_on'],
                     None
-                ), name="default").get()
+                ), name='default').get()
 
         self.limit = self.data.get('limit')
         if self.data.get('sort_reversed'):
@@ -138,7 +152,8 @@ class ContentListingTile(Tile):
     def contents(self):
         """Search results"""
         builder = getMultiAdapter(
-            (self.context, self.request), name='querybuilderresults'
+            (self.context, self.request),
+            name='querybuilderresults'
         )
         accessor = builder(
             query=self.query,
@@ -153,6 +168,7 @@ class ContentListingTile(Tile):
         return getMultiAdapter((accessor, self.request), name=view)(**options)
 
 
+@provider(IVocabularyFactory)
 def availableListingViewsVocabulary(context):
     """Get available views for listing content as vocabulary"""
 
@@ -164,11 +180,7 @@ def availableListingViewsVocabulary(context):
             'summary_view': u'Summary view',
             'tabular_view': u'Tabular view'
         }
-    sorted = listing_views.items()
-    sorted.sort(lambda a, b: cmp(a[1], b[1]))
     voc = []
-    for key, label in sorted:
+    for key, label in sorted(listing_views.items(), key=itemgetter(1)):
         voc.append(SimpleVocabulary.createTerm(key, key, label))
     return SimpleVocabulary(voc)
-
-directlyProvides(availableListingViewsVocabulary, IVocabularyFactory)

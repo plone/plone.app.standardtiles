@@ -16,6 +16,7 @@
         schema=".existingcontent.IExistingContentTile"
         template="templates/existingcontent_view.pt"
         />
+    <adapter factory=".existingcontent.SameContentValidator" />
 
     <plone:tile
         name="plone.app.standardtiles.document_byline"

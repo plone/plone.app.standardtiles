@@ -14,7 +14,6 @@ from z3c.form import validator
 from zExceptions import Unauthorized
 from zope import schema
 from zope.browser.interfaces import IBrowserView
-from zope.component import provideAdapter
 from zope.component.hooks import getSite
 from zope.interface import Invalid
 
@@ -89,8 +88,9 @@ class SameContentValidator(validator.SimpleFieldValidator):
 
 # Register validator
 validator.WidgetValidatorDiscriminators(
-    SameContentValidator, field=IExistingContentTile['content_uid'])
-provideAdapter(SameContentValidator)
+    SameContentValidator,
+    field=IExistingContentTile['content_uid']
+)
 
 
 class ExistingContentTile(Tile):

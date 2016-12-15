@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- Nothing changed yet.
+- Minor cleanup in contentlisting and existingcontent.
+  [jensens]
 
 
 2.0.0 (2016-12-13)
@@ -124,6 +125,7 @@ Refactoring:
 
 - Remove unused function.
   [gforcada]
+
 
 1.0 (2016-04-11)
 ----------------
