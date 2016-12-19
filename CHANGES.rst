@@ -10,6 +10,10 @@ New features:
 
 Bug fixes:
 
+- Fix setup dependencies: do not depend on plone.app.imaging, it is not needed. 
+  This removes an transient dependency on Archetypes.
+  [jensens]
+
 - Fix issues where tiles didn't properly render when traversed from a view context
   [datakurre]
 

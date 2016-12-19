@@ -9,14 +9,15 @@ version = '2.0.1.dev0'
 setup(
     name='plone.app.standardtiles',
     version=version,
-    description="Standard tiles for Plone Blocks page composition",
-    long_description=(open("README.rst").read() + "\n" +
-                      open("CHANGES.rst").read()),
+    description='Tiles for plone.app.blocks page composition',
+    long_description=(open('README.rst').read() + '\n' +
+                      open('CHANGES.rst').read()),
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Framework :: Plone',
         'Framework :: Plone :: 5.0',
+        'Framework :: Plone :: 5.1',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
@@ -34,28 +35,27 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'setuptools',
-        'lxml',
-        'requests',
-        'Products.CMFPlone>=5.0.4',
         'plone.app.blocks',
-        'plone.app.dexterity',
-        'plone.app.tiles',
-        'plone.tiles>=1.8.0.dev0',
-        'plone.app.discussion',
         'plone.app.contentlisting',
-        'plone.app.imaging',
-        'plone.formwidget.querystring',
-        'plone.formwidget.multifile',
+        'plone.app.dexterity',
+        'plone.app.discussion',
         'plone.app.registry',
+        'plone.app.tiles',
+        'plone.formwidget.multifile',
+        'plone.formwidget.querystring',
+        'plone.subrequest',
+        'plone.tiles>=1.8.0.dev0',
+        'Products.CMFPlone>=5.0.4',
+        'requests',
+        'setuptools',
         'z3c.form',
-        'plone.subrequest'
     ],
     extras_require={
         'test': [
             'plone.app.testing',
             'plone.app.dexterity',
             'plone.app.widgets',
+            'lxml',
         ],
     },
     entry_points="""
