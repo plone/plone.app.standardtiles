@@ -137,7 +137,7 @@ class ExistingContentTile(Tile):
             template = queryMultiAdapter(
                 (default_view, default_view.request), IPageTemplate, default=None)
             if template:
-                return BoundPageTemplate(template, context).macros
+                return BoundPageTemplate(template, default_view.context).macros
         elif default_view:
             # FSPageTemplate
             return default_view.macros
