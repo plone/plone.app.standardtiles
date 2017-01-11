@@ -14,6 +14,9 @@ from z3c.form import validator
 from zExceptions import Unauthorized
 from zope import schema
 from zope.browser.interfaces import IBrowserView
+from zope.component import queryMultiAdapter
+from zope.pagetemplate.interfaces import IPageTemplate
+from Products.Five.browser.pagetemplatefile import BoundPageTemplate
 from zope.component.hooks import getSite
 from zope.interface import Invalid
 
@@ -119,6 +122,8 @@ class ExistingContentTile(Tile):
         if context is not None:
             item_layout = context.getLayout()
             default_view = context.restrictedTraverse(item_layout)
+            if getattr(default_view, 'update', None):
+                default_view.update()
             return default_view
         return None
 
@@ -129,6 +134,10 @@ class ExistingContentTile(Tile):
             # IBrowserView
             if getattr(default_view, 'index', None):
                 return default_view.index.macros
+            template = queryMultiAdapter(
+                (default_view, default_view.request), IPageTemplate, default=None)
+            if template:
+                return BoundPageTemplate(template, context).macros
         elif default_view:
             # FSPageTemplate
             return default_view.macros
