@@ -2,6 +2,9 @@
 from zope.browser.interfaces import IView
 from zope.component import queryMultiAdapter
 
+import logging
+logger = logging.getLogger('plone.app.standardtiles')
+
 
 def findView(tile, viewName):
     """Find the view to use for portlet/viewlet context lookup."""
@@ -21,7 +24,14 @@ def findView(tile, viewName):
         request = prequest
 
     if viewName is not None:
-        view = queryMultiAdapter((tile.context, request), name=viewName)
+        try:
+            view = queryMultiAdapter((tile.context, request), name=viewName)
+        except TypeError:
+            # Helps to debug an issue where broken view registration raised:
+            # TypeError: __init__() takes exactly N arguments (3 given)
+            logger.exception('Error in resolving view for tile: {0:s}'.format(
+                tile.url))
+            view = None
 
     if view is None:
         view = tile
