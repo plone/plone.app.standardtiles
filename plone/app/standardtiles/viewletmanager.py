@@ -2,7 +2,6 @@
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.portlets.utils import findView
 from plone.tiles import Tile
-from Products.CMFCore.interfaces import IFolderish
 from zope.browser.interfaces import IBrowserView
 from zope.component import queryMultiAdapter
 from zope import schema
@@ -60,9 +59,6 @@ class ViewletManagerTile(Tile):
         viewlet = self.data.get('viewlet', None)
 
         view = findView(self, viewName)
-
-        if not IFolderish.providedBy(self.context):
-            self.context = self.context.aq_parent
 
         managerObj = queryMultiAdapter(
             (self.context, self.request, view),
