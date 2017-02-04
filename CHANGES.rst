@@ -4,7 +4,8 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix portlet add views by fixing import for i18n support.
+  [MatthewWilkes]
 
 
 1.0 (2016-04-11)
