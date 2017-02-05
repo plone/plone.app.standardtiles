@@ -4,7 +4,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from plone.app.portlets.browser.adding import PortletAdding as BasePortletAdding
 from plone.app.portlets.interfaces import IPortletPermissionChecker
-from plone.app.tiles import MessageFactory as _
+from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.tiles.browser.add import DefaultAddForm
 from plone.app.tiles.browser.add import DefaultAddView
 from plone.portlets.utils import hashPortletInfo
