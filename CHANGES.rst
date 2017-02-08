@@ -25,6 +25,10 @@ Bug fixes:
   to view it)
   [datakurre]
 
+- Fix issue where viewletmanagers were rendered in parent context instead of
+  object context
+  [datakurre]
+
 
 2.0.0 (2016-12-13)
 ------------------
