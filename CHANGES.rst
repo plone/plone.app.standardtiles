@@ -1,12 +1,14 @@
 Changelog
 =========
 
-2.0.1 (unreleased)
+2.1.0 (unreleased)
 ------------------
 
 New features:
 
-- Nothing changed yet.
+- Add plone.app.standardtiles.leadimage for rendering lead image from
+  lead image behavior directly (without viewlet indirection)
+  [datakurre]
 
 Bug fixes:
 
@@ -27,6 +29,15 @@ Bug fixes:
 
 - Fix issue where viewletmanagers were rendered in parent context instead of
   object context
+  [datakurre]
+
+- Fix viewletmanager and portlet tiles to render like on default views on ESI
+  when rendered directly against contentish context (ESI doesn't have
+  knowledge of parent request like subrequest based composition has)
+  [datakurre]
+
+- Fix discussion tile to properly post to tile URL and redirect to context URL;
+  Add explicit CSRF-protection to support rendering as ESI tile
   [datakurre]
 
 
@@ -211,7 +222,7 @@ Refactoring:
 ------------------
 
 - Fix field tile backwards compatibility with plone.app.blocks < 2.1.1
-  [Asko Soukka]
+  [datakurre]
 
 1.0a4 (2015-06-06)
 ------------------
