@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+from plone.app.layout.globals.interfaces import IViewView
+from Products.CMFCore.interfaces import IContentish
 from zope.browser.interfaces import IView
 from zope.component import queryMultiAdapter
+from zope.interface import alsoProvides
 
 import logging
 logger = logging.getLogger('plone.app.standardtiles')
@@ -10,6 +13,12 @@ def findView(tile, viewName):
     """Find the view to use for portlet/viewlet context lookup."""
     view = tile
     prequest = tile.request.get('PARENT_REQUEST', None)
+
+    # Provide IViewView by default when tile is rendered with contentish
+    # context outside subrequest, but don't return to still support custom
+    # policies
+    if prequest is None and IContentish.providedBy(tile.context):
+        alsoProvides(view, IViewView)
 
     # Attempt to determine the underlying view name from the parent request
     # XXX: This won't work if using ESI rendering or any other
