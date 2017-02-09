@@ -37,6 +37,18 @@
         permission="zope.Public"
         />
 
+    <configure package="plone.app.contenttypes.behaviors">
+      <plone:tile
+          name="plone.app.standardtiles.leadimage"
+          title="Lead image"
+          description="A tile which display a lead image"
+          add_permission="cmf.ModifyPortalContent"
+          class="plone.app.standardtiles.common.LeadImageTile"
+          template="leadimage.pt"
+          permission="zope2.View"
+          />
+    </configure>
+
     <plone:tile
         name="plone.app.standardtiles.keywords"
         title="Context keywords"

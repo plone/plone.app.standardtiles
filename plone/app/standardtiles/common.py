@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from AccessControl.ZopeGuards import guarded_hasattr
+from Acquisition import aq_base
 from Acquisition.interfaces import IAcquirer
+from plone.app.contenttypes.behaviors.leadimage import ILeadImage
 from plone.app.layout.globals.interfaces import IViewView
 from plone.app.viewletmanager.interfaces import IViewletSettingsStorage
 from plone.memoize.view import memoize
@@ -321,6 +323,26 @@ class TableOfContentsTile(ProxyViewletTile):
     """A Table of contents tile."""
     manager = 'plone.abovecontentbody'
     viewlet = 'plone.tableofcontents'
+
+
+class LeadImageTile(Tile):
+    """A tile that displays lead image, when available"""
+
+    available = False
+
+    def __call__(self):
+        adapted = ILeadImage(self.context, None)
+        try:
+            if adapted is not None and aq_base(adapted).image is not None:
+                self.context = adapted
+                self.available = True
+        except AttributeError:
+            pass
+        if self.available:
+            tile = self.index()
+        else:
+            tile = u''
+        return u'<html><body>{0:s}</body></html>'.format(tile)
 
 
 class DocumentActionsTile(ProxyViewletTile):
