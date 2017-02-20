@@ -8,6 +8,7 @@ from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from plone.tiles.interfaces import ITileType
 from Products.CMFCore.interfaces import IFolderish
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.interfaces import IValue
 from z3c.form.util import getSpecification
 from zope import schema
@@ -26,6 +27,22 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 class IContentListingTile(Schema):
     """A tile that displays a listing of content items"""
+
+    title = schema.TextLine(
+        title=_(u'label_title', default=u'Title'),
+        required=False
+    )
+
+    description = schema.Text(
+        title=_(u'label_description', default=u'Summary'),
+        description=_(
+            u'help_description',
+            default=u'Used in item listings and search results.'
+        ),
+        required=False,
+        missing_value=u'',
+    )
+
     widget(query=QueryStringFieldWidget)
     query = schema.List(
         title=_(u"Search terms"),
@@ -113,9 +130,11 @@ class DefaultSortOn(object):
 class ContentListingTile(Tile):
     """A tile that displays a listing of content items"""
 
+    template = ViewPageTemplateFile('templates/contentlisting_view.pt')
+
     def __call__(self):
         self.update()
-        return self.contents()
+        return self.template()
 
     def update(self):
         self.query = self.data.get('query')
@@ -148,6 +167,14 @@ class ContentListingTile(Tile):
         else:
             self.sort_order = 'ascending'
         self.view_template = self.data.get('view_template')
+
+    @property
+    def title(self):
+        return self.data.get('title')
+
+    @property
+    def description(self):
+        return self.data.get('description')
 
     def contents(self):
         """Search results"""
