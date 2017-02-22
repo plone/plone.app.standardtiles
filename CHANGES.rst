@@ -6,13 +6,16 @@ Changelog
 
 New features:
 
+- Added title and description fields, will show up on tile if filled in.
+  [agitator]
+
 - Add plone.app.standardtiles.leadimage for rendering lead image from
   lead image behavior directly (without viewlet indirection)
   [datakurre]
 
 Bug fixes:
 
-- Fix setup dependencies: do not depend on plone.app.imaging, it is not needed. 
+- Fix setup dependencies: do not depend on plone.app.imaging, it is not needed.
   This removes an transient dependency on Archetypes.
   [jensens]
 
