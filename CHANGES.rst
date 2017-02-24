@@ -6,7 +6,8 @@ Changelog
 
 New features:
 
-- Added title and description fields, will show up on tile if filled in.
+- Added title and description fields content listing tile,
+  will show up on tile if filled in.
   [agitator]
 
 - Add plone.app.standardtiles.leadimage for rendering lead image from
