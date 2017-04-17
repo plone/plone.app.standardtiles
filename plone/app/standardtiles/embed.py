@@ -3,6 +3,7 @@ from plone.app.standardtiles import _PMF as _
 from plone.memoize import ram
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
+from plone.memoize import ram
 from zope import schema
 
 import requests
