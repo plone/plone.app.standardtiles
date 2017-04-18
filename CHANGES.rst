@@ -4,7 +4,9 @@ Changelog
 2.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Bug fixes:
+- Fix non ASCII HTML tile content
+  [tomgross]
 
 
 2.1.0 (2017-02-24)

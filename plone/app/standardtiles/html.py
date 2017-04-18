@@ -6,6 +6,7 @@ from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from plone.tiles.directives import ignore_querystring
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
 from zope import schema
 
 
@@ -37,4 +38,4 @@ class HTMLTile(Tile):
                 content = data.getData()
         else:
             content = u'<p></p>'
-        return u"<html><body>%s</body></html>" % content
+        return u"<html><body>%s</body></html>" % safe_unicode(content)
