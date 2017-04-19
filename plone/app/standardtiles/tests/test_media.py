@@ -4,6 +4,7 @@ from persistent.dict import PersistentDict
 from PIL import Image
 from PIL import ImageDraw
 from plone.app.standardtiles.embed import NOEMBED_ENDPOINT
+from plone.app.standardtiles.html import HTMLTile
 from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
@@ -333,3 +334,11 @@ class ContentTileTests(TestCase):
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body/p')
         self.assertEqual(nodes[0].text, 'Hello World!')
+
+    def test_rawhtml_tile_utf8(self):
+        tile = HTMLTile(self.portal, self.layer['request'])
+        tile.data['content'] = u'<p>Hello Wörld!</p>'.encode('utf-8')
+        self.assertEqual(
+            tile(),
+            u'<html><body><p>Hello Wörld!</p></body></html>'
+        )

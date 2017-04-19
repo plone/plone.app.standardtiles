@@ -6,20 +6,16 @@ env:
 cache:
   pip: true
   directories:
-    - $HOME/buildout-cache
+    - $HOME/eggs
 matrix:
   fast_finish: true
 before_install:
-  - mkdir -p $HOME/buildout-cache/{eggs,downloads}
-  - mkdir $HOME/.buildout
-  - echo "[buildout]" > $HOME/.buildout/default.cfg
-  - echo "download-cache = $HOME/buildout-cache/downloads" >> $HOME/.buildout/default.cfg
-  - echo "eggs-directory = $HOME/buildout-cache/eggs" >> $HOME/.buildout/default.cfg
-  - pip install zc.buildout
+  - virtualenv .
+  - bin/pip install --upgrade zc.buildout==2.8.0 setuptools==34.1.1
   - cp test-$PLONE_VERSION.cfg buildout.cfg
 install:
-  - buildout -N -t 3 annotate
-  - buildout -N -t 3
+  - bin/buildout -N -t 3 annotate
+  - bin/buildout -N -t 3
 script:
   - bin/code-analysis
   - bin/test
