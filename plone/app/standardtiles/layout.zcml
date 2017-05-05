@@ -22,7 +22,7 @@
     <plone:tile
         name="plone.app.standardtiles.sitemap"
         title="Sitemap"
-        description="A tile which displays a sitemap"
+        description="Display the navigation map of this site"
         class=".sitemap.SitemapTile"
         schema=".sitemap.ISitemapTile"
         template="templates/navigation.pt"
@@ -157,7 +157,7 @@
     <plone:tile
         name="plone.app.standardtiles.discussion"
         title="Discussion"
-        description="A tile which displays comments"
+        description="Displays comments associated with the current item"
         add_permission="zope2.View"
         class=".discussion.DiscussionTile"
         for="*"
