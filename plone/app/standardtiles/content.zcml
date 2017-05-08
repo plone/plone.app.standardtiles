@@ -31,7 +31,7 @@
     <plone:tile
         name="plone.app.standardtiles.tableofcontents"
         title="Table of contents"
-        description="A tile which display a Table of contents"
+        description="Display a Table of contents from the page headers"
         add_permission="cmf.ModifyPortalContent"
         class=".common.TableOfContentsTile"
         permission="zope.Public"
@@ -41,7 +41,7 @@
       <plone:tile
           name="plone.app.standardtiles.leadimage"
           title="Lead image"
-          description="A tile which display a lead image"
+          description="Display the lead image of the current item, if any"
           add_permission="cmf.ModifyPortalContent"
           class="plone.app.standardtiles.common.LeadImageTile"
           template="leadimage.pt"
@@ -52,7 +52,7 @@
     <plone:tile
         name="plone.app.standardtiles.keywords"
         title="Context keywords"
-        description='A tile which displays the keywords of this item'
+        description='Display the keywords defined in the categorization tab of this item'
         add_permission="cmf.ModifyPortalContent"
         class=".common.KeywordsTile"
         for="*"
@@ -62,7 +62,7 @@
     <plone:tile
         name="plone.app.standardtiles.related_items"
         title="Related items"
-        description="Show related items"
+        description='Display the related items selected in the categorization tab of this item'
         class=".common.RelatedItemsTile"
         for="*"
         add_permission="cmf.ModifyPortalContent"
@@ -92,7 +92,7 @@
     <plone:tile
         name="plone.app.standardtiles.rss"
         title="RSS Feed"
-        description="A tile which displays a RSS feed"
+        description="Show the items from a content feed like https://plone.org/RSS"
         add_permission="cmf.ModifyPortalContent"
         class=".rss.RSSTile"
         for="*"
@@ -125,7 +125,7 @@
     <plone:tile
         name="plone.app.standardtiles.contentlisting"
         title="Content listing"
-        description='A tile which displays the content listing of this item'
+        description='Display the results of a saved search of the site content'
         permission="zope2.View"
         add_permission="cmf.ModifyPortalContent"
         class=".contentlisting.ContentListingTile"

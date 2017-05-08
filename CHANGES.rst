@@ -7,7 +7,9 @@ Changelog
 Bug fixes:
 - Fix non ASCII HTML tile content
   [tomgross]
-
+  
+- Add better descriptions for tiles.
+  [cguardia]
 
 2.1.0 (2017-02-24)
 ------------------
