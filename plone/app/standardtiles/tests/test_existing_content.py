@@ -325,3 +325,37 @@ class ExistingContentTileTests(TestCase):
         ).value = page2_uuid
         self.browser.getControl(name='buttons.save').click()
         self.assertIn(u'Hello World!', self.browser.contents)
+
+    def test_existing_content_tile_cssclass(self):
+        """The existing content tile takes the uuid of a content object in the
+        site and displays the result of calling its default view's content-core
+        macro
+
+        """
+        page_id = self.portal.invokeFactory(
+            'Document', 'an-another-page',
+            title=u'An another page', description=u'A description'
+        )
+
+        page_uuid = IUUID(self.portal[page_id])
+
+        transaction.commit()
+
+        self.unprivileged_browser.open(
+            self.portalURL +
+            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
+            page_uuid +
+            '&show_title=True'
+        )
+
+        self.assertNotIn(u'extra-class', self.unprivileged_browser.contents)
+
+        self.unprivileged_browser.open(
+            self.portalURL +
+            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
+            page_uuid +
+            '&show_title=True' +
+            '&tile_class=extra-class'
+        )
+
+        self.assertIn(u'extra-class', self.unprivileged_browser.contents)
