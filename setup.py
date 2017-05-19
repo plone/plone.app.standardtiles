@@ -54,6 +54,7 @@ setup(
         'test': [
             'plone.app.testing',
             'plone.app.dexterity',
+            'plone.app.discussion',
             'plone.app.widgets',
             'lxml',
         ],
