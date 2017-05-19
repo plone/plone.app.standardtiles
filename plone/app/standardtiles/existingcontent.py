@@ -103,6 +103,15 @@ class IExistingContentTile(model.Schema):
         required=False,
     )
 
+    tile_class = schema.TextLine(
+        title=_(u'Tile additional styles'),
+        description=_(
+            u'Insert a list of additional CSS classes that will',
+            ' be added to the tile'),
+        default=u'',
+        required=False,
+    )
+
 
 class SameContentValidator(validator.SimpleFieldValidator):
     def validate(self, content_uid):
@@ -211,6 +220,14 @@ class ExistingContentTile(Tile):
         except Exception:
             return 0
         return conversation.total_comments()
+
+    @property
+    def tile_class(self):
+        css_class = 'existing-content-tile'
+        additional_classes = self.data.get('tile_class', '')
+        if not additional_classes:
+            return css_class
+        return ' '.join([css_class, additional_classes])
 
     def __getattr__(self, name):
         # proxy attributes for this view to the selected view of the content

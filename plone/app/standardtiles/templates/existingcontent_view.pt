@@ -15,7 +15,7 @@
                     show_image python: data.get('show_image', False);
                     show_comments python: data.get('show_comments', False);">
 
-    <section>
+    <section class="${view/tile_class}">
       <h1 class="documentFirstHeading"
           tal:define="title context/Title|nothing"
           tal:condition="show_title"
