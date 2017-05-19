@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
+from plone import api
+from plone.api.exc import InvalidParameterError
 from plone.app.blocks import utils
 from plone.app.blocks.tiles import renderTiles
+from plone.app.discussion.interfaces import IConversation
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
 from plone.memoize.view import memoize
@@ -12,6 +15,7 @@ from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.utils import getHTMLSerializer
 from z3c.form import validator
 from zExceptions import Unauthorized
+from ZODB.POSException import POSKeyError
 from zope import schema
 from zope.browser.interfaces import IBrowserView
 from zope.component.hooks import getSite
@@ -74,6 +78,27 @@ class IExistingContentTile(model.Schema):
     show_description = schema.Bool(
         title=_(u'Show content description'),
         default=True
+    )
+
+    show_text = schema.Bool(
+        title=_(u'Show content text'),
+        default=True
+    )
+
+    show_image = schema.Bool(
+        title=_(u'Show content image (if allowed)'),
+        default=False
+    )
+
+    image_scale = schema.Choice(
+        title=_(u'Image scale'),
+        vocabulary='plone.app.vocabularies.ImagesScales',
+        required=False,
+    )
+
+    show_comments = schema.Bool(
+        title=_(u'Show content comments count'),
+        default=False
     )
 
 
@@ -158,6 +183,32 @@ class ExistingContentTile(Tile):
                              for child in node.getchildren()])
                     for name, node in panels.items()] + [clear]
         return []
+
+    @property
+    def image_tag(self):
+        context = self.content_context
+        if not context:
+            return ''
+        try:
+            scale_view = api.content.get_view(
+                name='images',
+                context=context,
+                request=self.request,
+            )
+            scale = self.data.get('image_scale', 'thumb')
+            return scale_view.scale('image', scale=scale).tag()
+        except (InvalidParameterError, POSKeyError, AttributeError):
+            # The object doesn't have an image field
+            return ""
+
+    @property
+    def comments_count(self):
+        context = self.content_context
+        try:
+            conversation = IConversation(context)
+        except Exception:
+            return 0
+        return conversation.total_comments()
 
     def __getattr__(self, name):
         # proxy attributes for this view to the selected view of the content
