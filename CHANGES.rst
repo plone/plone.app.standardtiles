@@ -6,7 +6,8 @@ Changelog
 
 New features:
 
-- Add "show_image", "show_text" and "show_comments" to existing content tile.
+- Add "show_image", "show_text", "show_comments" and "tile_class" additional
+  fields to existing content tile.
   [cekk]
 
 Bug fixes:
