@@ -86,8 +86,9 @@ class IExistingContentTile(model.Schema):
     )
 
     show_image = schema.Bool(
-        title=_(u'Show content image (if allowed)'),
-        default=False
+        title=_(u'Show content image (if available)'),
+        default=False,
+        required=False,
     )
 
     image_scale = schema.Choice(
@@ -97,8 +98,9 @@ class IExistingContentTile(model.Schema):
     )
 
     show_comments = schema.Bool(
-        title=_(u'Show content comments count'),
-        default=False
+        title=_(u'Show content comments count (if enabled)'),
+        default=False,
+        required=False,
     )
 
 
