@@ -4,10 +4,15 @@ Changelog
 2.1.1 (unreleased)
 ------------------
 
+New features:
+
+- Add "show_image", "show_text" and "show_comments" to existing content tile.
+  [cekk]
+
 Bug fixes:
 - Fix non ASCII HTML tile content
   [tomgross]
-  
+
 - Add better descriptions for tiles.
   [cguardia]
 
