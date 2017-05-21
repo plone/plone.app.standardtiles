@@ -10,10 +10,12 @@
                     item_macro nocall:view/item_macros/content-core|nothing;
                     data view/data;
                     show_title python: data.get('show_title', True);
-                    show_description python: data.get('show_description', True)">
+                    show_description python: data.get('show_description', True);
+                    show_text python: data.get('show_text', True);
+                    show_image python: data.get('show_image', False);
+                    show_comments python: data.get('show_comments', False);">
 
-    <section>
-
+    <section class="${view/tile_class}">
       <h1 class="documentFirstHeading"
           tal:define="title context/Title|nothing"
           tal:condition="show_title"
@@ -25,25 +27,31 @@
            tal:condition="show_description">
           Description
       </div>
-
-      <tal:block condition="item_macro">
-      <div tal:define="view nocall:view/default_view;
-                       plone_view context/@@plone;
-                       portal_state context/@@plone_portal_state;
-                       context_state context/@@plone_context_state;
-                       plone_layout context/@@plone_layout;
-                       lang portal_state/language;
-                       dummy python: plone_layout.mark_view(view);
-                       portal_url portal_state/portal_url;
-                       checkPermission nocall: context/portal_membership/checkPermission;
-                       site_properties context/portal_properties/site_properties;
-                       fix python:request.set('ACTUAL_URL', context.absolute_url())">
-          <div metal:use-macro="item_macro">
-              content
+      <tal:image condition="show_image">
+        <div class="content-image"
+             tal:define="image_tag view/image_tag">
+          <figure><img tal:replace="structure image_tag" /></figure>
+        </div>
+      </tal:image>
+      <tal:text condition="show_text">
+        <tal:block condition="item_macro">
+          <div tal:define="view nocall:view/default_view;
+                           plone_view context/@@plone;
+                           portal_state context/@@plone_portal_state;
+                           context_state context/@@plone_context_state;
+                           plone_layout context/@@plone_layout;
+                           lang portal_state/language;
+                           dummy python: plone_layout.mark_view(view);
+                           portal_url portal_state/portal_url;
+                           checkPermission nocall: context/portal_membership/checkPermission;
+                           site_properties context/portal_properties/site_properties;
+                           fix python:request.set('ACTUAL_URL', context.absolute_url())">
+              <div metal:use-macro="item_macro">
+                  content
+              </div>
           </div>
-      </div>
-      </tal:block>
-      <tal:block tal:condition="not:item_macro">
+        </tal:block>
+        <tal:block tal:condition="not:item_macro">
           <tal:comment tal:replace="nothing">
             XXX This case is really ONLY to make collection views work with
             the existing content view.
@@ -54,7 +62,15 @@
               </metal:block>
             </metal:entries>
           </metal:block>
-      </tal:block>
+        </tal:block>
+      </tal:text>
+      <div class="content-comments" tal:condition="show_comments"
+           tal:define="comments view/comments_count">
+        <a href="${context/absolute_url}#commenting">
+          <span class="icon-controlpanel-discussion"></span>
+          ${comments}
+        </a>
+      </div>
     </section>
   </body>
   </tal:block>

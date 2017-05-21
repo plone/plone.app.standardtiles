@@ -10,16 +10,13 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from plone.app.textfield import RichTextValue
 from plone.namedfile import NamedFile
 from plone.namedfile import NamedImage
 from plone.protect.authenticator import createToken
 from plone.testing.z2 import Browser
-from plone.uuid.interfaces import IUUID
 from unittest import TestCase
 from urllib import quote
 from zope.annotation import IAnnotations
-
 import os
 import plone.app.standardtiles.tests as test_dir
 import random
@@ -108,101 +105,6 @@ class ContentTileTests(TestCase):
         contents = self.unprivileged_browser.contents
         self.assertTrue(tile_title in contents)
         self.assertTrue(html_snippet in contents)
-
-    def test_existing_content_tile(self):
-        """The existing content tile takes the uuid of a content object in the
-        site and displays the result of calling its default view's content-core
-        macro
-
-        """
-        page_id = self.portal.invokeFactory(
-            'Document', 'an-another-page',
-            title=u'An another page', description=u'A description',
-            text=u'Hello World!'
-        )
-        self.portal[page_id].text = RichTextValue(u'Hello World!')
-
-        page_uuid = IUUID(self.portal[page_id])
-
-        transaction.commit()
-
-        self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid
-        )
-
-        self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
-
-    def test_existing_content_tile_private(self):
-        """When the current user does not have enough permissions to view
-        the content linked to existing content tile, the tile renders
-        empty"""
-        self.portal.portal_workflow.setDefaultChain(
-            'simple_publication_workflow')
-
-        page_id = self.portal.invokeFactory(
-            'Document', 'an-another-page',
-            title=u'An another page', description=u'A description',
-            text=u'Hello World!'
-        )
-        self.portal[page_id].text = RichTextValue(u'Hello World!')
-
-        page_uuid = IUUID(self.portal[page_id])
-
-        transaction.commit()
-
-        browser = Browser(self.layer['app'])
-        browser.handleErrors = False
-        browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid
-        )
-
-        self.assertNotIn(u'Hello World!', browser.contents)
-        self.assertIn(u'<body></body>', browser.contents)
-
-    def test_edit_existing_content_tile(self):
-        """The existing content tile takes the uuid of a content object in the
-        site and displays the result of calling its default view's content-core
-        macro
-
-        """
-        page_id = self.portal.invokeFactory('Document', 'an-another-page')
-        page = self.portal[page_id]
-        page_uuid = IUUID(page)
-        page.text = RichTextValue(u'Hello World!')
-
-        transaction.commit()
-
-        self.browser.open(
-            '{}/@@edit-tile/plone.app.standardtiles.existingcontent/unique'.format(
-                page.absolute_url()
-            )
-        )
-        self.browser.getControl(
-            name='plone.app.standardtiles.existingcontent.content_uid'
-        ).value = page_uuid
-        self.browser.getControl(name='buttons.save').click()
-
-        self.assertIn(u'not select the same content', self.browser.contents)
-
-        page2_id = self.portal.invokeFactory(
-            'Document', 'an-another-page-2',
-            title=u'An another page', description=u'A description',
-            text=u'Hello World!')
-        page2 = self.portal[page2_id]
-        page2_uuid = IUUID(page2)
-        page2.text = RichTextValue(u'Hello World!')
-
-        transaction.commit()
-
-        self.browser.getControl(
-            name='plone.app.standardtiles.existingcontent.content_uid'
-        ).value = page2_uuid
-        self.browser.getControl(name='buttons.save').click()
-        self.assertIn(u'Hello World!', self.browser.contents)
 
     def test_navigation_tile(self):
         """The navigation tree tile displays a navigation tree for the context
