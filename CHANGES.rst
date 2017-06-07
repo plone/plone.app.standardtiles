@@ -17,6 +17,10 @@ Bug fixes:
 - Add better descriptions for tiles.
   [cguardia]
 
+- Fix noembed endpoint url to get valid JSON response.
+  [tmassman]
+
+
 2.1.0 (2017-02-24)
 ------------------
 
