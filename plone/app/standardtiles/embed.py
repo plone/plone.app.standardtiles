@@ -8,7 +8,7 @@ from zope import schema
 import requests
 
 
-NOEMBED_ENDPOINT = 'https://noembed.com/embed?callback=embed_data=&url='
+NOEMBED_ENDPOINT = 'https://noembed.com/embed?url='
 
 
 class IEmbedTile(Schema):
