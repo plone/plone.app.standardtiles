@@ -21,9 +21,15 @@ from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import alsoProvides
 from zope.interface import implementer
+from zope.interface import Interface
 from zope.pagetemplate.interfaces import IPageTemplate
 
 
+class IDexterityFieldTileFormOrGroup(Interface):
+    """Marker interface for template overrides"""
+
+
+@implementer(IDexterityFieldTileFormOrGroup)
 @implementer(IAddForm)
 @implementer(IEditForm)
 class DexterityFieldTile(WidgetsView, Tile):
@@ -114,6 +120,7 @@ class DexterityFieldTile(WidgetsView, Tile):
                 return self._wrap_widget(widget.render())
 
             for group in self.groups:
+                alsoProvides(group, IDexterityFieldTileFormOrGroup)
                 widget = group.widgets.get(self.field)
                 if widget is not None:
                     return self._wrap_widget(widget.render())
@@ -148,7 +155,7 @@ def descriptionDisplayTemplate(context, request, form, field, widget):
 
 
 @implementer(IPageTemplate)
-@adapter(None, ITilesFormLayer, DexterityFieldTile,
+@adapter(None, ITilesFormLayer, IDexterityFieldTileFormOrGroup,
          None, NamedImageWidget)
 def namedImageDisplayTemplate(context, request, form, field, widget):
     # Disable CSRF, because imagescales may save a new scale into ZODB
