@@ -4,7 +4,9 @@ Changelog
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Bug fixes:
+- Changed title of existing content tile from h1 to h2
+  [agitator]
 
 
 2.2.0 (2017-06-09)
