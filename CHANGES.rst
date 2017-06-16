@@ -4,7 +4,11 @@ Changelog
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Bug fixes:
+
+- Fix issue where image field tile template registration did not apply for
+  fields on non-default fieldset
+  [datakurre]
 
 
 2.2.0 (2017-06-09)
