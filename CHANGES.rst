@@ -6,6 +6,9 @@ Changelog
 
 Bug fixes:
 
+- Changed title of existing content tile from h1 to h2
+  [agitator]
+
 - Fix issue where image field tile template registration did not apply for
   fields on non-default fieldset
   [datakurre]

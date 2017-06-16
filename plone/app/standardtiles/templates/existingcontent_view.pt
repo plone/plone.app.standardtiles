@@ -16,10 +16,9 @@
                     show_comments python: data.get('show_comments', False);">
 
     <section class="${view/tile_class}">
-      <h1 class="documentFirstHeading"
-          tal:define="title context/Title|nothing"
+      <h2 tal:define="title context/Title|nothing"
           tal:condition="show_title"
-          tal:content="title">Title or id</h1>
+          tal:content="title">Title or id</h2>
 
       <div class="documentDescription description"
            tal:define="description context/Description|nothing"
