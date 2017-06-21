@@ -122,6 +122,14 @@
         schema=".html.IHTMLTile"
         />
 
+    <!-- 8200: Inline HTML tiles into layout to optimize tile merge -->
+    <adapter
+        for="plone.app.blocks.interfaces.IBlocksTransformEnabled
+             plone.app.blocks.interfaces.IBlocksLayer"
+        name="plone.app.standardtiles.inlinehtml"
+        factory=".html.InlineHTMLTiles"
+        />
+
     <plone:tile
         name="plone.app.standardtiles.contentlisting"
         title="Content listing"
