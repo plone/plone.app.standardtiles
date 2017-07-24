@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
+import re
 from operator import itemgetter
+from lxml import etree
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
+from plone.autoform.directives import omitted
+from plone.app.mosaic.browser.main_template import ViewPageTemplateString
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from plone.tiles.interfaces import ITileType
+from plone.tiles.directives import ignore_querystring
 from Products.CMFCore.interfaces import IFolderish
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.interfaces import IValue
@@ -32,6 +37,15 @@ class IContentListingTile(Schema):
         title=_(u'label_title', default=u'Title'),
         required=False
     )
+
+    ignore_querystring('content')
+    # primary('html')
+    # omitted('content')
+    content = schema.Text(
+        title=_(u"HTML"),
+        required=False
+    )
+
 
     description = schema.Text(
         title=_(u'label_description', default=u'Summary'),
@@ -79,7 +93,7 @@ class IContentListingTile(Schema):
     view_template = schema.Choice(
         title=_(u'Display mode'),
         source=_(u'Available Listing Views'),
-        required=True
+        required=False
     )
 
 
@@ -132,6 +146,47 @@ class ContentListingTile(Tile):
 
     template = ViewPageTemplateFile('templates/contentlisting_view.pt')
 
+    html_template = """
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+        <body>
+            <tal:defines define="results nocall:options/context">
+                <tal:listing condition="results">
+                    <dl>
+                    <dt>
+                        <tal:entry repeat="item results">
+                        </tal:entry>
+                    </dt>
+                    </dl>
+                    </tal:listing>
+            </tal:defines>
+        </body>
+    </html>
+    """
+
+    dummy_html = """
+    <p>
+        ​<span class="mosaic-IDublinCore-title-tile mosaic-tile-inline mceNonEditable" contenteditable="false"> 
+            <span class="mosaic-rich-text mosaic-inline-tile-content">
+                <span data-tile="./@@plone.app.standardtiles.field?field=IDublinCore-title&amp;_inline=true">Stuff in here</span>
+            </span> 
+        </span>
+    </p>
+    <p>
+        <span class="mosaic-IDublinCore-description-tile mosaic-tile-inline mceNonEditable" contenteditable="false"> 
+            <span class="mosaic-rich-text mosaic-inline-tile-content">
+                <span data-tile="./@@plone.app.standardtiles.field?field=IDublinCore-description&amp;_inline=true"></span>
+            </span> 
+        </span>
+    </p>
+    """
+
+    # customContent = ViewPageTemplateString(generatetemplate(html_template, dummy_html))
+
     def __call__(self):
         self.update()
         return self.template()
@@ -173,6 +228,10 @@ class ContentListingTile(Tile):
         return self.data.get('title')
 
     @property
+    def html(self):
+        return self.data.get('content')
+
+    @property
     def description(self):
         return self.data.get('description')
 
@@ -190,9 +249,47 @@ class ContentListingTile(Tile):
         )
         view = self.view_template or 'listing_view'
         view = view.encode('utf-8')
-        options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
-        return getMultiAdapter((accessor, self.request), name=view)(**options)
+        contentlisting = getMultiAdapter((accessor, self.request), name=view).context
+        options = dict(original_context=self.context,
+                       context=contentlisting)
+        if(self.data.get('content')) :
+            entrycontent = self.data.get('content')
+        else:
+            entrycontent = self.dummy_html
+        obj = ViewPageTemplateString(generatetemplate(
+            self.html_template, entrycontent));
+        # obj = ViewPageTemplateString(self.html_template)
+        return obj(self,**options)
+        # return getMultiAdapter((accessor, self.request), name=view)(**options)
+
+
+def generatetemplate(outertemplate, entrycontent):
+    outer = etree.fromstring(outertemplate)
+    content = etree.HTML(entrycontent)
+    replaceTiles(content)
+    outer.find('.//{%s}entry' % '*').append(content)
+    return etree.tostring(outer)
+
+
+def replaceTiles(element):
+    """Go through elements in item layout html and replace tile references
+    with <tal:content>"""
+    for child in element:
+        classes = child.xpath('./@class')
+        if(classes):
+            tileClass = re.search('mosaic-IDublinCore-(.+?)-tile', classes[0])
+            if(tileClass):
+                print '<div tal:content="item/'+tileClass.group(1)+'" ></div>'
+                element.replace(
+                    child,
+                    etree.HTML('<div tal:content="item/'+tileClass.group(1)+'" ></div>'))
+
+        else:
+            replaceTiles(child)
+
+
+
 
 
 @provider(IVocabularyFactory)
