@@ -19,6 +19,11 @@
       Description
     </div>
 
+    <div class="itemHTML"
+        tal:content="view/html">
+        HTML
+    </div>
+
     <div tal:replace="structure python:view.contents()">Listing</div>
 
   </body>
