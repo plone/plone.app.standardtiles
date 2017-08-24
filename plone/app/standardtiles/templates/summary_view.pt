@@ -26,7 +26,7 @@
              tal:condition="item_has_image"
              tal:attributes="href item_url">
             <img tal:condition="item_has_image"                          
-                 tal:attributes="src string:${item/getURL}/@@images/image/thumb" />
+                 tal:attributes="src string:${item/getURL}/@@images/image/thumb" alt=""/>
           </a>
           <h2 class="tileHeadline"
               metal:define-macro="listitem">
