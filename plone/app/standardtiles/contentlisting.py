@@ -402,3 +402,10 @@ def availableListingViewsVocabulary(context):
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):
         voc.append(SimpleVocabulary.createTerm(key, key, label))
     return SimpleVocabulary(voc)
+
+class ViewPageTemplateString(ViewPageTemplateFile):
+
+    def __init__(self, text):
+        super(ViewPageTemplateString, self).__init__(__file__)
+        self.pt_edit(text, 'text/html')
+        self._cook()
