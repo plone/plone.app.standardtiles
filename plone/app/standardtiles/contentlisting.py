@@ -8,7 +8,6 @@ from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
 from plone.supermodel.directives import primary
 from plone.autoform.directives import omitted
-from plone.app.mosaic.browser.main_template import ViewPageTemplateString
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
@@ -402,3 +401,13 @@ def availableListingViewsVocabulary(context):
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):
         voc.append(SimpleVocabulary.createTerm(key, key, label))
     return SimpleVocabulary(voc)
+
+class ViewPageTemplateString(ViewPageTemplateFile):
+
+    def __init__(self, text):
+        super(ViewPageTemplateString, self).__init__(__file__)
+        self.pt_edit(text, 'text/html')
+        self._cook()
+
+    def _cook_check(self):
+        pass  # cooked only during init
