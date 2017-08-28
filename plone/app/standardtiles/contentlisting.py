@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import re
+import json
 from operator import itemgetter
 from lxml import etree
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
+from plone.supermodel.directives import primary
 from plone.autoform.directives import omitted
 from plone.app.mosaic.browser.main_template import ViewPageTemplateString
 from plone.registry.interfaces import IRegistry
@@ -13,7 +15,10 @@ from plone.tiles import Tile
 from plone.tiles.interfaces import ITileType
 from plone.tiles.directives import ignore_querystring
 from Products.CMFCore.interfaces import IFolderish
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from plone.subrequest import ISubRequest
 from z3c.form.interfaces import IValue
 from z3c.form.util import getSpecification
 from zope import schema
@@ -39,11 +44,33 @@ class IContentListingTile(Schema):
     )
 
     ignore_querystring('content')
-    # primary('html')
+    primary('content')
     # omitted('content')
     content = schema.Text(
         title=_(u"HTML"),
-        required=False
+        required=False,
+        default=_(u"""
+    <p>
+        <span class="mosaic-ILeadImage-image-tile mosaic-tile-inline mceNonEditable" contenteditable="false">
+            <span class="mosaic-inline-tile-content">
+                <span data-tile="./@@plone.app.standardtiles.field?field=ILeadImage-image">
+                </span>
+            </span>
+        </span> 
+        <span class="mosaic-IDublinCore-title-tile mosaic-tile-inline mceNonEditable" contenteditable="false">
+            <span class="mosaic-rich-text mosaic-inline-tile-content">
+                <span data-tile="./@@plone.app.standardtiles.field?field=IDublinCore-title">
+                </span>
+            </span>
+        </span>
+        <span class="mosaic-IDublinCore-description-tile mosaic-tile-inline mceNonEditable" contenteditable="false">
+            <span class="mosaic-rich-text mosaic-inline-tile-content">
+                <span data-tile="./@@plone.app.standardtiles.field?field=IDublinCore-description">
+                </span>
+            </span>
+        </span>
+    ​</p>
+    """)
     )
 
 
@@ -96,7 +123,6 @@ class IContentListingTile(Schema):
         required=False
     )
 
-
 class IContentListingTileLayer(Interface):
     """Layer (request marker interface) for content listing tile views"""
 
@@ -146,46 +172,12 @@ class ContentListingTile(Tile):
 
     template = ViewPageTemplateFile('templates/contentlisting_view.pt')
 
-    html_template = """
-    <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="plone">
-        <body>
-            <tal:defines define="results nocall:options/context">
-                <tal:listing condition="results">
-                    <dl>
-                    <dt>
-                        <tal:entry repeat="item results">
-                        </tal:entry>
-                    </dt>
-                    </dl>
-                    </tal:listing>
-            </tal:defines>
-        </body>
+    itemtemplate = ''
+
+    default_html = """
+    <html>
     </html>
     """
-
-    dummy_html = """
-    <p>
-        ​<span class="mosaic-IDublinCore-title-tile mosaic-tile-inline mceNonEditable" contenteditable="false"> 
-            <span class="mosaic-rich-text mosaic-inline-tile-content">
-                <span data-tile="./@@plone.app.standardtiles.field?field=IDublinCore-title&amp;_inline=true">Stuff in here</span>
-            </span> 
-        </span>
-    </p>
-    <p>
-        <span class="mosaic-IDublinCore-description-tile mosaic-tile-inline mceNonEditable" contenteditable="false"> 
-            <span class="mosaic-rich-text mosaic-inline-tile-content">
-                <span data-tile="./@@plone.app.standardtiles.field?field=IDublinCore-description&amp;_inline=true"></span>
-            </span> 
-        </span>
-    </p>
-    """
-
-    # customContent = ViewPageTemplateString(generatetemplate(html_template, dummy_html))
 
     def __call__(self):
         self.update()
@@ -229,7 +221,11 @@ class ContentListingTile(Tile):
 
     @property
     def html(self):
-        return self.data.get('content')
+        if (self.request.get('_layouteditor')):
+            return safe_unicode(self.data.get('content'))
+        else:
+            return safe_unicode(u'<p></p>')
+
 
     @property
     def description(self):
@@ -256,46 +252,144 @@ class ContentListingTile(Tile):
         if(self.data.get('content')) :
             entrycontent = self.data.get('content')
         else:
-            entrycontent = self.dummy_html
-        obj = ViewPageTemplateString(generatetemplate(
-            self.html_template, entrycontent));
-        # obj = ViewPageTemplateString(self.html_template)
+            entrycontent = self.default_html
+            self.data['content'] = self.default_html
+        self.itemtemplate = generatetemplate(entrycontent)
+        obj = ViewPageTemplateString(self.itemtemplate)
         return obj(self,**options)
         # return getMultiAdapter((accessor, self.request), name=view)(**options)
 
+html_template = """
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+        <body>
+            <tal:defines define="results nocall:options/context">
+                <tal:listing condition="results">
+                    <dl class="listing">
+                    <dt>
+                        <tal:entry repeat="item results">
+                        </tal:entry>
+                    </dt>
+                    </dl>
+                    </tal:listing>
+            </tal:defines>
+        </body>
+    </html>
+    """
 
-def generatetemplate(outertemplate, entrycontent):
-    outer = etree.fromstring(outertemplate)
+table_template = """
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+        <body>
+            <tal:defines define="results nocall:options/context">
+                <tal:listing condition="results">
+                    <table class="listing">
+                    <tbody>
+                        <tal:entry repeat="item results">
+                        </tal:entry>
+                    </tbody>
+                    </table>
+                    </tal:listing>
+            </tal:defines>
+        </body>
+    </html>
+    """
+
+def generatetemplate(entrycontent):
     content = etree.HTML(entrycontent)
-    replaceTiles(content)
-    outer.find('.//{%s}entry' % '*').append(content)
+    #If there is a table present in content, see if it should be repeated
+    table = content.find('.//table/*')
+    if(table and isTable(content, False)):
+        outer = etree.fromstring(table_template)
+        replaceTiles(table)
+    else:
+        outer = etree.fromstring(html_template)
+        replaceTiles(content)
+    #etree.HTML() adds html and body tags so we find nodes inside them
+    contentBody = content.xpath('.//body/*')
+    for child in contentBody:
+        outer.find('.//{%s}entry' % '*')\
+            .append(child)
     return etree.tostring(outer)
+
+def isTable(element, insideTable):
+    """Checks if all the inline tiles in
+    element are inside a table"""
+    for child in element:
+        isTile = child.xpath('./@data-tile')
+        # import pdb
+        # pdb.set_trace()
+        if(isTile and not insideTable):
+            return False
+        else:
+            if (child.tag is 'table'):
+                insideTable = True
+            return isTable(child, insideTable)
+    return True
 
 
 def replaceTiles(element):
     """Go through elements in item layout html and replace tile references
     with <tal:content>"""
     for child in element:
-        classes = child.xpath('./@class')
-        if(classes):
-            tileClass = re.search('mosaic-IDublinCore-(.+?)-tile', classes[0])
-            if(tileClass):
-                print '<div tal:content="item/'+tileClass.group(1)+'" ></div>'
-                element.replace(
-                    child,
-                    etree.HTML('<div tal:content="item/'+tileClass.group(1)+'" ></div>'))
-
+        classes = child.xpath('./@data-tile')
+        tag = child.tag
+        if (classes):
+            listfield = re.search('listfieldtile', classes[0])
+            if(listfield):
+                tileClass = re.search('\?field=(.*)', classes[0])
+                if (tileClass):
+                    field = tileClass.group(1)
+                    if(field):
+                        htmlstring = '<' + tag + '>' '<' + tag + ' tal:condition="python: callable(item.' + field + ')" ' \
+                             'tal:content="python: item.' + field + '()" >' \
+                            '</' + tag + '>' \
+                            '<' + tag + \
+                            ' tal:condition="python:not callable(item.' + field + ')" tal:content="item/' \
+                            + field + '">' \
+                            '</' + tag + '>' '</' + tag + '>'
+                        talNode = etree.HTML(htmlstring)
+                        # for tileurl in talNode.xpath('./@data-tileurl'):
+                        #     tileurl.getparent().remove(tileurl)
+                        # element.replace(
+                        #     child, talNode.find('.//body/*'))
+                        #This is a tad silly
+                        element.getparent().getparent().replace(
+                            element.getparent(), talNode.find('.//body/*'))
+                        # import pdb
+                        # pdb.set_trace()
+            else:
+                tileClass = re.search('\?field=(.+?)-(.*)', classes[0])
+                if (tileClass):
+                    field = tileClass.group(2)
+                    talNode = etree.HTML('<' + tag + ' tal:content="item/'
+                                     + field + '" ></' + tag + '>')
+                    if (tileClass.group(2) == 'image'):
+                        talNode = etree.HTML("""
+                            <img tal:condition="python:item.getIcon"                          
+                                 tal:attributes="src string:${item/getURL}/@@images/image/thumb"
+                                 />""")
+                    element.replace(
+                        child, talNode.find('.//body/*'))
         else:
             replaceTiles(child)
 
 
 
-
+def getBodyChilds(element):
+    return element.find('./html/body/*')
 
 @provider(IVocabularyFactory)
 def availableListingViewsVocabulary(context):
     """Get available views for listing content as vocabulary"""
-
     registry = getUtility(IRegistry)
     listing_views = registry.get('plone.app.standardtiles.listing_views', {})
     if len(listing_views) == 0:

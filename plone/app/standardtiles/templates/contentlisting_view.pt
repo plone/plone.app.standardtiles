@@ -20,11 +20,12 @@
     </div>
 
     <div class="itemHTML"
-        tal:content="view/html">
+        tal:content="structure view/html">
         HTML
     </div>
 
-    <div tal:replace="structure python:view.contents()">Listing</div>
+    <div tal:replace="structure python:view.contents()">
+        Listing</div>
 
   </body>
 </html>

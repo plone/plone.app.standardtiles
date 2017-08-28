@@ -57,6 +57,23 @@
         />
 
     <plone:tile
+        name="plone.app.standardtiles.listfieldtile"
+        title="List field"
+        description="Display a metadata field of a content listing item"
+        permission="zope2.View"
+        add_permission="cmf.ModifyPortalContent"
+        class=".listfieldtile.ListFieldTile"
+        schema=".listfieldtile.IListFieldTile"
+        template="templates/listfield.pt"
+        for="*"
+        />
+
+    <utility
+            component="plone.app.standardtiles.listfieldtile.metadataFieldVocabulary"
+            name="Available metadata fields"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.title"
         class=".metadata.DublinCoreTitleTile"
         for="Products.CMFCore.interfaces.IMinimalDublinCore"

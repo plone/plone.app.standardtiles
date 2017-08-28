@@ -53,6 +53,7 @@
       <element>plone.app.standardtiles.title</element>
       <element>plone.app.standardtiles.toolbar</element>
       <element>plone.app.standardtiles.viewletmanager</element>
+      <element>plone.app.standardtiles.listfieldtile</element>
     </value>
   </record>
 

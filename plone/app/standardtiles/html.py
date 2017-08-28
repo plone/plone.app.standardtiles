@@ -34,6 +34,7 @@ class HTMLTile(Tile):
     re-usable layouts in the mosaic editor
     """
 
+
     def __call__(self):
         content = self.data.get('content')
         if content:
