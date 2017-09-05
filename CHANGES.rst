@@ -12,6 +12,9 @@ Bug fixes:
 - Fix issue where image field tile template registration did not apply for
   fields on non-default fieldset
   [datakurre]
+  
+- Added Alt attribute to summary view, needed for accessibility
+  [rnunez]
 
 
 2.2.0 (2017-06-09)
