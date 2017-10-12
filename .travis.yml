@@ -2,8 +2,8 @@ language: python
 python: 2.7
 sudo: false
 env:
-  - PLONE_VERSION=5.x
-  - PLONE_VERSION=5.1.x
+  - PLONE_VERSION=5.0
+  - PLONE_VERSION=5.1
 cache:
   pip: true
   directories:
@@ -13,7 +13,7 @@ matrix:
 before_install:
   - pip install -U pip
   - pip install -r https://github.com/plone/buildout.coredev/raw/5.1/requirements.txt
-  - cp test-$PLONE_VERSION.cfg buildout.cfg
+  - cp test-$PLONE_VERSION.x.cfg buildout.cfg
 install:
   - buildout -N -t 3 annotate
   - buildout -N -t 3
