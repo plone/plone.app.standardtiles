@@ -3,19 +3,20 @@ python: 2.7
 sudo: false
 env:
   - PLONE_VERSION=5.x
+  - PLONE_VERSION=5.1.x
 cache:
   pip: true
   directories:
-    - $HOME/eggs
+    - eggs
 matrix:
   fast_finish: true
 before_install:
-  - virtualenv .
-  - bin/pip install --upgrade zc.buildout==2.8.0 setuptools==34.1.1
+  - pip install -U pip
+  - pip install -r https://github.com/plone/buildout.coredev/raw/5.1/requirements.txt
   - cp test-$PLONE_VERSION.cfg buildout.cfg
 install:
-  - bin/buildout -N -t 3 annotate
-  - bin/buildout -N -t 3
+  - buildout -N -t 3 annotate
+  - buildout -N -t 3
 script:
   - bin/code-analysis
   - bin/test
