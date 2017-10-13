@@ -4,6 +4,7 @@
 *.pyc
 .idea
 .installed.cfg
+.coverage
 bin
 develop-eggs
 parts
