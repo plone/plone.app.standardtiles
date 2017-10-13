@@ -6,6 +6,12 @@ Changelog
 
 Bug fixes:
 
+- Fix tests of Boolean widget: 
+  Remove checks of implementation details of the widget. 
+  This does not belong into this tests.
+  It changed between 5.0 and 5.1 after some fixes.
+  [jensens]
+
 - Fix issue #79,
   where a test failed with Plone 5.1, because a tile in a test had no ``__name__``.
   [jensens]

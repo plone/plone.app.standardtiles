@@ -149,7 +149,6 @@ class TestFieldTile(TestCase):
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_bool"]')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual(0, len(nodes[0].getchildren()))
 
         # Let's then edit the field:
         self.content.test_bool = True
@@ -164,15 +163,10 @@ class TestFieldTile(TestCase):
         )
         self.assertIn('<span id="form-widgets-test_bool"',
                       self.browser.contents)
-        self.assertIn('class="selected-option"',
-                      self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_bool"]')
         self.assertEqual(len(nodes), 1)
-
-        children = nodes[0].xpath('//*[@class="selected-option"]')
-        self.assertEqual(1, len(children))
 
     def test_custom_widget(self):
         """Dexterity allows the developer not only to simply define a schema,
