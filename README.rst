@@ -1,7 +1,7 @@
 Plone Standard Tiles
 ====================
 
-.. image:: https://secure.travis-ci.org/plone/plone.app.standardtiles.png?branch=master
+.. image:: https://travis-ci.org/plone/plone.app.standardtiles.svg?branch=master
     :alt: Travis CI badge
     :target: http://travis-ci.org/plone/plone.app.standardtiles
 
