@@ -8,6 +8,7 @@ bin
 develop-eggs
 parts
 build
-/include
+/include/
 /lib*
+/local/
 pip-selfcheck.json
