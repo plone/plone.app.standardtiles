@@ -239,6 +239,7 @@ class ContentTileTests(TestCase):
 
     def test_rawhtml_tile_utf8(self):
         tile = HTMLTile(self.portal, self.layer['request'])
+        tile.__name__ = 'test.html.tile'
         tile.data['content'] = u'<p>Hello Wörld!</p>'.encode('utf-8')
         self.assertEqual(
             tile(),

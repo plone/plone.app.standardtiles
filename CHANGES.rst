@@ -6,6 +6,10 @@ Changelog
 
 Bug fixes:
 
+- Fix issue #79,
+  where a test failed with Plone 5.1, because a tile in a test had no ``__name__``.
+  [jensens]
+
 - Changed title of existing content tile from h1 to h2
   [agitator]
 
