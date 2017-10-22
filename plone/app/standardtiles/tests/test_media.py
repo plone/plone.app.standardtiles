@@ -14,15 +14,16 @@ from plone.namedfile import NamedFile
 from plone.namedfile import NamedImage
 from plone.protect.authenticator import createToken
 from plone.testing.z2 import Browser
+from six.moves import urllib
+from six.moves.urllib.parse import quote
 from unittest import TestCase
-from urllib import quote
 from zope.annotation import IAnnotations
+
 import os
 import plone.app.standardtiles.tests as test_dir
 import random
-import StringIO
+import six
 import transaction
-import urllib
 
 
 def fromstring(s):
@@ -39,7 +40,7 @@ def image():
                                              random.randint(0, 255)))
     del draw
 
-    output = StringIO.StringIO()
+    output = six.StringIO()
     img.save(output, 'PNG')
     output.seek(0)
 
@@ -230,7 +231,7 @@ class ContentTileTests(TestCase):
         self.browser.open(
             self.pageURL +
             '/@@plone.app.standardtiles.rawhtml/test',
-            data='content={0:s}'.format(urllib.quote(content))
+            data='content={0:s}'.format(urllib.parse.quote(content))
         )
 
         root = fromstring(self.browser.contents)

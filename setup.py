@@ -48,6 +48,7 @@ setup(
         'Products.CMFPlone>=5.0.4',
         'requests',
         'setuptools',
+        'six',
         'z3c.form',
     ],
     extras_require={

@@ -2,9 +2,8 @@
 from plone.app.tiles.browser.edit import DefaultEditView
 from plone.portlets.utils import unhashPortletInfo
 from plone.uuid.interfaces import IUUIDGenerator
+from six.moves import urllib
 from zope.component import getUtility
-
-import urllib
 
 
 class PortletTileEditView(DefaultEditView):
@@ -33,5 +32,5 @@ class PortletTileEditView(DefaultEditView):
         )
         self.request.form['referer'] = tile_url
         self.request.response.redirect(
-            '{0}?referer={0}'.format(url, urllib.quote(tile_url))
+            '{0}?referer={0}'.format(url, urllib.parse.quote(tile_url))
         )
