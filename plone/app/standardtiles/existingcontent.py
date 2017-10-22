@@ -21,6 +21,8 @@ from zope.browser.interfaces import IBrowserView
 from zope.component.hooks import getSite
 from zope.interface import Invalid
 
+import six
+
 
 def uuidToObject(uuid):
     """Given a UUID, attempt to return a content object. Will return
@@ -174,7 +176,7 @@ class ExistingContentTile(Tile):
     def item_panels(self):
         default_view = self.default_view
         html = default_view()
-        if isinstance(html, unicode):
+        if isinstance(html, six.text_type):
             html = html.encode('utf-8')
         serializer = getHTMLSerializer([html], pretty_print=False,
                                        encoding='utf-8')

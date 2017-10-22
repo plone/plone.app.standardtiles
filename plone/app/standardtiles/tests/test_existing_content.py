@@ -17,8 +17,9 @@ from plone.uuid.interfaces import IUUID
 from unittest import TestCase
 from zope.component import createObject
 from zope.component import queryUtility
+
 import random
-import StringIO
+import six
 import transaction
 
 
@@ -31,7 +32,7 @@ def image():
                                              random.randint(0, 255)))
     del draw
 
-    output = StringIO.StringIO()
+    output = six.StringIO()
     img.save(output, 'PNG')
     output.seek(0)
 

@@ -23,6 +23,8 @@ Bug fixes:
   fields on non-default fieldset
   [datakurre]
 
+- Imports are Python3 compatible
+  [b4oshany]
 
 2.2.0 (2017-06-09)
 ------------------
