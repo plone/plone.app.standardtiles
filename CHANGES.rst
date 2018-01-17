@@ -32,6 +32,10 @@ Bug fixes:
 - Imports are Python3 compatible
   [b4oshany]
 
+- Fix issue where field tile for title and description fields rendered
+  with double <html><body>-wrapping
+  [datakurre]
+
 2.2.0 (2017-06-09)
 ------------------
 
