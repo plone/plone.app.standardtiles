@@ -20,10 +20,19 @@ from unittest import TestCase
 from zope.annotation import IAnnotations
 
 import os
+import pkg_resources
 import plone.app.standardtiles.tests as test_dir
 import random
 import six
 import transaction
+import unittest
+
+try:
+    pkg_resources.get_distribution('plone.formwidget.multifile')
+except pkg_resources.DistributionNotFound:
+    HAS_MULTIFILE = False
+else:
+    HAS_MULTIFILE = True
 
 
 def fromstring(s):
@@ -144,6 +153,10 @@ class ContentTileTests(TestCase):
         nodes = root.xpath('//body//ul[@class="navTree navTreeLevel0"]/li')
         self.assertEqual(len(nodes), 1)  # Only simple page
 
+    @unittest.skipIf(
+        not HAS_MULTIFILE,
+        'plone.formwidget.multifile is not available',
+    )
     def test_attachment_tile(self):
         """This persistent tile renders a link pointing to a file stored in the
         tile data itself.
