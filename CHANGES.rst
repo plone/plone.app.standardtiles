@@ -1,13 +1,19 @@
 Changelog
 =========
 
-2.2.1 (unreleased)
+2.3.0 (unreleased)
 ------------------
+
+New features:
+
+- Moved dependency on ``plone.formwidget.multifile`` used for deprecated Attachement-Tile to an extra ``attachment`` in ``setup.py``.
+  [jensens]
+
 
 Bug fixes:
 
-- Fix tests of Boolean widget: 
-  Remove checks of implementation details of the widget. 
+- Fix tests of Boolean widget:
+  Remove checks of implementation details of the widget.
   This does not belong into this tests.
   It changed between 5.0 and 5.1 after some fixes.
   [jensens]

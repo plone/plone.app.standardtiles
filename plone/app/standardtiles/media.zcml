@@ -50,6 +50,7 @@
         />
 
     <plone:tile
+        zcml:installed="plone.formwidget.multifile"
         name="plone.app.standardtiles.attachment"
         title="Attachment"
         description='A tile which displays a link to an uploaded file'
@@ -62,6 +63,7 @@
         />
 
     <browser:page
+        zcml:installed="plone.formwidget.multifile"
         name="download"
         for=".attachment.AttachmentTile"
         permission="zope2.View"
