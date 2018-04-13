@@ -93,7 +93,10 @@ class DexterityFieldTile(WidgetsView, Tile):
         ).allowed(self.field)
 
     def _wrap_widget(self, render):
-        return ''.join([u'<html><body>', render, '</body></html>'])
+        if render.rstrip().endswith(u'</html>'):
+            return render
+        else:
+            return ''.join([u'<html><body>', render, u'</body></html>'])
 
     def updateWidgets(self, prefix=None):
         if self.field is not None:
