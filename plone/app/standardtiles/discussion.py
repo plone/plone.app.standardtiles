@@ -13,7 +13,7 @@ from zope.viewlet.interfaces import IViewletManager
 
 
 class TileCommentForm(CommentForm):
-    prefix = 'plone.app.standardtiles.discussion'
+    prefix = 'form'
     action = ''
 
 
