@@ -4,7 +4,9 @@ Changelog
 2.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix TileCommentForm to prefix forms with just 'form' to fix compatibility
+  with plone.app.discussion javascripts
+  [datakurre]
 
 
 2.3.0 (2018-04-13)
