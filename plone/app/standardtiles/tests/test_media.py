@@ -14,7 +14,6 @@ from plone.namedfile import NamedFile
 from plone.namedfile import NamedImage
 from plone.protect.authenticator import createToken
 from plone.testing.z2 import Browser
-from six.moves import urllib
 from six.moves.urllib.parse import quote
 from unittest import TestCase
 from zope.annotation import IAnnotations
@@ -236,22 +235,16 @@ class ContentTileTests(TestCase):
         nodes = root.xpath('//body//img')
         self.assertEqual(len(nodes), 1)
 
-    def test_rawhtml_tile(self):
-        content = '<p>Hello World!</p>'
-
-        transaction.commit()
-
-        self.browser.open(
-            self.pageURL +
-            '/@@plone.app.standardtiles.rawhtml/test',
-            data='content={0:s}'.format(urllib.parse.quote(content))
+    def test_html_tile_unicode(self):
+        tile = HTMLTile(self.portal, self.layer['request'])
+        tile.__name__ = 'test.html.tile'
+        tile.data['content'] = '<p>Hello Wörld!</p>'
+        self.assertEqual(
+            tile(),
+            u'<html><body><p>Hello Wörld!</p></body></html>'
         )
 
-        root = fromstring(self.browser.contents)
-        nodes = root.xpath('//body/p')
-        self.assertEqual(nodes[0].text, 'Hello World!')
-
-    def test_rawhtml_tile_utf8(self):
+    def test_html_tile_utf8(self):
         tile = HTMLTile(self.portal, self.layer['request'])
         tile.__name__ = 'test.html.tile'
         tile.data['content'] = u'<p>Hello Wörld!</p>'.encode('utf-8')

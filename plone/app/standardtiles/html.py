@@ -15,8 +15,8 @@ class IHTMLTile(Schema):
     ignore_querystring('content')
     primary('content')
     content = schema.Text(
-        title=_(u"HTML"),
-        required=True
+        title=_(u'HTML'),
+        required=True,
     )
 
 

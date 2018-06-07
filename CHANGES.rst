@@ -4,6 +4,9 @@ Changelog
 2.3.1 (unreleased)
 ------------------
 
+- Fix tests around deprecated raw html tile and use htmltile.
+  [jensens]
+
 - Fix TileCommentForm to prefix forms with just 'form' to fix compatibility
   with plone.app.discussion javascripts
   [datakurre]
