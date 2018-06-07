@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.1 (unreleased)
+2.3.1 (2018-06-07)
 ------------------
 
 - Fix tests around deprecated raw html tile and use htmltile.
