@@ -7,6 +7,10 @@ Changelog
 - Fix tests around deprecated raw html tile and use htmltile.
   [jensens]
 
+- Fix #87: Existing Content Tile broken when used in multilingual sites.
+  Widget is now similar to related items behavior.
+  [jensens]
+
 - Fix TileCommentForm to prefix forms with just 'form' to fix compatibility
   with plone.app.discussion javascripts
   [datakurre]

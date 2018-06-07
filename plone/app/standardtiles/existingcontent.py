@@ -6,7 +6,8 @@ from plone.app.blocks import utils
 from plone.app.blocks.tiles import renderTiles
 from plone.app.discussion.interfaces import IConversation
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
+from plone.app.z3cform.widget import RelatedItemsFieldWidget
+from plone.autoform import directives as form
 from plone.memoize.view import memoize
 from plone.supermodel import model
 from plone.tiles import Tile
@@ -57,24 +58,25 @@ def uuidToCatalogBrainUnrestricted(uuid):
     return result[0]
 
 
-class CatalogSource(CatalogSourceBase):
-    """ExistingContentTile specific catalog source to allow targeted widget
-    """
-    def __contains__(self, value):
-        return True  # Always contains to allow lazy handling of removed objs
-
-
 class IExistingContentTile(model.Schema):
 
     content_uid = schema.Choice(
-        title=_(u"Select an existing content"),
+        title=_(u"Select an existing contentt"),
         required=True,
-        source=CatalogSource(),
+        vocabulary='plone.app.vocabularies.Catalog',
+    )
+    form.widget(
+        'content_uid',
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            'recentlyUsed': True,
+        }
     )
 
     show_title = schema.Bool(
         title=_(u'Show content title'),
-        default=True
+        default=True,
     )
 
     show_description = schema.Bool(
@@ -84,7 +86,7 @@ class IExistingContentTile(model.Schema):
 
     show_text = schema.Bool(
         title=_(u'Show content text'),
-        default=True
+        default=True,
     )
 
     show_image = schema.Bool(
@@ -120,14 +122,16 @@ class SameContentValidator(validator.SimpleFieldValidator):
         super(SameContentValidator, self).validate(content_uid)
         context = aq_parent(self.context)  # default context is tile data
         if content_uid and IUUID(context, None) == content_uid:
-            raise Invalid("You can not select the same content as "
-                          "the page you are currently on.")
+            raise Invalid(
+                'You can not select the same content as the page you are '
+                'currently on.'
+            )
 
 
 # Register validator
 validator.WidgetValidatorDiscriminators(
     SameContentValidator,
-    field=IExistingContentTile['content_uid']
+    field=IExistingContentTile['content_uid'],
 )
 
 
