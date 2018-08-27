@@ -4,6 +4,9 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
+- Add uninstall profile.
+  [hvelarde]
+
 - Fix portlet add views by fixing import for i18n support.
   [MatthewWilkes]
 

@@ -5,12 +5,15 @@ cache:
   directories:
   - eggs
 env:
-- PLONE_VERSION=4.3.x
-- PLONE_VERSION=5.x
+- PLONE_VERSION=4.3
+# XXX: plone.protect is breaking some tests in Plone 5
+- PLONE_VERSION=5.0 PLONE_CSRF_DISABLED=true
+before_install:
+- cp test-$PLONE_VERSION.x.cfg buildout.cfg
 install:
-- python bootstrap.py -v 1.7.1 -c test-$PLONE_VERSION.cfg
-- bin/buildout -N -t 3 -c test-$PLONE_VERSION.cfg annotate
-- bin/buildout -N -t 3 -c test-$PLONE_VERSION.cfg
+- python bootstrap.py
+- bin/buildout -N annotate
+- bin/buildout -N
 script:
 # - bin/code-analysis
 - bin/test
