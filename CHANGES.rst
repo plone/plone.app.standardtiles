@@ -1,7 +1,15 @@
 Changelog
 =========
 
-1.0.1 (unreleased)
+1.0.2 (unreleased)
+------------------
+
+- 1.0.1 was released as dev0, this is a release as 1.0.2 without postfix.
+  Sorry for any inconvinience.
+  [jensens]
+
+
+1.0.1 (2018-08-30)
 ------------------
 
 - Add uninstall profile.
