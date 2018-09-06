@@ -4,7 +4,8 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add uninstall profile.
+  [hvelarde]
 
 
 2.3.1 (2018-06-07)
