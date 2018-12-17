@@ -236,7 +236,6 @@ class PAStandardtilesTestType(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         # install into the Plone site
         applyProfile(portal, 'plone.app.dexterity:default')
-        applyProfile(portal, 'plone.app.widgets:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
 
         # ensure plone.app.theming disabled
