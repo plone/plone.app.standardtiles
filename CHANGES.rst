@@ -7,6 +7,11 @@ Changelog
 - Add uninstall profile.
   [hvelarde]
 
+- Remove installation of plone.app.widgets default profile in tests.
+  In Plone 5.0/5.1 with plone.app.widgets >= 2.0, the profile is only a dummy profile for BBB.
+  In Plone 5.2 it will be removed.
+  [jensens]
+
 
 2.3.1 (2018-06-07)
 ------------------
