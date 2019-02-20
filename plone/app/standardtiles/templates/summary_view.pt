@@ -25,7 +25,7 @@
              class="summary-image"
              tal:condition="item_has_image"
              tal:attributes="href item_url">
-            <img tal:condition="item_has_image"                          
+            <img tal:condition="item_has_image"
                  tal:attributes="src string:${item/getURL}/@@images/image/thumb" />
           </a>
           <h2 class="tileHeadline"
@@ -38,8 +38,8 @@
             </a>
           </h2>
           <div class="documentByLine">
-            <tal:event condition="python: item_type == 'Event'">
-              <span tal:condition="python: item_type == 'Event' and item.location"
+            <tal:event condition="python: item_start or item_end">
+              <span tal:condition="python: item.location"
                     i18n:translate="">
                 (<span tal:content="string:${item/location}"
                       class="location"
@@ -61,7 +61,7 @@
                     ${python: item_end.ctime()}
                 </abbr>)
               </span>
-              <span tal:condition="python: item_type == 'Event' and not item.location"
+              <span tal:condition="python: not item.location"
                     i18n:translate="">
                 (from
                 <abbr class="dtstart pat-moment"

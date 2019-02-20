@@ -12,6 +12,9 @@ Changelog
   In Plone 5.2 it will be removed.
   [jensens]
 
+- Show event details for all content types which provides start or end fields.
+  [MrTango]
+
 
 2.3.1 (2018-06-07)
 ------------------
