@@ -4,6 +4,9 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Fix content listing tile to work with python 3
+  [vangheem]
+
 - Add uninstall profile.
   [hvelarde]
 
