@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
+from Products.CMFPlone.utils import safe_unicode
+from ZODB.POSException import POSKeyError
 from plone import api
 from plone.api.exc import InvalidParameterError
 from plone.app.blocks import utils
@@ -12,11 +14,9 @@ from plone.memoize.view import memoize
 from plone.supermodel import model
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
-from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.utils import getHTMLSerializer
 from z3c.form import validator
 from zExceptions import Unauthorized
-from ZODB.POSException import POSKeyError
 from zope import schema
 from zope.browser.interfaces import IBrowserView
 from zope.component.hooks import getSite
@@ -47,7 +47,7 @@ def uuidToCatalogBrainUnrestricted(uuid):
     if site is None:
         return None
 
-    catalog = getToolByName(site, 'portal_catalog', None)
+    catalog = api.portal.get_tool('portal_catalog')
     if catalog is None:
         return None
 
@@ -196,7 +196,7 @@ class ExistingContentTile(Tile):
             except RuntimeError:  # maximum recursion depth exceeded
                 return []
             clear = '<div style="clear: both;"></div>'
-            return [''.join([serializer.serializer(child)
+            return [''.join([safe_unicode(serializer.serializer(child))
                              for child in node.getchildren()])
                     for name, node in panels.items()] + [clear]
         return []
