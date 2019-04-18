@@ -40,7 +40,7 @@ setup(
         'plone.app.dexterity',
         'plone.app.discussion',
         'plone.app.registry',
-        'plone.app.tiles',
+        'plone.app.tiles>=3.1.2',
         'plone.formwidget.querystring',
         'plone.subrequest',
         'plone.tiles>=1.8.0.dev0',
