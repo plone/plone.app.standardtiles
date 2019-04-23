@@ -31,11 +31,9 @@ def image():
                                              random.randint(0, 255),
                                              random.randint(0, 255)))
     del draw
-
-    output = six.StringIO()
+    output = six.BytesIO()
     img.save(output, 'PNG')
     output.seek(0)
-
     return output
 
 
@@ -85,7 +83,7 @@ class ExistingContentTileTests(TestCase):
             self.portalURL +
             '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
             page_uuid +
-            '&show_text=True'
+            '&show_text=True',
         )
 
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
@@ -270,7 +268,6 @@ class ExistingContentTileTests(TestCase):
             text=u'Hello World!'
         )
         self.portal[page_id].text = RichTextValue(u'Hello World!')
-
         page_uuid = IUUID(self.portal[page_id])
 
         transaction.commit()

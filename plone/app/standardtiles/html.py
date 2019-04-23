@@ -35,7 +35,7 @@ class HTMLTile(Tile):
                 transforms = getToolByName(self.context, 'portal_transforms')
                 data = transforms.convertTo(
                     'text/x-html-safe',
-                    content, mimetype='text/html',
+                    safe_unicode(content), mimetype='text/html',
                     context=self.context
                 )
                 content = data.getData()
