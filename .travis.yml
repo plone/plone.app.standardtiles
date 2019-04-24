@@ -19,6 +19,7 @@ matrix:
   fast_finish: true
 before_install:
   - pip install -U pip
+  - pip install --ignore-installed six
   - pip install -r https://github.com/plone/buildout.coredev/raw/$PLONE_VERSION/requirements.txt
 install:
   - buildout -Nc test-$PLONE_VERSION.x.cfg -t 3 annotate
