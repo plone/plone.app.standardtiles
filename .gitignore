@@ -13,3 +13,11 @@ build
 /lib*
 /local/
 pip-selfcheck.json
+/.tox/
+/var/
+/htmlcov/
+/.coverage.
+/.coverage.*
+/reports/
+/coverage.xml
+/plone/app/standardtiles/utils.py.bak
