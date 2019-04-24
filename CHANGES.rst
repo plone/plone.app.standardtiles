@@ -4,6 +4,9 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Py3 fix for existingcontent tile
+  [petschki]
+
 - Add uninstall profile.
   [hvelarde]
 
