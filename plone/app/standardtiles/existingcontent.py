@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
-from Products.CMFPlone.utils import safe_unicode
-from ZODB.POSException import POSKeyError
 from plone import api
 from plone.api.exc import InvalidParameterError
 from plone.app.blocks import utils
@@ -14,15 +12,42 @@ from plone.memoize.view import memoize
 from plone.supermodel import model
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
+from Products.CMFPlone.utils import safe_unicode
 from repoze.xmliter.utils import getHTMLSerializer
 from z3c.form import validator
 from zExceptions import Unauthorized
+from ZODB.POSException import POSKeyError
 from zope import schema
 from zope.browser.interfaces import IBrowserView
 from zope.component.hooks import getSite
 from zope.interface import Invalid
+from zope.schema.vocabulary import SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
+from zope.schema.interfaces import IVocabularyFactory
+from zope.interface import implementer
 
 import six
+
+
+@implementer(IVocabularyFactory)
+class AvailableViewsVocabulary(object):
+    """
+    """
+
+    def __call__(self, context):
+        items = list()
+        if not context:
+            return SimpleVocabulary(items)
+        uuid = context.get('content_uid')
+        if uuid != IUUID(context, None):
+            item = uuidToObject(uuid)
+            if item is not None:
+                for name, title in item.getAvailableLayouts():
+                    items.append(SimpleTerm(name, name, title))
+        return SimpleVocabulary(items)
+
+
+AvailableViewsVocabularyFactory = AvailableViewsVocabulary()
 
 
 def uuidToObject(uuid):
@@ -65,24 +90,27 @@ class IExistingContentTile(model.Schema):
         required=True,
         vocabulary='plone.app.vocabularies.Catalog',
     )
-    form.widget(
-        'content_uid',
-        RelatedItemsFieldWidget,
-        vocabulary='plone.app.vocabularies.Catalog',
-        pattern_options={
-            'recentlyUsed': True,
-        }
-    )
+    form.widget('content_uid',
+                RelatedItemsFieldWidget,
+                vocabulary='plone.app.vocabularies.Catalog',
+                pattern_options={
+                    'recentlyUsed': True,
+                })
+
+    view_name = schema.Choice(
+        title=_(u"Name of custom view"),
+        vocabulary=
+        u'plone.app.standardtiles.existingcontent.AvailableViewsVocabulary',
+        required=False,
+        default=None)
 
     show_title = schema.Bool(
         title=_(u'Show content title'),
         default=True,
     )
 
-    show_description = schema.Bool(
-        title=_(u'Show content description'),
-        default=True
-    )
+    show_description = schema.Bool(title=_(u'Show content description'),
+                                   default=True)
 
     show_text = schema.Bool(
         title=_(u'Show content text'),
@@ -109,9 +137,8 @@ class IExistingContentTile(model.Schema):
 
     tile_class = schema.TextLine(
         title=_(u'Tile additional styles'),
-        description=_(
-            u'Insert a list of additional CSS classes that will',
-            ' be added to the tile'),
+        description=_(u'Insert a list of additional CSS classes that will',
+                      ' be added to the tile'),
         default=u'',
         required=False,
     )
@@ -124,8 +151,7 @@ class SameContentValidator(validator.SimpleFieldValidator):
         if content_uid and IUUID(context, None) == content_uid:
             raise Invalid(
                 'You can not select the same content as the page you are '
-                'currently on.'
-            )
+                'currently on.')
 
 
 # Register validator
@@ -157,6 +183,13 @@ class ExistingContentTile(Tile):
                 return item
         return None
 
+    def template_view(self):
+        context = self.content_context
+        view_name = self.data.get('view_name')
+        macro = context.restrictedTraverse(
+            str(view_name)).index.macros['content-core']
+        return macro
+
     @property
     @memoize
     def default_view(self):
@@ -185,12 +218,11 @@ class ExistingContentTile(Tile):
         html = default_view()
         if isinstance(html, six.text_type):
             html = html.encode('utf-8')
-        serializer = getHTMLSerializer([html], pretty_print=False,
+        serializer = getHTMLSerializer([html],
+                                       pretty_print=False,
                                        encoding='utf-8')
-        panels = dict(
-            (node.attrib['data-panel'], node)
-            for node in utils.panelXPath(serializer.tree)
-        )
+        panels = dict((node.attrib['data-panel'], node)
+                      for node in utils.panelXPath(serializer.tree))
         if panels:
             request = self.request.clone()
             request.URL = self.content_context.absolute_url() + '/'
@@ -199,9 +231,12 @@ class ExistingContentTile(Tile):
             except RuntimeError:  # maximum recursion depth exceeded
                 return []
             clear = '<div style="clear: both;"></div>'
-            return [''.join([safe_unicode(serializer.serializer(child))
-                             for child in node.getchildren()])
-                    for name, node in panels.items()] + [clear]
+            return [
+                ''.join([
+                    safe_unicode(serializer.serializer(child))
+                    for child in node.getchildren()
+                ]) for name, node in panels.items()
+            ] + [clear]
         return []
 
     @property
@@ -241,13 +276,14 @@ class ExistingContentTile(Tile):
     def __getattr__(self, name):
         # proxy attributes for this view to the selected view of the content
         # item so views work
-        if name in ('data',
-                    'content_context',
-                    'default_view',
-                    'item_macros',
-                    'item_panels',
-                    'getPhysicalPath',
-                    'index_html',
-                    ) or name.startswith(('_', 'im_', 'func_')):
+        if name in (
+                'data',
+                'content_context',
+                'default_view',
+                'item_macros',
+                'item_panels',
+                'getPhysicalPath',
+                'index_html',
+        ) or name.startswith(('_', 'im_', 'func_')):
             return Tile.__getattr__(self, name)
         return getattr(self.default_view, name)

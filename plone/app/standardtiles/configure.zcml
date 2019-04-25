@@ -26,6 +26,7 @@
         post_handler="plone.app.standardtiles.setuphandlers.run_after"
         />
 
+
     <!-- Tiles are divided in four zcml files -->
     <include file="content.zcml" />
     <include file="head.zcml" />

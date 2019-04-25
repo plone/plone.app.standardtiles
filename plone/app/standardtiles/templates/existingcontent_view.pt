@@ -34,20 +34,24 @@
       </tal:image>
       <tal:text condition="show_text">
         <tal:block condition="item_macro">
-          <div tal:define="view nocall:view/default_view;
-                           plone_view context/@@plone;
-                           portal_state context/@@plone_portal_state;
-                           context_state context/@@plone_context_state;
-                           plone_layout context/@@plone_layout;
-                           lang portal_state/language;
-                           dummy python: plone_layout.mark_view(view);
-                           portal_url portal_state/portal_url;
-                           checkPermission nocall: context/portal_membership/checkPermission;
-                           site_properties context/portal_properties/site_properties;
-                           fix python:request.set('ACTUAL_URL', context.absolute_url())">
-              <div metal:use-macro="item_macro">
-                  content
+          <div tal:define="macro view/template_view" >
+            <body tal:define="context nocall:view/content_context">
+              <div tal:define="view nocall:view/default_view;
+                              plone_view context/@@plone;
+                              portal_state context/@@plone_portal_state;
+                              context_state context/@@plone_context_state;
+                              plone_layout context/@@plone_layout;
+                              lang portal_state/language;
+                              dummy python: plone_layout.mark_view(view);
+                              portal_url portal_state/portal_url;
+                              checkPermission nocall: context/portal_membership/checkPermission;
+                              site_properties context/portal_properties/site_properties;
+                              fix python:request.set('ACTUAL_URL', context.absolute_url())">
+                  <div metal:use-macro="item_macro">
+                      content
+                  </div>
               </div>
+            </body>
           </div>
         </tal:block>
         <tal:block tal:condition="not:item_macro">

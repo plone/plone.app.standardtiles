@@ -5,6 +5,11 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="plone">
 
+    <utility
+        component=".existingcontent.AvailableViewsVocabularyFactory"
+        name="plone.app.standardtiles.existingcontent.AvailableViewsVocabulary"
+        />
+
     <plone:tile
         name="plone.app.standardtiles.existingcontent"
         title="Existing content"
