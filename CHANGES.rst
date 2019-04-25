@@ -64,6 +64,9 @@ Bug fixes:
 - Fix issue where image field tile template registration did not apply for
   fields on non-default fieldset
   [datakurre]
+  
+- Added Alt attribute to summary view, needed for accessibility
+  [rnunez]
 
 - Imports are Python3 compatible
   [b4oshany]
