@@ -14,8 +14,6 @@ from plone.memoize.view import memoize
 from plone.supermodel import model
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
-from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
 from repoze.xmliter.utils import getHTMLSerializer
 from z3c.form import validator
 from zExceptions import Unauthorized
@@ -150,7 +148,10 @@ class ExistingContentTile(Tile):
                 item = uuidToObject(uuid)
             except Unauthorized:
                 item = None
-                if not self.request.get('PUBLISHED'):
+                if not self.request.get('PUBLISHED') and six.PY2:
+                    # XXX: This reraise behaves strange in Python 3
+                    # while in Py2 the traversal continues Py3 gets stuck
+                    # in AccessControl.unauthorized.Unauthorized exception.
                     raise  # Should raise while still traversing
             if item is not None:
                 return item

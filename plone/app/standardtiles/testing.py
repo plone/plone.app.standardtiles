@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.utils import getToolByName
+from plone import api
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import login
 from plone.app.testing import logout
-from plone.app.testing import PLONE_FIXTURE
-from plone.app.testing import PloneSandboxLayer
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
 from plone.autoform import directives
@@ -12,7 +14,6 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.manager import PortletManager
 from plone.portlets.manager import PortletManagerRenderer
 from plone.supermodel.model import Schema
-from Products.CMFCore.utils import getToolByName
 from z3c.form import interfaces
 from z3c.form.browser import widget
 from z3c.form.widget import FieldWidget
@@ -23,9 +24,9 @@ from zope.component import getSiteManager
 from zope.component import provideAdapter
 from zope.configuration import xmlconfig
 from zope.contentprovider.interfaces import UpdateNotCalled
+from zope.interface import Interface
 from zope.interface import implementer
 from zope.interface import implementer_only
-from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
 
@@ -136,15 +137,15 @@ class PAStandardtiles(PloneSandboxLayer):
         xmlconfig.file('configure.zcml', plone.app.dexterity,
                        context=configurationContext)
 
-        import plone.app.widgets
-        xmlconfig.file('configure.zcml', plone.app.widgets,
-                       context=configurationContext)
+        if api.env.plone_version() < '5.2':
+            # since Plone 5.2 plone.app.widgets is a dummy package only
+            import plone.app.widgets
+            xmlconfig.file('configure.zcml', plone.app.widgets,
+                           context=configurationContext)
 
         import plone.app.standardtiles
         xmlconfig.file('configure.zcml', plone.app.standardtiles,
                        context=configurationContext)
-
-        import plone.app.standardtiles
         xmlconfig.file('testing.zcml', plone.app.standardtiles,
                        context=configurationContext)
 
@@ -162,7 +163,9 @@ class PAStandardtiles(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         # install into the Plone site
         applyProfile(portal, 'plone.app.dexterity:default')
-        applyProfile(portal, 'plone.app.widgets:default')
+        if api.env.plone_version() < '5.2':
+            # since Plone 5.2 plone.app.widgets is a dummy package only
+            applyProfile(portal, 'plone.app.widgets:default')
         applyProfile(portal, 'plone.app.standardtiles:default')
         applyProfile(portal, 'plone.app.contenttypes:default')
 
