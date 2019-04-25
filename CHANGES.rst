@@ -1,10 +1,62 @@
 Changelog
 =========
 
-2.2.1 (unreleased)
+2.3.2 (unreleased)
 ------------------
 
+- Py3 fix for existingcontent tile
+  [petschki]
+
+- Add uninstall profile.
+  [hvelarde]
+
+- Remove installation of plone.app.widgets default profile in tests.
+  In Plone 5.0/5.1 with plone.app.widgets >= 2.0, the profile is only a dummy profile for BBB.
+  In Plone 5.2 it will be removed.
+  [jensens]
+
+- Show event details for all content types which provides start or end fields.
+  [MrTango]
+
+- Fix tests in Plone 5.2
+  [MrTango]
+
+
+2.3.1 (2018-06-07)
+------------------
+
+- Fix tests around deprecated raw html tile and use htmltile.
+  [jensens]
+
+- Fix #87: Existing Content Tile broken when used in multilingual sites.
+  Widget is now similar to related items behavior.
+  [jensens]
+
+- Fix TileCommentForm to prefix forms with just 'form' to fix compatibility
+  with plone.app.discussion javascripts
+  [datakurre]
+
+
+2.3.0 (2018-04-13)
+------------------
+
+New features:
+
+- Moved dependency on ``plone.formwidget.multifile`` used for deprecated Attachement-Tile to an extra ``attachment`` in ``setup.py``.
+  [jensens]
+
+
 Bug fixes:
+
+- Fix tests of Boolean widget:
+  Remove checks of implementation details of the widget.
+  This does not belong into this tests.
+  It changed between 5.0 and 5.1 after some fixes.
+  [jensens]
+
+- Fix issue #79,
+  where a test failed with Plone 5.1, because a tile in a test had no ``__name__``.
+  [jensens]
 
 - Changed title of existing content tile from h1 to h2
   [agitator]
@@ -16,6 +68,12 @@ Bug fixes:
 - Added Alt attribute to summary view, needed for accessibility
   [rnunez]
 
+- Imports are Python3 compatible
+  [b4oshany]
+
+- Fix issue where field tile for title and description fields rendered
+  with double <html><body>-wrapping
+  [datakurre]
 
 2.2.0 (2017-06-09)
 ------------------

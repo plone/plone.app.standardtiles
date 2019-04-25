@@ -3,7 +3,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '2.2.1.dev0'
+version = '2.3.2.dev0'
 
 
 setup(
@@ -13,7 +13,7 @@ setup(
     long_description=(open('README.rst').read() + '\n' +
                       open('CHANGES.rst').read()),
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: Plone',
         'Framework :: Plone :: 5.0',
@@ -40,14 +40,14 @@ setup(
         'plone.app.dexterity',
         'plone.app.discussion',
         'plone.app.registry',
-        'plone.app.tiles',
-        'plone.formwidget.multifile',
+        'plone.app.tiles>=3.1.2',
         'plone.formwidget.querystring',
         'plone.subrequest',
         'plone.tiles>=1.8.0.dev0',
         'Products.CMFPlone>=5.0.4',
         'requests',
         'setuptools',
+        'six',
         'z3c.form',
     ],
     extras_require={
@@ -58,6 +58,9 @@ setup(
             'plone.app.widgets',
             'lxml',
         ],
+        'attachment': [
+            'plone.formwidget.multifile>=2.0',
+        ]
     },
     entry_points="""
     [z3c.autoinclude.plugin]

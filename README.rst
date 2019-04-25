@@ -1,7 +1,7 @@
 Plone Standard Tiles
 ====================
 
-.. image:: https://secure.travis-ci.org/plone/plone.app.standardtiles.png?branch=master
+.. image:: https://travis-ci.org/plone/plone.app.standardtiles.svg?branch=master
     :alt: Travis CI badge
     :target: http://travis-ci.org/plone/plone.app.standardtiles
 
@@ -14,3 +14,19 @@ This package contains standard tiles to be used with `Plone Mosaic`_
 
 .. _Plone Mosaic: https://pypi.python.org/pypi/plone.app.mosaic
 .. _Plone Blocks: https://pypi.python.org/pypi/plone.app.blocks
+
+
+Source Code
+-----------
+
+Contributors please read the document `Process for Plone core's development <http://docs.plone.org/develop/plone-coredev/index.html>`_
+
+Sources are at the `Plone code repository hosted at Github <https://github.com/plone/plone.app.standardtiles>`_.
+
+Please report issues at the `Issue Tracker <https://github.com/plone/plone.app.standardtiles/issues>`_.
+
+
+License
+-------
+
+The project is licensed under the GPLv2.

@@ -11,6 +11,7 @@ from zope.deprecation import deprecate
 from zope.security.interfaces import IPermission
 
 import Acquisition
+import six
 
 
 def getNavigationRoot(context):
@@ -48,7 +49,7 @@ def _getWidgetName(field, widgets, request):
         factory = widgets[field.__name__]
     else:
         factory = getMultiAdapter((field, request), IFieldWidget)
-    if isinstance(factory, basestring):
+    if isinstance(factory, six.string_types):
         return factory
     if not isinstance(factory, type):
         factory = factory.__class__
@@ -57,7 +58,7 @@ def _getWidgetName(field, widgets, request):
 
 def isVisible(name, omitted):
     value = omitted.get(name, False)
-    if isinstance(value, basestring):
+    if isinstance(value, six.string_types):
         return value == 'false'
     else:
         return not bool(value)

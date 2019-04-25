@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<registry>
+  <record name="plone.app.standardtiles.listing_views" remove="true" />
+</registry>

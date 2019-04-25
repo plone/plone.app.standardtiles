@@ -15,8 +15,8 @@ class IHTMLTile(Schema):
     ignore_querystring('content')
     primary('content')
     content = schema.Text(
-        title=_(u"HTML"),
-        required=True
+        title=_(u'HTML'),
+        required=True,
     )
 
 
@@ -33,8 +33,11 @@ class HTMLTile(Tile):
             if (not self.request.get('_layouteditor') or
                     ISubRequest.providedBy(self.request)):
                 transforms = getToolByName(self.context, 'portal_transforms')
-                data = transforms.convertTo('text/x-html-safe', content, mimetype='text/html',
-                                            context=self.context)
+                data = transforms.convertTo(
+                    'text/x-html-safe',
+                    safe_unicode(content), mimetype='text/html',
+                    context=self.context
+                )
                 content = data.getData()
         else:
             content = u'<p></p>'

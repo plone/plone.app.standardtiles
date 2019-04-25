@@ -52,8 +52,10 @@
         </tal:block>
         <tal:block tal:condition="not:item_macro">
           <tal:comment tal:replace="nothing">
-            XXX This case is really ONLY to make collection views work with
-            the existing content view.
+            This is a fallback if your default_view has no "content-core"
+            macro defined ... for historical reasons we fallback to listing view
+            because "summary_view" was the only case for that.
+            with latest p.a.contenttypes this is fixed...
           </tal:comment>
           <metal:block use-macro="context/@@listing_view/macros/listing">
             <metal:entries fill-slot="entries">

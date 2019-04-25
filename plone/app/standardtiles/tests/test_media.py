@@ -14,15 +14,24 @@ from plone.namedfile import NamedFile
 from plone.namedfile import NamedImage
 from plone.protect.authenticator import createToken
 from plone.testing.z2 import Browser
+from six.moves.urllib.parse import quote
 from unittest import TestCase
-from urllib import quote
 from zope.annotation import IAnnotations
+
 import os
+import pkg_resources
 import plone.app.standardtiles.tests as test_dir
 import random
-import StringIO
+import six
 import transaction
-import urllib
+import unittest
+
+try:
+    pkg_resources.get_distribution('plone.formwidget.multifile')
+except pkg_resources.DistributionNotFound:
+    HAS_MULTIFILE = False
+else:
+    HAS_MULTIFILE = True
 
 
 def fromstring(s):
@@ -39,7 +48,7 @@ def image():
                                              random.randint(0, 255)))
     del draw
 
-    output = StringIO.StringIO()
+    output = six.BytesIO()
     img.save(output, 'PNG')
     output.seek(0)
 
@@ -143,6 +152,10 @@ class ContentTileTests(TestCase):
         nodes = root.xpath('//body//ul[@class="navTree navTreeLevel0"]/li')
         self.assertEqual(len(nodes), 1)  # Only simple page
 
+    @unittest.skipIf(
+        not HAS_MULTIFILE,
+        'plone.formwidget.multifile is not available',
+    )
     def test_attachment_tile(self):
         """This persistent tile renders a link pointing to a file stored in the
         tile data itself.
@@ -222,23 +235,18 @@ class ContentTileTests(TestCase):
         nodes = root.xpath('//body//img')
         self.assertEqual(len(nodes), 1)
 
-    def test_rawhtml_tile(self):
-        content = '<p>Hello World!</p>'
-
-        transaction.commit()
-
-        self.browser.open(
-            self.pageURL +
-            '/@@plone.app.standardtiles.rawhtml/test',
-            data='content={0:s}'.format(urllib.quote(content))
+    def test_html_tile_unicode(self):
+        tile = HTMLTile(self.portal, self.layer['request'])
+        tile.__name__ = 'test.html.tile'
+        tile.data['content'] = '<p>Hello Wörld!</p>'
+        self.assertEqual(
+            tile(),
+            u'<html><body><p>Hello Wörld!</p></body></html>'
         )
 
-        root = fromstring(self.browser.contents)
-        nodes = root.xpath('//body/p')
-        self.assertEqual(nodes[0].text, 'Hello World!')
-
-    def test_rawhtml_tile_utf8(self):
+    def test_html_tile_utf8(self):
         tile = HTMLTile(self.portal, self.layer['request'])
+        tile.__name__ = 'test.html.tile'
         tile.data['content'] = u'<p>Hello Wörld!</p>'.encode('utf-8')
         self.assertEqual(
             tile(),

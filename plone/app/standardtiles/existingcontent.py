@@ -1,25 +1,28 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
+from Products.CMFPlone.utils import safe_unicode
+from ZODB.POSException import POSKeyError
 from plone import api
 from plone.api.exc import InvalidParameterError
 from plone.app.blocks import utils
 from plone.app.blocks.tiles import renderTiles
 from plone.app.discussion.interfaces import IConversation
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
+from plone.app.z3cform.widget import RelatedItemsFieldWidget
+from plone.autoform import directives as form
 from plone.memoize.view import memoize
 from plone.supermodel import model
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
-from Products.CMFCore.utils import getToolByName
 from repoze.xmliter.utils import getHTMLSerializer
 from z3c.form import validator
 from zExceptions import Unauthorized
-from ZODB.POSException import POSKeyError
 from zope import schema
 from zope.browser.interfaces import IBrowserView
 from zope.component.hooks import getSite
 from zope.interface import Invalid
+
+import six
 
 
 def uuidToObject(uuid):
@@ -44,7 +47,7 @@ def uuidToCatalogBrainUnrestricted(uuid):
     if site is None:
         return None
 
-    catalog = getToolByName(site, 'portal_catalog', None)
+    catalog = api.portal.get_tool('portal_catalog')
     if catalog is None:
         return None
 
@@ -55,24 +58,25 @@ def uuidToCatalogBrainUnrestricted(uuid):
     return result[0]
 
 
-class CatalogSource(CatalogSourceBase):
-    """ExistingContentTile specific catalog source to allow targeted widget
-    """
-    def __contains__(self, value):
-        return True  # Always contains to allow lazy handling of removed objs
-
-
 class IExistingContentTile(model.Schema):
 
     content_uid = schema.Choice(
-        title=_(u"Select an existing content"),
+        title=_(u"Select an existing contentt"),
         required=True,
-        source=CatalogSource(),
+        vocabulary='plone.app.vocabularies.Catalog',
+    )
+    form.widget(
+        'content_uid',
+        RelatedItemsFieldWidget,
+        vocabulary='plone.app.vocabularies.Catalog',
+        pattern_options={
+            'recentlyUsed': True,
+        }
     )
 
     show_title = schema.Bool(
         title=_(u'Show content title'),
-        default=True
+        default=True,
     )
 
     show_description = schema.Bool(
@@ -82,7 +86,7 @@ class IExistingContentTile(model.Schema):
 
     show_text = schema.Bool(
         title=_(u'Show content text'),
-        default=True
+        default=True,
     )
 
     show_image = schema.Bool(
@@ -118,14 +122,16 @@ class SameContentValidator(validator.SimpleFieldValidator):
         super(SameContentValidator, self).validate(content_uid)
         context = aq_parent(self.context)  # default context is tile data
         if content_uid and IUUID(context, None) == content_uid:
-            raise Invalid("You can not select the same content as "
-                          "the page you are currently on.")
+            raise Invalid(
+                'You can not select the same content as the page you are '
+                'currently on.'
+            )
 
 
 # Register validator
 validator.WidgetValidatorDiscriminators(
     SameContentValidator,
-    field=IExistingContentTile['content_uid']
+    field=IExistingContentTile['content_uid'],
 )
 
 
@@ -142,7 +148,10 @@ class ExistingContentTile(Tile):
                 item = uuidToObject(uuid)
             except Unauthorized:
                 item = None
-                if not self.request.get('PUBLISHED'):
+                if not self.request.get('PUBLISHED') and six.PY2:
+                    # XXX: This reraise behaves strange in Python 3
+                    # while in Py2 the traversal continues Py3 gets stuck
+                    # in AccessControl.unauthorized.Unauthorized exception.
                     raise  # Should raise while still traversing
             if item is not None:
                 return item
@@ -174,7 +183,7 @@ class ExistingContentTile(Tile):
     def item_panels(self):
         default_view = self.default_view
         html = default_view()
-        if isinstance(html, unicode):
+        if isinstance(html, six.text_type):
             html = html.encode('utf-8')
         serializer = getHTMLSerializer([html], pretty_print=False,
                                        encoding='utf-8')
@@ -190,7 +199,7 @@ class ExistingContentTile(Tile):
             except RuntimeError:  # maximum recursion depth exceeded
                 return []
             clear = '<div style="clear: both;"></div>'
-            return [''.join([serializer.serializer(child)
+            return [''.join([safe_unicode(serializer.serializer(child))
                              for child in node.getchildren()])
                     for name, node in panels.items()] + [clear]
         return []

@@ -1,27 +1,35 @@
+dist: xenial
 language: python
 python: 2.7
 sudo: false
-env:
-  - PLONE_VERSION=5.x
 cache:
   pip: true
   directories:
-    - $HOME/eggs
+    - eggs
 matrix:
+  include:
+    - python: "2.7"
+      env: PLONE_VERSION=5.0
+    - python: "2.7"
+      env: PLONE_VERSION=5.1
+    - python: "2.7"
+      env: PLONE_VERSION=5.2
+    - python: "3.7"
+      env: PLONE_VERSION=5.2
   fast_finish: true
 before_install:
-  - virtualenv .
-  - bin/pip install --upgrade zc.buildout==2.8.0 setuptools==34.1.1
-  - cp test-$PLONE_VERSION.cfg buildout.cfg
+  - pip install -U pip
+  - pip install --ignore-installed six
+  - pip install -r https://github.com/plone/buildout.coredev/raw/$PLONE_VERSION/requirements.txt
 install:
-  - bin/buildout -N -t 3 annotate
-  - bin/buildout -N -t 3
+  - buildout -Nc test-$PLONE_VERSION.x.cfg -t 3 annotate
+  - buildout -Nc test-$PLONE_VERSION.x.cfg -t 3
 script:
   - bin/code-analysis
   - bin/test
-after_success:
-  - bin/createcoverage
-  - pip install -q coveralls
-  - coveralls
+# after_success:
+#   - bin/createcoverage
+#   - pip install coveralls
+#   - coveralls
 notifications:
   irc: irc.freenode.org#plone-testing

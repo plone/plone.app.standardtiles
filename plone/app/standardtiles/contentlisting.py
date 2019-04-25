@@ -189,7 +189,6 @@ class ContentListingTile(Tile):
             limit=self.limit
         )
         view = self.view_template or 'listing_view'
-        view = view.encode('utf-8')
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
         return getMultiAdapter((accessor, self.request), name=view)(**options)
