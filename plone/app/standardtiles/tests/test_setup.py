@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
+from plone import api
 from plone.app.standardtiles.testing import PASTANDARDTILES_INTEGRATION_TESTING  # noqa: E501
 
 import unittest
 
 
 PROJECTNAME = 'plone.app.standardtiles'
+
+try:
+    from Products.CMFPlone.utils import get_installer
+except Exception:
+    get_installer = None
 
 
 class InstallTestCase(unittest.TestCase):
@@ -15,7 +21,10 @@ class InstallTestCase(unittest.TestCase):
         self.portal = self.layer['portal']
 
     def test_installed(self):
-        qi = self.portal['portal_quickinstaller']
+        if get_installer:
+            qi = get_installer(self.portal, self.layer['request'])
+        else:
+            qi = api.portal.get_tool('portal_quickinstaller')
         self.assertTrue(qi.isProductInstalled(PROJECTNAME))
 
 
@@ -25,7 +34,10 @@ class UninstallTestCase(unittest.TestCase):
 
     def setUp(self):
         self.portal = self.layer['portal']
-        self.qi = self.portal['portal_quickinstaller']
+        if get_installer:
+            self.qi = get_installer(self.portal, self.layer['request'])
+        else:
+            self.qi = api.portal.get_tool('portal_quickinstaller')
         self.qi.uninstallProducts(products=[PROJECTNAME])
 
         from plone.registry.interfaces import IRegistry

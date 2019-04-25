@@ -18,6 +18,9 @@ Changelog
 - Show event details for all content types which provides start or end fields.
   [MrTango]
 
+- Fix tests in Plone 5.2
+  [MrTango]
+
 
 2.3.1 (2018-06-07)
 ------------------

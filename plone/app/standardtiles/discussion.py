@@ -11,6 +11,8 @@ from zope.interface import alsoProvides
 from zope.viewlet.interfaces import IViewlet
 from zope.viewlet.interfaces import IViewletManager
 
+import six
+
 
 class TileCommentForm(CommentForm):
     prefix = 'form'
@@ -18,8 +20,10 @@ class TileCommentForm(CommentForm):
 
 
 def protect(raw):
+    if isinstance(raw, six.text_type):
+        raw = raw.encode('utf-8')
     parser = getHTMLSerializer(
-        raw.encode('utf-8'), pretty_print=False, encoding='utf-8')
+        [raw], pretty_print=False, encoding='utf-8')
     parser.serializer = html.tostring
 
     root = parser.tree.getroot()
@@ -33,8 +37,7 @@ def protect(raw):
             authenticator.attrib['type'] = 'hidden'
             authenticator.attrib['value'] = token
             form.append(authenticator)
-
-    return (''.join(parser)).decode('utf-8')
+    return parser.serialize().decode('utf-8')
 
 
 class DiscussionTile(Tile):

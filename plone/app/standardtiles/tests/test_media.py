@@ -48,7 +48,7 @@ def image():
                                              random.randint(0, 255)))
     del draw
 
-    output = six.StringIO()
+    output = six.BytesIO()
     img.save(output, 'PNG')
     output.seek(0)
 

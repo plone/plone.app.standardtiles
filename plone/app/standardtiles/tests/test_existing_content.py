@@ -31,11 +31,9 @@ def image():
                                              random.randint(0, 255),
                                              random.randint(0, 255)))
     del draw
-
-    output = six.StringIO()
+    output = six.BytesIO()
     img.save(output, 'PNG')
     output.seek(0)
-
     return output
 
 
@@ -85,7 +83,7 @@ class ExistingContentTileTests(TestCase):
             self.portalURL +
             '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
             page_uuid +
-            '&show_text=True'
+            '&show_text=True',
         )
 
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
@@ -266,25 +264,23 @@ class ExistingContentTileTests(TestCase):
 
         page_id = self.portal.invokeFactory(
             'Document', 'an-another-page',
-            title=u'An another page', description=u'A description',
-            text=u'Hello World!'
+            title=u'An another page',
+            description=u'A description',
+            text=RichTextValue(u'Hello World!'),
         )
-        self.portal[page_id].text = RichTextValue(u'Hello World!')
-
         page_uuid = IUUID(self.portal[page_id])
 
         transaction.commit()
 
-        browser = Browser(self.layer['app'])
-        browser.handleErrors = False
-        browser.open(
+        self.unprivileged_browser.handleErrors = False
+        self.unprivileged_browser.open(
             self.portalURL +
             '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
             page_uuid
         )
 
-        self.assertNotIn(u'Hello World!', browser.contents)
-        self.assertIn(u'<body></body>', browser.contents)
+        self.assertNotIn(u'Hello World!', self.unprivileged_browser.contents)
+        self.assertIn(u'<body></body>', self.unprivileged_browser.contents)
 
     def test_edit_existing_content_tile(self):
         """The existing content tile takes the uuid of a content object in the
