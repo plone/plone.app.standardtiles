@@ -4,6 +4,9 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Added Alt attribute to summary view, needed for accessibility
+  [rnunez]
+
 - Py3 fix for existingcontent tile
   [petschki]
 
@@ -65,9 +68,6 @@ Bug fixes:
   fields on non-default fieldset
   [datakurre]
   
-- Added Alt attribute to summary view, needed for accessibility
-  [rnunez]
-
 - Imports are Python3 compatible
   [b4oshany]
 
