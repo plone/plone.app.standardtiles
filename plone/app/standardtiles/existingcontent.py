@@ -69,13 +69,15 @@ class IExistingContentTile(model.Schema):
     content_uid = schema.Choice(
         title=_(u"Select an existing content"),
         required=True,
-        vocabulary='plone.app.vocabularies.Catalog',
+        vocabulary='plone.app.standardtiles.UnrestrictedCatalogVocabulary',
     )
     form.widget(
         'content_uid',
         RelatedItemsFieldWidget,
-        vocabulary='plone.app.vocabularies.Catalog',
-        pattern_options={'recentlyUsed': True},
+        vocabulary='plone.app.standardtiles.UnrestrictedCatalogVocabulary',
+        pattern_options={
+            'recentlyUsed': True,
+        }
     )
 
     show_title = schema.Bool(title=_(u'Show content title'), default=True)
@@ -150,10 +152,7 @@ class ExistingContentTile(Tile):
                 item = uuidToObject(uuid)
             except Unauthorized:
                 item = None
-                if not self.request.get('PUBLISHED') and six.PY2:
-                    # XXX: This reraise behaves strange in Python 3
-                    # while in Py2 the traversal continues Py3 gets stuck
-                    # in AccessControl.unauthorized.Unauthorized exception.
+                if not self.request.get('PUBLISHED'):
                     raise  # Should raise while still traversing
             if item is not None:
                 return item

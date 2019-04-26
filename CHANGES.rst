@@ -13,6 +13,9 @@ Changelog
 2.3.2 (2019-12-05)
 ------------------
 
+- Fix traversal to restricted content in existingcontent tile (see #100)
+  [petschki]
+
 - Added Alt attribute to summary view, needed for accessibility
   [rnunez]
 

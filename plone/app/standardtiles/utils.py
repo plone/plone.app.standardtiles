@@ -2,13 +2,21 @@
 from AccessControl import getSecurityManager
 from Acquisition import aq_chain
 from Acquisition import aq_inner
-from plone.app.layout.navigation.interfaces import INavigationRoot
 from Products.CMFCore.interfaces import IContentish
+from Products.ZCTextIndex.ParseTree import ParseError
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.vocabularies.catalog import CatalogVocabulary
+from plone.app.vocabularies.utils import parseQueryString
+from plone.memoize.instance import memoize
+from plone.uuid.interfaces import IUUID
 from z3c.form.interfaces import IFieldWidget
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 from zope.deprecation import deprecate
+from zope.interface import implementer
+from zope.schema.interfaces import IVocabularyFactory
 from zope.security.interfaces import IPermission
+from zope.site.hooks import getSite
 
 import Acquisition
 import six
@@ -89,3 +97,60 @@ def getContentishContext(context):
             # fake context.
             context = Acquisition.aq_parent(context)
     return original_context
+
+
+class UnrestrictedCatalogVocabulary(CatalogVocabulary):
+    # provide an unrestricted catalog vocabulary to make sure
+    # private content can be handled correctly in existingcontenttile
+
+    def search(self, **kwargs):
+        return self.catalog.unrestrictedSearchResults(**kwargs)
+
+    @property
+    @memoize
+    def brains(self):
+        try:
+            return self.search(**self.query)
+        except ParseError:
+            # a parseError: Query contains only common words may happen,
+            # semantically this means we want all result w/o SearchableText
+            if 'SearchableText' in self.query:
+                del self.query['SearchableText']
+                return self.search(**self.query)
+            raise
+
+    def __contains__(self, value):
+        if isinstance(value, six.string_types):
+            # perhaps it's already a uid
+            uid = value
+        else:
+            uid = IUUID(value)
+        query = self.query.copy()
+        query['UID'] = uid
+        return len(self.search(**query)) > 0
+
+
+@implementer(IVocabularyFactory)
+class UnrestrictedCatalogVocabularyFactory(object):
+
+    def __call__(self, context, query=None):
+        parsed = {}
+        if query:
+            parsed = parseQueryString(context, query['criteria'])
+            if 'sort_on' in query:
+                parsed['sort_on'] = query['sort_on']
+            if 'sort_order' in query:
+                parsed['sort_order'] = str(query['sort_order'])
+
+        # If no path is specified check if we are in a sub-site and use that
+        # as the path root for catalog searches
+        if 'path' not in parsed:
+            site = getSite()
+            nav_root = getNavigationRoot(context)
+            site_path = site.getPhysicalPath()
+            if nav_root and nav_root.getPhysicalPath() != site_path:
+                parsed['path'] = {
+                    'query': '/'.join(nav_root.getPhysicalPath()),
+                    'depth': -1
+                }
+        return UnrestrictedCatalogVocabulary.fromItems(parsed, context)

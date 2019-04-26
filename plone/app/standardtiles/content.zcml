@@ -17,6 +17,10 @@
         template="templates/existingcontent_view.pt"
         />
     <adapter factory=".existingcontent.SameContentValidator" />
+    <utility
+        factory=".utils.UnrestrictedCatalogVocabularyFactory"
+        name="plone.app.standardtiles.UnrestrictedCatalogVocabulary"
+        />
 
     <plone:tile
         name="plone.app.standardtiles.document_byline"

@@ -281,15 +281,7 @@ class TestFieldTile(TestCase):
                 'IDublinCore-contributors',
             )
         )
+        self.assertIn('<span id="form-widgets-IDublinCore-contributors"',
+                      self.browser.contents)
         self.assertIn('Jane Doe', self.browser.contents)
         self.assertIn('John Doe', self.browser.contents)
-
-        root = fromstring(self.browser.contents)
-        nodes = root.xpath(
-            '//body//*[@id="form-widgets-IDublinCore-contributors"]'
-        )
-        self.assertEqual(len(nodes), 1)
-
-        # disabled: different versions of plone.app.z3cform has different
-        # outputs for this widget
-        # self.assertEqual('Jane Doe;John Doe', nodes[0].text)
