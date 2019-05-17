@@ -37,15 +37,15 @@ def uuidToFolderishPath(context, uuid):
     or an empty string for the site root
     """
     if uuid:
-        catalog = getToolByName(context, "portal_catalog")
+        catalog = getToolByName(context, 'portal_catalog')
         res = catalog and catalog.unrestrictedSearchResults(UID=uuid)
         if res and len(res) == 1:
             ob = res[0]._unrestrictedGetObject()
             # If not folderish, use its parent instead
             if not IFolderish.providedBy(ob):
                 ob = aq_parent(ob)
-            return "/".join(ob.getPhysicalPath()[2:])
-    return ""
+            return '/'.join(ob.getPhysicalPath()[2:])
+    return ''
 
 
 class CatalogSource(CatalogSourceBase):
@@ -56,93 +56,89 @@ class INavigationTile(Schema):
     """A tile which can render the navigation tree."""
 
     name = schema.TextLine(
-        title=_(u"Title"),
-        description=_(
-            u"help_navigation_title", u"The title of the navigation tree."
-        ),
-        default=u"",
+        title=_(u'Title'),
+        description=_(u'help_navigation_title', u'The title of the navigation tree.'),
+        default=u'',
         required=False,
     )
 
     root = schema.Choice(
-        title=_(u"label_navigation_root_path", u"Root node"),
+        title=_(u'label_navigation_root_path', u'Root node'),
         description=_(
-            u"help_navigation_root",
-            u"You may search for and choose a folder to act as the root "
-            u"of the navigation tree. Leave blank to use the Plone site "
-            u"root.",
+            u'help_navigation_root',
+            u'You may search for and choose a folder to act as the root '
+            u'of the navigation tree. Leave blank to use the Plone site '
+            u'root.'
         ),
         source=CatalogSource(),
         required=False,
     )
 
     includeTop = schema.Bool(
-        title=_(u"label_include_top_node", u"Include top node"),
+        title=_(u'label_include_top_node', u'Include top node'),
         description=_(
-            u"help_include_top_node",
+            u'help_include_top_node',
             u'Whether or not to show the top, or "root", node in the '
             u'navigation tree. This is affected by the "Start level" '
-            u"setting.",
+            u'setting.'
         ),
         default=False,
         required=False,
     )
 
     currentFolderOnly = schema.Bool(
-        title=_(
-            u"label_current_folder_only",
-            u"Only show the contents of the current folder.",
-        ),
+        title=_(u'label_current_folder_only', u'Only show the contents of the current folder.'),
         description=_(
-            u"help_current_folder_only",
-            u"If selected, the navigation tree will only show the current "
-            u"folder and its children at all times.",
+            u'help_current_folder_only',
+            u'If selected, the navigation tree will only show the current '
+            u'folder and its children at all times.'
         ),
         default=False,
         required=False,
     )
 
     topLevel = schema.Int(
-        title=_(u"label_navigation_startlevel", u"Start level"),
+        title=_(u'label_navigation_startlevel', u'Start level'),
         description=_(
-            u"help_navigation_start_level",
-            u"An integer value that specifies the number of folder levels "
-            u"below the site root that must be exceeded before the "
-            u"navigation tree will display. 0 means that the navigation "
-            u"tree should be displayed everywhere including pages in the "
-            u"root of the site. 1 means the tree only shows up inside "
-            u"folders located in the root and downwards, never showing at "
-            u"the top level.",
+            u'help_navigation_start_level',
+            u'An integer value that specifies the number of folder levels '
+            u'below the site root that must be exceeded before the '
+            u'navigation tree will display. 0 means that the navigation '
+            u'tree should be displayed everywhere including pages in the '
+            u'root of the site. 1 means the tree only shows up inside '
+            u'folders located in the root and downwards, never showing at '
+            u'the top level.'
         ),
         default=0,
         required=False,
     )
 
     bottomLevel = schema.Int(
-        title=_(u"label_navigation_tree_depth", u"Navigation tree depth"),
+        title=_(u'label_navigation_tree_depth', u'Navigation tree depth'),
         description=_(
-            u"help_navigation_tree_depth",
-            u"How many folders should be included before the navigation "
-            u"tree stops. 0 means no limit. 1 only includes the root "
-            u"folder.",
+            u'help_navigation_tree_depth',
+            u'How many folders should be included before the navigation '
+            u'tree stops. 0 means no limit. 1 only includes the root '
+            u'folder.'
         ),
         default=0,
         required=False,
     )
 
     css_class = schema.TextLine(
-        title=_(u"label_navigation_css_class", u"CSS class"),
+        title=_(
+            u'label_navigation_css_class',
+            u'CSS class'),
         description=_(
-            u"help_navigation_css_class",
-            u"Insert a list of additional css classes for this tile.",
-        ),
+            u'help_navigation_css_class',
+            u'Insert a list of additional css classes for this tile.'),
         required=False,
-        default=u"",
+        default=u'',
     )
 
 
 @implementer(IValue)
-@adapter(None, None, None, getSpecification(INavigationTile["root"]), None)
+@adapter(None, None, None, getSpecification(INavigationTile['root']), None)
 class DefaultRoot(object):
     def __init__(self, context, request, form, field, widget):
         self.context = context
@@ -157,15 +153,16 @@ class DefaultRoot(object):
 
 @implementer(INavigationTile)
 class NavigationTile(Tile):
+
     def __init__(self, context, *args, **kwargs):
         # Fix issue where context is a template based view class
         while IBrowserView.providedBy(context) and context is not None:
             context = aq_parent(aq_inner(context))
         super(NavigationTile, self).__init__(context, *args, **kwargs)
-        self.urltool = getToolByName(self.context, "portal_url")
+        self.urltool = getToolByName(self.context, 'portal_url')
 
     def title(self):
-        return self.data.get("name", u"")
+        return self.data.get('name', u'')
 
     @property
     def available(self):
@@ -174,10 +171,10 @@ class NavigationTile(Tile):
             return False
 
         tree = self.getNavTree()
-        return len(tree["children"]) > 0
+        return len(tree['children']) > 0
 
     def include_top(self):
-        return self.data.get("includeTop", False)
+        return self.data.get('includeTop', False)
 
     def navigation_root(self):
         return self.getNavRoot()
@@ -190,17 +187,18 @@ class NavigationTile(Tile):
         context = aq_inner(self.context)
         root = self.getNavRoot()
         container = aq_parent(context)
-        if aq_base(root) is aq_base(context) or (
-            aq_base(root) is aq_base(container)
-            and isDefaultPage(container, context)
+        if (
+            aq_base(root) is aq_base(context) or (
+                aq_base(root) is aq_base(container) and
+                isDefaultPage(container, context)
+            )
         ):
-            return "navTreeCurrentItem"
-        return ""
+            return 'navTreeCurrentItem'
+        return ''
 
     def root_icon(self):
-        ploneview = getMultiAdapter(
-            (self.context, self.request), name=u"plone"
-        )
+        ploneview = getMultiAdapter((self.context, self.request),
+                                    name=u'plone')
         icon = ploneview.getIcon(self.getNavRoot())
         return icon.url
 
@@ -210,26 +208,25 @@ class NavigationTile(Tile):
 
     def createNavTree(self):
         data = self.getNavTree()
-        bottomLevel = self.data.get("bottomLevel") or 0
-        return self.recurse(
-            children=data.get("children", []), level=1, bottomLevel=bottomLevel
-        )
+        bottomLevel = self.data.get('bottomLevel') or 0
+        return self.recurse(children=data.get('children', []),
+                            level=1, bottomLevel=bottomLevel)
 
     def get_css_class(self):
-        result = self.data.get("css_class", "")
+        result = self.data.get('css_class', '')
         if not result:
-            return ""
-        return " " + "".join(result)
+            return ''
+        return ' ' + ''.join(result)
 
-    recurse = ViewPageTemplateFile("templates/navigation_recurse.pt")
+    recurse = ViewPageTemplateFile('templates/navigation_recurse.pt')
 
     # Cached lookups
 
     @memoize
     def getNavRootPath(self):
-        currentFolderOnly = self.data.get("currentFolderOnly") or False
-        topLevel = self.data.get("topLevel") or 0
-        tileRoot = uuidToFolderishPath(self.context, self.data.get("root"))
+        currentFolderOnly = self.data.get('currentFolderOnly') or False
+        topLevel = self.data.get('topLevel') or 0
+        tileRoot = uuidToFolderishPath(self.context, self.data.get('root'))
         return getRootPath(self.context, currentFolderOnly, topLevel, tileRoot)
 
     @memoize
@@ -243,19 +240,19 @@ class NavigationTile(Tile):
             return portal
         try:
             return portal.unrestrictedTraverse(rootPath)
-        except (AttributeError, KeyError):
+        except (AttributeError, KeyError,):
             return portal
 
     @memoize
     def getNavTree(self, _marker=[]):
         context = aq_inner(self.context)
         queryBuilder = getMultiAdapter(
-            (context, self), INavigationQueryBuilder
+            (context, self),
+            INavigationQueryBuilder
         )
         strategy = getMultiAdapter((context, self), INavtreeStrategy)
-        return buildFolderTree(
-            context, obj=context, query=queryBuilder(), strategy=strategy
-        )
+        return buildFolderTree(context, obj=context,
+                               query=queryBuilder(), strategy=strategy)
 
 
 @implementer(INavigationQueryBuilder)
@@ -268,26 +265,24 @@ class QueryBuilder(NavtreeQueryBuilder):
     def __init__(self, context, tile):
         super(QueryBuilder, self).__init__(context)
 
-        portal_properties = getToolByName(context, "portal_properties")
-        navtree_properties = getattr(portal_properties, "navtree_properties")
+        portal_properties = getToolByName(context, 'portal_properties')
+        navtree_properties = getattr(portal_properties, 'navtree_properties')
 
-        tileRoot = uuidToFolderishPath(context, tile.data.get("root"))
+        tileRoot = uuidToFolderishPath(context, tile.data.get('root'))
         rootPath = getNavigationRoot(context, relativeRoot=tileRoot)
-        currentPath = "/".join(context.getPhysicalPath())
+        currentPath = '/'.join(context.getPhysicalPath())
 
         # override query path with tile path if needed
-        if currentPath != rootPath and not currentPath.startswith(
-            rootPath + "/"
-        ):
-            self.query["path"] = {"query": rootPath, "depth": 1}
+        if currentPath != rootPath and \
+           not currentPath.startswith(rootPath + '/'):
+            self.query['path'] = {'query': rootPath, 'depth': 1}
         else:
-            self.query["path"] = {"query": currentPath, "navtree": 1}
+            self.query['path'] = {'query': currentPath, 'navtree': 1}
 
-        topLevel = tile.data.get("topLevel") or navtree_properties.getProperty(
-            "topLevel", 0
-        )
+        topLevel = (tile.data.get('topLevel') or
+                    navtree_properties.getProperty('topLevel', 0))
         if topLevel and topLevel > 0:
-            self.query["path"]["navtree_start"] = topLevel + 1
+            self.query['path']['navtree_start'] = topLevel + 1
 
 
 @implementer(INavtreeStrategy)
@@ -297,31 +292,31 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
 
     def __init__(self, context, tile):
         SitemapNavtreeStrategy.__init__(self, context, tile)
-        portal_properties = getToolByName(context, "portal_properties")
-        navtree_properties = getattr(portal_properties, "navtree_properties")
+        portal_properties = getToolByName(context, 'portal_properties')
+        navtree_properties = getattr(portal_properties, 'navtree_properties')
 
         # XXX: We can't do this with a 'depth' query to EPI...
-        self.bottomLevel = tile.data.get(
-            "bottomLevel"
-        ) or navtree_properties.getProperty("bottomLevel", 0)
-        currentFolderOnly = tile.data.get(
-            "currentFolderOnly"
-        ) or navtree_properties.getProperty(
-            "currentFolderOnlyInNavtree", False
+        self.bottomLevel = (
+            tile.data.get('bottomLevel') or
+            navtree_properties.getProperty('bottomLevel', 0)
         )
-        topLevel = tile.data.get("topLevel") or navtree_properties.getProperty(
-            "topLevel", 0
+        currentFolderOnly = (
+            tile.data.get('currentFolderOnly') or
+            navtree_properties.getProperty('currentFolderOnlyInNavtree', False)
         )
-        tileRoot = uuidToFolderishPath(context, tile.data.get("root"))
-        self.rootPath = getRootPath(
-            context, currentFolderOnly, topLevel, tileRoot
+        topLevel = (
+            tile.data.get('topLevel') or
+            navtree_properties.getProperty('topLevel', 0)
         )
+        tileRoot = uuidToFolderishPath(context, tile.data.get('root'))
+        self.rootPath = getRootPath(context, currentFolderOnly,
+                                    topLevel, tileRoot)
 
     def subtreeFilter(self, node):
         sitemapDecision = SitemapNavtreeStrategy.subtreeFilter(self, node)
         if not sitemapDecision:
             return False
-        depth = node.get("depth", 0)
+        depth = node.get('depth', 0)
         return not (
             depth > 0 and self.bottomLevel > 0 and depth >= self.bottomLevel
         )
@@ -331,7 +326,7 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
     """Helper function to calculate the real root path."""
     context = aq_inner(context)
     if currentFolderOnly:
-        folderish = getattr(aq_base(context), "isPrincipiaFolderish", False)
+        folderish = getattr(aq_base(context), 'isPrincipiaFolderish', False)
         folderish &= not INonStructuralFolder.providedBy(context)
         parent = aq_parent(context)
 
@@ -339,25 +334,25 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
         browser_default = IBrowserDefault(parent, None)
         if browser_default is not None:
             browser_default_page = browser_default.getDefaultPage()
-            is_default_page = browser_default_page == context.getId()
+            is_default_page = (browser_default_page == context.getId())
 
         if not folderish or is_default_page:
-            return "/".join(parent.getPhysicalPath())
+            return '/'.join(parent.getPhysicalPath())
         else:
-            return "/".join(context.getPhysicalPath())
+            return '/'.join(context.getPhysicalPath())
 
     rootPath = getNavigationRoot(context, relativeRoot=root)
 
     # Adjust for topLevel
     if topLevel > 0:
-        contextPath = "/".join(context.getPhysicalPath())
+        contextPath = '/'.join(context.getPhysicalPath())
         if not contextPath.startswith(rootPath):
             return None
-        contextSubPathElements = contextPath[len(rootPath) + 1 :]
+        contextSubPathElements = contextPath[len(rootPath) + 1:]
         if not contextSubPathElements:
             return None
-        contextSubPathElements = contextSubPathElements.split("/")
+        contextSubPathElements = contextSubPathElements.split('/')
         if len(contextSubPathElements) < topLevel:
             return None
-        rootPath = "/".join([rootPath] + contextSubPathElements[:topLevel])
+        rootPath = '/'.join([rootPath] + contextSubPathElements[:topLevel])
     return rootPath
