@@ -57,14 +57,15 @@ class INavigationTile(Schema):
 
     name = schema.TextLine(
         title=_(u'Title'),
-        description=_(u'The title of the navigation tree.'),
+        description=_(u'help_navigation_title', u'The title of the navigation tree.'),
         default=u'',
         required=False,
     )
 
     root = schema.Choice(
-        title=_(u'Root node'),
+        title=_(u'label_navigation_root_path', u'Root node'),
         description=_(
+	    u'help_navigation_root',
             u'You may search for and choose a folder to act as the root '
             u'of the navigation tree. Leave blank to use the Plone site '
             u'root.'
@@ -74,8 +75,9 @@ class INavigationTile(Schema):
     )
 
     includeTop = schema.Bool(
-        title=_(u'Include top node'),
+        title=_(u'label_include_top_node', u'Include top node'),
         description=_(
+	    u'help_include_top_node',
             u'Whether or not to show the top, or "root", node in the '
             u'navigation tree. This is affected by the "Start level" '
             u'setting.'
@@ -85,8 +87,9 @@ class INavigationTile(Schema):
     )
 
     currentFolderOnly = schema.Bool(
-        title=_(u'Only show the contents of the current folder.'),
+        title=_(u'label_current_folder_only', u'Only show the contents of the current folder.'),
         description=_(
+            u'help_current_folder_only',
             u'If selected, the navigation tree will only show the current '
             u'folder and its children at all times.'
         ),
@@ -95,8 +98,9 @@ class INavigationTile(Schema):
     )
 
     topLevel = schema.Int(
-        title=_(u'Start level'),
+        title=_(u'label_navigation_startlevel', u'Start level'),
         description=_(
+	    u'help_navigation_start_level',
             u'An integer value that specifies the number of folder levels '
             u'below the site root that must be exceeded before the '
             u'navigation tree will display. 0 means that the navigation '
@@ -110,14 +114,26 @@ class INavigationTile(Schema):
     )
 
     bottomLevel = schema.Int(
-        title=_(u'Navigation tree depth'),
+        title=_(u'label_navigation_tree_depth', u'Navigation tree depth'),
         description=_(
+	    u'help_navigation_tree_depth',	
             u'How many folders should be included before the navigation '
             u'tree stops. 0 means no limit. 1 only includes the root '
             u'folder.'
         ),
         default=0,
         required=False,
+    )
+
+    css_class = schema.TextLine(
+        title=_(
+            u'label_navigation_css_class',
+            u'CSS class'),
+        description=_(
+            u'help_navigation_css_class',
+            u'Insert a list of additional css classes for this tile.'),
+        required=False,
+        default=u'',
     )
 
 
@@ -195,6 +211,12 @@ class NavigationTile(Tile):
         bottomLevel = self.data.get('bottomLevel') or 0
         return self.recurse(children=data.get('children', []),
                             level=1, bottomLevel=bottomLevel)
+
+    def get_css_class(self):
+        result = self.data.get('css_class', '')
+        if not result:
+            return ''
+        return ' '+''.join(result)
 
     recurse = ViewPageTemplateFile('templates/navigation_recurse.pt')
 

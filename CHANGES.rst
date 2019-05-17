@@ -4,6 +4,9 @@ Changelog
 2.3.2 (unreleased)
 ------------------
 
+- Added field to set a CSS class and placeholders for fields translations
+  [daniele]
+
 - Added Alt attribute to summary view, needed for accessibility
   [rnunez]
 
