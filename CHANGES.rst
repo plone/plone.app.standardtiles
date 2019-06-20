@@ -85,6 +85,7 @@ New features:
   [cekk]
 
 Bug fixes:
+
 - Fix non ASCII HTML tile content
   [tomgross]
 
