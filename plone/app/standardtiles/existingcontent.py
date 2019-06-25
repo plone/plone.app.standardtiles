@@ -67,7 +67,7 @@ def uuidToCatalogBrainUnrestricted(uuid):
 class IExistingContentTile(model.Schema):
 
     content_uid = schema.Choice(
-        title=_(u"Select an existing contentt"),
+        title=_(u"Select an existing content"),
         required=True,
         vocabulary='plone.app.vocabularies.Catalog',
     )
@@ -107,9 +107,8 @@ class IExistingContentTile(model.Schema):
     tile_class = schema.TextLine(
         title=_(u'Tile additional styles'),
         description=_(
-            u'Insert a list of additional CSS classes that will',
-            ' be added to the tile',
-        ),
+            u'Insert a list of additional CSS classes that will' +
+            u' be added to the tile'),
         default=u'',
         required=False,
     )
