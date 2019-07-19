@@ -137,6 +137,11 @@
         component="plone.app.standardtiles.contentlisting.availableListingViewsVocabulary"
         name="Available Listing Views"
         />
+    
+    <utility
+        component="plone.app.standardtiles.existingcontent.availableContentViewsVocabulary"
+        name="Available Content Views"
+        />
 
     <adapter factory=".contentlisting.DefaultQuery" name="default" />
     <adapter factory=".contentlisting.DefaultSortOn" name="default" />
