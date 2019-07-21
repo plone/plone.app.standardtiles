@@ -30,11 +30,6 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 import six
 
-import logging
-
-
-logger = logging.getLogger(__name__)
-
 
 def uuidToObject(uuid):
     """Given a UUID, attempt to return a content object. Will return
@@ -167,31 +162,29 @@ class ExistingContentTile(Tile):
 
     @property
     @memoize
-    def default_view(self):
+    def content_view(self):
         context = self.content_context
         if context is not None:
-            item_layout = context.getLayout()
-            default_view = context.restrictedTraverse(item_layout)
-            return default_view
+            view_name = self.data.get('view_template') or context.getLayout()
+            return context.restrictedTraverse(view_name, None)
         return None
 
     @property
     def item_macros(self):
-        logger.info('QUI')
-        default_view = self.default_view
-        if default_view and IBrowserView.providedBy(default_view):
+        view = self.content_view
+        if view and IBrowserView.providedBy(view):
             # IBrowserView
-            if getattr(default_view, 'index', None):
-                return default_view.index.macros
-        elif default_view:
+            if getattr(view, 'index', None):
+                return view.index.macros
+        elif view:
             # FSPageTemplate
-            return default_view.macros
+            return view.macros
         return None
 
     @property
     def item_panels(self):
-        default_view = self.default_view
-        html = default_view()
+        view = self.content_view
+        html = view()
         if isinstance(html, six.text_type):
             html = html.encode('utf-8')
         serializer = getHTMLSerializer(
@@ -258,14 +251,14 @@ class ExistingContentTile(Tile):
         if name in (
             'data',
             'content_context',
-            'default_view',
+            'content_view',
             'item_macros',
             'item_panels',
             'getPhysicalPath',
             'index_html',
         ) or name.startswith(('_', 'im_', 'func_')):
             return Tile.__getattr__(self, name)
-        return getattr(self.default_view, name)
+        return getattr(self.content_view, name)
 
 
 @provider(IVocabularyFactory)
@@ -275,7 +268,7 @@ def availableContentViewsVocabulary(context):
     registry = getUtility(IRegistry)
     listing_views = registry.get('plone.app.standardtiles.content_views', {})
     if len(listing_views) == 0:
-        listing_views = {'default_view': u'Default view'}
+        listing_views = {'': u'Default view'}
     voc = []
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):
         voc.append(SimpleVocabulary.createTerm(key, key, label))
