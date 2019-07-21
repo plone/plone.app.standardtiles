@@ -24,12 +24,18 @@ import transaction
 
 
 def image():
-    img = Image.new('RGB', (random.randint(320, 640),
-                            random.randint(320, 640)))
+    img = Image.new(
+        'RGB', (random.randint(320, 640), random.randint(320, 640))
+    )
     draw = ImageDraw.Draw(img)
-    draw.rectangle(((0, 0), img.size), fill=(random.randint(0, 255),
-                                             random.randint(0, 255),
-                                             random.randint(0, 255)))
+    draw.rectangle(
+        ((0, 0), img.size),
+        fill=(
+            random.randint(0, 255),
+            random.randint(0, 255),
+            random.randint(0, 255),
+        ),
+    )
     del draw
     output = six.BytesIO()
     img.save(output, 'PNG')
@@ -48,15 +54,17 @@ class ExistingContentTileTests(TestCase):
         self.browser.handleErrors = False
         self.browser.addHeader(
             'Authorization',
-            'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,)
+            'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD),
         )
 
         self.unprivileged_browser = Browser(self.layer['app'])
 
         setRoles(self.portal, TEST_USER_ID, ['Manager'])
         page_id = self.portal.invokeFactory(
-            'Document', 'a-simple-page',
-            title=u'A simple page', description=u'A description'
+            'Document',
+            'a-simple-page',
+            title=u'A simple page',
+            description=u'A description',
         )
         self.page = self.portal[page_id]
         self.pageURL = self.portal[page_id].absolute_url()
@@ -69,9 +77,11 @@ class ExistingContentTileTests(TestCase):
 
         """
         page_id = self.portal.invokeFactory(
-            'Document', 'an-another-page',
-            title=u'An another page', description=u'A description',
-            text=u'Hello World!'
+            'Document',
+            'an-another-page',
+            title=u'An another page',
+            description=u'A description',
+            text=u'Hello World!',
         )
         self.portal[page_id].text = RichTextValue(u'Hello World!')
 
@@ -80,10 +90,10 @@ class ExistingContentTileTests(TestCase):
         transaction.commit()
 
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid +
-            '&show_text=True',
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_text=True'
         )
 
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
@@ -92,9 +102,11 @@ class ExistingContentTileTests(TestCase):
         """
         """
         page_id = self.portal.invokeFactory(
-            'Document', 'an-another-page',
-            title=u'An another page', description=u'A description',
-            text=u'Hello World!'
+            'Document',
+            'an-another-page',
+            title=u'An another page',
+            description=u'A description',
+            text=u'Hello World!',
         )
         self.portal[page_id].text = RichTextValue(u'Hello World!')
 
@@ -102,29 +114,33 @@ class ExistingContentTileTests(TestCase):
 
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid +
-            '&show_title=True'
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_title=True'
         )
 
         self.assertIn(u'An another page', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
         )
 
-        self.assertNotIn(u'An another page', self.unprivileged_browser.contents)
+        self.assertNotIn(
+            u'An another page', self.unprivileged_browser.contents
+        )
 
     def test_existing_content_tile_show_description(self):
         """
         """
         page_id = self.portal.invokeFactory(
-            'Document', 'an-another-page',
-            title=u'An another page', description=u'A description',
-            text=u'Hello World!'
+            'Document',
+            'an-another-page',
+            title=u'An another page',
+            description=u'A description',
+            text=u'Hello World!',
         )
         self.portal[page_id].text = RichTextValue(u'Hello World!')
 
@@ -132,18 +148,18 @@ class ExistingContentTileTests(TestCase):
 
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid +
-            '&show_description=True'
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_description=True'
         )
 
         self.assertIn(u'A description', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
         )
 
         self.assertNotIn(u'A description', self.unprivileged_browser.contents)
@@ -152,9 +168,11 @@ class ExistingContentTileTests(TestCase):
         """
         """
         page_id = self.portal.invokeFactory(
-            'Document', 'an-another-page',
-            title=u'An another page', description=u'A description',
-            text=u'Hello World!'
+            'Document',
+            'an-another-page',
+            title=u'An another page',
+            description=u'A description',
+            text=u'Hello World!',
         )
         self.portal[page_id].text = RichTextValue(u'Hello World!')
 
@@ -162,18 +180,18 @@ class ExistingContentTileTests(TestCase):
 
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid +
-            '&show_text=True'
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_text=True'
         )
 
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
         )
 
         self.assertNotIn(u'Hello World!', self.unprivileged_browser.contents)
@@ -182,32 +200,36 @@ class ExistingContentTileTests(TestCase):
         """
         """
         page_id = self.portal.invokeFactory(
-            'Document', 'a-page',
-            title=u'A page', description=u'A description',
-            text=u'Hello World!'
+            'Document',
+            'a-page',
+            title=u'A page',
+            description=u'A description',
+            text=u'Hello World!',
         )
         image_id = self.portal.invokeFactory(
-            'Image', 'an-image',
-            title=u'An Image', description=u'foo',
-            image=NamedImage(image(), 'image/png', filename=u'color.png')
+            'Image',
+            'an-image',
+            title=u'An Image',
+            description=u'foo',
+            image=NamedImage(image(), 'image/png', filename=u'color.png'),
         )
         page_uuid = IUUID(self.portal[page_id])
         image_uuid = IUUID(self.portal[image_id])
 
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid +
-            '&show_image=True'
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_image=True'
         )
         self.assertNotIn(u'<img src="', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            image_uuid +
-            '&show_image=True'
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + image_uuid
+            + '&show_image=True'
         )
 
         self.assertIn(u'<img src="', self.unprivileged_browser.contents)
@@ -221,18 +243,20 @@ class ExistingContentTileTests(TestCase):
         settings.globally_enabled = True
 
         page_id = self.portal.invokeFactory(
-            'Document', 'a-commented-page',
-            title=u'A commented page', description=u'A description',
-            text=u'Hello World!'
+            'Document',
+            'a-commented-page',
+            title=u'A commented page',
+            description=u'A description',
+            text=u'Hello World!',
         )
         page = self.portal[page_id]
         page_uuid = IUUID(page)
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid +
-            '&show_comments=True'
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_comments=True'
         )
         self.assertIn(u'0', self.unprivileged_browser.contents)
 
@@ -248,10 +272,10 @@ class ExistingContentTileTests(TestCase):
         conversation.addComment(comment1)
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid +
-            '&show_comments=True'
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_comments=True'
         )
         self.assertIn(u'1', self.unprivileged_browser.contents)
 
@@ -260,10 +284,12 @@ class ExistingContentTileTests(TestCase):
         the content linked to existing content tile, the tile renders
         empty"""
         self.portal.portal_workflow.setDefaultChain(
-            'simple_publication_workflow')
+            'simple_publication_workflow'
+        )
 
         page_id = self.portal.invokeFactory(
-            'Document', 'an-another-page',
+            'Document',
+            'an-another-page',
             title=u'An another page',
             description=u'A description',
             text=RichTextValue(u'Hello World!'),
@@ -274,9 +300,9 @@ class ExistingContentTileTests(TestCase):
 
         self.unprivileged_browser.handleErrors = False
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
         )
 
         self.assertNotIn(u'Hello World!', self.unprivileged_browser.contents)
@@ -308,9 +334,12 @@ class ExistingContentTileTests(TestCase):
         self.assertIn(u'not select the same content', self.browser.contents)
 
         page2_id = self.portal.invokeFactory(
-            'Document', 'an-another-page-2',
-            title=u'An another page', description=u'A description',
-            text=u'Hello World!')
+            'Document',
+            'an-another-page-2',
+            title=u'An another page',
+            description=u'A description',
+            text=u'Hello World!',
+        )
         page2 = self.portal[page2_id]
         page2_uuid = IUUID(page2)
         page2.text = RichTextValue(u'Hello World!')
@@ -330,8 +359,10 @@ class ExistingContentTileTests(TestCase):
 
         """
         page_id = self.portal.invokeFactory(
-            'Document', 'an-another-page',
-            title=u'An another page', description=u'A description'
+            'Document',
+            'an-another-page',
+            title=u'An another page',
+            description=u'A description',
         )
 
         page_uuid = IUUID(self.portal[page_id])
@@ -339,20 +370,59 @@ class ExistingContentTileTests(TestCase):
         transaction.commit()
 
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid +
-            '&show_title=True'
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_title=True'
         )
 
         self.assertNotIn(u'extra-class', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.existingcontent/unique?content_uid=' +
-            page_uuid +
-            '&show_title=True' +
-            '&tile_class=extra-class'
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_title=True'
+            + '&tile_class=extra-class'
         )
 
         self.assertIn(u'extra-class', self.unprivileged_browser.contents)
+
+    def test_existing_content_tile_custom_layout(self):
+        """
+        Test that tile shows a custom layout, if set.
+        If not set, it uses the default content layout
+        """
+        page_id = self.portal.invokeFactory(
+            'Document',
+            'a-page-for-test',
+            title=u'An another page',
+            description=u'A description',
+        )
+        self.portal[page_id].text = RichTextValue(u'Hello World!')
+
+        page_uuid = IUUID(self.portal[page_id])
+
+        transaction.commit()
+        self.unprivileged_browser.open(
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_text=True&view_template=custom_existingcontent_layout'
+        )
+        self.assertIn(
+            u'This is a custom layout', self.unprivileged_browser.contents
+        )
+        self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
+
+        self.unprivileged_browser.open(
+            self.portalURL
+            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
+            + page_uuid
+            + '&show_text=True'
+        )
+
+        self.assertNotIn(
+            u'This is a custom layout', self.unprivileged_browser.contents
+        )
+        self.assertIn(u'Hello World!', self.unprivileged_browser.contents)

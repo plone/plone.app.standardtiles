@@ -5,6 +5,7 @@
 .idea
 .installed.cfg
 .coverage
+.mr.developer.cfg
 bin
 develop-eggs
 parts

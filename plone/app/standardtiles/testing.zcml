@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:z3c="http://namespaces.zope.org/z3c"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="plone.app.standardtiles">
 
   <include package="." file="configure.zcml" />
@@ -14,4 +15,10 @@
       template="tests/funky_display.pt"
       />
 
+  <browser:page
+    name="custom_existingcontent_layout"
+    template="tests/custom_existingcontent_layout.pt"
+    permission="zope2.View"
+    for="*"
+    />
 </configure>
