@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
-from Products.CMFPlone.utils import safe_unicode
-from ZODB.POSException import POSKeyError
+from operator import itemgetter
 from plone import api
 from plone.api.exc import InvalidParameterError
 from plone.app.blocks import utils
@@ -11,16 +10,23 @@ from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives as form
 from plone.memoize.view import memoize
+from plone.registry.interfaces import IRegistry
 from plone.supermodel import model
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
+from Products.CMFPlone.utils import safe_unicode
 from repoze.xmliter.utils import getHTMLSerializer
 from z3c.form import validator
 from zExceptions import Unauthorized
+from ZODB.POSException import POSKeyError
 from zope import schema
 from zope.browser.interfaces import IBrowserView
+from zope.component import getUtility
 from zope.component.hooks import getSite
 from zope.interface import Invalid
+from zope.interface import provider
+from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleVocabulary
 
 import six
 
@@ -256,3 +262,17 @@ class ExistingContentTile(Tile):
                     ) or name.startswith(('_', 'im_', 'func_')):
             return Tile.__getattr__(self, name)
         return getattr(self.content_view, name)
+
+
+@provider(IVocabularyFactory)
+def availableContentViewsVocabulary(context):
+    """Get available views for a content as vocabulary"""
+
+    registry = getUtility(IRegistry)
+    listing_views = registry.get('plone.app.standardtiles.content_views', {})
+    if len(listing_views) == 0:
+        listing_views = {'': u'Default view'}
+    voc = []
+    for key, label in sorted(listing_views.items(), key=itemgetter(1)):
+        voc.append(SimpleVocabulary.createTerm(key, key, label))
+    return SimpleVocabulary(voc)
