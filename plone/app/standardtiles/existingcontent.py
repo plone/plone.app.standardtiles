@@ -269,10 +269,8 @@ def availableContentViewsVocabulary(context):
     """Get available views for a content as vocabulary"""
 
     registry = getUtility(IRegistry)
-    listing_views = registry.get('plone.app.standardtiles.content_views', {})
-    if len(listing_views) == 0:
-        listing_views = {'': u'Default view'}
-    voc = []
+    listing_views = registry.get('plone.app.standardtiles.content_views', {}) or {}
+    voc = [SimpleVocabulary.createTerm('', '', 'Default view')]
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):
         voc.append(SimpleVocabulary.createTerm(key, key, label))
     return SimpleVocabulary(voc)
