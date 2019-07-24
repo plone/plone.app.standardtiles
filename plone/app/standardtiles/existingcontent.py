@@ -75,25 +75,16 @@ class IExistingContentTile(model.Schema):
         'content_uid',
         RelatedItemsFieldWidget,
         vocabulary='plone.app.vocabularies.Catalog',
-        pattern_options={
-            'recentlyUsed': True,
-        }
+        pattern_options={'recentlyUsed': True},
     )
 
-    show_title = schema.Bool(
-        title=_(u'Show content title'),
-        default=True,
-    )
+    show_title = schema.Bool(title=_(u'Show content title'), default=True)
 
     show_description = schema.Bool(
-        title=_(u'Show content description'),
-        default=True
+        title=_(u'Show content description'), default=True
     )
 
-    show_text = schema.Bool(
-        title=_(u'Show content text'),
-        default=True,
-    )
+    show_text = schema.Bool(title=_(u'Show content text'), default=True)
 
     show_image = schema.Bool(
         title=_(u'Show content image (if available)'),
@@ -117,7 +108,8 @@ class IExistingContentTile(model.Schema):
         title=_(u'Tile additional styles'),
         description=_(
             u'Insert a list of additional CSS classes that will',
-            ' be added to the tile'),
+            ' be added to the tile',
+        ),
         default=u'',
         required=False,
     )
@@ -142,8 +134,7 @@ class SameContentValidator(validator.SimpleFieldValidator):
 
 # Register validator
 validator.WidgetValidatorDiscriminators(
-    SameContentValidator,
-    field=IExistingContentTile['content_uid'],
+    SameContentValidator, field=IExistingContentTile['content_uid']
 )
 
 
@@ -196,8 +187,9 @@ class ExistingContentTile(Tile):
         html = content_view()
         if isinstance(html, six.text_type):
             html = html.encode('utf-8')
-        serializer = getHTMLSerializer([html], pretty_print=False,
-                                       encoding='utf-8')
+        serializer = getHTMLSerializer(
+            [html], pretty_print=False, encoding='utf-8'
+        )
         panels = dict(
             (node.attrib['data-panel'], node)
             for node in utils.panelXPath(serializer.tree)
@@ -210,9 +202,15 @@ class ExistingContentTile(Tile):
             except RuntimeError:  # maximum recursion depth exceeded
                 return []
             clear = '<div style="clear: both;"></div>'
-            return [''.join([safe_unicode(serializer.serializer(child))
-                             for child in node.getchildren()])
-                    for name, node in panels.items()] + [clear]
+            return [
+                ''.join(
+                    [
+                        safe_unicode(serializer.serializer(child))
+                        for child in node.getchildren()
+                    ]
+                )
+                for name, node in panels.items()
+            ] + [clear]
         return []
 
     @property
@@ -222,9 +220,7 @@ class ExistingContentTile(Tile):
             return ''
         try:
             scale_view = api.content.get_view(
-                name='images',
-                context=context,
-                request=self.request,
+                name='images', context=context, request=self.request
             )
             scale = self.data.get('image_scale', 'thumb')
             return scale_view.scale('image', scale=scale).tag()
@@ -252,14 +248,15 @@ class ExistingContentTile(Tile):
     def __getattr__(self, name):
         # proxy attributes for this view to the selected view of the content
         # item so views work
-        if name in ('data',
-                    'content_context',
-                    'content_view',
-                    'item_macros',
-                    'item_panels',
-                    'getPhysicalPath',
-                    'index_html',
-                    ) or name.startswith(('_', 'im_', 'func_')):
+        if name in (
+            'data',
+            'content_context',
+            'content_view',
+            'item_macros',
+            'item_panels',
+            'getPhysicalPath',
+            'index_html',
+        ) or name.startswith(('_', 'im_', 'func_')):
             return Tile.__getattr__(self, name)
         return getattr(self.content_view, name)
 
@@ -269,7 +266,9 @@ def availableContentViewsVocabulary(context):
     """Get available views for a content as vocabulary"""
 
     registry = getUtility(IRegistry)
-    listing_views = registry.get('plone.app.standardtiles.content_views', {}) or {}
+    listing_views = (
+        registry.get('plone.app.standardtiles.content_views', {}) or {}
+    )
     voc = [SimpleVocabulary.createTerm('', '', 'Default view')]
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):
         voc.append(SimpleVocabulary.createTerm(key, key, label))
