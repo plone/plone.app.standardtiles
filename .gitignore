@@ -8,6 +8,7 @@
 .mr.developer.cfg
 bin
 develop-eggs
+eggs
 parts
 build
 /include/
