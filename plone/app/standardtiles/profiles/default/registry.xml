@@ -72,12 +72,10 @@
   <record name="plone.app.standardtiles.content_views">
     <field type="plone.registry.field.Dict">
       <title>Content Views</title>
+      <required>False</required>
       <key_type type="plone.registry.field.TextLine" />
       <value_type type="plone.registry.field.TextLine" />
     </field>
-    <value purge="false">
-      <element key="">Default view</element>
-    </value>
   </record>
 
   <records interface="plone.app.querystring.interfaces.IQueryField"
