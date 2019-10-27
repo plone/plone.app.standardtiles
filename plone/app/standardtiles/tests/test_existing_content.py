@@ -90,10 +90,10 @@ class ExistingContentTileTests(TestCase):
         transaction.commit()
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_text=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique'
+            '?content_uid={page_uuid}&show_text=True'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
@@ -114,18 +114,19 @@ class ExistingContentTileTests(TestCase):
 
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_title=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_title=True'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertIn(u'An another page', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertNotIn(
@@ -148,18 +149,19 @@ class ExistingContentTileTests(TestCase):
 
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_description=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_description=True'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertIn(u'A description', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertNotIn(u'A description', self.unprivileged_browser.contents)
@@ -180,10 +182,10 @@ class ExistingContentTileTests(TestCase):
 
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_text=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_text=True'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
@@ -322,7 +324,7 @@ class ExistingContentTileTests(TestCase):
         transaction.commit()
 
         self.browser.open(
-            '{}/@@edit-tile/plone.app.standardtiles.existingcontent/unique'.format(
+            '{}/@@edit-tile/plone.app.standardtiles.existingcontent/unique'.format(  # noqa
                 page.absolute_url()
             )
         )
@@ -370,20 +372,19 @@ class ExistingContentTileTests(TestCase):
         transaction.commit()
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_title=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_title=True'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertNotIn(u'extra-class', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_title=True'
-            + '&tile_class=extra-class'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_title=True&tile_class=extra-class'.format(  # noqa
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertIn(u'extra-class', self.unprivileged_browser.contents)
@@ -404,11 +405,13 @@ class ExistingContentTileTests(TestCase):
         page_uuid = IUUID(self.portal[page_id])
 
         transaction.commit()
+
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_text=True&view_template=custom_existingcontent_layout'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_text=True&view_template='
+            'custom_existingcontent_layout'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
         self.assertIn(
             u'This is a custom layout', self.unprivileged_browser.contents
@@ -416,10 +419,10 @@ class ExistingContentTileTests(TestCase):
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_text=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_text=True'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertNotIn(

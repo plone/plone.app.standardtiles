@@ -166,7 +166,9 @@ class ExistingContentTile(Tile):
         context = self.content_context
         if context is not None:
             view_name = self.data.get('view_template') or context.getLayout()
-            return context.restrictedTraverse(view_name, None)
+            return api.content.get_view(
+                name=view_name, context=context, request=self.request
+            )
         return None
 
     @property
