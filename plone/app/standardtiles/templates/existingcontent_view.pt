@@ -34,7 +34,7 @@
       </tal:image>
       <tal:text condition="show_text">
         <tal:block condition="item_macro">
-          <div tal:define="view nocall:view/default_view;
+          <div tal:define="view nocall:view/content_view;
                            plone_view context/@@plone;
                            portal_state context/@@plone_portal_state;
                            context_state context/@@plone_context_state;
@@ -76,9 +76,13 @@
   </body>
   </tal:block>
   <tal:block condition="not:nocall:view/item_macros">
-  <div tal:repeat="panel view/item_panels" tal:replace="structure panel">
-      content
-  </div>
+    <tal:panels define="panels view/item_panels">
+      <div tal:condition="panels"
+           tal:repeat="panel view/item_panels" tal:replace="structure panel">
+          content
+      </div>
+      <p tal:condition="not:panels">Selected view is not available for the content.</p>
+    </tal:panels>
   </tal:block>
   </tal:block>
   <body tal:condition="not:nocall:view/content_context"></body>

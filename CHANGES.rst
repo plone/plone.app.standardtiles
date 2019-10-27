@@ -24,6 +24,9 @@ Changelog
 - Fix tests in Plone 5.2
   [MrTango]
 
+- Add custom_view also in existingcontent tile.
+  [cekk]
+
 
 2.3.1 (2018-06-07)
 ------------------
