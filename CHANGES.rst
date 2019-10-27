@@ -27,6 +27,9 @@ Changelog
 - Add custom_view also in existingcontent tile.
   [cekk]
 
+- Fix existingcontent tile form labels
+  [pnicolli]
+
 
 2.3.1 (2018-06-07)
 ------------------
@@ -70,7 +73,7 @@ Bug fixes:
 - Fix issue where image field tile template registration did not apply for
   fields on non-default fieldset
   [datakurre]
-  
+
 - Imports are Python3 compatible
   [b4oshany]
 
