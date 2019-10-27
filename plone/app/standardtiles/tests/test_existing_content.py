@@ -191,9 +191,10 @@ class ExistingContentTileTests(TestCase):
         self.assertIn(u'Hello World!', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertNotIn(u'Hello World!', self.unprivileged_browser.contents)
@@ -220,18 +221,18 @@ class ExistingContentTileTests(TestCase):
 
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_image=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_image=True'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
         self.assertNotIn(u'<img src="', self.unprivileged_browser.contents)
 
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + image_uuid
-            + '&show_image=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid=image_uuid&show_image=True'.format(
+                portal_url=self.portalURL, image_uuid=image_uuid
+            )
         )
 
         self.assertIn(u'<img src="', self.unprivileged_browser.contents)
@@ -255,10 +256,10 @@ class ExistingContentTileTests(TestCase):
         page_uuid = IUUID(page)
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_comments=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_comments=True'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
         self.assertIn(u'0', self.unprivileged_browser.contents)
 
@@ -274,10 +275,10 @@ class ExistingContentTileTests(TestCase):
         conversation.addComment(comment1)
         transaction.commit()
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
-            + '&show_comments=True'
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}&show_comments=True'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
         self.assertIn(u'1', self.unprivileged_browser.contents)
 
@@ -302,9 +303,10 @@ class ExistingContentTileTests(TestCase):
 
         self.unprivileged_browser.handleErrors = False
         self.unprivileged_browser.open(
-            self.portalURL
-            + '/@@plone.app.standardtiles.existingcontent/unique?content_uid='
-            + page_uuid
+            '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
+            'content_uid={page_uuid}'.format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
         )
 
         self.assertNotIn(u'Hello World!', self.unprivileged_browser.contents)
