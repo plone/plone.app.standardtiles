@@ -227,10 +227,9 @@ class ExistingContentTileTests(TestCase):
             )
         )
         self.assertNotIn(u'<img src="', self.unprivileged_browser.contents)
-
         self.unprivileged_browser.open(
             '{portal_url}/@@plone.app.standardtiles.existingcontent/unique?'
-            'content_uid=image_uuid&show_image=True'.format(
+            'content_uid={image_uuid}&show_image=True'.format(
                 portal_url=self.portalURL, image_uuid=image_uuid
             )
         )
