@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.2 (unreleased)
+2.3.2 (2019-12-05)
 ------------------
 
 - Added Alt attribute to summary view, needed for accessibility
