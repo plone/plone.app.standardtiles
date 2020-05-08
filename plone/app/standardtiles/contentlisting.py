@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from operator import itemgetter
+from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
@@ -41,6 +42,12 @@ class IContentListingTile(Schema):
         ),
         required=False,
         missing_value=u'',
+    )
+
+    use_context_query = schema.Bool(
+        title=_(u'label_use_context_query', default=u'Use query parameters from content'),
+        description=_(u'If your content is a collection you can use the already existing listing configuration.'),
+        required=False,
     )
 
     widget(query=QueryStringFieldWidget)
@@ -139,7 +146,12 @@ class ContentListingTile(Tile):
     def update(self):
         self.query = self.data.get('query')
         self.sort_on = self.data.get('sort_on')
-
+        if (
+            self.data.get('use_context_query', None)
+            and ISyndicatableCollection.providedBy(self.context)
+        ):
+            self.query = self.context.query
+            self.sort_on = self.context.sort_on
         if self.query is None or self.sort_on is None:
             # Get defaults
             tileType = queryUtility(ITileType, name=self.__name__)

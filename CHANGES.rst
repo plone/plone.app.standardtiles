@@ -4,7 +4,8 @@ Changelog
 2.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Content listing: allow to use collection query parameters from context.
+  [agitator]
 
 
 2.3.2 (2019-12-05)
