@@ -83,6 +83,15 @@ class IContentListingTile(Schema):
         min=1,
     )
 
+    tile_class = schema.TextLine(
+        title=_(u'Tile additional styles'),
+        description=_(
+            u'Insert a list of additional CSS classes that will' +
+            u' be added to the tile'),
+        default=u'',
+        required=False,
+    )
+
     view_template = schema.Choice(
         title=_(u'Display mode'),
         source=_(u'Available Listing Views'),
@@ -204,6 +213,15 @@ class ContentListingTile(Tile):
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
         return getMultiAdapter((accessor, self.request), name=view)(**options)
+
+    @property
+    def tile_class(self):
+        css_class = 'contentlisting-tile'
+        additional_classes = self.data.get('tile_class', '')
+        if not additional_classes:
+            return css_class
+        return ' '.join([css_class, additional_classes])
+
 
 
 @provider(IVocabularyFactory)

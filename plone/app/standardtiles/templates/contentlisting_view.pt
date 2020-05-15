@@ -19,7 +19,8 @@
       Description
     </div>
 
-    <div tal:replace="structure python:view.contents()">Listing</div>
+    <div class="${view/tile_class}"
+      tal:content="structure python:view.contents()">Listing</div>
 
   </body>
 </html>
