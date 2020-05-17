@@ -14,13 +14,13 @@
     </h2>
 
     <div class="documentDescription"
-        tal:condition="view/description"
-        tal:content="view/description">
+         tal:condition="view/description"
+         tal:content="view/description">
       Description
     </div>
 
     <div class="${view/tile_class}"
-      tal:content="structure python:view.contents()">Listing</div>
+         tal:content="structure python:view.contents()">Listing</div>
 
   </body>
 </html>
