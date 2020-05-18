@@ -91,6 +91,7 @@ class AttachmentTile(PersistentTile):
         else:
             return name
 
+
 deprecated(AttachmentTile, 'AttachmentTile is now deprecated and will be '
                            'completely removed in 3.0.0')
 

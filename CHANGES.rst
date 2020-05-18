@@ -6,7 +6,7 @@ Changelog
 
 - Content listing: Allow to use collection query parameters from context.
   Content listing: Include query parameters from request.
-  Contant listing: Add "tile_class".
+  Content listing: Add "tile_class".
   [agitator]
 
 
