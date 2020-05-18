@@ -203,11 +203,16 @@ class ContentListingTile(Tile):
             (self.context, self.request),
             name='querybuilderresults'
         )
+
+        # Include query parameters from request
+        contentFilter = dict(self.request.get('contentFilter', {}))
+
         accessor = builder(
             query=self.query,
             sort_on=self.sort_on or 'getObjPositionInParent',
             sort_order=self.sort_order,
-            limit=self.limit
+            limit=self.limit,
+            custom_query=contentFilter
         )
         view = self.view_template or 'listing_view'
         options = dict(original_context=self.context)
