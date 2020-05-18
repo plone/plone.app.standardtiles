@@ -155,12 +155,11 @@ class ContentListingTile(Tile):
     def update(self):
         self.query = self.data.get('query')
         self.sort_on = self.data.get('sort_on')
-        if (
-            self.data.get('use_context_query', None)
-            and ISyndicatableCollection.providedBy(self.context)
-        ):
+
+        if self.data.get('use_context_query', None) and ISyndicatableCollection.providedBy(self.context):  # noqa
             self.query = self.context.query
             self.sort_on = self.context.sort_on
+
         if self.query is None or self.sort_on is None:
             # Get defaults
             tileType = queryUtility(ITileType, name=self.__name__)
@@ -203,11 +202,16 @@ class ContentListingTile(Tile):
             (self.context, self.request),
             name='querybuilderresults'
         )
+
+        # Include query parameters from request
+        contentFilter = dict(self.request.get('contentFilter', {}))
+
         accessor = builder(
             query=self.query,
             sort_on=self.sort_on or 'getObjPositionInParent',
             sort_order=self.sort_order,
-            limit=self.limit
+            limit=self.limit,
+            custom_query=contentFilter
         )
         view = self.view_template or 'listing_view'
         options = dict(original_context=self.context)
@@ -221,7 +225,6 @@ class ContentListingTile(Tile):
         if not additional_classes:
             return css_class
         return ' '.join([css_class, additional_classes])
-
 
 
 @provider(IVocabularyFactory)

@@ -14,6 +14,7 @@ def fromstring(s):
     html_parser = html.HTMLParser(encoding='utf-8')
     return html.fromstring(s, parser=html_parser).getroottree().getroot()
 
+
 PVERSION = api.env.plone_version()
 
 

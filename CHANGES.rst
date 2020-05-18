@@ -4,7 +4,9 @@ Changelog
 2.3.3 (unreleased)
 ------------------
 
-- Content listing: allow to use collection query parameters from context.
+- Content listing: Allow to use collection query parameters from context.
+  Content listing: Include query parameters from request.
+  Content listing: Add "tile_class".
   [agitator]
 
 
