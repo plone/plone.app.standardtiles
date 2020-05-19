@@ -99,7 +99,7 @@ class TestLayoutTiles(TestCase):
         )
 
         root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//body/script')
+        nodes = root.xpath('//body//script')
         self.assertEqual(len(nodes), 0)
 
     def test_analytics_tile(self):
@@ -116,7 +116,7 @@ class TestLayoutTiles(TestCase):
         self.assertIn('<script', self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//body/script')
+        nodes = root.xpath('//body//script')
         self.assertEqual(len(nodes), 1)
 
     def test_anontools_tile(self):

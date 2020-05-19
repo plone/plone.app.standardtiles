@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from operator import itemgetter
+from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
@@ -43,6 +44,12 @@ class IContentListingTile(Schema):
         missing_value=u'',
     )
 
+    use_context_query = schema.Bool(
+        title=_(u'label_use_context_query', default=u'Use query parameters from content'),
+        description=_(u'If your content is a collection you can use the already existing listing configuration.'),
+        required=False,
+    )
+
     widget(query=QueryStringFieldWidget)
     query = schema.List(
         title=_(u"Search terms"),
@@ -74,6 +81,15 @@ class IContentListingTile(Schema):
         required=False,
         default=100,
         min=1,
+    )
+
+    tile_class = schema.TextLine(
+        title=_(u'Tile additional styles'),
+        description=_(
+            u'Insert a list of additional CSS classes that will' +
+            u' be added to the tile'),
+        default=u'',
+        required=False,
     )
 
     view_template = schema.Choice(
@@ -140,6 +156,10 @@ class ContentListingTile(Tile):
         self.query = self.data.get('query')
         self.sort_on = self.data.get('sort_on')
 
+        if self.data.get('use_context_query', None) and ISyndicatableCollection.providedBy(self.context):  # noqa
+            self.query = self.context.query
+            self.sort_on = self.context.sort_on
+
         if self.query is None or self.sort_on is None:
             # Get defaults
             tileType = queryUtility(ITileType, name=self.__name__)
@@ -182,16 +202,29 @@ class ContentListingTile(Tile):
             (self.context, self.request),
             name='querybuilderresults'
         )
+
+        # Include query parameters from request
+        contentFilter = dict(self.request.get('contentFilter', {}))
+
         accessor = builder(
             query=self.query,
             sort_on=self.sort_on or 'getObjPositionInParent',
             sort_order=self.sort_order,
-            limit=self.limit
+            limit=self.limit,
+            custom_query=contentFilter
         )
         view = self.view_template or 'listing_view'
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
         return getMultiAdapter((accessor, self.request), name=view)(**options)
+
+    @property
+    def tile_class(self):
+        css_class = 'contentlisting-tile'
+        additional_classes = self.data.get('tile_class', '')
+        if not additional_classes:
+            return css_class
+        return ' '.join([css_class, additional_classes])
 
 
 @provider(IVocabularyFactory)
