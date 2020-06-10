@@ -7,10 +7,11 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
-    <div tal:define="results context;
-                     registry options/original_context/portal_registry;
-                     view_types python: registry.get('plone.types_use_view_action_in_listings', [])"
-         tal:repeat="item results">
+    <div tal:define="batch context;
+                     original_context nocall:options/original_context|context;
+                     registry original_context/portal_registry;
+                     view_types python: registry.get('plone.types_use_view_action_in_listings', [])">
+      <tal:entry repeat="item batch">
       <tal:block tal:define="item_url python: item.portal_type in view_types and item.getURL() + '/view' or item.getURL();
                              item_title_or_id item/title_or_id;
                              item_type item/Type;
@@ -25,8 +26,8 @@
              class="summary-image"
              tal:condition="item_has_image"
              tal:attributes="href item_url">
-            <img tal:condition="item_has_image"                          
-                 tal:attributes="src string:${item/getURL}/@@images/image/thumb" 
+            <img tal:condition="item_has_image"
+                 tal:attributes="src string:${item/getURL}/@@images/image/thumb"
                  alt=""/>
           </a>
           <h2 class="tileHeadline"
@@ -118,6 +119,8 @@
           <div class="visualClear"><!-- --></div>
         </div>
       </tal:block>
+      </tal:entry>
+      <div metal:use-macro="original_context/batch_macros/macros/navigation" />
     </div>
   </body>
 </html>
