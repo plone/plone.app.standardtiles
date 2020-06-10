@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.interfaces import IFolderish
+from Products.CMFPlone.utils import get_top_request
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from operator import itemgetter
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.standardtiles import PloneMessageFactory as _
@@ -8,8 +11,6 @@ from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from plone.tiles.interfaces import ITileType
-from Products.CMFCore.interfaces import IFolderish
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.interfaces import IValue
 from z3c.form.util import getSpecification
 from zope import schema
@@ -17,9 +18,9 @@ from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
+from zope.interface import Interface
 from zope.interface import alsoProvides
 from zope.interface import implementer
-from zope.interface import Interface
 from zope.interface import provider
 from zope.schema import getFields
 from zope.schema.interfaces import IVocabularyFactory
@@ -161,17 +162,25 @@ class ContentListingTile(Tile):
         return self.template()
 
     def update(self):
+        request = get_top_request(self.request)
         self.query = self.data.get('query')
         self.sort_on = self.data.get('sort_on')
         self.limit = self.data.get('limit')
-        # batch url manipulation
+        self.item_count = self.data.get('item_count')
+        # use our custom b_start_str to enable multiple
+        # batchings on one context
+        self.b_start_str = "{}-b_start".format(self.id)
+        self.b_start = request.get(self.b_start_str, 0)
+        # batch url manipulation to original_context
         self.request['ACTUAL_URL'] = self.context.absolute_url()
+
         if self.data.get('use_context_query', None) and ISyndicatableCollection.providedBy(self.context):  # noqa
             self.query = self.context.query
             self.sort_on = self.context.sort_on
             if not self.limit:
                 self.limit = self.context.limit
-
+            if not self.item_count:
+                self.item_count = self.context.item_count
 
         if self.query is None or self.sort_on is None:
             # Get defaults
@@ -218,20 +227,18 @@ class ContentListingTile(Tile):
 
         accessor = builder(
             query=self.query,
-            # Patch start
-            # do return a batch. not a blank IContentlisting
             batch=True,
-            # b_start from request or start at begin
-            b_start=self.request.get("b_start", 0),
-            # set size to item_count from context, or 10
-            b_size=getattr(self.context, "item_count", 10),
-            # /patch end
+            b_start=self.b_start,
+            b_size=self.item_count or 30,
             sort_on=self.sort_on or "getObjPositionInParent",
             sort_order=self.sort_order,
             limit=self.limit,
             brains=False,
             custom_query=contentFilter,
         )
+
+        accessor.b_start_str = self.b_start_str
+
         view = self.view_template or "listing_view"
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
