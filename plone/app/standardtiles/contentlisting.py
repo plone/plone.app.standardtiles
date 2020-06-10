@@ -155,10 +155,15 @@ class ContentListingTile(Tile):
     def update(self):
         self.query = self.data.get('query')
         self.sort_on = self.data.get('sort_on')
-
+        self.limit = self.data.get('limit')
+        # batch url manipulation
+        self.request['ACTUAL_URL'] = self.context.absolute_url()
         if self.data.get('use_context_query', None) and ISyndicatableCollection.providedBy(self.context):  # noqa
             self.query = self.context.query
             self.sort_on = self.context.sort_on
+            if not self.limit:
+                self.limit = self.context.limit
+
 
         if self.query is None or self.sort_on is None:
             # Get defaults
@@ -181,7 +186,6 @@ class ContentListingTile(Tile):
                     None
                 ), name='default').get()
 
-        self.limit = self.data.get('limit')
         if self.data.get('sort_reversed'):
             self.sort_order = 'reverse'
         else:
