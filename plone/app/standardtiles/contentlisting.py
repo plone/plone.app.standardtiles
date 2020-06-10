@@ -83,6 +83,14 @@ class IContentListingTile(Schema):
         min=1,
     )
 
+    item_count = schema.Int(
+        title=_(u'label_item_count', default=u'Item count'),
+        description=_(u'Number of items that will show up in one batch.'),
+        required=False,
+        default=30,
+        min=1,
+    )
+
     tile_class = schema.TextLine(
         title=_(u'Tile additional styles'),
         description=_(
