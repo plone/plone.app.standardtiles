@@ -6,20 +6,20 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
-    <tal:defines define="results context;
+    <tal:defines define="batch context;
                          original_context nocall:options/original_context|context;
                          toLocalizedTime nocall:original_context/@@plone/toLocalizedTime;
                          pas_member original_context/@@pas_member;
                          show_about python:True;
                          registry original_context/portal_registry;
                          view_types python: registry.get('plone.types_use_view_action_in_listings', [])">
-      <tal:listing condition="results">
+      <tal:listing condition="batch">
         <dl>
-          <tal:entry repeat="item results">
+          <tal:entry repeat="item batch">
             <dt tal:define="item_has_image python:item.getIcon;
                             item_url python: item.portal_type in view_types and item.getURL() + '/view' or item.getURL()">
               <span class="summary">
-                <img tal:condition="item_has_image"                          
+                <img tal:condition="item_has_image"
                              tal:attributes="src string:${item/getURL}/@@images/image/tile" />
                 <a href="#"
                    tal:attributes="href item_url;
@@ -63,9 +63,10 @@
             </dd>
           </tal:entry>
         </dl>
+        <div metal:use-macro="original_context/batch_macros/macros/navigation" />
       </tal:listing>
       <p class="discreet"
-         tal:condition="not:results"
+         tal:condition="not:batch"
          i18n:translate="">
         There are currently no items in this folder.
       </p>

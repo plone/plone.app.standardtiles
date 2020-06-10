@@ -6,7 +6,7 @@
       lang="en"
       i18n:domain="plone">
     <body>
-        <div tal:define="results context;
+        <div tal:define="batch context;
                          original_context nocall:options/original_context|context;
                          pas_member original_context/@@pas_member;
                          registry original_context/portal_registry;
@@ -16,7 +16,7 @@
                 <p><strong>Nothing to list</strong></p>
             </div>
 
-            <div tal:condition="results">
+            <div tal:condition="batch">
 
                     <table class="listing" summary="Content listing" i18n:attributes="summary">
                     <thead>
@@ -48,7 +48,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tal:results repeat="item results">
+                        <tal:results repeat="item batch">
                             <tal:block tal:define="item_url python: item.portal_type in view_types and item.getURL() + '/view' or item.getURL();
                                                    item_title_or_id item/title_or_id;
                                                    item_type item/Type;
@@ -84,6 +84,7 @@
                         </tal:results>
                     </tbody>
                 </table>
+                <div metal:use-macro="original_context/batch_macros/macros/navigation" />
             </div>
         </div>
     </body>
