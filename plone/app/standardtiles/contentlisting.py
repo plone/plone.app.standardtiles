@@ -199,21 +199,28 @@ class ContentListingTile(Tile):
     def contents(self):
         """Search results"""
         builder = getMultiAdapter(
-            (self.context, self.request),
-            name='querybuilderresults'
-        )
+            (self.context, self.request), name="querybuilderresults")
 
         # Include query parameters from request
-        contentFilter = dict(self.request.get('contentFilter', {}))
+        contentFilter = dict(self.request.get("contentFilter", {}))
 
         accessor = builder(
             query=self.query,
-            sort_on=self.sort_on or 'getObjPositionInParent',
+            # Patch start
+            # do return a batch. not a blank IContentlisting
+            batch=True,
+            # b_start from request or start at begin
+            b_start=self.request.get("b_start", 0),
+            # set size to item_count from context, or 10
+            b_size=getattr(self.context, "item_count", 10),
+            # /patch end
+            sort_on=self.sort_on or "getObjPositionInParent",
             sort_order=self.sort_order,
             limit=self.limit,
-            custom_query=contentFilter
+            brains=False,
+            custom_query=contentFilter,
         )
-        view = self.view_template or 'listing_view'
+        view = self.view_template or "listing_view"
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
         return getMultiAdapter((accessor, self.request), name=view)(**options)
