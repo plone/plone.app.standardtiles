@@ -64,6 +64,13 @@ class IContentListingTile(Schema):
         required=False
     )
 
+    ignore_request_params = schema.Bool(
+        title=_(u'label_ignore_request_params', default=u'Ignore query parameters from request'),
+        description=_(u'Check this box if you do not want the results changed based on request parameters.'),
+        required=False,
+        default=False,
+    )
+
     sort_on = schema.TextLine(
         title=_(u'label_sort_on', default=u'Sort on'),
         description=_(u'Sort the collection on this index'),
@@ -167,6 +174,7 @@ class ContentListingTile(Tile):
         self.sort_on = self.data.get('sort_on')
         self.limit = self.data.get('limit')
         self.item_count = self.data.get('item_count')
+        self.ignore_request_params = self.data.get('ignore_request_params')
         # use our custom b_start_str to enable multiple
         # batchings on one context
         self.b_start_str = "{}-b_start".format(self.id)
@@ -222,8 +230,10 @@ class ContentListingTile(Tile):
         builder = getMultiAdapter(
             (self.context, self.request), name="querybuilderresults")
 
-        # Include query parameters from request
-        contentFilter = dict(self.request.get("contentFilter", {}))
+        # Include query parameters from request if not set to ignore
+        contentFilter = {}
+        if not self.ignore_request_params:
+            contentFilter = dict(self.request.get("contentFilter", {}))
 
         accessor = builder(
             query=self.query,
