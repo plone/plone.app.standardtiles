@@ -172,9 +172,11 @@ class ContentListingTile(Tile):
         request = get_top_request(self.request)
         self.query = self.data.get('query')
         self.sort_on = self.data.get('sort_on')
+        self.sort_order = 'reverse' if self.data.get('sort_reversed') else 'ascending'  # noqa: E501
         self.limit = self.data.get('limit')
         self.item_count = self.data.get('item_count')
         self.ignore_request_params = self.data.get('ignore_request_params')
+
         # use our custom b_start_str to enable multiple
         # batchings on one context
         self.b_start_str = "{}-b_start".format(self.id)
@@ -182,9 +184,10 @@ class ContentListingTile(Tile):
         # batch url manipulation to original_context
         self.request['ACTUAL_URL'] = self.context.absolute_url()
 
-        if self.data.get('use_context_query', None) and ISyndicatableCollection.providedBy(self.context):  # noqa
+        if self.data.get('use_context_query', None) and ISyndicatableCollection.providedBy(self.context):  # noqa: E501
             self.query = self.context.query
             self.sort_on = self.context.sort_on
+            self.sort_order = 'reverse' if self.context.sort_reversed else 'ascending'  # noqa: E501
             if not self.limit:
                 self.limit = self.context.limit
             if not self.item_count:
@@ -211,10 +214,6 @@ class ContentListingTile(Tile):
                     None
                 ), name='default').get()
 
-        if self.data.get('sort_reversed'):
-            self.sort_order = 'reverse'
-        else:
-            self.sort_order = 'ascending'
         self.view_template = self.data.get('view_template')
 
     @property
@@ -237,12 +236,12 @@ class ContentListingTile(Tile):
 
         accessor = builder(
             query=self.query,
+            sort_on=self.sort_on or 'getObjPositionInParent',
+            sort_order=self.sort_order,
+            limit=self.limit,
             batch=True,
             b_start=self.b_start,
             b_size=self.item_count or 30,
-            sort_on=self.sort_on or "getObjPositionInParent",
-            sort_order=self.sort_order,
-            limit=self.limit,
             brains=False,
             custom_query=contentFilter,
         )
