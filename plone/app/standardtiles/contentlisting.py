@@ -178,7 +178,7 @@ class ContentListingTile(Tile):
         # use our custom b_start_str to enable multiple
         # batchings on one context
         self.b_start_str = "{}-b_start".format(self.id)
-        self.b_start = request.get(self.b_start_str, 0)
+        self.b_start = int(request.get(self.b_start_str, 0))
         # batch url manipulation to original_context
         self.request['ACTUAL_URL'] = self.context.absolute_url()
 
