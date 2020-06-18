@@ -6,8 +6,9 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="plone">
   <body>
-    <div class="navigationTile"
-         tal:define="root view/navigation_root">
+    <div tal:define="css_class view/get_css_class;
+                     root view/navigation_root;" 
+         tal:attributes="class string:navigationTile${css_class}">
       <h2 class="tileHeader"
           tal:condition="view/title"
           tal:content="view/title">
