@@ -7,6 +7,7 @@ Changelog
 - Content listing: Allow to use collection query parameters from context.
   Content listing: Include query parameters from request.
   Content listing: Add "tile_class".
+  Batching support
   [agitator]
 - Upgrade tests to github actions
   [djay]
