@@ -8,6 +8,7 @@ Changelog
   Content listing: Include query parameters from request.
   Content listing: Add "tile_class".
   Batching support
+  Drop support for Plone 5.0.x - no get_top_request available
   [agitator]
 - Upgrade tests to github actions
   [djay]
