@@ -3,7 +3,6 @@ from lxml import html
 from persistent.dict import PersistentDict
 from PIL import Image
 from PIL import ImageDraw
-from plone.app.standardtiles.embed import NOEMBED_ENDPOINT
 from plone.app.standardtiles.html import HTMLTile
 from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING
 from plone.app.testing import setRoles
@@ -92,13 +91,12 @@ class ContentTileTests(TestCase):
             quote(media_url)
         )
 
-        self.assertIn(NOEMBED_ENDPOINT + media_url,
-                      self.unprivileged_browser.contents)
+        self.assertIn(media_url, self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
         nodes = root.xpath('//body/p')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual(nodes[0].text, NOEMBED_ENDPOINT + media_url)
+        self.assertEqual(nodes[0].text, media_url)
 
     def test_rawembed_tile(self):
         """The rawembed tile display a html snippet with title::

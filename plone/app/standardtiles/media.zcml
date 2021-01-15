@@ -8,7 +8,7 @@
     <plone:tile
         name="plone.app.standardtiles.embed"
         title="Embed"
-        description='Paste a URL here to embed external multimedia content. Supported sites can be found at http://noembed.com/#supported-sites'
+        description='Paste a URL here to embed external multimedia content. Support for maximum width and height depends on site. Supported sites can be found at https://oembed.com/'
         add_permission="cmf.ModifyPortalContent"
         class=".embed.EmbedTile"
         for="*"
