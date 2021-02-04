@@ -71,7 +71,7 @@ class TestFieldTile(TestCase):
         )
         self.assertIn('<span id="form-widgets-test_text"',
                       self.browser.contents)
-        self.assertNotIn('>Hello world</span>',
+        self.assertNotIn('Hello world',
                          self.browser.contents)
 
         root = fromstring(self.browser.contents)
@@ -80,7 +80,7 @@ class TestFieldTile(TestCase):
         self.assertIsNone(nodes[0].text)
 
         # Let's then edit the field:
-        self.content.test_text = u"Hello world"
+        self.content.test_text = u"Hello world 🌎"
         transaction.commit()
 
         # And rerender the tile:
@@ -92,13 +92,13 @@ class TestFieldTile(TestCase):
         )
         self.assertIn('<span id="form-widgets-test_text"',
                       self.browser.contents)
-        self.assertIn('>Hello world</span>',
+        self.assertIn('>Hello world \xf0\x9f\x8c\x8e</span>',
                       self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_text"]')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual(u'Hello world', nodes[0].text)
+        self.assertEqual(u'Hello world 🌎', nodes[0].text)
 
     def test_int_field(self):
         self.browser.open(
@@ -171,6 +171,45 @@ class TestFieldTile(TestCase):
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_bool"]')
         self.assertEqual(len(nodes), 1)
+
+    def test_richtext_field(self):
+
+        self.browser.open(
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'test_richtext',
+            )
+        )
+        self.assertIn('<span id="form-widgets-test_richtext"',
+                      self.browser.contents)
+        self.assertNotIn('Hello world',
+                         self.browser.contents)
+
+        root = fromstring(self.browser.contents)
+        nodes = root.xpath('//body//*[@id="form-widgets-test_richtext"]')
+        self.assertEqual(len(nodes), 1)
+        self.assertIsNone(nodes[0].text)
+
+        # Let's then edit the field:
+        self.content.test_richtext = u"Hello world 🌎"
+        transaction.commit()
+
+        # And rerender the tile:
+        self.browser.open(
+            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+                self.content.absolute_url(),
+                'test_richtext',
+            )
+        )
+        self.assertIn('<span id="form-widgets-test_richtext"',
+                      self.browser.contents)
+        self.assertIn('>Hello world \xf0\x9f\x8c\x8e</span>',
+                      self.browser.contents)
+
+        root = fromstring(self.browser.contents)
+        nodes = root.xpath('//body//*[@id="form-widgets-test_richtext"]')
+        self.assertEqual(len(nodes), 1)
+        self.assertEqual(u'Hello world 🌎', nodes[0].text)
 
     def test_custom_widget(self):
         """Dexterity allows the developer not only to simply define a schema,

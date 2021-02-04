@@ -29,6 +29,7 @@ from zope.interface import implementer
 from zope.interface import implementer_only
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
+from plone.app.textfield import RichText
 
 
 NORMAL_USER_NAME = 'user'
@@ -87,6 +88,10 @@ class ITestType1(Schema):
 
     test_bool = schema.Bool(
         title=u"Boolean test field",
+    )
+
+    test_richtext = RichText(
+        title=u"Body Text",
     )
 
     directives.widget(
