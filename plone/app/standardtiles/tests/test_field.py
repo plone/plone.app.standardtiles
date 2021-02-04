@@ -92,8 +92,8 @@ class TestFieldTile(TestCase):
         )
         self.assertIn('<span id="form-widgets-test_text"',
                       self.browser.contents)
-        self.assertIn('>Hello world \xf0\x9f\x8c\x8e</span>',
-                      self.browser.contents)
+        self.assertIn(u'>Hello world 🌎</span>',
+                      self.browser.contents.decode('utf-8'))
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_text"]')
