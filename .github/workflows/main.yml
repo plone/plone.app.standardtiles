@@ -57,7 +57,7 @@ jobs:
         run: |
           ./bootstrap.sh -c test-${{ matrix.plone-version }}.x.cfg
           bin/pip install zest.pocompile
-          bin/pocompile src
+          bin/pocompile
       - name: buildout
         run: |
           bin/buildout -t 10 -Nc test-${{ matrix.plone-version }}.x.cfg
