@@ -2,15 +2,15 @@ name: CI
 
 on:
   push:
-    branches-ignore:
-      - "master"
-      - "releases/**"
+    # branches-ignore:
+    #   - "master"
+    #   - "releases/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         plone-version: 
           - '5.0'
