@@ -90,10 +90,12 @@ class TestFieldTile(TestCase):
                 'test_text',
             )
         )
+        # test browser gives it as native str not matter which python.
+        contents = self.browser.contents
+        contents = contents if not isinstance(contents, bytes) else contents.decode('utf-8')
         self.assertIn('<span id="form-widgets-test_text"',
-                      self.browser.contents)
-        self.assertIn(u'>Hello world 🌎</span>',
-                      self.browser.contents.decode('utf-8'))
+                      contents)
+        self.assertIn(u'>Hello world 🌎</span>', contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_text"]')
