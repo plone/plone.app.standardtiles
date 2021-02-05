@@ -10,4 +10,4 @@ cat requirements.txt
 # Reset out virtualenv to the versions we need so buildout doesn't have to upgrade
 ./bin/pip install --upgrade -r requirements.txt
 # run buildout
-./bin/buildout $*
+#./bin/buildout $*
