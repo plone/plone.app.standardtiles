@@ -8,7 +8,8 @@ Changelog
   Content listing: Include query parameters from request.
   Content listing: Add "tile_class".
   [agitator]
-
+- Upgrade tests to github actions
+  [djay]
 
 2.3.2 (2019-12-05)
 ------------------
