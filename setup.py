@@ -47,6 +47,7 @@ setup(
         'plone.subrequest',
         'plone.tiles>=1.8.0.dev0',
         'Products.CMFPlone>=5.0.4',
+        'python-oembed',
         'requests',
         'setuptools',
         'six',

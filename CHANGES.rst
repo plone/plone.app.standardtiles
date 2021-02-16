@@ -4,6 +4,12 @@ Changelog
 2.3.3 (unreleased)
 ------------------
 
+- Embed: Replace use of noembed.com (or custom noembed instance) with python-oembed and embedded provider configuration generated (with included script) from https://github.com/iamcal/oembed/.
+  [datakurre]
+
+- Embed: Add Maximum width and Maximum height configuration parameters, which are supported by many oEmbed providers.
+  [datakure]
+
 - Content listing: Allow to use collection query parameters from context.
   Content listing: Include query parameters from request.
   Content listing: Add "tile_class".
