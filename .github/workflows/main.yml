@@ -13,7 +13,6 @@ jobs:
       fail-fast: true
       matrix:
         plone-version: 
-          - '5.0'
           - '5.1'
           - '5.2'
         python-version: ['2.7']

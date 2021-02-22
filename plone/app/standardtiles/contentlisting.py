@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from Products.CMFCore.interfaces import IFolderish
+from Products.CMFPlone.utils import get_top_request
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from operator import itemgetter
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.standardtiles import PloneMessageFactory as _
@@ -8,8 +11,6 @@ from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from plone.tiles.interfaces import ITileType
-from Products.CMFCore.interfaces import IFolderish
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.interfaces import IValue
 from z3c.form.util import getSpecification
 from zope import schema
@@ -17,9 +18,9 @@ from zope.component import adapter
 from zope.component import getMultiAdapter
 from zope.component import getUtility
 from zope.component import queryUtility
+from zope.interface import Interface
 from zope.interface import alsoProvides
 from zope.interface import implementer
-from zope.interface import Interface
 from zope.interface import provider
 from zope.schema import getFields
 from zope.schema.interfaces import IVocabularyFactory
@@ -63,6 +64,13 @@ class IContentListingTile(Schema):
         required=False
     )
 
+    ignore_request_params = schema.Bool(
+        title=_(u'label_ignore_request_params', default=u'Ignore query parameters from request'),
+        description=_(u'Check this box if you do not want the results changed based on request parameters.'),
+        required=False,
+        default=False,
+    )
+
     sort_on = schema.TextLine(
         title=_(u'label_sort_on', default=u'Sort on'),
         description=_(u'Sort the collection on this index'),
@@ -80,6 +88,14 @@ class IContentListingTile(Schema):
         description=_(u'Limit Search Results'),
         required=False,
         default=100,
+        min=1,
+    )
+
+    item_count = schema.Int(
+        title=_(u'label_item_count', default=u'Item count'),
+        description=_(u'Number of items that will show up in one batch.'),
+        required=False,
+        default=30,
         min=1,
     )
 
@@ -153,12 +169,29 @@ class ContentListingTile(Tile):
         return self.template()
 
     def update(self):
+        request = get_top_request(self.request)
         self.query = self.data.get('query')
         self.sort_on = self.data.get('sort_on')
+        self.sort_order = 'reverse' if self.data.get('sort_reversed') else 'ascending'  # noqa: E501
+        self.limit = self.data.get('limit')
+        self.item_count = self.data.get('item_count')
+        self.ignore_request_params = self.data.get('ignore_request_params')
 
-        if self.data.get('use_context_query', None) and ISyndicatableCollection.providedBy(self.context):  # noqa
+        # use our custom b_start_str to enable multiple
+        # batchings on one context
+        self.b_start_str = "{}-b_start".format(self.id)
+        self.b_start = int(request.get(self.b_start_str, 0))
+        # batch url manipulation to original_context
+        self.request['ACTUAL_URL'] = self.context.absolute_url()
+
+        if self.data.get('use_context_query', None) and ISyndicatableCollection.providedBy(self.context):  # noqa: E501
             self.query = self.context.query
             self.sort_on = self.context.sort_on
+            self.sort_order = 'reverse' if self.context.sort_reversed else 'ascending'  # noqa: E501
+            if not self.limit:
+                self.limit = self.context.limit
+            if not self.item_count:
+                self.item_count = self.context.item_count
 
         if self.query is None or self.sort_on is None:
             # Get defaults
@@ -181,11 +214,6 @@ class ContentListingTile(Tile):
                     None
                 ), name='default').get()
 
-        self.limit = self.data.get('limit')
-        if self.data.get('sort_reversed'):
-            self.sort_order = 'reverse'
-        else:
-            self.sort_order = 'ascending'
         self.view_template = self.data.get('view_template')
 
     @property
@@ -199,21 +227,28 @@ class ContentListingTile(Tile):
     def contents(self):
         """Search results"""
         builder = getMultiAdapter(
-            (self.context, self.request),
-            name='querybuilderresults'
-        )
+            (self.context, self.request), name="querybuilderresults")
 
-        # Include query parameters from request
-        contentFilter = dict(self.request.get('contentFilter', {}))
+        # Include query parameters from request if not set to ignore
+        contentFilter = {}
+        if not self.ignore_request_params:
+            contentFilter = dict(self.request.get("contentFilter", {}))
 
         accessor = builder(
             query=self.query,
             sort_on=self.sort_on or 'getObjPositionInParent',
             sort_order=self.sort_order,
             limit=self.limit,
-            custom_query=contentFilter
+            batch=True,
+            b_start=self.b_start,
+            b_size=self.item_count or 30,
+            brains=False,
+            custom_query=contentFilter,
         )
-        view = self.view_template or 'listing_view'
+
+        accessor.b_start_str = self.b_start_str
+
+        view = self.view_template or "listing_view"
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
         return getMultiAdapter((accessor, self.request), name=view)(**options)
