@@ -251,6 +251,8 @@ class RSSFeed(object):
                     }
                     if hasattr(item, "updated"):
                         itemdict['updated'] = DateTime(item.updated)
+                    if hasattr(item, "published"):
+                        itemdict['published'] = DateTime(item.published)
                 except AttributeError:
                     continue
                 self._items.append(itemdict)
