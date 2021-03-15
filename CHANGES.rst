@@ -14,6 +14,8 @@ Changelog
   [djay]
 - CI with Github actions: Python 2 / Python 3 and os version
   [ksuess]
+- rss tile: expose published date
+  [ksuess]
 
 2.3.2 (2019-12-05)
 ------------------
