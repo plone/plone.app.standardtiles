@@ -71,7 +71,7 @@ class TestFieldTile(TestCase):
         )
         self.assertIn('<span id="form-widgets-test_text"',
                       self.browser.contents)
-        self.assertNotIn('>Hello world</span>',
+        self.assertNotIn('Hello world',
                          self.browser.contents)
 
         root = fromstring(self.browser.contents)
@@ -80,7 +80,7 @@ class TestFieldTile(TestCase):
         self.assertIsNone(nodes[0].text)
 
         # Let's then edit the field:
-        self.content.test_text = u"Hello world"
+        self.content.test_text = u"Hello world 🌎"
         transaction.commit()
 
         # And rerender the tile:
@@ -90,15 +90,17 @@ class TestFieldTile(TestCase):
                 'test_text',
             )
         )
+        # test browser gives it as native str not matter which python.
+        contents = self.browser.contents
+        contents = contents.decode('utf-8') if isinstance(contents, bytes) else contents
         self.assertIn('<span id="form-widgets-test_text"',
-                      self.browser.contents)
-        self.assertIn('>Hello world</span>',
-                      self.browser.contents)
+                      contents)
+        self.assertIn(u'>Hello world 🌎</span>', contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_text"]')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual(u'Hello world', nodes[0].text)
+        self.assertEqual(u'Hello world 🌎', nodes[0].text)
 
     def test_int_field(self):
         self.browser.open(
