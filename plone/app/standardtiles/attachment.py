@@ -21,11 +21,8 @@ class IAttachmentTile(Schema):
 
     widget(files=MultiFileFieldWidget)
     files = schema.List(
-        title=_(u'Upload files'),
-        value_type=NamedBlobFile(
-            title=_(u"Please upload a file"),
-            required=True
-        )
+        title=_(u"Upload files"),
+        value_type=NamedBlobFile(title=_(u"Please upload a file"), required=True),
     )
 
 
@@ -55,17 +52,15 @@ class AttachmentTile(PersistentTile):
         pass
 
     def file_size(self, file_):
-        """Returns the file-size of the `file_` in KB.
-        """
+        """Returns the file-size of the `file_` in KB."""
         if INamed.providedBy(file_):
             return file_.getSize() / 1024
         else:
             return 0
 
     def get_icon_for(self, file_):
-        """Returns the best icon for the `file_`
-        """
-        mtr = getToolByName(self.context, 'mimetypes_registry', None)
+        """Returns the best icon for the `file_`"""
+        mtr = getToolByName(self.context, "mimetypes_registry", None)
         if mtr is None:
             return self.context.getIcon()
         lookup = mtr.lookup(file_.contentType)
@@ -79,7 +74,7 @@ class AttachmentTile(PersistentTile):
         return self.context.getIcon()
 
     def lookupMime(self, name):
-        mtr = getToolByName(self.context, 'mimetypes_registry', None)
+        mtr = getToolByName(self.context, "mimetypes_registry", None)
         if mtr is None:
             return name
         try:
@@ -92,8 +87,10 @@ class AttachmentTile(PersistentTile):
             return name
 
 
-deprecated(AttachmentTile, 'AttachmentTile is now deprecated and will be '
-                           'completely removed in 3.0.0')
+deprecated(
+    AttachmentTile,
+    "AttachmentTile is now deprecated and will be " "completely removed in 3.0.0",
+)
 
 
 @implementer(IPublishTraverse)
@@ -113,12 +110,11 @@ class AttachmentTileDownload(object):
 
     def __call__(self):
         """Render the file to the browser."""
-        files = self.context.data.get('files', ())
+        files = self.context.data.get("files", ())
 
         try:
             file_ = files[int(self.index)]
         except KeyError:
             raise NotFound(self, self.index, self.request)
-        set_headers(file_, self.request.response,
-                    filename=file_.filename)
+        set_headers(file_, self.request.response, filename=file_.filename)
         return stream_data(file_)

@@ -8,12 +8,11 @@ from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
 
-PORTLET_MANAGER = 'plone.app.standardtiles.portletManager'
+PORTLET_MANAGER = "plone.app.standardtiles.portletManager"
 
 
 @implementer(IVocabularyFactory)
 class BaseVocabulary(object):
-
     def __call__(self, context):
         terms = self.get_terms(context)
         return SimpleVocabulary(list(terms))
@@ -26,7 +25,6 @@ class BaseVocabulary(object):
 
 
 class PortletsVocab(BaseVocabulary):
-
     def get_terms(self, context):
         # XXX: not working (see below the other XXX)
         # from zope.globalrequest import getRequest
@@ -49,10 +47,8 @@ class PortletsVocab(BaseVocabulary):
         # )
         # portlets = manager_renderer.addable_portlets()
         portlets = manager.getAddablePortletTypes()
-        yield SimpleTerm(value=None, token='', title=_(u'-- select type --'))
+        yield SimpleTerm(value=None, token="", title=_(u"-- select type --"))
         for item in portlets:
             title = item.title
             token = value = item.addview
-            yield SimpleTerm(value=value,
-                             token=token,
-                             title=title)
+            yield SimpleTerm(value=value, token=token, title=title)

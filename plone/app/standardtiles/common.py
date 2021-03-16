@@ -20,11 +20,11 @@ from zope.viewlet.interfaces import IViewletManager
 import Acquisition
 import logging
 
+
 logger = logging.getLogger(__name__)
 
 
 class BaseViewletTile(Tile):
-
     def __init__(self, context, *args, **kwargs):
         # Fix issue where context is a template based view class
         while IBrowserView.providedBy(context) and context is not None:
@@ -45,29 +45,25 @@ class BaseViewletTile(Tile):
 
         # get viewlet instance
         manager = queryMultiAdapter(
-            (self.context, self.request, self),
-            IViewletManager,
-            name=manager_name
+            (self.context, self.request, self), IViewletManager, name=manager_name
         )
         viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet,
-            name=viewlet_name
+            (self.context, self.request, self, manager), IViewlet, name=viewlet_name
         )
         if viewlet is None:
             logger.debug(
-                'Viewlet tile {0} in manager {1}. '
-                'Was not found.'.format(viewlet_name, manager_name)
+                "Viewlet tile {0} in manager {1}. "
+                "Was not found.".format(viewlet_name, manager_name)
             )
             return None
 
         # check permissions - same as in plone.app.viewletmanager
         if IAcquirer.providedBy(viewlet):
             viewlet = viewlet.__of__(viewlet.context)
-        if not guarded_hasattr(viewlet, 'render'):
+        if not guarded_hasattr(viewlet, "render"):
             logger.warn(
-                'Blocked attempt to render tile {0} in manager {1}. '
-                'Permission denied.'.format(viewlet_name, manager_name)
+                "Blocked attempt to render tile {0} in manager {1}. "
+                "Permission denied.".format(viewlet_name, manager_name)
             )
             return None
 
@@ -76,7 +72,7 @@ class BaseViewletTile(Tile):
 
 class ProxyViewletTile(BaseViewletTile):
 
-    section = u'body'
+    section = u"body"
     manager = None
     viewlet = None
 
@@ -84,37 +80,40 @@ class ProxyViewletTile(BaseViewletTile):
         alsoProvides(self, IViewView)
         viewlet = self.get_viewlet(self.manager, self.viewlet)
         if viewlet is None:
-            return u'<html></html>'
+            return u"<html></html>"
 
         viewlet.update()
-        return u'<html><{section}>{rendered}</{section}></html>'.format(
-            rendered=viewlet.render(),
-            section=self.section
+        return u"<html><{section}>{rendered}</{section}></html>".format(
+            rendered=viewlet.render(), section=self.section
         )
 
 
 class FooterTile(ProxyViewletTile):
     """A footer tile."""
-    manager = 'plone.portalfooter'
-    viewlet = 'plone.footer'
+
+    manager = "plone.portalfooter"
+    viewlet = "plone.footer"
 
 
 class ColophonTile(ProxyViewletTile):
     """A colophon tile."""
-    manager = 'plone.portalfooter'
-    viewlet = 'plone.colophon'
+
+    manager = "plone.portalfooter"
+    viewlet = "plone.colophon"
 
 
 class SiteActionsTile(ProxyViewletTile):
     """A site actions tile."""
-    manager = 'plone.portalfooter'
-    viewlet = 'plone.site_actions'
+
+    manager = "plone.portalfooter"
+    viewlet = "plone.site_actions"
 
 
 class AnalyticsTile(ProxyViewletTile):
     """A analytics tile."""
-    manager = 'plone.portalfooter'
-    viewlet = 'plone.analytics'
+
+    manager = "plone.portalfooter"
+    viewlet = "plone.analytics"
 
 
 class LoginTile(Tile):
@@ -128,13 +127,14 @@ class LoginTile(Tile):
 
     def __call__(self):
         request = self.request
-        self.membership = getToolByName(self.context, 'portal_membership')
-        self.context_state = getMultiAdapter((self.context, request),
-                                             name=u'plone_context_state')
-        self.portal_state = getMultiAdapter((self.context, request),
-                                            name=u'plone_portal_state')
-        self.pas_info = getMultiAdapter((self.context, request),
-                                        name=u'pas_info')
+        self.membership = getToolByName(self.context, "portal_membership")
+        self.context_state = getMultiAdapter(
+            (self.context, request), name=u"plone_context_state"
+        )
+        self.portal_state = getMultiAdapter(
+            (self.context, request), name=u"plone_portal_state"
+        )
+        self.pas_info = getMultiAdapter((self.context, request), name=u"pas_info")
         self.navigation_root_url = self.portal_state.navigation_root_url()
 
         self.update()
@@ -145,59 +145,57 @@ class LoginTile(Tile):
             return False
         if not self.pas_info.hasLoginPasswordExtractor():
             return False
-        page = self.request.get('URL', '').split('/')[-1]
-        return page not in ('login_form', '@@register')
+        page = self.request.get("URL", "").split("/")[-1]
+        return page not in ("login_form", "@@register")
 
     @property
     def available(self):
         return self.auth() is not None and self.show()
 
     def login_form(self):
-        return '%s/login_form' % self.portal_state.portal_url()
+        return "%s/login_form" % self.portal_state.portal_url()
 
     def mail_password_form(self):
-        return '%s/mail_password_form' % self.portal_state.portal_url()
+        return "%s/mail_password_form" % self.portal_state.portal_url()
 
     def login_name(self):
         auth = self.auth()
         name = None
         if auth is not None:
-            name = getattr(auth, 'name_cookie', None)
+            name = getattr(auth, "name_cookie", None)
         if not name:
-            name = '__ac_name'
+            name = "__ac_name"
         return name
 
     def login_password(self):
         auth = self.auth()
         passwd = None
         if auth is not None:
-            passwd = getattr(auth, 'pw_cookie', None)
+            passwd = getattr(auth, "pw_cookie", None)
         if not passwd:
-            passwd = '__ac_password'
+            passwd = "__ac_password"
         return passwd
 
     def join_action(self):
         context = self.context
-        tool = getToolByName(context, 'portal_actions')
-        join = tool.listActionInfos(action_chain='user/join', object=context)
+        tool = getToolByName(context, "portal_actions")
+        join = tool.listActionInfos(action_chain="user/join", object=context)
         if len(join) > 0:
-            return join[0]['url']
+            return join[0]["url"]
         return None
 
     def can_register(self):
-        if getToolByName(self.context, 'portal_registration', None) is None:
+        if getToolByName(self.context, "portal_registration", None) is None:
             return False
-        return self.membership.checkPermission('Add portal member',
-                                               self.context)
+        return self.membership.checkPermission("Add portal member", self.context)
 
     def can_request_password(self):
-        return self.membership.checkPermission('Mail forgotten password',
-                                               self.context)
+        return self.membership.checkPermission("Mail forgotten password", self.context)
 
     @memoize
     def auth(self, _marker=[]):
-        acl_users = getToolByName(self.context, 'acl_users')
-        return getattr(acl_users, 'credentials_cookie_auth', None)
+        acl_users = getToolByName(self.context, "acl_users")
+        return getattr(acl_users, "credentials_cookie_auth", None)
 
     def update(self):
         pass
@@ -205,38 +203,44 @@ class LoginTile(Tile):
 
 class PersonalBarTile(ProxyViewletTile):
     """A personal bar tile."""
-    manager = 'plone.portalheader'
-    viewlet = 'plone.personal_bar'
+
+    manager = "plone.portalheader"
+    viewlet = "plone.personal_bar"
 
 
 class SearchBoxTile(ProxyViewletTile):
     """A search box tile."""
-    manager = 'plone.portalheader'
-    viewlet = 'plone.searchbox'
+
+    manager = "plone.portalheader"
+    viewlet = "plone.searchbox"
 
 
 class AnonToolsTile(ProxyViewletTile):
     """An anon tools tile."""
-    manager = 'plone.portalheader'
-    viewlet = 'plone.anontools'
+
+    manager = "plone.portalheader"
+    viewlet = "plone.anontools"
 
 
 class LogoTile(ProxyViewletTile):
     """A logo tile."""
-    manager = 'plone.portalheader'
-    viewlet = 'plone.logo'
+
+    manager = "plone.portalheader"
+    viewlet = "plone.logo"
 
 
 class GlobalSectionsTile(ProxyViewletTile):
     """A global sections tile."""
-    manager = 'plone.mainnavigation'
-    viewlet = 'plone.global_sections'
+
+    manager = "plone.mainnavigation"
+    viewlet = "plone.global_sections"
 
 
 class PathBarTile(ProxyViewletTile):
     """A path bar tile."""
-    manager = 'plone.abovecontent'
-    viewlet = 'plone.path_bar'
+
+    manager = "plone.abovecontent"
+    viewlet = "plone.path_bar"
 
 
 class ToolbarTile(Tile):
@@ -249,38 +253,40 @@ class ToolbarTile(Tile):
         super(ToolbarTile, self).__init__(context, request)
 
     def __call__(self):
-        mtool = getToolByName(self.context, 'portal_membership')
+        mtool = getToolByName(self.context, "portal_membership")
         if mtool.isAnonymousUser():
-            return u'<html></html>'
+            return u"<html></html>"
 
-        toolbar = getMultiAdapter((self.context, self.request),
-                                  name=u'render-toolbar')
+        toolbar = getMultiAdapter((self.context, self.request), name=u"render-toolbar")
         alsoProvides(toolbar, IViewView)
-        return u'<html><body>%s</body></html>' % toolbar()
+        return u"<html><body>%s</body></html>" % toolbar()
 
 
 class GlobalStatusMessageTile(ProxyViewletTile):
     """Display messages to the current user"""
-    manager = 'plone.globalstatusmessage'
-    viewlet = 'plone.globalstatusmessage'
+
+    manager = "plone.globalstatusmessage"
+    viewlet = "plone.globalstatusmessage"
 
 
 class DocumentBylineTile(ProxyViewletTile):
     """A document byline tile."""
-    manager = 'plone.belowcontenttitle'
-    viewlet = 'plone.belowcontenttitle.documentbyline'
+
+    manager = "plone.belowcontenttitle"
+    viewlet = "plone.belowcontenttitle.documentbyline"
 
 
 class LockInfoTile(ProxyViewletTile):
     """A lockinfo tile."""
-    manager = 'plone.abovecontent'
-    viewlet = 'plone.lockinfo'
+
+    manager = "plone.abovecontent"
+    viewlet = "plone.lockinfo"
 
     def __call__(self):
-        if checkPermission('cmf.ModifyPortalContent', self.context):
+        if checkPermission("cmf.ModifyPortalContent", self.context):
             return super(LockInfoTile, self).__call__()
         else:
-            return u'<html></html>'
+            return u"<html></html>"
 
 
 class NextPreviousTile(BaseViewletTile):
@@ -291,38 +297,38 @@ class NextPreviousTile(BaseViewletTile):
     def __call__(self):
         alsoProvides(self, IViewView)
         links_viewlet = self.get_viewlet(
-            'plone.htmlhead.links',
-            'plone.nextprevious.links'
+            "plone.htmlhead.links", "plone.nextprevious.links"
         )
-        viewlet = self.get_viewlet(
-            'plone.belowcontent',
-            'plone.nextprevious'
-        )
+        viewlet = self.get_viewlet("plone.belowcontent", "plone.nextprevious")
         if links_viewlet and viewlet:
             links_viewlet.update()
             viewlet.update()
             try:
                 # XXX: We need to cheat viewlet.isViewTemplate:
-                url = self.request.get('ACTUAL_URL')
-                self.request.set('ACTUAL_URL', self.context.absolute_url())
-                return u'<html><head>%s</head><body>%s</body></html>' % (
-                    links_viewlet.render(), viewlet.render())
+                url = self.request.get("ACTUAL_URL")
+                self.request.set("ACTUAL_URL", self.context.absolute_url())
+                return u"<html><head>%s</head><body>%s</body></html>" % (
+                    links_viewlet.render(),
+                    viewlet.render(),
+                )
             finally:
-                self.request.set('ACTUAL_URL', url)
+                self.request.set("ACTUAL_URL", url)
         else:
-            return u'<html></html>'
+            return u"<html></html>"
 
 
 class KeywordsTile(ProxyViewletTile):
     """A tile that displays the context's keywords, if any."""
-    manager = 'plone.belowcontent'
-    viewlet = 'plone.belowcontenttitle.keywords'
+
+    manager = "plone.belowcontent"
+    viewlet = "plone.belowcontenttitle.keywords"
 
 
 class TableOfContentsTile(ProxyViewletTile):
     """A Table of contents tile."""
-    manager = 'plone.abovecontentbody'
-    viewlet = 'plone.tableofcontents'
+
+    manager = "plone.abovecontentbody"
+    viewlet = "plone.tableofcontents"
 
 
 class LeadImageTile(Tile):
@@ -341,20 +347,22 @@ class LeadImageTile(Tile):
         if self.available:
             tile = self.index()
         else:
-            tile = u''
-        return u'<html><body>{0:s}</body></html>'.format(tile)
+            tile = u""
+        return u"<html><body>{0:s}</body></html>".format(tile)
 
 
 class DocumentActionsTile(ProxyViewletTile):
     """Shows the document actions."""
-    manager = 'plone.belowcontentbody'
-    viewlet = 'plone.abovecontenttitle.documentactions'
+
+    manager = "plone.belowcontentbody"
+    viewlet = "plone.abovecontenttitle.documentactions"
 
 
 class RelatedItemsTile(ProxyViewletTile):
     """A related items tile."""
-    manager = 'plone.belowcontentbody'
-    viewlet = 'plone.belowcontentbody.relateditems'
+
+    manager = "plone.belowcontentbody"
+    viewlet = "plone.belowcontentbody.relateditems"
 
 
 class HistoryTile(Tile):
@@ -364,11 +372,11 @@ class HistoryTile(Tile):
     """
 
     def __call__(self):
-        return self.context.restrictedTraverse('@@contenthistorypopup')()
+        return self.context.restrictedTraverse("@@contenthistorypopup")()
 
 
 class LanguageSelectorTile(ProxyViewletTile):
     """Shows the language selector."""
 
-    manager = 'plone.portalheader'
-    viewlet = 'plone.app.multilingual.languageselector'
+    manager = "plone.portalheader"
+    viewlet = "plone.app.multilingual.languageselector"

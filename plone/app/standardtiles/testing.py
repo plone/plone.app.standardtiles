@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from Products.CMFCore.utils import getToolByName
 from plone import api
-from plone.app.testing import PLONE_FIXTURE
-from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import applyProfile
 from plone.app.testing import login
 from plone.app.testing import logout
+from plone.app.testing import PLONE_FIXTURE
+from plone.app.testing import PloneSandboxLayer
 from plone.app.testing.layers import FunctionalTesting
 from plone.app.testing.layers import IntegrationTesting
 from plone.autoform import directives
@@ -14,6 +13,7 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.manager import PortletManager
 from plone.portlets.manager import PortletManagerRenderer
 from plone.supermodel.model import Schema
+from Products.CMFCore.utils import getToolByName
 from z3c.form import interfaces
 from z3c.form.browser import widget
 from z3c.form.widget import FieldWidget
@@ -24,19 +24,19 @@ from zope.component import getSiteManager
 from zope.component import provideAdapter
 from zope.configuration import xmlconfig
 from zope.contentprovider.interfaces import UpdateNotCalled
-from zope.interface import Interface
 from zope.interface import implementer
 from zope.interface import implementer_only
+from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
 
 
-NORMAL_USER_NAME = 'user'
-NORMAL_USER_PASSWORD = 'secret'
-EDITOR_USER_NAME = 'editor'
-EDITOR_USER_PASSWORD = 'confidential'
-MANAGER_USER_NAME = 'manager'
-MANAGER_USER_PASSWORD = 'topsecret'
+NORMAL_USER_NAME = "user"
+NORMAL_USER_PASSWORD = "secret"
+EDITOR_USER_NAME = "editor"
+EDITOR_USER_PASSWORD = "confidential"
+MANAGER_USER_NAME = "manager"
+MANAGER_USER_PASSWORD = "topsecret"
 
 
 class RequestsGetMock(object):
@@ -48,9 +48,7 @@ class RequestsGetMock(object):
         self.url = url
 
     def json(self):
-        return {
-            'html': u'<p>%s</p>' % self.url
-        }
+        return {"html": u"<p>%s</p>" % self.url}
 
 
 class IFunkyWidget(interfaces.IWidget):
@@ -61,8 +59,8 @@ class IFunkyWidget(interfaces.IWidget):
 class FunkyWidget(widget.HTMLTextInputWidget, Widget):
     """Funky widget implementation."""
 
-    klass = u'funky-widget'
-    value = u''
+    klass = u"funky-widget"
+    value = u""
 
     def update(self):
         super(FunkyWidget, self).update()
@@ -96,8 +94,8 @@ class ITestType1(Schema):
         title=u"Test funky field",
     )
 
-    directives.read_permission(topsecret='cmf.ModifyPortalContent')
-    directives.write_permission(topsecret='cmf.ManagePortal')
+    directives.read_permission(topsecret="cmf.ModifyPortalContent")
+    directives.write_permission(topsecret="cmf.ManagePortal")
     topsecret = schema.TextLine(
         title=u"Top secret field",
     )
@@ -134,86 +132,102 @@ class PAStandardtiles(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         # load ZCML
         import plone.app.dexterity
-        xmlconfig.file('configure.zcml', plone.app.dexterity,
-                       context=configurationContext)
 
-        if api.env.plone_version() < '5.2':
+        xmlconfig.file(
+            "configure.zcml", plone.app.dexterity, context=configurationContext
+        )
+
+        if api.env.plone_version() < "5.2":
             # since Plone 5.2 plone.app.widgets is a dummy package only
             import plone.app.widgets
-            xmlconfig.file('configure.zcml', plone.app.widgets,
-                           context=configurationContext)
+
+            xmlconfig.file(
+                "configure.zcml", plone.app.widgets, context=configurationContext
+            )
 
         import plone.app.standardtiles
-        xmlconfig.file('configure.zcml', plone.app.standardtiles,
-                       context=configurationContext)
-        xmlconfig.file('testing.zcml', plone.app.standardtiles,
-                       context=configurationContext)
+
+        xmlconfig.file(
+            "configure.zcml", plone.app.standardtiles, context=configurationContext
+        )
+        xmlconfig.file(
+            "testing.zcml", plone.app.standardtiles, context=configurationContext
+        )
 
         import plone.app.contenttypes
-        xmlconfig.file('configure.zcml', plone.app.contenttypes,
-                       context=configurationContext)
+
+        xmlconfig.file(
+            "configure.zcml", plone.app.contenttypes, context=configurationContext
+        )
 
         try:
             import plone.app.drafts
-            xmlconfig.file('configure.zcml', plone.app.drafts,
-                           context=configurationContext)
+
+            xmlconfig.file(
+                "configure.zcml", plone.app.drafts, context=configurationContext
+            )
         except ImportError:
             pass
 
     def setUpPloneSite(self, portal):
         # install into the Plone site
-        applyProfile(portal, 'plone.app.dexterity:default')
-        if api.env.plone_version() < '5.2':
+        applyProfile(portal, "plone.app.dexterity:default")
+        if api.env.plone_version() < "5.2":
             # since Plone 5.2 plone.app.widgets is a dummy package only
-            applyProfile(portal, 'plone.app.widgets:default')
-        applyProfile(portal, 'plone.app.standardtiles:default')
-        applyProfile(portal, 'plone.app.contenttypes:default')
+            applyProfile(portal, "plone.app.widgets:default")
+        applyProfile(portal, "plone.app.standardtiles:default")
+        applyProfile(portal, "plone.app.contenttypes:default")
 
         try:
             # testing support when plone.app.drafts is installed in the env.
             # it needs to also be configured for these tests...
             import plone.app.drafts  # noqa
-            applyProfile(portal, 'plone.app.drafts:default')
+
+            applyProfile(portal, "plone.app.drafts:default")
         except ImportError:
             pass
 
         # ensure plone.app.theming disabled
         from plone.registry.interfaces import IRegistry
         from zope.component import getUtility
+
         registry = getUtility(IRegistry)
-        key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
+        key = "plone.app.theming.interfaces.IThemeSettings.enabled"
         if key in registry:
             registry[key] = False
 
         # creates some users
-        acl_users = getToolByName(portal, 'acl_users')
+        acl_users = getToolByName(portal, "acl_users")
         acl_users.userFolderAddUser(
             NORMAL_USER_NAME,
             NORMAL_USER_PASSWORD,
-            ['Member'],
+            ["Member"],
             [],
         )
         acl_users.userFolderAddUser(
             EDITOR_USER_NAME,
             EDITOR_USER_PASSWORD,
-            ['Editor'],
+            ["Editor"],
             [],
         )
         acl_users.userFolderAddUser(
             MANAGER_USER_NAME,
             MANAGER_USER_PASSWORD,
-            ['Manager'],
+            ["Manager"],
             [],
         )
 
         # register portlet manager and portlet manager renderer
         sm = getSiteManager(portal)
-        sm.registerUtility(component=MockPortletManager(),
-                           provided=IMockPortletManager,
-                           name='mock.portletmanager')
+        sm.registerUtility(
+            component=MockPortletManager(),
+            provided=IMockPortletManager,
+            name="mock.portletmanager",
+        )
         provideAdapter(MockPortletManagerRenderer)
 
         from plone.app.standardtiles import embed
+
         embed.requests.get = RequestsGetMock
 
 
@@ -223,66 +237,73 @@ class PAStandardtilesTestType(PloneSandboxLayer):
     def setUpZope(self, app, configurationContext):
         # load ZCML
         import plone.app.dexterity
-        xmlconfig.file('configure.zcml', plone.app.dexterity,
-                       context=configurationContext)
+
+        xmlconfig.file(
+            "configure.zcml", plone.app.dexterity, context=configurationContext
+        )
 
         import plone.app.widgets
-        xmlconfig.file('configure.zcml', plone.app.widgets,
-                       context=configurationContext)
+
+        xmlconfig.file(
+            "configure.zcml", plone.app.widgets, context=configurationContext
+        )
 
         import plone.app.standardtiles
-        xmlconfig.file('configure.zcml', plone.app.standardtiles,
-                       context=configurationContext)
-        xmlconfig.file('testing.zcml', plone.app.standardtiles,
-                       context=configurationContext)
+
+        xmlconfig.file(
+            "configure.zcml", plone.app.standardtiles, context=configurationContext
+        )
+        xmlconfig.file(
+            "testing.zcml", plone.app.standardtiles, context=configurationContext
+        )
 
     def setUpPloneSite(self, portal):
         # install into the Plone site
-        applyProfile(portal, 'plone.app.dexterity:default')
-        applyProfile(portal, 'plone.app.standardtiles:default')
+        applyProfile(portal, "plone.app.dexterity:default")
+        applyProfile(portal, "plone.app.standardtiles:default")
 
         # ensure plone.app.theming disabled
         from plone.registry.interfaces import IRegistry
         from zope.component import getUtility
+
         registry = getUtility(IRegistry)
-        key = 'plone.app.theming.interfaces.IThemeSettings.enabled'
+        key = "plone.app.theming.interfaces.IThemeSettings.enabled"
         if key in registry:
             registry[key] = False
 
         # creates some users
-        acl_users = getToolByName(portal, 'acl_users')
+        acl_users = getToolByName(portal, "acl_users")
         acl_users.userFolderAddUser(
             NORMAL_USER_NAME,
             NORMAL_USER_PASSWORD,
-            ['Member'],
+            ["Member"],
             [],
         )
         acl_users.userFolderAddUser(
             EDITOR_USER_NAME,
             EDITOR_USER_PASSWORD,
-            ['Editor'],
+            ["Editor"],
             [],
         )
         acl_users.userFolderAddUser(
             MANAGER_USER_NAME,
             MANAGER_USER_PASSWORD,
-            ['Manager'],
+            ["Manager"],
             [],
         )
 
         # define the dexterity "junk" type
-        fti = DexterityFTI('DecoTestType1')
-        fti.schema = u'plone.app.standardtiles.testing.ITestType1'
-        fti.behaviors = ('plone.app.dexterity.behaviors.metadata.IDublinCore',)
-        portal.portal_types._setObject('DecoTestType1', fti)
+        fti = DexterityFTI("DecoTestType1")
+        fti.schema = u"plone.app.standardtiles.testing.ITestType1"
+        fti.behaviors = ("plone.app.dexterity.behaviors.metadata.IDublinCore",)
+        portal.portal_types._setObject("DecoTestType1", fti)
 
         # inserts the content of the types defined above
         login(portal, MANAGER_USER_NAME)
-        content = portal[portal.invokeFactory('DecoTestType1',
-                                              'deco-test-type1')]
+        content = portal[portal.invokeFactory("DecoTestType1", "deco-test-type1")]
         content.title = u"Test content"
         content.description = u"Just a test content"
-        content.contributors = (u'Jane Doe', u'John Doe')
+        content.contributors = (u"Jane Doe", u"John Doe")
         logout()
 
 
@@ -290,9 +311,11 @@ PASTANDARDTILES_FIXTURE = PAStandardtiles()
 PASTANDARDTILES_TESTTYPE_FIXTURE = PAStandardtilesTestType()
 
 PASTANDARDTILES_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Integration")
+    bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Integration"
+)
 PASTANDARDTILES_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Functional")
+    bases=(PASTANDARDTILES_FIXTURE,), name="PAStandardTiles:Functional"
+)
 PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING = FunctionalTesting(
     bases=(PASTANDARDTILES_TESTTYPE_FIXTURE,),
     name="PAStandardTilesTestType:Functional",

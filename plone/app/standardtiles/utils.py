@@ -22,7 +22,6 @@ def getNavigationRoot(context):
 
 
 class PermissionChecker(object):
-
     def __init__(self, permissions, context):
         self.permissions = permissions
         self.context = context
@@ -38,8 +37,7 @@ class PermissionChecker(object):
                     self.cache[permission_name] = True
                 else:
                     self.cache[permission_name] = bool(
-                        self.sm.checkPermission(permission.title,
-                                                self.context),
+                        self.sm.checkPermission(permission.title, self.context),
                     )
         return self.cache.get(permission_name, True)
 
@@ -53,18 +51,18 @@ def _getWidgetName(field, widgets, request):
         return factory
     if not isinstance(factory, type):
         factory = factory.__class__
-    return '%s.%s' % (factory.__module__, factory.__name__)
+    return "%s.%s" % (factory.__module__, factory.__name__)
 
 
 def isVisible(name, omitted):
     value = omitted.get(name, False)
     if isinstance(value, six.string_types):
-        return value == 'false'
+        return value == "false"
     else:
         return not bool(value)
 
 
-@deprecate('is no longer used internally and will be removed in 3.0.0')
+@deprecate("is no longer used internally and will be removed in 3.0.0")
 def getContentishContext(context):
     """Tile context may not always be a real contentish content, which some
     tiles require.

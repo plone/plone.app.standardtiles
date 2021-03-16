@@ -12,10 +12,10 @@ from zope import schema
 
 class IHTMLTile(Schema):
 
-    ignore_querystring('content')
-    primary('content')
+    ignore_querystring("content")
+    primary("content")
     content = schema.Text(
-        title=_(u'HTML'),
+        title=_(u"HTML"),
         required=True,
     )
 
@@ -27,18 +27,20 @@ class HTMLTile(Tile):
     """
 
     def __call__(self):
-        content = self.data.get('content')
+        content = self.data.get("content")
         if content:
             # only transform is not rendering for layout editor
-            if (not self.request.get('_layouteditor') or
-                    ISubRequest.providedBy(self.request)):
-                transforms = getToolByName(self.context, 'portal_transforms')
+            if not self.request.get("_layouteditor") or ISubRequest.providedBy(
+                self.request
+            ):
+                transforms = getToolByName(self.context, "portal_transforms")
                 data = transforms.convertTo(
-                    'text/x-html-safe',
-                    safe_unicode(content), mimetype='text/html',
-                    context=self.context
+                    "text/x-html-safe",
+                    safe_unicode(content),
+                    mimetype="text/html",
+                    context=self.context,
                 )
                 content = data.getData()
         else:
-            content = u'<p></p>'
+            content = u"<p></p>"
         return u"<html><body>%s</body></html>" % safe_unicode(content)

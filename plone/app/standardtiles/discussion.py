@@ -15,29 +15,28 @@ import six
 
 
 class TileCommentForm(CommentForm):
-    prefix = 'form'
-    action = ''
+    prefix = "form"
+    action = ""
 
 
 def protect(raw):
     if isinstance(raw, six.text_type):
-        raw = raw.encode('utf-8')
-    parser = getHTMLSerializer(
-        [raw], pretty_print=False, encoding='utf-8')
+        raw = raw.encode("utf-8")
+    parser = getHTMLSerializer([raw], pretty_print=False, encoding="utf-8")
     parser.serializer = html.tostring
 
     root = parser.tree.getroot()
     token = createToken()
 
-    for form in root.cssselect('form'):
+    for form in root.cssselect("form"):
         authenticator = form.cssselect('[name="_authenticator"]')
         if len(authenticator) == 0:
             authenticator = etree.Element("input")
-            authenticator.attrib['name'] = '_authenticator'
-            authenticator.attrib['type'] = 'hidden'
-            authenticator.attrib['value'] = token
+            authenticator.attrib["name"] = "_authenticator"
+            authenticator.attrib["type"] = "hidden"
+            authenticator.attrib["value"] = token
             form.append(authenticator)
-    return parser.serialize().decode('utf-8')
+    return parser.serialize().decode("utf-8")
 
 
 class DiscussionTile(Tile):
@@ -47,11 +46,11 @@ class DiscussionTile(Tile):
         alsoProvides(self, IViewView)
         manager = queryMultiAdapter(
             (self.context, self.request, self),
-            IViewletManager, name='plone.belowcontent'
+            IViewletManager,
+            name="plone.belowcontent",
         )
         viewlet = queryMultiAdapter(
-            (self.context, self.request, self, manager),
-            IViewlet, name='plone.comments'
+            (self.context, self.request, self, manager), IViewlet, name="plone.comments"
         )
         if viewlet is not None:
             viewlet.form = TileCommentForm
@@ -61,11 +60,11 @@ class DiscussionTile(Tile):
                 viewlet.form.action = self.url
 
             # Fix submit redirect from tile to context
-            if 'location' in self.request.response.headers:
-                location = self.request.response.getHeader('location')
-                self.request.response.redirect(''.join([
-                    self.context.absolute_url(), '#', location.split('#')[-1]
-                ]))
-            return protect(u'<html><body>%s</body></html>' % viewlet.render())
+            if "location" in self.request.response.headers:
+                location = self.request.response.getHeader("location")
+                self.request.response.redirect(
+                    "".join([self.context.absolute_url(), "#", location.split("#")[-1]])
+                )
+            return protect(u"<html><body>%s</body></html>" % viewlet.render())
         else:
-            return u'<html><body></body></html>'
+            return u"<html><body></body></html>"

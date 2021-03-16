@@ -18,11 +18,7 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 def get_settings():
     registry = getUtility(IRegistry)
-    settings = registry.forInterface(
-        IImagingSchema,
-        prefix="plone",
-        check=False
-    )
+    settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
     return settings
 
 
@@ -40,19 +36,13 @@ def image_scales(context):
 class IImageTile(Schema):
 
     image = NamedBlobFile(
-        title=_(u'Please, upload an image'),
+        title=_(u"Please, upload an image"),
     )
 
-    title = schema.TextLine(
-        title=_(u'Set optional title'),
-        required=False
-    )
+    title = schema.TextLine(title=_(u"Set optional title"), required=False)
 
     widget(scale=RadioFieldWidget)
-    scale = schema.Choice(
-        title=_(u'Select maximum display size'),
-        source=image_scales
-    )
+    scale = schema.Choice(title=_(u"Select maximum display size"), source=image_scales)
 
 
 class ImageTile(PersistentTile):
@@ -69,5 +59,6 @@ class ImageTile(PersistentTile):
     """
 
 
-deprecated(ImageTile, 'ImageTile is now deprecated and will be completely '
-                      'removed in 3.0.0')
+deprecated(
+    ImageTile, "ImageTile is now deprecated and will be completely " "removed in 3.0.0"
+)
