@@ -24,13 +24,21 @@ jobs:
             os: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
+      - name: Install python-dev
+        if: "${{ matrix.python-version == '2.7' }}"
+        run: sudo apt-get install python-dev
+      - name: Install python3-dev
+        if: "${{ matrix.python-version != '2.7' }}"
+        run: sudo apt-get install python3-dev
+
       - name: Install dependencies
         run: |
-          sudo apt-get install libxml2-dev libxslt-dev python-dev
+          sudo apt-get install libxml2-dev libxslt-dev
           pip install virtualenv wheel
       - uses: nanasess/setup-chromedriver@master
       - name: Cache multiple paths
