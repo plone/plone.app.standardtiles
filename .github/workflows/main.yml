@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
       matrix:
@@ -16,13 +16,17 @@ jobs:
           - '5.1'
           - '5.2'
         python-version: ['2.7']
+        os: [ubuntu-18.04]
         include:
           - plone-version: 5.2
             python-version: 3.6
+            os: ubuntu-latest
           - plone-version: 5.2
             python-version: 3.7
+            os: ubuntu-latest
           - plone-version: 5.2
             python-version: 3.8
+            os: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
