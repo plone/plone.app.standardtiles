@@ -12,13 +12,15 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        plone-version: [5.1, 5.2]
-        python-version: [2.7, 3.6, 3.7, 3.8]
-        os: [ubuntu-18.04, ubuntu-latest]
-        exclude:
-          - python-version: 2.7
-            os: ubuntu-latest
+        plone-version: [5.2]
+        python-version: [3.6, 3.7, 3.8]
+        os: [ubuntu-latest]
+        include:
+          - plone-version: 5.1
+            python-version: 2.7
+            os: ubuntu-18.04
           - plone-version: 5.2
+            python-version: 2.7
             os: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
