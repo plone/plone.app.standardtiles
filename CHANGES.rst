@@ -12,6 +12,8 @@ Changelog
   [agitator]
 - Upgrade tests to github actions
   [djay]
+- Workflow Github actions
+  [ksuess]
 
 2.3.2 (2019-12-05)
 ------------------
