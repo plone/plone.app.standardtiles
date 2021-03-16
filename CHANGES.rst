@@ -12,7 +12,7 @@ Changelog
   [agitator]
 - Upgrade tests to github actions
   [djay]
-- Workflow Github actions
+- CI with Github actions: Python 2 / Python 3 and os version
   [ksuess]
 
 2.3.2 (2019-12-05)
