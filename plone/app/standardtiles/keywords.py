@@ -8,5 +8,5 @@ zope.deferredimport.initialize()
 
 zope.deferredimport.deprecated(
     "Import from plone.app.standardtiles.common instead",
-    KeywordsTile='plone.app.standardtiles.common:KeywordsTile',
+    KeywordsTile="plone.app.standardtiles.common:KeywordsTile",
 )

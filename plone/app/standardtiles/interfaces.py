@@ -16,5 +16,4 @@ class IPortletManager(IPortletManager, IColumn):
 
 
 class IPortletManagerAssignment(Interface):
-    """A custom assignment marker interface for our portlet manager assignment.
-    """
+    """A custom assignment marker interface for our portlet manager assignment."""

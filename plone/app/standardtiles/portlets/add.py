@@ -20,7 +20,7 @@ from zope.lifecycleevent import ObjectCreatedEvent
 from zope.traversing.browser.absoluteurl import absoluteURL
 
 
-_ = MessageFactory('plone')
+_ = MessageFactory("plone")
 
 
 class PortletAdding(BasePortletAdding):
@@ -42,20 +42,18 @@ class PortletAdding(BasePortletAdding):
         # we need the key but we do not know how to get it
         # from the assignment or the manager
         content_object = aq_parent(aq_inner(self.context))
-        key = '/'.join(content_object.getPhysicalPath())
+        key = "/".join(content_object.getPhysicalPath())
         info = {
-            'manager': manager.__manager__,
-            'category': manager.__category__,
-            'key': key,
-            'name': portlet_name,
+            "manager": manager.__manager__,
+            "category": manager.__category__,
+            "key": key,
+            "name": portlet_name,
         }
         portlet_hash = hashPortletInfo(info)
-        tile_url = add_tile(content_object,
-                            self.request,
-                            portlet_hash)
+        tile_url = add_tile(content_object, self.request, portlet_hash)
         # we need to set the referer in the request form
         # to get proper redirect
-        self.request.form['referer'] = tile_url
+        self.request.form["referer"] = tile_url
 
     def nextURL(self):
         # this is not used at all
@@ -64,14 +62,20 @@ class PortletAdding(BasePortletAdding):
 
 def add_tile(context, request, portlet_hash):
     data = {
-        'portlet_hash': portlet_hash,
+        "portlet_hash": portlet_hash,
     }
     generator = getUtility(IUUIDGenerator)
     tileId = generator()
 
     # Traverse to a new tile in the context, with no data
-    typeName = 'plone.app.standardtiles.portlet'
-    tile = context.restrictedTraverse('@@%s/%s' % (typeName, tileId,))
+    typeName = "plone.app.standardtiles.portlet"
+    tile = context.restrictedTraverse(
+        "@@%s/%s"
+        % (
+            typeName,
+            tileId,
+        )
+    )
 
     dataManager = ITileDataManager(tile)
     dataManager.set(data)
@@ -87,27 +91,28 @@ def add_tile(context, request, portlet_hash):
 
 
 class PortletTileAddForm(DefaultAddForm):
-
-    @button.buttonAndHandler(_('Save'), name='save')
+    @button.buttonAndHandler(_("Save"), name="save")
     def handleAdd(self, action):
         data, errors = self.extractData()
         if errors:
             self.status = self.formErrorsMessage
             return
-        mgr_name = 'plone.app.standardtiles.portletManager'
-        add_portlet_url = '/'.join([
-            self.context.absolute_url(),
-            '++contextportlets++{0}/+'.format(mgr_name),
-            data['portlet_type']
-        ])
+        mgr_name = "plone.app.standardtiles.portletManager"
+        add_portlet_url = "/".join(
+            [
+                self.context.absolute_url(),
+                "++contextportlets++{0}/+".format(mgr_name),
+                data["portlet_type"],
+            ]
+        )
         add_portlet_url = addTokenToUrl(add_portlet_url, self.request)
         self.request.response.redirect(add_portlet_url)
 
-    @button.buttonAndHandler(_(u'Cancel'), name='cancel')
+    @button.buttonAndHandler(_(u"Cancel"), name="cancel")
     def handleCancel(self, action):
         # TODO
         tileDataJson = {}
-        tileDataJson['action'] = 'cancel'
+        tileDataJson["action"] = "cancel"
         url = self.request.getURL()
         self.request.response.redirect(url)
 

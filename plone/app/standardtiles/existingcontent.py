@@ -53,7 +53,7 @@ def uuidToCatalogBrainUnrestricted(uuid):
     if site is None:
         return None
 
-    catalog = api.portal.get_tool('portal_catalog')
+    catalog = api.portal.get_tool("portal_catalog")
     if catalog is None:
         return None
 
@@ -69,53 +69,52 @@ class IExistingContentTile(model.Schema):
     content_uid = schema.Choice(
         title=_(u"Select an existing content"),
         required=True,
-        vocabulary='plone.app.vocabularies.Catalog',
+        vocabulary="plone.app.vocabularies.Catalog",
     )
     form.widget(
-        'content_uid',
+        "content_uid",
         RelatedItemsFieldWidget,
-        vocabulary='plone.app.vocabularies.Catalog',
-        pattern_options={'recentlyUsed': True},
+        vocabulary="plone.app.vocabularies.Catalog",
+        pattern_options={"recentlyUsed": True},
     )
 
-    show_title = schema.Bool(title=_(u'Show content title'), default=True)
+    show_title = schema.Bool(title=_(u"Show content title"), default=True)
 
-    show_description = schema.Bool(
-        title=_(u'Show content description'), default=True
-    )
+    show_description = schema.Bool(title=_(u"Show content description"), default=True)
 
-    show_text = schema.Bool(title=_(u'Show content text'), default=True)
+    show_text = schema.Bool(title=_(u"Show content text"), default=True)
 
     show_image = schema.Bool(
-        title=_(u'Show content image (if available)'),
+        title=_(u"Show content image (if available)"),
         default=False,
         required=False,
     )
 
     image_scale = schema.Choice(
-        title=_(u'Image scale'),
-        vocabulary='plone.app.vocabularies.ImagesScales',
+        title=_(u"Image scale"),
+        vocabulary="plone.app.vocabularies.ImagesScales",
         required=False,
     )
 
     show_comments = schema.Bool(
-        title=_(u'Show content comments count (if enabled)'),
+        title=_(u"Show content comments count (if enabled)"),
         default=False,
         required=False,
     )
 
     tile_class = schema.TextLine(
-        title=_(u'Tile additional styles'),
+        title=_(u"Tile additional styles"),
         description=_(
-            u'Insert a list of additional CSS classes that will' +
-            u' be added to the tile'),
-        default=u'',
+            u"Insert a list of additional CSS classes that will"
+            + u" be added to the tile"
+        ),
+        default=u"",
         required=False,
     )
 
     view_template = schema.Choice(
-        title=_(u'Display mode'),
-        source=_(u'Available Content Views'),
+        title=_(u"Display mode"),
+        source=_(u"Available Content Views"),
         required=True,
     )
 
@@ -126,31 +125,30 @@ class SameContentValidator(validator.SimpleFieldValidator):
         context = aq_parent(self.context)  # default context is tile data
         if content_uid and IUUID(context, None) == content_uid:
             raise Invalid(
-                'You can not select the same content as the page you are '
-                'currently on.'
+                "You can not select the same content as the page you are "
+                "currently on."
             )
 
 
 # Register validator
 validator.WidgetValidatorDiscriminators(
-    SameContentValidator, field=IExistingContentTile['content_uid']
+    SameContentValidator, field=IExistingContentTile["content_uid"]
 )
 
 
 class ExistingContentTile(Tile):
-    """Existing content tile
-    """
+    """Existing content tile"""
 
     @property
     @memoize
     def content_context(self):
-        uuid = self.data.get('content_uid')
+        uuid = self.data.get("content_uid")
         if uuid != IUUID(self.context, None):
             try:
                 item = uuidToObject(uuid)
             except Unauthorized:
                 item = None
-                if not self.request.get('PUBLISHED') and six.PY2:
+                if not self.request.get("PUBLISHED") and six.PY2:
                     # XXX: This reraise behaves strange in Python 3
                     # while in Py2 the traversal continues Py3 gets stuck
                     # in AccessControl.unauthorized.Unauthorized exception.
@@ -164,7 +162,7 @@ class ExistingContentTile(Tile):
     def content_view(self):
         context = self.content_context
         if context is not None:
-            view_name = self.data.get('view_template') or context.getLayout()
+            view_name = self.data.get("view_template") or context.getLayout()
             return api.content.get_view(
                 name=view_name, context=context, request=self.request
             )
@@ -175,7 +173,7 @@ class ExistingContentTile(Tile):
         view = self.content_view
         if view and IBrowserView.providedBy(view):
             # IBrowserView
-            if getattr(view, 'index', None):
+            if getattr(view, "index", None):
                 return view.index.macros
         elif view:
             # FSPageTemplate
@@ -187,24 +185,22 @@ class ExistingContentTile(Tile):
         content_view = self.content_view
         html = content_view()
         if isinstance(html, six.text_type):
-            html = html.encode('utf-8')
-        serializer = getHTMLSerializer(
-            [html], pretty_print=False, encoding='utf-8'
-        )
+            html = html.encode("utf-8")
+        serializer = getHTMLSerializer([html], pretty_print=False, encoding="utf-8")
         panels = dict(
-            (node.attrib['data-panel'], node)
+            (node.attrib["data-panel"], node)
             for node in utils.panelXPath(serializer.tree)
         )
         if panels:
             request = self.request.clone()
-            request.URL = self.content_context.absolute_url() + '/'
+            request.URL = self.content_context.absolute_url() + "/"
             try:
                 renderTiles(request, serializer.tree)
             except RuntimeError:  # maximum recursion depth exceeded
                 return []
             clear = '<div style="clear: both;"></div>'
             return [
-                ''.join(
+                "".join(
                     [
                         safe_unicode(serializer.serializer(child))
                         for child in node.getchildren()
@@ -218,13 +214,13 @@ class ExistingContentTile(Tile):
     def image_tag(self):
         context = self.content_context
         if not context:
-            return ''
+            return ""
         try:
             scale_view = api.content.get_view(
-                name='images', context=context, request=self.request
+                name="images", context=context, request=self.request
             )
-            scale = self.data.get('image_scale', 'thumb')
-            return scale_view.scale('image', scale=scale).tag()
+            scale = self.data.get("image_scale", "thumb")
+            return scale_view.scale("image", scale=scale).tag()
         except (InvalidParameterError, POSKeyError, AttributeError):
             # The object doesn't have an image field
             return ""
@@ -240,24 +236,28 @@ class ExistingContentTile(Tile):
 
     @property
     def tile_class(self):
-        css_class = 'existing-content-tile'
-        additional_classes = self.data.get('tile_class', '')
+        css_class = "existing-content-tile"
+        additional_classes = self.data.get("tile_class", "")
         if not additional_classes:
             return css_class
-        return ' '.join([css_class, additional_classes])
+        return " ".join([css_class, additional_classes])
 
     def __getattr__(self, name):
         # proxy attributes for this view to the selected view of the content
         # item so views work
-        if name in (
-            'data',
-            'content_context',
-            'content_view',
-            'item_macros',
-            'item_panels',
-            'getPhysicalPath',
-            'index_html',
-        ) or name.startswith(('_', 'im_', 'func_')):
+        if (
+            name
+            in (
+                "data",
+                "content_context",
+                "content_view",
+                "item_macros",
+                "item_panels",
+                "getPhysicalPath",
+                "index_html",
+            )
+            or name.startswith(("_", "im_", "func_"))
+        ):
             return Tile.__getattr__(self, name)
         return getattr(self.content_view, name)
 
@@ -267,10 +267,8 @@ def availableContentViewsVocabulary(context):
     """Get available views for a content as vocabulary"""
 
     registry = getUtility(IRegistry)
-    listing_views = (
-        registry.get('plone.app.standardtiles.content_views', {}) or {}
-    )
-    voc = [SimpleVocabulary.createTerm('', '', 'Default view')]
+    listing_views = registry.get("plone.app.standardtiles.content_views", {}) or {}
+    voc = [SimpleVocabulary.createTerm("", "", "Default view")]
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):
         voc.append(SimpleVocabulary.createTerm(key, key, label))
     return SimpleVocabulary(voc)

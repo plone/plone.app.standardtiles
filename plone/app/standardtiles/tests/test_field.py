@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from lxml import html
 from plone import api
-from plone.app.standardtiles.testing import EDITOR_USER_NAME
+from plone.app.standardtiles.testing import EDITOR_USER_NAME  # noqa
 from plone.app.standardtiles.testing import EDITOR_USER_PASSWORD
-from plone.app.standardtiles.testing import PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING  # noqa
+from plone.app.standardtiles.testing import PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING
 from plone.testing.z2 import Browser
 from unittest import TestCase
 
@@ -11,7 +11,7 @@ import transaction
 
 
 def fromstring(s):
-    html_parser = html.HTMLParser(encoding='utf-8')
+    html_parser = html.HTMLParser(encoding="utf-8")
     return html.fromstring(s, parser=html_parser).getroottree().getroot()
 
 
@@ -27,6 +27,7 @@ class TestFieldTile(TestCase):
     behaviours.
 
     """
+
     layer = PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING
 
     def setUp(self):
@@ -53,9 +54,9 @@ class TestFieldTile(TestCase):
         added.
 
         """
-        self.browser = Browser(self.layer['app'])
+        self.browser = Browser(self.layer["app"])
         self.browser.handleErrors = False
-        self.content = self.layer['portal']['deco-test-type1']
+        self.content = self.layer["portal"]["deco-test-type1"]
 
     def test_text_field(self):
         """The object has been created but its fields have not been edited yet.
@@ -64,15 +65,13 @@ class TestFieldTile(TestCase):
 
         """
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'test_text',
+                "test_text",
             )
         )
-        self.assertIn('<span id="form-widgets-test_text"',
-                      self.browser.contents)
-        self.assertNotIn('>Hello world</span>',
-                         self.browser.contents)
+        self.assertIn('<span id="form-widgets-test_text"', self.browser.contents)
+        self.assertNotIn(">Hello world</span>", self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_text"]')
@@ -85,32 +84,28 @@ class TestFieldTile(TestCase):
 
         # And rerender the tile:
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'test_text',
+                "test_text",
             )
         )
-        self.assertIn('<span id="form-widgets-test_text"',
-                      self.browser.contents)
-        self.assertIn('>Hello world</span>',
-                      self.browser.contents)
+        self.assertIn('<span id="form-widgets-test_text"', self.browser.contents)
+        self.assertIn(">Hello world</span>", self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_text"]')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual(u'Hello world', nodes[0].text)
+        self.assertEqual(u"Hello world", nodes[0].text)
 
     def test_int_field(self):
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'test_int',
+                "test_int",
             )
         )
-        self.assertIn('<span id="form-widgets-test_int"',
-                      self.browser.contents)
-        self.assertNotIn('>10</span>',
-                         self.browser.contents)
+        self.assertIn('<span id="form-widgets-test_int"', self.browser.contents)
+        self.assertNotIn(">10</span>", self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_int"]')
@@ -123,32 +118,28 @@ class TestFieldTile(TestCase):
 
         # And rerender the tile:
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'test_int',
+                "test_int",
             )
         )
-        self.assertIn('<span id="form-widgets-test_int"',
-                      self.browser.contents)
-        self.assertIn('>10</span>',
-                      self.browser.contents)
+        self.assertIn('<span id="form-widgets-test_int"', self.browser.contents)
+        self.assertIn(">10</span>", self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_int"]')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual('10', nodes[0].text)
+        self.assertEqual("10", nodes[0].text)
 
     def test_bool_field(self):
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'test_bool',
+                "test_bool",
             )
         )
-        self.assertIn('<span id="form-widgets-test_bool"',
-                      self.browser.contents)
-        self.assertNotIn('class="selected-option"',
-                         self.browser.contents)
+        self.assertIn('<span id="form-widgets-test_bool"', self.browser.contents)
+        self.assertNotIn('class="selected-option"', self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_bool"]')
@@ -160,13 +151,12 @@ class TestFieldTile(TestCase):
 
         # And rerender the tile:
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'test_bool',
+                "test_bool",
             )
         )
-        self.assertIn('<span id="form-widgets-test_bool"',
-                      self.browser.contents)
+        self.assertIn('<span id="form-widgets-test_bool"', self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_bool"]')
@@ -191,21 +181,21 @@ class TestFieldTile(TestCase):
 
         # And then looking up the relative field tile:
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'funky',
+                "funky",
             )
         )
-        self.assertIn('<h1 id="form-widgets-funky" class="funky-widget',
-                      self.browser.contents)
-        self.assertIn('>Oh yeah, baby!</h1>',
-                      self.browser.contents)
+        self.assertIn(
+            '<h1 id="form-widgets-funky" class="funky-widget', self.browser.contents
+        )
+        self.assertIn(">Oh yeah, baby!</h1>", self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//h1[@id="form-widgets-funky"]')
         self.assertEqual(len(nodes), 1)
-        self.assertIn('funky-widget', nodes[0].attrib['class'].split())
-        self.assertEqual('Oh yeah, baby!', nodes[0].text)
+        self.assertIn("funky-widget", nodes[0].attrib["class"].split())
+        self.assertEqual("Oh yeah, baby!", nodes[0].text)
 
     def test_permissions(self):
         """Another thing that can be hinted in schemas is field-level
@@ -227,19 +217,21 @@ class TestFieldTile(TestCase):
         # really should not be spoiled about Santa Claus' identity).
 
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'topsecret',
+                "topsecret",
             )
         )
-        self.assertEqual('<html></html>', self.browser.contents)
+        self.assertEqual("<html></html>", self.browser.contents)
 
         # As we can see the tile is emp[ty and, after merging from the blocks
         # engine, will result in the field simply not being present.
-        self.browser.open(self.layer['portal'].absolute_url() + '/login_form')
-        self.browser.getControl(name='__ac_name').value = EDITOR_USER_NAME
-        self.browser.getControl(name='__ac_password').value = EDITOR_USER_PASSWORD  # noqa
-        submit_button_name = PVERSION < '5.2' and 'submit' or 'buttons.login'
+        self.browser.open(self.layer["portal"].absolute_url() + "/login_form")
+        self.browser.getControl(name="__ac_name").value = EDITOR_USER_NAME
+        self.browser.getControl(
+            name="__ac_password"
+        ).value = EDITOR_USER_PASSWORD  # noqa
+        submit_button_name = PVERSION < "5.2" and "submit" or "buttons.login"
         self.browser.getControl(name=submit_button_name).click()
 
         # Now, we have the proper permissions so we should be able to see the
@@ -247,20 +239,18 @@ class TestFieldTile(TestCase):
         # knowledge at all): ::
 
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'topsecret',
+                "topsecret",
             )
         )
-        self.assertIn('<span id="form-widgets-topsecret"',
-                      self.browser.contents)
-        self.assertIn('>Santa Claus does not exist!</span>',
-                      self.browser.contents)
+        self.assertIn('<span id="form-widgets-topsecret"', self.browser.contents)
+        self.assertIn(">Santa Claus does not exist!</span>", self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-topsecret"]')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual('Santa Claus does not exist!', nodes[0].text)
+        self.assertEqual("Santa Claus does not exist!", nodes[0].text)
 
     def test_behavior_field(self):
         """Right now, we have always operated on fields that were, in Dexterity
@@ -276,18 +266,16 @@ class TestFieldTile(TestCase):
 
         """
         self.browser.open(
-            '{0}/@@plone.app.standardtiles.field?field={1}'.format(
+            "{0}/@@plone.app.standardtiles.field?field={1}".format(
                 self.content.absolute_url(),
-                'IDublinCore-contributors',
+                "IDublinCore-contributors",
             )
         )
-        self.assertIn('Jane Doe', self.browser.contents)
-        self.assertIn('John Doe', self.browser.contents)
+        self.assertIn("Jane Doe", self.browser.contents)
+        self.assertIn("John Doe", self.browser.contents)
 
         root = fromstring(self.browser.contents)
-        nodes = root.xpath(
-            '//body//*[@id="form-widgets-IDublinCore-contributors"]'
-        )
+        nodes = root.xpath('//body//*[@id="form-widgets-IDublinCore-contributors"]')
         self.assertEqual(len(nodes), 1)
 
         # disabled: different versions of plone.app.z3cform has different

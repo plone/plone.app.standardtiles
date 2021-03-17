@@ -16,7 +16,7 @@ import transaction
 
 
 def fromstring(s):
-    html_parser = html.HTMLParser(encoding='utf-8')
+    html_parser = html.HTMLParser(encoding="utf-8")
     return html.fromstring(s, parser=html_parser).getroottree().getroot()
 
 
@@ -29,43 +29,46 @@ class TestHeadTiles(TestCase):
     behaviours.
 
     """
+
     layer = PASTANDARDTILES_FUNCTIONAL_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
+        self.portal = self.layer["portal"]
         self.portalURL = self.portal.absolute_url()
 
-        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        setRoles(self.portal, TEST_USER_ID, ["Manager"])
         transaction.commit()
 
-        self.browser = Browser(self.layer['app'])
+        self.browser = Browser(self.layer["app"])
         self.browser.handleErrors = False
         self.browser.addHeader(
-            'Authorization',
-            'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD,)
+            "Authorization",
+            "Basic %s:%s"
+            % (
+                TEST_USER_NAME,
+                TEST_USER_PASSWORD,
+            ),
         )
 
-        self.unprivileged_browser = Browser(self.layer['app'])
+        self.unprivileged_browser = Browser(self.layer["app"])
 
     def test_title_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.headtitle'
+            self.portalURL + "/@@plone.app.standardtiles.headtitle"
         )
 
-        self.assertIn('<title', self.unprivileged_browser.contents)
+        self.assertIn("<title", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//head/title')
+        nodes = root.xpath("//head/title")
         self.assertEqual(len(nodes), 1)
 
     def test_stylesheets_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.stylesheets'
+            self.portalURL + "/@@plone.app.standardtiles.stylesheets"
         )
 
-        self.assertIn('<link', self.unprivileged_browser.contents)
+        self.assertIn("<link", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
         nodes = root.xpath('//head/link[@rel="stylesheet"]')
@@ -73,23 +76,21 @@ class TestHeadTiles(TestCase):
 
     def test_javascripts_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.javascripts'
+            self.portalURL + "/@@plone.app.standardtiles.javascripts"
         )
 
-        self.assertIn('<script', self.unprivileged_browser.contents)
+        self.assertIn("<script", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//head/script')
+        nodes = root.xpath("//head/script")
         self.assertGreaterEqual(len(nodes), 1)
 
     def test_favicon_link_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.faviconlink'
+            self.portalURL + "/@@plone.app.standardtiles.faviconlink"
         )
 
-        self.assertIn('<link', self.unprivileged_browser.contents)
+        self.assertIn("<link", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
         nodes = root.xpath('//head/link[@rel="shortcut icon"]')
@@ -97,11 +98,10 @@ class TestHeadTiles(TestCase):
 
     def test_search_link_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.searchlink'
+            self.portalURL + "/@@plone.app.standardtiles.searchlink"
         )
 
-        self.assertIn('<link', self.unprivileged_browser.contents)
+        self.assertIn("<link", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
         nodes = root.xpath('//head/link[@rel="search"]')
@@ -109,11 +109,10 @@ class TestHeadTiles(TestCase):
 
     def test_navigation_link_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.navigationlink'
+            self.portalURL + "/@@plone.app.standardtiles.navigationlink"
         )
 
-        self.assertIn('<link', self.unprivileged_browser.contents)
+        self.assertIn("<link", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
         nodes = root.xpath('//head/link[@rel="home"]')
@@ -124,11 +123,10 @@ class TestHeadTiles(TestCase):
 
     def test_rss_link_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.rsslink'
+            self.portalURL + "/@@plone.app.standardtiles.rsslink"
         )
 
-        self.assertIn('<link', self.unprivileged_browser.contents)
+        self.assertIn("<link", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
         nodes = root.xpath('//head/link[@type="application/rss+xml"]')
@@ -136,23 +134,19 @@ class TestHeadTiles(TestCase):
 
     def test_canonical_url_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.canonical_url'
+            self.portalURL + "/@@plone.app.standardtiles.canonical_url"
         )
 
-        self.assertIn('<link', self.unprivileged_browser.contents)
+        self.assertIn("<link", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
         nodes = root.xpath('//head/link[@rel="canonical"]')
         self.assertEqual(len(nodes), 1)
 
     def test_author_link_tile(self):
-        self.browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.authorlink'
-        )
+        self.browser.open(self.portalURL + "/@@plone.app.standardtiles.authorlink")
 
-        self.assertIn('<link', self.browser.contents)
+        self.assertIn("<link", self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//head/link[@rel="author"]')
@@ -160,14 +154,13 @@ class TestHeadTiles(TestCase):
 
     def test_dublincore_tile(self):
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.dublincore'
+            self.portalURL + "/@@plone.app.standardtiles.dublincore"
         )
 
-        self.assertNotIn('<meta', self.unprivileged_browser.contents)
+        self.assertNotIn("<meta", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//head/meta')
+        nodes = root.xpath("//head/meta")
         self.assertEqual(len(nodes), 0)
 
         registry = getUtility(IRegistry)
@@ -180,12 +173,11 @@ class TestHeadTiles(TestCase):
         transaction.commit()
 
         self.unprivileged_browser.open(
-            self.portalURL +
-            '/@@plone.app.standardtiles.dublincore'
+            self.portalURL + "/@@plone.app.standardtiles.dublincore"
         )
 
-        self.assertIn('<meta', self.unprivileged_browser.contents)
+        self.assertIn("<meta", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//head/meta')
+        nodes = root.xpath("//head/meta")
         self.assertGreaterEqual(len(nodes), 1)

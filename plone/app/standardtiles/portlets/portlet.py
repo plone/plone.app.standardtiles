@@ -16,16 +16,13 @@ from zope.interface import Interface
 
 class IPortletTile(Interface):
 
-    form.omitted('portlet_hash')
-    portlet_hash = schema.TextLine(
-        title=_(u'Portlet hash'),
-        required=False
-    )
+    form.omitted("portlet_hash")
+    portlet_hash = schema.TextLine(title=_(u"Portlet hash"), required=False)
 
     portlet_type = schema.Choice(
-        title=_(u'Portlet type'),
-        vocabulary=u'standardtiles.available_portlets',
-        required=True
+        title=_(u"Portlet type"),
+        vocabulary=u"standardtiles.available_portlets",
+        required=True,
     )
 
 
@@ -39,20 +36,23 @@ class PortletTile(Tile):
         # like this:
         # concat_txt = '%(manager)s\n%(category)s\n%(key)s\n%(name)s' % info
 
-        portlethash = self.data.get('portlet_hash')
+        portlethash = self.data.get("portlet_hash")
 
         # Prepare the portlet and render the data
         info = unhashPortletInfo(portlethash)
-        manager = getUtility(IPortletManager, info['manager'])
+        manager = getUtility(IPortletManager, info["manager"])
 
-        assignment = assignment_from_key(context=self.context,
-                                         manager_name=info['manager'],
-                                         category=info['category'],
-                                         key=info['key'],
-                                         name=info['name'])
+        assignment = assignment_from_key(
+            context=self.context,
+            manager_name=info["manager"],
+            category=info["category"],
+            key=info["key"],
+            name=info["name"],
+        )
         renderer = getMultiAdapter(
             (self.context, self.request, self, manager, assignment.data),
-            IPortletRenderer)
+            IPortletRenderer,
+        )
         renderer = renderer.__of__(self.context)
 
         # This is required by some portlets and not set by
@@ -64,4 +64,4 @@ class PortletTile(Tile):
             # if this is a deferred load, prepare now the data
             renderer.deferred_update()
 
-        return u'<html><body>%s</body></html>'.format(renderer.render())
+        return u"<html><body>%s</body></html>".format(renderer.render())

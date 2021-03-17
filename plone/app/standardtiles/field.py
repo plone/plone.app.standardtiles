@@ -55,7 +55,7 @@ class DexterityFieldTile(WidgetsView, Tile):
         WidgetsView.__init__(self, context, request)
 
         try:
-            self.field = self.data['field'].split('-', 1)[-1]
+            self.field = self.data["field"].split("-", 1)[-1]
         except KeyError:
             self.field = None
             return
@@ -69,11 +69,10 @@ class DexterityFieldTile(WidgetsView, Tile):
             self.fields = Fields(self.schema).omit(self.schema.names())
             for schema in self.additionalSchemata:
                 if self.field in schema:
-                    self.field = '%s.%s' % (schema.__name__, self.field)
-                    self.fields += Fields(
-                        schema,
-                        prefix=schema.__name__
-                    ).omit(self.field)
+                    self.field = "%s.%s" % (schema.__name__, self.field)
+                    self.fields += Fields(schema, prefix=schema.__name__).omit(
+                        self.field
+                    )
                     self._additionalSchemata = (schema,)
                     return
 
@@ -93,10 +92,10 @@ class DexterityFieldTile(WidgetsView, Tile):
         ).allowed(self.field)
 
     def _wrap_widget(self, render):
-        if render.rstrip().endswith(u'</html>'):
+        if render.rstrip().endswith(u"</html>"):
             return render
         else:
-            return ''.join([u'<html><body>', render, u'</body></html>'])
+            return "".join([u"<html><body>", render, u"</body></html>"])
 
     def updateWidgets(self, prefix=None):
         if self.field is not None:
@@ -106,7 +105,7 @@ class DexterityFieldTile(WidgetsView, Tile):
             else:
                 self.fields = Fields()
 
-            for group in (self.groups or []):
+            for group in self.groups or []:
                 if self.field in group.fields:
                     group.fields = group.fields.select(self.field)
                 else:
@@ -127,39 +126,46 @@ class DexterityFieldTile(WidgetsView, Tile):
                 widget = group.widgets.get(self.field)
                 if widget is not None:
                     return self._wrap_widget(widget.render())
-        return u'<html></html>'
+        return u"<html></html>"
 
 
 _titleDisplayTemplate = ViewPageTemplateFile(
-    'templates/title.pt',
-    content_type='text/html'
+    "templates/title.pt", content_type="text/html"
 )
 _descriptionDisplayTemplate = ViewPageTemplateFile(
-    'templates/description.pt',
-    content_type='text/html'
+    "templates/description.pt", content_type="text/html"
 )
 _namedImageDisplayTemplate = ViewPageTemplateFile(
-    'templates/namedimage.pt',
-    content_type='text/html')
+    "templates/namedimage.pt", content_type="text/html"
+)
 
 
 @implementer(IPageTemplate)
-@adapter(None, ITilesFormLayer, DexterityFieldTile,
-         getSpecification(IDublinCore['title']), TextWidget)
+@adapter(
+    None,
+    ITilesFormLayer,
+    DexterityFieldTile,
+    getSpecification(IDublinCore["title"]),
+    TextWidget,
+)
 def titleDisplayTemplate(context, request, form, field, widget):
     return _titleDisplayTemplate
 
 
 @implementer(IPageTemplate)
-@adapter(None, ITilesFormLayer, DexterityFieldTile,
-         getSpecification(IDublinCore['description']), TextAreaWidget)
+@adapter(
+    None,
+    ITilesFormLayer,
+    DexterityFieldTile,
+    getSpecification(IDublinCore["description"]),
+    TextAreaWidget,
+)
 def descriptionDisplayTemplate(context, request, form, field, widget):
     return _descriptionDisplayTemplate
 
 
 @implementer(IPageTemplate)
-@adapter(None, ITilesFormLayer, IDexterityFieldTileFormOrGroup,
-         None, NamedImageWidget)
+@adapter(None, ITilesFormLayer, IDexterityFieldTileFormOrGroup, None, NamedImageWidget)
 def namedImageDisplayTemplate(context, request, form, field, widget):
     # Disable CSRF, because imagescales may save a new scale into ZODB
     alsoProvides(request, IDisableCSRFProtection)

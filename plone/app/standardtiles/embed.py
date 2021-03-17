@@ -8,28 +8,23 @@ from zope import schema
 import requests
 
 
-NOEMBED_ENDPOINT = 'https://noembed.com/embed?url='
+NOEMBED_ENDPOINT = "https://noembed.com/embed?url="
 
 
 class IEmbedTile(Schema):
-    """ Embed tile.
-    """
+    """Embed tile."""
 
-    media_url = schema.TextLine(
-        title=_(u"Media URL"),
-        required=True
-    )
+    media_url = schema.TextLine(title=_(u"Media URL"), required=True)
 
 
 class EmbedTile(Tile):
-    """ A tile that embeds media.
-    """
+    """A tile that embeds media."""
 
-    @ram.cache(lambda method, obj: obj.data.get('media_url'))
+    @ram.cache(lambda method, obj: obj.data.get("media_url"))
     def __call__(self):
-        media_url = self.data.get('media_url')
+        media_url = self.data.get("media_url")
         url = NOEMBED_ENDPOINT + media_url
         rr = requests.get(url)
         if rr.ok:
             data = rr.json()
-        return u"<html><body>%s</body></html>" % data['html']
+        return u"<html><body>%s</body></html>" % data["html"]

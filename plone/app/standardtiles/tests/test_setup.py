@@ -5,7 +5,7 @@ from plone.app.standardtiles.testing import PASTANDARDTILES_INTEGRATION_TESTING 
 import unittest
 
 
-PROJECTNAME = 'plone.app.standardtiles'
+PROJECTNAME = "plone.app.standardtiles"
 
 try:
     from Products.CMFPlone.utils import get_installer
@@ -18,13 +18,13 @@ class InstallTestCase(unittest.TestCase):
     layer = PASTANDARDTILES_INTEGRATION_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
+        self.portal = self.layer["portal"]
 
     def test_installed(self):
         if get_installer:
-            qi = get_installer(self.portal, self.layer['request'])
+            qi = get_installer(self.portal, self.layer["request"])
         else:
-            qi = api.portal.get_tool('portal_quickinstaller')
+            qi = api.portal.get_tool("portal_quickinstaller")
         self.assertTrue(qi.isProductInstalled(PROJECTNAME))
 
 
@@ -33,15 +33,16 @@ class UninstallTestCase(unittest.TestCase):
     layer = PASTANDARDTILES_INTEGRATION_TESTING
 
     def setUp(self):
-        self.portal = self.layer['portal']
+        self.portal = self.layer["portal"]
         if get_installer:
-            self.qi = get_installer(self.portal, self.layer['request'])
+            self.qi = get_installer(self.portal, self.layer["request"])
         else:
-            self.qi = api.portal.get_tool('portal_quickinstaller')
+            self.qi = api.portal.get_tool("portal_quickinstaller")
         self.qi.uninstallProducts(products=[PROJECTNAME])
 
         from plone.registry.interfaces import IRegistry
         from zope.component import getUtility
+
         self.registry = getUtility(IRegistry)
 
     def test_uninstalled(self):
@@ -49,7 +50,7 @@ class UninstallTestCase(unittest.TestCase):
 
     @unittest.expectedFailure
     def test_portletmanager_uninstalled(self):
-        self.fail('TODO: Not Implemented')
+        self.fail("TODO: Not Implemented")
 
     def filter_record(self, record):
         """Return a list of record items related with the project."""
@@ -57,13 +58,12 @@ class UninstallTestCase(unittest.TestCase):
 
     def test_registry_cleaned(self):
 
-        self.assertEqual(self.filter_record('plone.app.tiles'), [])
+        self.assertEqual(self.filter_record("plone.app.tiles"), [])
 
-        self.assertNotIn(
-            'plone.app.standardtiles.listing_views', self.registry)
+        self.assertNotIn("plone.app.standardtiles.listing_views", self.registry)
 
         # XXX: I don't know what to do with change on
         # plone.app.querystring.interfaces.IQueryField
 
-        record = 'plone.app.portlets.PortletManagerBlacklist'
+        record = "plone.app.portlets.PortletManagerBlacklist"
         self.assertEqual(self.filter_record(record), [])

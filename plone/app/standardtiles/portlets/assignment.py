@@ -42,14 +42,15 @@ def localPortletAssignmentMappingAdapter(context, manager):
 
     portlets = local.get(manager.__name__, None)
     if portlets is None:
-        portlets = local[manager.__name__] = Mapping(manager=manager.__name__,
-                                                     category=CONTEXT_CATEGORY)
+        portlets = local[manager.__name__] = Mapping(
+            manager=manager.__name__, category=CONTEXT_CATEGORY
+        )
 
     # XXX: For graceful migration
-    if not getattr(portlets, '__manager__', ''):
+    if not getattr(portlets, "__manager__", ""):
         portlets.__manager__ = manager.__name__
 
-    if not getattr(portlets, '__category__', ''):
+    if not getattr(portlets, "__category__", ""):
         portlets.__category__ = CONTEXT_CATEGORY
 
     return portlets

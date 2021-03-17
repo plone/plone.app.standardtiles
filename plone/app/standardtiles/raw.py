@@ -5,6 +5,6 @@ from zope.deprecation import deprecated
 
 
 IRawHTMLTile = IHTMLTile
-deprecated(IRawHTMLTile, 'Use IHTMLTile instead of IRawHTMLTile')
+deprecated(IRawHTMLTile, "Use IHTMLTile instead of IRawHTMLTile")
 RawHTMLTile = HTMLTile
-deprecated(RawHTMLTile, 'Use HTMLTile instead of RawHTMLTile')
+deprecated(RawHTMLTile, "Use HTMLTile instead of RawHTMLTile")
