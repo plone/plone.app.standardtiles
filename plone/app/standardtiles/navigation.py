@@ -317,7 +317,7 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
         contextPath = "/".join(context.getPhysicalPath())
         if not contextPath.startswith(rootPath):
             return None
-        contextSubPathElements = contextPath[len(rootPath) + 1 :]
+        contextSubPathElements = contextPath[len(rootPath) + 1:]
         if not contextSubPathElements:
             return None
         contextSubPathElements = contextSubPathElements.split("/")
