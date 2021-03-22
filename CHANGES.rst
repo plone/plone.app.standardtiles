@@ -16,6 +16,8 @@ Changelog
   [ksuess]
 - rss tile: expose published date
   [ksuess]
+- update link to plone coredev docs in readme
+  [spereverde]
 
 2.3.2 (2019-12-05)
 ------------------
