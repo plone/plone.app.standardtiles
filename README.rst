@@ -1,13 +1,12 @@
 Plone Standard Tiles
 ====================
 
-.. image:: https://travis-ci.org/plone/plone.app.standardtiles.svg?branch=master
-    :alt: Travis CI badge
-    :target: http://travis-ci.org/plone/plone.app.standardtiles
+.. image:: https://github.com/plone/plone.app.standardtiles/actions/workflows/main.yml/badge.svg
+    :alt: Github workflow status badge
 
 .. image:: https://coveralls.io/repos/plone/plone.app.standardtiles/badge.png?branch=master
     :alt: Coveralls badge
-    :target: https://coveralls.io/r/plone/plone.app.standardtiles
+    :target: https://coveralls.io/github/plone/plone.app.standardtiles
 
 This package contains standard tiles to be used with `Plone Mosaic`_
 (or as such with `Plone Blocks`_ composition).
