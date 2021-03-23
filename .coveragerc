@@ -1,5 +1,8 @@
+[run]
+relative_files = True
+
 [report]
 include =
-    plone/app/standardtiles/*
+    plone/*
 omit =
     */test*
