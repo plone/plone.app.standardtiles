@@ -23,3 +23,6 @@ pip-selfcheck.json
 /reports/
 /coverage.xml
 /plone/app/standardtiles/utils.py.bak
+pyvenv.cfg
+annotate.txt
+requirements.txt
