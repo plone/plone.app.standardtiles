@@ -18,6 +18,8 @@ Changelog
   [ksuess]
 - update link to plone coredev docs in readme
   [spereverde]
+- coveralls and github actions workflow
+  [ksuess]
 
 2.3.2 (2019-12-05)
 ------------------
