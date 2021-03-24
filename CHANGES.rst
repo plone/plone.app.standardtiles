@@ -10,14 +10,19 @@ Changelog
   Batching support
   Drop support for Plone 5.0.x - no get_top_request available
   [agitator]
+  
 - Upgrade tests to github actions
   [djay]
+
 - CI with Github actions: Python 2 / Python 3 and os version
   [ksuess]
+
 - rss tile: expose published date
   [ksuess]
+
 - update link to plone coredev docs in readme
   [spereverde]
+
 - coveralls and github actions workflow
   [ksuess]
 
