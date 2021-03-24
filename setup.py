@@ -44,6 +44,7 @@ setup(
         'plone.app.tiles>=3.1.2',
         'plone.subrequest',
         'plone.tiles>=1.8.0.dev0',
+        'plone.batching>=1.1.7',
         'Products.CMFPlone>=5.1',
         'requests',
         'setuptools',
