@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.3.3 (unreleased)
+2.4.0 (2021-03-24)
 ------------------
 
 - Content listing: Allow to use collection query parameters from context.
