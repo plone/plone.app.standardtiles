@@ -3,10 +3,11 @@ from plone.app.standardtiles import _PMF as _
 from plone.memoize import ram
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
+from urllib import quote
 from zope import schema
 import requests
 
-NOEMBED_ENDPOINT = 'https://noembed.com/embed?callback=embed_data=&url='
+NOEMBED_ENDPOINT = 'https://noembed.com/embed?url='
 
 
 class IEmbedTile(Schema):
@@ -26,7 +27,7 @@ class EmbedTile(Tile):
     @ram.cache(lambda method, obj: obj.data.get('media_url'))
     def __call__(self):
         media_url = self.data.get('media_url')
-        url = NOEMBED_ENDPOINT + media_url
+        url = NOEMBED_ENDPOINT + quote(media_url)
         rr = requests.get(url)
         if rr.ok:
             data = rr.json()

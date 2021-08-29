@@ -82,13 +82,13 @@ class ContentTileTests(TestCase):
             + quote(media_url)
         )
 
-        self.assertIn(NOEMBED_ENDPOINT + media_url,
+        self.assertIn(NOEMBED_ENDPOINT + quote(media_url),
                       self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
         nodes = root.xpath('//body/p')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual(nodes[0].text, NOEMBED_ENDPOINT + media_url)
+        self.assertEqual(nodes[0].text, NOEMBED_ENDPOINT + quote(media_url))
 
     def test_existing_content_tile(self):
         """The existing content tile takes the uuid of a content object in the
