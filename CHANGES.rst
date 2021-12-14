@@ -4,7 +4,8 @@ Changelog
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Content listing: Expand recurring events
+  [petschki]
 
 
 2.4.0 (2021-03-24)
@@ -16,7 +17,7 @@ Changelog
   Batching support
   Drop support for Plone 5.0.x - no get_top_request available
   [agitator]
-  
+
 - Upgrade tests to github actions
   [djay]
 

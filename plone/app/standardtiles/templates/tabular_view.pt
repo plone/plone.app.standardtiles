@@ -49,17 +49,18 @@
                     </thead>
                     <tbody>
                         <tal:results repeat="item batch">
-                            <tal:block tal:define="item_url python: item.portal_type in view_types and item.getURL() + '/view' or item.getURL();
-                                                   item_title_or_id item/title_or_id;
-                                                   item_type item/Type;
+                            <tal:block tal:define="item_url item/getURL|item/absolute_url;
+                                                   item_view_url python: item_url + '/view' if item.portal_type in view_types else item_url;
+                                                   item_title_or_id item/Title|item/title_or_id;
+                                                   item_type item/portal_type;
                                                    item_description item/Description;
-                                                   item_creator item/Creator;
-                                                   item_modified item/ModificationDate">
+                                                   item_creator item/Creator|item/creator;
+                                                   item_modified item/ModificationDate|item/modified">
 
                             <tr tal:define="oddrow repeat/item/odd;"
                                 tal:attributes="class python:oddrow and 'even' or 'odd'" >
                                 <td>
-                                    <a href="#" tal:attributes="href item_url" tal:content="item_title_or_id">
+                                    <a href="#" tal:attributes="href item_view_url" tal:content="item_title_or_id">
                                         Item Title
                                     </a>
                                 </td>

@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from operator import itemgetter
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
+from plone.app.event.base import expand_events
+from plone.app.event.base import RET_MODE_ACCESSORS
+from plone.app.querystring import queryparser
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
+from plone.batching import Batch
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
@@ -70,6 +75,19 @@ class IContentListingTile(Schema):
         ),
         description=_(
             u"Check this box if you do not want the results changed based on request parameters."
+        ),
+        required=False,
+        default=False,
+    )
+
+    expand_events = schema.Bool(
+        title=_(
+            u"label_expand_events",
+            default=u"Expand recurring events to it's occurrences",
+        ),
+        description=_(
+            u"If you have recurring events you have to expand them to get the correct "
+            u"occurrences in the listing",
         ),
         required=False,
         default=False,
@@ -230,24 +248,39 @@ class ContentListingTile(Tile):
         if not self.ignore_request_params:
             contentFilter = dict(self.request.get("contentFilter", {}))
 
-        accessor = builder(
+        result = builder(
             query=self.query,
             sort_on=self.sort_on or "getObjPositionInParent",
             sort_order=self.sort_order,
             limit=self.limit,
-            batch=True,
-            b_start=self.b_start,
-            b_size=self.item_count or 30,
-            brains=False,
+            batch=False,
             custom_query=contentFilter,
         )
 
-        accessor.b_start_str = self.b_start_str
+        # should we expand recurring events -> get a list of brains and use
+        # plone.app.event.base.expand_events to determine occurrences
+        if self.data.get("expand_events"):
+            # need to get "start" query for expanding events
+            parsedquery = queryparser.parseFormquery(self.context, self.query)
+            if "start" in parsedquery:
+                _se = parsedquery["start"]["query"].asdatetime()
+            else:
+                _se = datetime.now()
+            result = expand_events(
+                result, 2,
+                start=_se,
+                sort=self.sort_on or "getObjPositionInParent",
+                sort_reverse=self.data.get("sort_reversed")
+            )
+
+        batched_results = Batch(result, self.item_count or 30, start=self.b_start)
+        # multiple batches on context -> use generated b_start_str
+        batched_results.b_start_str = self.b_start_str
 
         view = self.view_template or "listing_view"
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
-        return getMultiAdapter((accessor, self.request), name=view)(**options)
+        return getMultiAdapter((batched_results, self.request), name=view)(**options)
 
     @property
     def tile_class(self):

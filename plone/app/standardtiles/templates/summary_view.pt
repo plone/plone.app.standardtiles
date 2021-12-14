@@ -12,12 +12,13 @@
                      registry original_context/portal_registry;
                      view_types python: registry.get('plone.types_use_view_action_in_listings', [])">
       <tal:entry repeat="item batch">
-      <tal:block tal:define="item_url python: item.portal_type in view_types and item.getURL() + '/view' or item.getURL();
-                             item_title_or_id item/title_or_id;
-                             item_type item/Type;
-                             item_creator item/Creator;
+      <tal:block tal:define="item_url item/getURL|item/absolute_url;
+                             item_view_url python: item_url + '/view' if item.portal_type in view_types else item_url;
+                             item_title_or_id item/Title|item/title_or_id;
+                             item_type item/portal_type;
+                             item_creator item/Creator|item/creator;
                              item_description item/Description;
-                             item_modified item/ModificationDate;
+                             item_modified item/ModificationDate|item/modified;
                              item_start item/start;
                              item_end item/end;">
         <div class="tileItem visualIEFloatFix"
@@ -25,16 +26,16 @@
           <a href="#"
              class="summary-image"
              tal:condition="item_has_image"
-             tal:attributes="href item_url">
+             tal:attributes="href item_view_url">
             <img tal:condition="item_has_image"
-                 tal:attributes="src string:${item/getURL}/@@images/image/thumb"
+                 tal:attributes="src string:${item_url}/@@images/image/thumb"
                  alt=""/>
           </a>
           <h2 class="tileHeadline"
               metal:define-macro="listitem">
             <a href="#"
                class="summary url"
-               tal:attributes="href item_url"
+               tal:attributes="href item_view_url"
                tal:content="item_title_or_id">
               Item Title
             </a>
@@ -111,7 +112,7 @@
           </p>
           <p class="tileFooter">
             <a href=""
-               tal:attributes="href python:item_url"
+               tal:attributes="href python:item_view_url"
                i18n:translate="">
               Read More&hellip;
             </a>
