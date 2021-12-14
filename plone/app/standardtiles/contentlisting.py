@@ -3,7 +3,7 @@ from datetime import datetime
 from operator import itemgetter
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.event.base import expand_events
-from plone.app.event.base import RET_MODE_ACCESSORS
+from plone.app.event.base import RET_MODE_OBJECTS
 from plone.app.querystring import queryparser
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
@@ -267,7 +267,7 @@ class ContentListingTile(Tile):
             else:
                 _se = datetime.now()
             result = expand_events(
-                result, 2,
+                result, RET_MODE_OBJECTS,
                 start=_se,
                 sort=self.sort_on or "getObjPositionInParent",
                 sort_reverse=self.data.get("sort_reversed")
