@@ -20,6 +20,9 @@ jobs:
             python-version: 2.7
           - plone-version: 6.0
             python-version: 3.9
+        exclude:
+          - plone-version: 6.0
+            python-version: 3.6
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
