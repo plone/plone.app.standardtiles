@@ -9,20 +9,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
-        plone-version: [5.2, 6.0]
-        python-version: [3.6, 3.7, 3.8]
+        plone-version:
+          - '5.2'
+          - '6.0'
+        python-version:
+          - '3.6'
+          - '3.7'
+          - '3.8'
         include:
-          - plone-version: 5.1
-            python-version: 2.7
-          - plone-version: 5.2
-            python-version: 2.7
-          - plone-version: 6.0
-            python-version: 3.9
+          - plone-version: '5.1'
+            python-version: '2.7'
+          - plone-version: '5.2'
+            python-version: '2.7'
+          - plone-version: '6.0'
+            python-version: '3.9'
         exclude:
-          - plone-version: 6.0
-            python-version: 3.6
+          - plone-version: '6.0'
+            python-version: '3.6'
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
