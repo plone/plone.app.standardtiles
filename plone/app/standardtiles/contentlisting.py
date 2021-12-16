@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 from operator import itemgetter
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
+from plone.event.interfaces import IEvent
 from plone.app.event.base import expand_events
+from plone.app.event.base import guess_date_from
 from plone.app.event.base import RET_MODE_OBJECTS
 from plone.app.querystring import queryparser
 from plone.app.standardtiles import PloneMessageFactory as _
@@ -239,6 +240,12 @@ class ContentListingTile(Tile):
 
     def contents(self):
         """Search results"""
+
+        def _asdatetime(dt):
+            return isinstance(dt, str) \
+                and guess_date_from(dt) \
+                or dt.asdatetime()
+
         builder = getMultiAdapter(
             (self.context, self.request), name="querybuilderresults"
         )
@@ -248,32 +255,59 @@ class ContentListingTile(Tile):
         if not self.ignore_request_params:
             contentFilter = dict(self.request.get("contentFilter", {}))
 
-        result = builder(
-            query=self.query,
-            sort_on=self.sort_on or "getObjPositionInParent",
-            sort_order=self.sort_order,
-            limit=self.limit,
-            batch=False,
-            custom_query=contentFilter,
-        )
-
-        # should we expand recurring events -> get a list of brains and use
+        # Should we expand recurring events? -> Get a list of brains and use
         # plone.app.event.base.expand_events to determine occurrences
         if self.data.get("expand_events"):
-            # need to get "start" query for expanding events
+            # Get "start" query for expanding events.
             parsedquery = queryparser.parseFormquery(self.context, self.query)
+            _start = None
+            _end = None
             if "start" in parsedquery:
-                _se = parsedquery["start"]["query"].asdatetime()
-            else:
-                _se = datetime.now()
+                if parsedquery["start"]["range"] == "min":
+                    _start = _asdatetime(parsedquery["start"]["query"])
+                elif parsedquery["start"]["range"] == "max":
+                    _end = _asdatetime(parsedquery["start"]["query"])
+                else:
+                    _start = _asdatetime(parsedquery["start"]["query"][0])
+                    _end = _asdatetime(parsedquery["start"]["query"][1])
+
+            # Search without date constraint.
+            # Get occurences afterwards with date contraint.
+            self.query = [el for el in self.query
+                          if el['i'] not in ('start', 'end')]
+            result = builder(
+                query=self.query,
+                sort_on=self.sort_on or "getObjPositionInParent",
+                sort_order=self.sort_order,
+                limit=self.limit,
+                batch=False,
+                custom_query={
+                    'object_provides': IEvent.__identifier__,
+                    **contentFilter
+                },
+            )
+            # Get occurences with date contraint.
             result = expand_events(
-                result, RET_MODE_OBJECTS,
-                start=_se,
-                sort=self.sort_on or "getObjPositionInParent",
-                sort_reverse=self.data.get("sort_reversed")
+                result,
+                RET_MODE_OBJECTS,
+                _start,
+                _end,
+                self.sort_on or 'start',
+                self.sort_order == 'reverse'
+            )
+        else:
+            result = builder(
+                query=self.query,
+                sort_on=self.sort_on or "getObjPositionInParent",
+                sort_order=self.sort_order,
+                limit=self.limit,
+                batch=False,
+                custom_query=contentFilter,
             )
 
-        batched_results = Batch(result, self.item_count or 30, start=self.b_start)
+        batched_results = Batch(result,
+                                self.item_count or 30,
+                                start=self.b_start)
         # multiple batches on context -> use generated b_start_str
         batched_results.b_start_str = self.b_start_str
 
