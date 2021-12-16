@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone import api
 from plone.app.standardtiles.testing import PASTANDARDTILES_INTEGRATION_TESTING  # noqa: E501
+from Products.CMFCore.utils import getToolByName
 
 import unittest
 
@@ -10,7 +11,16 @@ PROJECTNAME = "plone.app.standardtiles"
 try:
     from Products.CMFPlone.utils import get_installer
 except Exception:
-    get_installer = None
+
+    class get_installer(object):
+        def __init__(self, portal, request):
+            self.installer = getToolByName(portal, "portal_quickinstaller")
+
+        def is_product_installed(self, name):
+            return self.installer.isProductInstalled(name)
+
+        def uninstall_product(self, name):
+            return self.installer.uninstallProducts([name])
 
 
 class InstallTestCase(unittest.TestCase):
@@ -25,7 +35,7 @@ class InstallTestCase(unittest.TestCase):
             qi = get_installer(self.portal, self.layer["request"])
         else:
             qi = api.portal.get_tool("portal_quickinstaller")
-        self.assertTrue(qi.isProductInstalled(PROJECTNAME))
+        self.assertTrue(qi.is_product_installed(PROJECTNAME))
 
 
 class UninstallTestCase(unittest.TestCase):
@@ -38,7 +48,7 @@ class UninstallTestCase(unittest.TestCase):
             self.qi = get_installer(self.portal, self.layer["request"])
         else:
             self.qi = api.portal.get_tool("portal_quickinstaller")
-        self.qi.uninstallProducts(products=[PROJECTNAME])
+        self.qi.uninstall_product(products=[PROJECTNAME])
 
         from plone.registry.interfaces import IRegistry
         from zope.component import getUtility
@@ -46,7 +56,7 @@ class UninstallTestCase(unittest.TestCase):
         self.registry = getUtility(IRegistry)
 
     def test_uninstalled(self):
-        self.assertFalse(self.qi.isProductInstalled(PROJECTNAME))
+        self.assertFalse(self.qi.is_product_installed(PROJECTNAME))
 
     @unittest.expectedFailure
     def test_portletmanager_uninstalled(self):

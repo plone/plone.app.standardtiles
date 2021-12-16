@@ -64,4 +64,4 @@ class PortletTile(Tile):
             # if this is a deferred load, prepare now the data
             renderer.deferred_update()
 
-        return u"<html><body>%s</body></html>".format(renderer.render())
+        return u"<html><body>{}</body></html>".format(renderer.render())

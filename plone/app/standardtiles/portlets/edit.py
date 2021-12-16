@@ -30,5 +30,5 @@ class PortletTileEditView(DefaultEditView):
         )
         self.request.form["referer"] = tile_url
         self.request.response.redirect(
-            "{0}?referer={0}".format(url, urllib.parse.quote(tile_url))
+            "{0}?referer={1}".format(url, urllib.parse.quote(tile_url))
         )
