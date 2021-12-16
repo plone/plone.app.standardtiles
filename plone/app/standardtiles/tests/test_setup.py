@@ -48,7 +48,7 @@ class UninstallTestCase(unittest.TestCase):
             self.qi = get_installer(self.portal, self.layer["request"])
         else:
             self.qi = api.portal.get_tool("portal_quickinstaller")
-        self.qi.uninstall_product(products=[PROJECTNAME])
+        self.qi.uninstall_product(PROJECTNAME)
 
         from plone.registry.interfaces import IRegistry
         from zope.component import getUtility
