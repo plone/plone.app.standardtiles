@@ -12,22 +12,21 @@ jobs:
       fail-fast: true
       matrix:
         plone-version:
-          - '5.2'
-          - '6.0'
-        python-version:
-          - '3.6'
-          - '3.7'
-          - '3.8'
+          - 'Plone52'
+          - 'Plone60'
+        python-version: [3.7, 3.8]
         include:
-          - plone-version: '5.1'
-            python-version: '2.7'
-          - plone-version: '5.2'
-            python-version: '2.7'
-          - plone-version: '6.0'
-            python-version: '3.9'
-        exclude:
-          - plone-version: '6.0'
-            python-version: '3.6'
+          - plone-version: 'Plone51'
+            python-version: 2.7
+          - plone-version: 'Plone52'
+            python-version: 2.7
+          - plone-version: 'Plone51'
+            python-version: 3.6
+          - plone-version: 'Plone52'
+            python-version: 3.6
+          - plone-version: 'Plone60'
+            python-version: 3.9
+  
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -37,6 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get install libxml2-dev libxslt-dev
+          pip install --upgrade pip
           pip install virtualenv wheel
       - uses: nanasess/setup-chromedriver@master
       - name: Cache multiple paths
