@@ -275,16 +275,15 @@ class ContentListingTile(Tile):
             # Get occurences afterwards with date contraint.
             self.query = [el for el in self.query
                           if el['i'] not in ('start', 'end')]
+            contentFilter["object_provides"] = IEvent.__identifier__
+
             result = builder(
                 query=self.query,
                 sort_on=self.sort_on or "getObjPositionInParent",
                 sort_order=self.sort_order,
                 limit=self.limit,
                 batch=False,
-                custom_query={
-                    'object_provides': IEvent.__identifier__,
-                    **contentFilter
-                },
+                custom_query=contentFilter,
             )
             # Get occurences with date contraint.
             result = expand_events(
