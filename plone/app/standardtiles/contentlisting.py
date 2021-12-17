@@ -81,14 +81,13 @@ class IContentListingTile(Schema):
         default=False,
     )
 
-    expand_events = schema.Bool(
+    event_listing = schema.Bool(
         title=_(
-            u"label_expand_events",
-            default=u"Expand recurring events to it's occurrences",
+            u"label_event_listing",
+            default=u"Show results as event listing",
         ),
         description=_(
-            u"If you have recurring events you have to expand them to get the correct "
-            u"occurrences in the listing",
+            u"If enabled only events and their recurring occurrences are shown",
         ),
         required=False,
         default=False,
@@ -241,82 +240,60 @@ class ContentListingTile(Tile):
     def contents(self):
         """Search results"""
 
-        def _asdatetime(dt):
-            return isinstance(dt, str) \
-                and guess_date_from(dt) \
-                or dt.asdatetime()
-
-        builder = getMultiAdapter(
-            (self.context, self.request), name="querybuilderresults"
-        )
-
         # Include query parameters from request if not set to ignore
         contentFilter = {}
         if not self.ignore_request_params:
             contentFilter = dict(self.request.get("contentFilter", {}))
 
-        # Should we expand recurring events? -> Get a list of brains and use
-        # plone.app.event.base.expand_events to determine occurrences
-        if self.data.get("expand_events"):
-            # Get "start" query for expanding events.
-            parsedquery = queryparser.parseFormquery(self.context, self.query)
-            _start = None
-            _end = None
-            if "start" in parsedquery:
-                if parsedquery["start"]["range"] == "min":
-                    _start = _asdatetime(parsedquery["start"]["query"])
-                elif parsedquery["start"]["range"] == "max":
-                    _end = _asdatetime(parsedquery["start"]["query"])
-                else:
-                    _start = _asdatetime(parsedquery["start"]["query"][0])
-                    _end = _asdatetime(parsedquery["start"]["query"][1])
-
-            # Search without date constraint.
-            # Get occurences afterwards with date contraint.
-            self.query = [el for el in self.query
-                          if el['i'] not in ('start', 'end')]
-            contentFilter["object_provides"] = IEvent.__identifier__
-
-            # Do not limit the result since we removed date constraint
-            result = builder(
-                query=self.query,
-                sort_on=self.sort_on or "getObjPositionInParent",
-                sort_order=self.sort_order,
-                batch=False,
-                custom_query=contentFilter,
+        # This should be an event listing
+        # -> re-use plone.app.event.browser.event_listing logic
+        if self.data.get("event_listing"):
+            # Get results from plone.app.event.browser.event_listing
+            event_listing_view = getMultiAdapter(
+                (self, self.request), name="event_listing"
             )
-            # Get occurences with date contraint.
-            result = expand_events(
-                result,
-                RET_MODE_OBJECTS,
-                _start,
-                _end,
-                self.sort_on or 'start',
-                self.sort_order == 'reverse'
-            )
+            # Enable contentlisting query lookup
+            event_listing_view.is_collection = True
+            # Mandatory information for batching
+            event_listing_view.b_start = self.b_start
+            event_listing_view.b_size = self.item_count
 
-            if self.limit:
-                result = result[:self.limit]
+            results = event_listing_view.events(
+                ret_mode=RET_MODE_OBJECTS,
+            )
         else:
-            result = builder(
-                query=self.query,
-                sort_on=self.sort_on or "getObjPositionInParent",
-                sort_order=self.sort_order,
-                limit=self.limit,
-                batch=False,
-                custom_query=contentFilter,
+            results = self.results(
+                b_start=self.b_start, custom_query=contentFilter,
             )
 
-        batched_results = Batch(result,
-                                self.item_count or 30,
-                                start=self.b_start)
-        # multiple batches on context -> use generated b_start_str
-        batched_results.b_start_str = self.b_start_str
+        results.b_start_str = self.b_start_str
 
         view = self.view_template or "listing_view"
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
-        return getMultiAdapter((batched_results, self.request), name=view)(**options)
+        return getMultiAdapter((results, self.request), name=view)(**options)
+
+    # Implementation of ICollection.results
+    def results(self, batch=True, b_start=0, b_size=None,
+                sort_on=None, limit=None, brains=False,
+                custom_query=None):
+
+        if not b_size:
+            b_size = self.item_count
+        if not sort_on:
+            sort_on = self.sort_on
+        if not limit:
+            limit = self.limit
+
+        builder = getMultiAdapter(
+            (self.context, self.request), name="querybuilderresults"
+        )
+
+        return builder(
+            query=self.query, batch=batch, b_start=b_start, b_size=b_size,
+            sort_on=sort_on, sort_order=self.sort_order,
+            limit=limit, brains=brains, custom_query=custom_query
+        )
 
     @property
     def tile_class(self):
