@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
 from operator import itemgetter
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
-from plone.event.interfaces import IEvent
-from plone.app.event.base import expand_events
-from plone.app.event.base import guess_date_from
 from plone.app.event.base import RET_MODE_OBJECTS
-from plone.app.querystring import queryparser
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
-from plone.batching import Batch
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
