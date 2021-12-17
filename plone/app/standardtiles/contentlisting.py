@@ -277,11 +277,11 @@ class ContentListingTile(Tile):
                           if el['i'] not in ('start', 'end')]
             contentFilter["object_provides"] = IEvent.__identifier__
 
+            # Do not limit the result since we removed date constraint
             result = builder(
                 query=self.query,
                 sort_on=self.sort_on or "getObjPositionInParent",
                 sort_order=self.sort_order,
-                limit=self.limit,
                 batch=False,
                 custom_query=contentFilter,
             )
@@ -294,6 +294,9 @@ class ContentListingTile(Tile):
                 self.sort_on or 'start',
                 self.sort_order == 'reverse'
             )
+
+            if self.limit:
+                result = result[:self.limit]
         else:
             result = builder(
                 query=self.query,
