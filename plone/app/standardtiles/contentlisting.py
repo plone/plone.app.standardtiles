@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from operator import itemgetter
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
-from plone.app.event.base import RET_MODE_OBJECTS
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
@@ -253,9 +252,7 @@ class ContentListingTile(Tile):
             event_listing_view.b_start = self.b_start
             event_listing_view.b_size = self.item_count
 
-            results = event_listing_view.events(
-                ret_mode=RET_MODE_OBJECTS,
-            )
+            results = event_listing_view.events()
         else:
             results = self.results(
                 b_start=self.b_start, custom_query=contentFilter,
