@@ -25,7 +25,10 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         post_handler="plone.app.standardtiles.setuphandlers.run_after"
         />
-
+    <utility
+        factory=".setuphandlers.HiddenProfiles"
+        name="plone.app.standardtiles-hiddenprofiles"
+        />
     <!-- Tiles are divided in four zcml files -->
     <include file="content.zcml" />
     <include file="head.zcml" />

@@ -4,7 +4,8 @@ Changelog
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Hide uninstall profile from install view.
+  [jensens]
 
 
 2.4.0 (2021-03-24)
