@@ -205,7 +205,7 @@ class PersonalBarTile(ProxyViewletTile):
     """A personal bar tile."""
 
     manager = "plone.portalheader"
-    viewlet = "plone.personal_bar"
+    viewlet = "plone.membertools"
 
 
 class SearchBoxTile(ProxyViewletTile):
