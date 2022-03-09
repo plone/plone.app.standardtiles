@@ -251,19 +251,15 @@ class ExistingContentTile(Tile):
             return self
         # proxy attributes for this view to the selected view of the content
         # item so views work
-        if (
-            name
-            in (
-                "data",
-                "content_context",
-                "content_view",
-                "item_macros",
-                "item_panels",
-                "getPhysicalPath",
-                "index_html",
-            )
-            or name.startswith(("_", "im_", "func_"))
-        ):
+        if name in (
+            "data",
+            "content_context",
+            "content_view",
+            "item_macros",
+            "item_panels",
+            "getPhysicalPath",
+            "index_html",
+        ) or name.startswith(("_", "im_", "func_")):
             return Tile.__getattr__(self, name)
         return getattr(self.content_view, name)
 

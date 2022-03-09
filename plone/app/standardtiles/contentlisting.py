@@ -41,9 +41,7 @@ class IContentListingTile(Schema):
     )
 
     use_context_query = schema.Bool(
-        title=_(
-            "label_use_context_query", default="Use query parameters from content"
-        ),
+        title=_("label_use_context_query", default="Use query parameters from content"),
         description=_(
             "If your content is a collection you can use the already existing listing configuration."
         ),

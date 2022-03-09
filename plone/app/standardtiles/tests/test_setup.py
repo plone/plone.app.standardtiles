@@ -1,5 +1,7 @@
 from plone import api
-from plone.app.standardtiles.testing import PASTANDARDTILES_INTEGRATION_TESTING  # noqa: E501
+from plone.app.standardtiles.testing import (  # noqa: E501
+    PASTANDARDTILES_INTEGRATION_TESTING,
+)
 
 import unittest
 

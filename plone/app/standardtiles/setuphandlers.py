@@ -1,4 +1,6 @@
+from plone.registry.interfaces import IRegistry
 from Products.CMFPlone.interfaces import INonInstallable
+from zope.component import getUtility
 from zope.interface import implementer
 
 
@@ -6,14 +8,10 @@ from zope.interface import implementer
 class HiddenProfiles:
     def getNonInstallableProfiles(self):
         """Hide uninstall profile from site-creation."""
-        return [
-            "plone.app.standardtiles:uninstall"
-        ]
+        return ["plone.app.standardtiles:uninstall"]
+
 
 def clean_up_registry():
-    from plone.registry.interfaces import IRegistry
-    from zope.component import getUtility
-
     registry = getUtility(IRegistry)
     records = [
         "plone.app.portlets.PortletManagerBlacklist",
