@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.1 (unreleased)
+3.0.0 (unreleased)
 ------------------
 
 - Fix showing private content while editing a tile.
@@ -10,6 +10,9 @@ Changelog
 
 - Fix membertools tile
   [agitator]
+
+- Breaking: Drop Support for Python 2.7 and Plone 5.
+  [jensens]
 
 - Hide uninstall profile from install view.
   [jensens]
