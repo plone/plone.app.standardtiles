@@ -206,31 +206,6 @@ class ContentTileTests(TestCase):
             self.unprivileged_browser.contents,
         )
 
-    def test_image_tile(self):
-        annotations = IAnnotations(self.page)
-        annotations["plone.tiles.data.test"] = PersistentDict(
-            {"image": NamedImage(image(), "image/png", filename="color.png")}
-        )
-
-        transaction.commit()
-
-        self.browser.open(
-            self.pageURL
-            + "/@@plone.app.standardtiles.image/test?_authenticator={}".format(
-                createToken()
-            )
-        )
-
-        # Confirm pass CSRF protection on Plone 5
-        try:
-            self.browser.getControl(name="form.button.confirm").click()
-        except LookupError:
-            pass
-
-        root = fromstring(self.browser.contents)
-        nodes = root.xpath("//body//img")
-        self.assertEqual(len(nodes), 1)
-
     def test_html_tile_unicode(self):
         tile = HTMLTile(self.portal, self.layer["request"])
         tile.__name__ = "test.html.tile"

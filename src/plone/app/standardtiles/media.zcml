@@ -29,18 +29,6 @@
         />
 
     <plone:tile
-        name="plone.app.standardtiles.image"
-        title="Image"
-        description='A tile which displays an uploaded image'
-        add_permission="cmf.ModifyPortalContent"
-        class=".image.ImageTile"
-        for="*"
-        permission="zope.Public"
-        schema=".image.IImageTile"
-        template="templates/image.pt"
-        />
-
-    <plone:tile
         zcml:condition="installed plone.formwidget.multifile"
         name="plone.app.standardtiles.attachment"
         title="Attachment"

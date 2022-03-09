@@ -277,15 +277,12 @@ class TestLayoutTiles(TestCase):
         # Then we activate next previous and we should see a next-link when
         # rendering the tile on the first page::
 
-        try:
-            folder.setNextPreviousEnabled(True)  # AT
-        except AttributeError:
-            folder.nextPreviousEnabled = True  # DX
+        folder.nextPreviousEnabled = True
         transaction.commit()
 
         self.assertTrue(
             page1.restrictedTraverse("@@plone_nextprevious_view").enabled()
-        )  # noqa
+        )
 
         self.unprivileged_browser.open(
             self.portalURL

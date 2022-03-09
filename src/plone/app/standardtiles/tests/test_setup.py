@@ -19,7 +19,7 @@ class InstallTestCase(unittest.TestCase):
 
     def test_installed(self):
         qi = get_installer(self.portal, self.layer["request"])
-        self.assertTrue(qi.isProductInstalled(PROJECTNAME))
+        self.assertTrue(qi.is_product_installed(PROJECTNAME))
 
 
 class UninstallTestCase(unittest.TestCase):
@@ -29,11 +29,11 @@ class UninstallTestCase(unittest.TestCase):
     def setUp(self):
         self.portal = self.layer["portal"]
         self.qi = get_installer(self.portal, self.layer["request"])
-        self.qi.uninstallProducts(products=[PROJECTNAME])
+        self.qi.uninstall_product(PROJECTNAME)
         self.registry = getUtility(IRegistry)
 
     def test_uninstalled(self):
-        self.assertFalse(self.qi.isProductInstalled(PROJECTNAME))
+        self.assertFalse(self.qi.is_product_installed(PROJECTNAME))
 
     @unittest.expectedFailure
     def test_portletmanager_uninstalled(self):

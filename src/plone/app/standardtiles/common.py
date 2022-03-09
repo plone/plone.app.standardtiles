@@ -312,15 +312,14 @@ class NextPreviousTile(BaseViewletTile):
                 )
             finally:
                 self.request.set("ACTUAL_URL", url)
-        else:
-            return "<html></html>"
+        return "<html></html>"
 
 
 class KeywordsTile(ProxyViewletTile):
     """A tile that displays the context's keywords, if any."""
 
-    manager = "plone.belowcontent"
-    viewlet = "plone.belowcontenttitle.keywords"
+    manager = "plone.belowcontentbody"
+    viewlet = "plone.keywords"
 
 
 class TableOfContentsTile(ProxyViewletTile):
@@ -353,15 +352,15 @@ class LeadImageTile(Tile):
 class DocumentActionsTile(ProxyViewletTile):
     """Shows the document actions."""
 
-    manager = "plone.belowcontentbody"
-    viewlet = "plone.abovecontenttitle.documentactions"
+    manager = "plone.belowcontent"
+    viewlet = "plone.documentactions"
 
 
 class RelatedItemsTile(ProxyViewletTile):
     """A related items tile."""
 
     manager = "plone.belowcontentbody"
-    viewlet = "plone.belowcontentbody.relateditems"
+    viewlet = "plone.relateditems"
 
 
 class HistoryTile(Tile):
