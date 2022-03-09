@@ -130,8 +130,7 @@ class DefaultRoot:
         # Return UUID for the closest container or None for the site root
         if not IFolderish.providedBy(self.context):
             return IUUID(aq_parent(self.context), None)
-        else:
-            return IUUID(self.context, None)
+        return IUUID(self.context, None)
 
 
 @implementer(INavigationTile)
@@ -306,8 +305,7 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
 
         if not folderish or is_default_page:
             return "/".join(parent.getPhysicalPath())
-        else:
-            return "/".join(context.getPhysicalPath())
+        return "/".join(context.getPhysicalPath())
 
     rootPath = getNavigationRoot(context, relativeRoot=root)
 
@@ -315,12 +313,12 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
     if topLevel > 0:
         contextPath = "/".join(context.getPhysicalPath())
         if not contextPath.startswith(rootPath):
-            return None
+            return
         contextSubPathElements = contextPath[len(rootPath) + 1 :]
         if not contextSubPathElements:
-            return None
+            return
         contextSubPathElements = contextSubPathElements.split("/")
         if len(contextSubPathElements) < topLevel:
-            return None
+            return
         rootPath = "/".join([rootPath] + contextSubPathElements[:topLevel])
     return rootPath

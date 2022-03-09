@@ -11,6 +11,12 @@ Changelog
 - Fix membertools tile
   [agitator]
 
+- Breaking: Drop code marked as deprecated for  3.0.
+  [jensens]
+
+- Manual code cleanup.
+  [jensens]
+
 - Breaking: Drop Support for Python 2.7 and Plone 5.
   [jensens]
 

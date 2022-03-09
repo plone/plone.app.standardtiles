@@ -28,15 +28,6 @@
         template="templates/rawembed.pt"
         />
 
-    <!-- XXX Everything from here on down is deprecated.
-         We no longer provide support for persistent tiles that store
-         images and attachments.
-
-         For "attachments" and images, please use the rich text tiles and
-         use the TinyMCE editor's insert link/image upload tab to add
-         files and images while you are composing pages.
-    -->
-
     <plone:tile
         name="plone.app.standardtiles.image"
         title="Image"

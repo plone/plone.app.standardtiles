@@ -27,8 +27,6 @@ from zope.interface import provider
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
 
-import six
-
 
 def uuidToObject(uuid):
     """Given a UUID, attempt to return a content object. Will return
@@ -38,7 +36,7 @@ def uuidToObject(uuid):
 
     brain = uuidToCatalogBrainUnrestricted(uuid)
     if brain is None:
-        return None
+        return
 
     return brain.getObject()
 
@@ -50,15 +48,15 @@ def uuidToCatalogBrainUnrestricted(uuid):
 
     site = getSite()
     if site is None:
-        return None
+        return
 
     catalog = api.portal.get_tool("portal_catalog")
     if catalog is None:
-        return None
+        return
 
     result = catalog.unrestrictedSearchResults(UID=uuid)
     if len(result) != 1:
-        return None
+        return
 
     return result[0]
 
@@ -147,14 +145,8 @@ class ExistingContentTile(Tile):
                 item = uuidToObject(uuid)
             except Unauthorized:
                 item = None
-                if not self.request.get("PUBLISHED") and six.PY2:
-                    # XXX: This reraise behaves strange in Python 3
-                    # while in Py2 the traversal continues Py3 gets stuck
-                    # in AccessControl.unauthorized.Unauthorized exception.
-                    raise  # Should raise while still traversing
             if item is not None:
                 return item
-        return None
 
     @property
     @memoize
@@ -165,7 +157,6 @@ class ExistingContentTile(Tile):
             return api.content.get_view(
                 name=view_name, context=context, request=self.request
             )
-        return None
 
     @property
     def item_macros(self):
@@ -177,7 +168,6 @@ class ExistingContentTile(Tile):
         elif view:
             # FSPageTemplate
             return view.macros
-        return None
 
     @property
     def item_panels(self):

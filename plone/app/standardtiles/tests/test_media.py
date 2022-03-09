@@ -12,16 +12,16 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.namedfile import NamedFile
 from plone.namedfile import NamedImage
 from plone.protect.authenticator import createToken
-from plone.testing.z2 import Browser
-from six.moves.urllib.parse import quote
+from plone.testing.zope import Browser
 from unittest import TestCase
+from urllib.parse import quote
 from zope.annotation import IAnnotations
 
+import io
 import os
 import pkg_resources
 import plone.app.standardtiles.tests as test_dir
 import random
-import six
 import transaction
 import unittest
 
@@ -48,7 +48,7 @@ def image():
     )
     del draw
 
-    output = six.BytesIO()
+    output = io.BytesIO()
     img.save(output, "PNG")
     output.seek(0)
 

@@ -10,8 +10,6 @@ from zope.interface import alsoProvides
 from zope.viewlet.interfaces import IViewlet
 from zope.viewlet.interfaces import IViewletManager
 
-import six
-
 
 class TileCommentForm(CommentForm):
     prefix = "form"
@@ -65,5 +63,4 @@ class DiscussionTile(Tile):
                     "".join([self.context.absolute_url(), "#", location.split("#")[-1]])
                 )
             return protect("<html><body>%s</body></html>" % viewlet.render())
-        else:
-            return "<html><body></body></html>"
+        return "<html><body></body></html>"

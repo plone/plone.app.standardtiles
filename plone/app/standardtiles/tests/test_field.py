@@ -3,7 +3,7 @@ from plone import api
 from plone.app.standardtiles.testing import EDITOR_USER_NAME  # noqa
 from plone.app.standardtiles.testing import EDITOR_USER_PASSWORD
 from plone.app.standardtiles.testing import PASTANDARDTILES_TESTTYPE_FUNCTIONAL_TESTING
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from unittest import TestCase
 
 import transaction

@@ -45,8 +45,7 @@ class DexterityFieldTile(WidgetsView, Tile):
     def additionalSchemata(self):
         if self._additionalSchemata is not None:
             return iter(self._additionalSchemata)
-        else:
-            return getAdditionalSchemata(context=self.context)
+        return getAdditionalSchemata(context=self.context)
 
     def __init__(self, context, request):
         # xxx usually a super is the way to go here? why not?
@@ -93,8 +92,7 @@ class DexterityFieldTile(WidgetsView, Tile):
     def _wrap_widget(self, render):
         if render.rstrip().endswith("</html>"):
             return render
-        else:
-            return "".join(["<html><body>", render, "</body></html>"])
+        return "".join(["<html><body>", render, "</body></html>"])
 
     def updateWidgets(self, prefix=None):
         if self.field is not None:

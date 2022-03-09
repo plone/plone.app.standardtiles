@@ -67,5 +67,4 @@ class ViewletManagerTile(Tile):
 
         if section == "head":
             return "<html><head>%s</head></html>" % obj_to_render.render()
-        else:
-            return "<html><body>%s</body></html>" % obj_to_render.render()
+        return "<html><body>%s</body></html>" % obj_to_render.render()

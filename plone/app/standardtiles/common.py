@@ -34,13 +34,13 @@ class BaseViewletTile(Tile):
         # check visibility
         storage = queryUtility(IViewletSettingsStorage)
         if storage is None:
-            return None
+            return
 
         skinname = self.context.getCurrentSkinName()
 
         hidden = frozenset(storage.getHidden(manager_name, skinname))
         if viewlet_name in hidden:
-            return None
+            return
 
         # get viewlet instance
         manager = queryMultiAdapter(
@@ -54,7 +54,7 @@ class BaseViewletTile(Tile):
                 "Viewlet tile {} in manager {}. "
                 "Was not found.".format(viewlet_name, manager_name)
             )
-            return None
+            return
 
         # check permissions - same as in plone.app.viewletmanager
         if IAcquirer.providedBy(viewlet):
@@ -64,7 +64,7 @@ class BaseViewletTile(Tile):
                 "Blocked attempt to render tile {} in manager {}. "
                 "Permission denied.".format(viewlet_name, manager_name)
             )
-            return None
+            return
 
         return viewlet
 
@@ -181,7 +181,7 @@ class LoginTile(Tile):
         join = tool.listActionInfos(action_chain="user/join", object=context)
         if len(join) > 0:
             return join[0]["url"]
-        return None
+        return
 
     def can_register(self):
         if getToolByName(self.context, "portal_registration", None) is None:

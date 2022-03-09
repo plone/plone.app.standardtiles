@@ -11,14 +11,14 @@ from plone.app.testing import TEST_USER_PASSWORD
 from plone.app.textfield import RichTextValue
 from plone.namedfile import NamedImage
 from plone.registry.interfaces import IRegistry
-from plone.testing.z2 import Browser
+from plone.testing.zope import Browser
 from plone.uuid.interfaces import IUUID
 from unittest import TestCase
 from zope.component import createObject
 from zope.component import queryUtility
 
+import io
 import random
-import six
 import transaction
 
 
@@ -34,7 +34,7 @@ def image():
         ),
     )
     del draw
-    output = six.BytesIO()
+    output = io.BytesIO()
     img.save(output, "PNG")
     output.seek(0)
     return output

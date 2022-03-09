@@ -1,8 +1,9 @@
 from plone.app.tiles.browser.edit import DefaultEditView
 from plone.portlets.utils import unhashPortletInfo
 from plone.uuid.interfaces import IUUIDGenerator
-from six.moves import urllib
 from zope.component import getUtility
+
+import urllib
 
 
 class PortletTileEditView(DefaultEditView):

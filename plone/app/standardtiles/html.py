@@ -42,4 +42,4 @@ class HTMLTile(Tile):
                 content = data.getData()
         else:
             content = "<p></p>"
-        return "<html><body>%s</body></html>" % safe_unicode(content)
+        return f"<html><body>{safe_unicode(content)}</body></html>"

@@ -54,8 +54,7 @@ class AttachmentTile(PersistentTile):
         """Returns the file-size of the `file_` in KB."""
         if INamed.providedBy(file_):
             return file_.getSize() / 1024
-        else:
-            return 0
+        return 0
 
     def get_icon_for(self, file_):
         """Returns the best icon for the `file_`"""
@@ -82,8 +81,7 @@ class AttachmentTile(PersistentTile):
             mimetypes = ()
         if len(mimetypes):
             return mimetypes[0].name()
-        else:
-            return name
+        return name
 
 
 deprecated(
