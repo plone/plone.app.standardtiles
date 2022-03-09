@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.autoform.directives import widget
 from plone.formwidget.multifile.widget import MultiFileFieldWidget
@@ -21,8 +20,8 @@ class IAttachmentTile(Schema):
 
     widget(files=MultiFileFieldWidget)
     files = schema.List(
-        title=_(u"Upload files"),
-        value_type=NamedBlobFile(title=_(u"Please upload a file"), required=True),
+        title=_("Upload files"),
+        value_type=NamedBlobFile(title=_("Please upload a file"), required=True),
     )
 
 
@@ -94,7 +93,7 @@ deprecated(
 
 
 @implementer(IPublishTraverse)
-class AttachmentTileDownload(object):
+class AttachmentTileDownload:
     """Implementation of the @@download view on the attachment tile.
 
     This is a view onto the AttachmentTile tile view.

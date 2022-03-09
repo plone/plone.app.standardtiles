@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.standardtiles.common import ProxyViewletTile
 from plone.tiles.tile import Tile
 from zope.component import getMultiAdapter
@@ -9,7 +8,7 @@ class TitleTile(ProxyViewletTile):
 
     manager = "plone.htmlhead"
     viewlet = "plone.htmlhead.title"
-    section = u"head"
+    section = "head"
 
 
 class StylesheetsTile(ProxyViewletTile):
@@ -17,7 +16,7 @@ class StylesheetsTile(ProxyViewletTile):
 
     manager = "plone.htmlhead.links"
     viewlet = "plone.resourceregistries.styles"
-    section = u"head"
+    section = "head"
 
 
 class JavascriptsTile(ProxyViewletTile):
@@ -25,7 +24,7 @@ class JavascriptsTile(ProxyViewletTile):
 
     manager = "plone.scripts"
     viewlet = "plone.resourceregistries.scripts"
-    section = u"head"
+    section = "head"
 
 
 class FaviconLinkTile(ProxyViewletTile):
@@ -33,7 +32,7 @@ class FaviconLinkTile(ProxyViewletTile):
 
     manager = "plone.htmlhead.links"
     viewlet = "plone.links.favicon"
-    section = u"head"
+    section = "head"
 
 
 class AuthorLinkTile(ProxyViewletTile):
@@ -41,7 +40,7 @@ class AuthorLinkTile(ProxyViewletTile):
 
     manager = "plone.htmlhead.links"
     viewlet = "plone.links.author"
-    section = u"head"
+    section = "head"
 
 
 class NavigationLinkTile(Tile):
@@ -50,7 +49,7 @@ class NavigationLinkTile(Tile):
     @property
     def navigation_root_url(self):
         portal_state = getMultiAdapter(
-            (self.context, self.request), name=u"plone_portal_state"
+            (self.context, self.request), name="plone_portal_state"
         )
         return portal_state.navigation_root_url()
 
@@ -60,7 +59,7 @@ class SearchLinkTile(ProxyViewletTile):
 
     manager = "plone.htmlhead.links"
     viewlet = "plone.links.search"
-    section = u"head"
+    section = "head"
 
 
 class RSSLinkTile(ProxyViewletTile):
@@ -68,7 +67,7 @@ class RSSLinkTile(ProxyViewletTile):
 
     manager = "plone.htmlhead.links"
     viewlet = "plone.links.RSS"
-    section = u"head"
+    section = "head"
 
 
 class CanonicalUrlTile(ProxyViewletTile):
@@ -76,16 +75,16 @@ class CanonicalUrlTile(ProxyViewletTile):
 
     manager = "plone.htmlhead.links"
     viewlet = "plone.links.canonical_url"
-    section = u"head"
+    section = "head"
 
 
 class DublinCoreTile(ProxyViewletTile):
     manager = "plone.htmlhead"
     viewlet = "plone.htmlhead.dublincore"
-    section = u"head"
+    section = "head"
 
 
 class SocialTile(ProxyViewletTile):
     manager = "plone.htmlhead"
     viewlet = "plone.htmlhead.socialtags"
-    section = u"head"
+    section = "head"

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.standardtiles import _PMF as _
 from plone.memoize import ram
 from plone.supermodel.model import Schema
@@ -14,7 +13,7 @@ NOEMBED_ENDPOINT = "https://noembed.com/embed?url="
 class IEmbedTile(Schema):
     """Embed tile."""
 
-    media_url = schema.TextLine(title=_(u"Media URL"), required=True)
+    media_url = schema.TextLine(title=_("Media URL"), required=True)
 
 
 class EmbedTile(Tile):
@@ -27,4 +26,4 @@ class EmbedTile(Tile):
         rr = requests.get(url)
         if rr.ok:
             data = rr.json()
-        return u"<html><body>%s</body></html>" % data["html"]
+        return "<html><body>%s</body></html>" % data["html"]

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from lxml import etree
 from lxml import html
 from plone.app.discussion.browser.comments import CommentForm
@@ -20,7 +19,7 @@ class TileCommentForm(CommentForm):
 
 
 def protect(raw):
-    if isinstance(raw, six.text_type):
+    if isinstance(raw, str):
         raw = raw.encode("utf-8")
     parser = getHTMLSerializer([raw], pretty_print=False, encoding="utf-8")
     parser.serializer = html.tostring
@@ -65,6 +64,6 @@ class DiscussionTile(Tile):
                 self.request.response.redirect(
                     "".join([self.context.absolute_url(), "#", location.split("#")[-1]])
                 )
-            return protect(u"<html><body>%s</body></html>" % viewlet.render())
+            return protect("<html><body>%s</body></html>" % viewlet.render())
         else:
-            return u"<html><body></body></html>"
+            return "<html><body></body></html>"

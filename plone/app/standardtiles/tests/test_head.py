@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from lxml import html
 from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING
 from plone.app.testing import setRoles

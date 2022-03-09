@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_parent
 from operator import itemgetter
 from plone import api
@@ -67,7 +66,7 @@ def uuidToCatalogBrainUnrestricted(uuid):
 class IExistingContentTile(model.Schema):
 
     content_uid = schema.Choice(
-        title=_(u"Select an existing content"),
+        title=_("Select an existing content"),
         required=True,
         vocabulary="plone.app.vocabularies.Catalog",
     )
@@ -78,50 +77,50 @@ class IExistingContentTile(model.Schema):
         pattern_options={"recentlyUsed": True},
     )
 
-    show_title = schema.Bool(title=_(u"Show content title"), default=True)
+    show_title = schema.Bool(title=_("Show content title"), default=True)
 
-    show_description = schema.Bool(title=_(u"Show content description"), default=True)
+    show_description = schema.Bool(title=_("Show content description"), default=True)
 
-    show_text = schema.Bool(title=_(u"Show content text"), default=True)
+    show_text = schema.Bool(title=_("Show content text"), default=True)
 
     show_image = schema.Bool(
-        title=_(u"Show content image (if available)"),
+        title=_("Show content image (if available)"),
         default=False,
         required=False,
     )
 
     image_scale = schema.Choice(
-        title=_(u"Image scale"),
+        title=_("Image scale"),
         vocabulary="plone.app.vocabularies.ImagesScales",
         required=False,
     )
 
     show_comments = schema.Bool(
-        title=_(u"Show content comments count (if enabled)"),
+        title=_("Show content comments count (if enabled)"),
         default=False,
         required=False,
     )
 
     tile_class = schema.TextLine(
-        title=_(u"Tile additional styles"),
+        title=_("Tile additional styles"),
         description=_(
-            u"Insert a list of additional CSS classes that will"
-            + u" be added to the tile"
+            "Insert a list of additional CSS classes that will"
+            + " be added to the tile"
         ),
-        default=u"",
+        default="",
         required=False,
     )
 
     view_template = schema.Choice(
-        title=_(u"Display mode"),
-        source=_(u"Available Content Views"),
+        title=_("Display mode"),
+        source=_("Available Content Views"),
         required=True,
     )
 
 
 class SameContentValidator(validator.SimpleFieldValidator):
     def validate(self, content_uid):
-        super(SameContentValidator, self).validate(content_uid)
+        super().validate(content_uid)
         context = aq_parent(self.context)  # default context is tile data
         if content_uid and IUUID(context, None) == content_uid:
             raise Invalid(
@@ -184,13 +183,13 @@ class ExistingContentTile(Tile):
     def item_panels(self):
         content_view = self.content_view
         html = content_view()
-        if isinstance(html, six.text_type):
+        if isinstance(html, str):
             html = html.encode("utf-8")
         serializer = getHTMLSerializer([html], pretty_print=False, encoding="utf-8")
-        panels = dict(
-            (node.attrib["data-panel"], node)
+        panels = {
+            node.attrib["data-panel"]: node
             for node in utils.panelXPath(serializer.tree)
-        )
+        }
         if panels:
             request = self.request.clone()
             request.URL = self.content_context.absolute_url() + "/"

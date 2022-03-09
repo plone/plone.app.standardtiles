@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from BTrees.OOBTree import OOBTree
 from plone.app.portlets.storage import PortletAssignmentMapping
 from plone.app.standardtiles.interfaces import IPortletManager

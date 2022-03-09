@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.interfaces import IDeferredPortletRenderer
 from plone.app.portlets.utils import assignment_from_key
 from plone.app.standardtiles import PloneMessageFactory as _
@@ -17,11 +16,11 @@ from zope.interface import Interface
 class IPortletTile(Interface):
 
     form.omitted("portlet_hash")
-    portlet_hash = schema.TextLine(title=_(u"Portlet hash"), required=False)
+    portlet_hash = schema.TextLine(title=_("Portlet hash"), required=False)
 
     portlet_type = schema.Choice(
-        title=_(u"Portlet type"),
-        vocabulary=u"standardtiles.available_portlets",
+        title=_("Portlet type"),
+        vocabulary="standardtiles.available_portlets",
         required=True,
     )
 
@@ -64,4 +63,4 @@ class PortletTile(Tile):
             # if this is a deferred load, prepare now the data
             renderer.deferred_update()
 
-        return u"<html><body>%s</body></html>".format(renderer.render())
+        return f"<html><body>%s</body></html>"

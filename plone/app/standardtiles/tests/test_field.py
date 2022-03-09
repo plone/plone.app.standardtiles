@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from lxml import html
 from plone import api
 from plone.app.standardtiles.testing import EDITOR_USER_NAME  # noqa
@@ -65,7 +64,7 @@ class TestFieldTile(TestCase):
 
         """
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "test_text",
             )
@@ -79,12 +78,12 @@ class TestFieldTile(TestCase):
         self.assertIsNone(nodes[0].text)
 
         # Let's then edit the field:
-        self.content.test_text = u"Hello world"
+        self.content.test_text = "Hello world"
         transaction.commit()
 
         # And rerender the tile:
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "test_text",
             )
@@ -95,11 +94,11 @@ class TestFieldTile(TestCase):
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-test_text"]')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual(u"Hello world", nodes[0].text)
+        self.assertEqual("Hello world", nodes[0].text)
 
     def test_int_field(self):
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "test_int",
             )
@@ -118,7 +117,7 @@ class TestFieldTile(TestCase):
 
         # And rerender the tile:
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "test_int",
             )
@@ -133,7 +132,7 @@ class TestFieldTile(TestCase):
 
     def test_bool_field(self):
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "test_bool",
             )
@@ -151,7 +150,7 @@ class TestFieldTile(TestCase):
 
         # And rerender the tile:
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "test_bool",
             )
@@ -176,12 +175,12 @@ class TestFieldTile(TestCase):
 
         """
         # Let's begin by setting the value:
-        self.content.funky = u"Oh yeah, baby!"
+        self.content.funky = "Oh yeah, baby!"
         transaction.commit()
 
         # And then looking up the relative field tile:
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "funky",
             )
@@ -208,7 +207,7 @@ class TestFieldTile(TestCase):
 
         """
         # Let's first insert some value into it:
-        self.content.topsecret = u"Santa Claus does not exist!"
+        self.content.topsecret = "Santa Claus does not exist!"
         transaction.commit()
 
         # And then let's try to invoke the tile via our browser. Let's keep
@@ -217,7 +216,7 @@ class TestFieldTile(TestCase):
         # really should not be spoiled about Santa Claus' identity).
 
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "topsecret",
             )
@@ -239,7 +238,7 @@ class TestFieldTile(TestCase):
         # knowledge at all): ::
 
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "topsecret",
             )
@@ -266,7 +265,7 @@ class TestFieldTile(TestCase):
 
         """
         self.browser.open(
-            "{0}/@@plone.app.standardtiles.field?field={1}".format(
+            "{}/@@plone.app.standardtiles.field?field={}".format(
                 self.content.absolute_url(),
                 "IDublinCore-contributors",
             )

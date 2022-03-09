@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from lxml import html
 from persistent.dict import PersistentDict
 from PIL import Image
@@ -80,8 +79,8 @@ class ContentTileTests(TestCase):
         page_id = self.portal.invokeFactory(
             "Document",
             "a-simple-page",
-            title=u"A simple page",
-            description=u"A description",
+            title="A simple page",
+            description="A description",
         )
         self.page = self.portal[page_id]
         self.pageURL = self.portal[page_id].absolute_url()
@@ -108,8 +107,8 @@ class ContentTileTests(TestCase):
 
     def test_rawembed_tile(self):
         """The rawembed tile display a html snippet with title::"""
-        tile_title = u"Hello"
-        html_snippet = u"<strong>Hello</strong>"
+        tile_title = "Hello"
+        html_snippet = "<strong>Hello</strong>"
         self.unprivileged_browser.open(
             self.portalURL + "/@@plone.app.standardtiles.rawembed/unique",
             data="html_snippet="
@@ -165,8 +164,8 @@ class ContentTileTests(TestCase):
         annotations["plone.tiles.data.test"] = PersistentDict(
             {
                 "files": [
-                    NamedFile(u"Hello World!", "text/plain", u"hello_world.txt"),
-                    NamedFile(u"Foobar!", "text/plain", u"foobar.txt"),
+                    NamedFile("Hello World!", "text/plain", "hello_world.txt"),
+                    NamedFile("Foobar!", "text/plain", "foobar.txt"),
                 ]
             }
         )
@@ -175,22 +174,22 @@ class ContentTileTests(TestCase):
 
         self.browser.open(self.pageURL + "/@@plone.app.standardtiles.attachment/test")
 
-        self.assertIn(u"hello_world.txt", self.browser.contents)
-        self.assertIn(u"foobar.txt", self.browser.contents)
+        self.assertIn("hello_world.txt", self.browser.contents)
+        self.assertIn("foobar.txt", self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath("//body//a")
         self.assertEqual(len(nodes), 2)
 
         self.browser.getLink(index=1).click()
-        self.assertEqual(self.browser.contents, u"Foobar!")
+        self.assertEqual(self.browser.contents, "Foobar!")
 
     def test_rss_tile(self):
         """This tile shows the first five items in a RSS feed."""
         # Use the RSS stored in the test directory, this way we don't have an
         # external dependency.
         dirname = os.path.dirname(test_dir.__file__)
-        path = "file://{0}".format(os.path.join(dirname, "RSS.xml"))
+        path = "file://{}".format(os.path.join(dirname, "RSS.xml"))
 
         # Create the RSS tile, with the local RSS URI:
         self.unprivileged_browser.open(
@@ -210,7 +209,7 @@ class ContentTileTests(TestCase):
     def test_image_tile(self):
         annotations = IAnnotations(self.page)
         annotations["plone.tiles.data.test"] = PersistentDict(
-            {"image": NamedImage(image(), "image/png", filename=u"color.png")}
+            {"image": NamedImage(image(), "image/png", filename="color.png")}
         )
 
         transaction.commit()
@@ -236,10 +235,10 @@ class ContentTileTests(TestCase):
         tile = HTMLTile(self.portal, self.layer["request"])
         tile.__name__ = "test.html.tile"
         tile.data["content"] = "<p>Hello Wörld!</p>"
-        self.assertEqual(tile(), u"<html><body><p>Hello Wörld!</p></body></html>")
+        self.assertEqual(tile(), "<html><body><p>Hello Wörld!</p></body></html>")
 
     def test_html_tile_utf8(self):
         tile = HTMLTile(self.portal, self.layer["request"])
         tile.__name__ = "test.html.tile"
-        tile.data["content"] = u"<p>Hello Wörld!</p>".encode("utf-8")
-        self.assertEqual(tile(), u"<html><body><p>Hello Wörld!</p></body></html>")
+        tile.data["content"] = "<p>Hello Wörld!</p>".encode()
+        self.assertEqual(tile(), "<html><body><p>Hello Wörld!</p></body></html>")

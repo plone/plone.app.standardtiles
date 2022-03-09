@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.portlets.interfaces import IColumn
 from plone.portlets.interfaces import IPortletManager
 from zope.interface import Interface

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl.ZopeGuards import guarded_hasattr
 from Acquisition import aq_base
 from Acquisition.interfaces import IAcquirer
@@ -29,7 +28,7 @@ class BaseViewletTile(Tile):
         # Fix issue where context is a template based view class
         while IBrowserView.providedBy(context) and context is not None:
             context = Acquisition.aq_parent(Acquisition.aq_inner(context))
-        super(BaseViewletTile, self).__init__(context, *args, **kwargs)
+        super().__init__(context, *args, **kwargs)
 
     def get_viewlet(self, manager_name, viewlet_name):
         # check visibility
@@ -52,7 +51,7 @@ class BaseViewletTile(Tile):
         )
         if viewlet is None:
             logger.debug(
-                "Viewlet tile {0} in manager {1}. "
+                "Viewlet tile {} in manager {}. "
                 "Was not found.".format(viewlet_name, manager_name)
             )
             return None
@@ -62,7 +61,7 @@ class BaseViewletTile(Tile):
             viewlet = viewlet.__of__(viewlet.context)
         if not guarded_hasattr(viewlet, "render"):
             logger.warn(
-                "Blocked attempt to render tile {0} in manager {1}. "
+                "Blocked attempt to render tile {} in manager {}. "
                 "Permission denied.".format(viewlet_name, manager_name)
             )
             return None
@@ -72,7 +71,7 @@ class BaseViewletTile(Tile):
 
 class ProxyViewletTile(BaseViewletTile):
 
-    section = u"body"
+    section = "body"
     manager = None
     viewlet = None
 
@@ -80,10 +79,10 @@ class ProxyViewletTile(BaseViewletTile):
         alsoProvides(self, IViewView)
         viewlet = self.get_viewlet(self.manager, self.viewlet)
         if viewlet is None:
-            return u"<html></html>"
+            return "<html></html>"
 
         viewlet.update()
-        return u"<html><{section}>{rendered}</{section}></html>".format(
+        return "<html><{section}>{rendered}</{section}></html>".format(
             rendered=viewlet.render(), section=self.section
         )
 
@@ -123,18 +122,18 @@ class LoginTile(Tile):
         # Fix issue where context is a template based view class
         while IBrowserView.providedBy(context) and context is not None:
             context = Acquisition.aq_parent(Acquisition.aq_inner(context))
-        super(LoginTile, self).__init__(context, request)
+        super().__init__(context, request)
 
     def __call__(self):
         request = self.request
         self.membership = getToolByName(self.context, "portal_membership")
         self.context_state = getMultiAdapter(
-            (self.context, request), name=u"plone_context_state"
+            (self.context, request), name="plone_context_state"
         )
         self.portal_state = getMultiAdapter(
-            (self.context, request), name=u"plone_portal_state"
+            (self.context, request), name="plone_portal_state"
         )
-        self.pas_info = getMultiAdapter((self.context, request), name=u"pas_info")
+        self.pas_info = getMultiAdapter((self.context, request), name="pas_info")
         self.navigation_root_url = self.portal_state.navigation_root_url()
 
         self.update()
@@ -250,16 +249,16 @@ class ToolbarTile(Tile):
         # Fix issue where context is a template based view class
         while IBrowserView.providedBy(context) and context is not None:
             context = Acquisition.aq_parent(Acquisition.aq_inner(context))
-        super(ToolbarTile, self).__init__(context, request)
+        super().__init__(context, request)
 
     def __call__(self):
         mtool = getToolByName(self.context, "portal_membership")
         if mtool.isAnonymousUser():
-            return u"<html></html>"
+            return "<html></html>"
 
-        toolbar = getMultiAdapter((self.context, self.request), name=u"render-toolbar")
+        toolbar = getMultiAdapter((self.context, self.request), name="render-toolbar")
         alsoProvides(toolbar, IViewView)
-        return u"<html><body>%s</body></html>" % toolbar()
+        return "<html><body>%s</body></html>" % toolbar()
 
 
 class GlobalStatusMessageTile(ProxyViewletTile):
@@ -284,9 +283,9 @@ class LockInfoTile(ProxyViewletTile):
 
     def __call__(self):
         if checkPermission("cmf.ModifyPortalContent", self.context):
-            return super(LockInfoTile, self).__call__()
+            return super().__call__()
         else:
-            return u"<html></html>"
+            return "<html></html>"
 
 
 class NextPreviousTile(BaseViewletTile):
@@ -307,14 +306,14 @@ class NextPreviousTile(BaseViewletTile):
                 # XXX: We need to cheat viewlet.isViewTemplate:
                 url = self.request.get("ACTUAL_URL")
                 self.request.set("ACTUAL_URL", self.context.absolute_url())
-                return u"<html><head>%s</head><body>%s</body></html>" % (
+                return "<html><head>{}</head><body>{}</body></html>".format(
                     links_viewlet.render(),
                     viewlet.render(),
                 )
             finally:
                 self.request.set("ACTUAL_URL", url)
         else:
-            return u"<html></html>"
+            return "<html></html>"
 
 
 class KeywordsTile(ProxyViewletTile):
@@ -347,8 +346,8 @@ class LeadImageTile(Tile):
         if self.available:
             tile = self.index()
         else:
-            tile = u""
-        return u"<html><body>{0:s}</body></html>".format(tile)
+            tile = ""
+        return f"<html><body>{tile:s}</body></html>"
 
 
 class DocumentActionsTile(ProxyViewletTile):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.navigation import NavigationTile
 from plone.registry.interfaces import IRegistry
@@ -21,9 +20,9 @@ class ISitemapTile(Schema):
     """A tile which can render the sitemap."""
 
     name = schema.TextLine(
-        title=_(u"Title"),
-        description=_(u"The title of the sitemap."),
-        default=u"",
+        title=_("Title"),
+        description=_("The title of the sitemap."),
+        default="",
         required=False,
     )
 
@@ -31,7 +30,7 @@ class ISitemapTile(Schema):
 @implementer(ISitemapTile)
 class SitemapTile(NavigationTile):
     def __init__(self, *arg, **kw):
-        super(SitemapTile, self).__init__(*arg, **kw)
+        super().__init__(*arg, **kw)
         self.data["root"] = None
         self.data["topLevel"] = 0
 

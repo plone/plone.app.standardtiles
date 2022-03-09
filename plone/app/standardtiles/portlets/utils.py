@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.layout.globals.interfaces import IViewView
 from Products.CMFCore.interfaces import IContentish
 from zope.browser.interfaces import IView
@@ -40,7 +39,7 @@ def findView(tile, viewName):
         except TypeError:
             # Helps to debug an issue where broken view registration raised:
             # TypeError: __init__() takes exactly N arguments (3 given)
-            logger.exception("Error in resolving view for tile: {0:s}".format(tile.url))
+            logger.exception(f"Error in resolving view for tile: {tile.url:s}")
             view = None
 
     if view is None:

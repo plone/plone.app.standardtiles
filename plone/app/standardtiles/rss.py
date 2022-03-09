@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from DateTime import DateTime
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.supermodel.model import Schema
@@ -25,31 +24,31 @@ class IRSSTile(Schema):
     """RSS tile schema interface."""
 
     portlet_title = schema.TextLine(
-        title=_(u"Title"),
+        title=_("Title"),
         description=_(
-            u"Title of the portlet. If omitted, the title of the " u"feed will be used."
+            "Title of the portlet. If omitted, the title of the " "feed will be used."
         ),
         required=False,
-        default=u"",
+        default="",
     )
 
     count = schema.Int(
-        title=_(u"Number of items to display"),
-        description=_(u"How many items to list."),
+        title=_("Number of items to display"),
+        description=_("How many items to list."),
         required=True,
         default=5,
     )
 
     url = schema.TextLine(
-        title=_(u"URL of RSS feed"),
-        description=_(u"Link of the RSS feed to display."),
+        title=_("URL of RSS feed"),
+        description=_("Link of the RSS feed to display."),
         required=True,
-        default=u"",
+        default="",
     )
 
     timeout = schema.Int(
-        title=_(u"Feed reload timeout"),
-        description=_(u"Time in minutes after which the feed should be " u"reloaded."),
+        title=_("Feed reload timeout"),
+        description=_("Time in minutes after which the feed should be " "reloaded."),
         required=True,
         default=100,
     )
@@ -60,7 +59,7 @@ class RSSTile(Tile):
 
     def __call__(self):
         self.context_state = getMultiAdapter(
-            (self.context, self.request), name=u"plone_context_state"
+            (self.context, self.request), name="plone_context_state"
         )
         self.update()
         return self.index()
@@ -162,7 +161,7 @@ class IFeed(Interface):
 
 
 @implementer(IFeed)
-class RSSFeed(object):
+class RSSFeed:
     """An RSS feed."""
 
     # TODO: discuss whether we want an increasing update time here, probably

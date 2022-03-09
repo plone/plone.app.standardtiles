@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from lxml import html
 from plone.app.discussion.interfaces import IDiscussionSettings
 from plone.app.standardtiles.testing import PASTANDARDTILES_FUNCTIONAL_TESTING
@@ -48,8 +47,8 @@ class TestLayoutTiles(TestCase):
         page_id = self.portal.invokeFactory(
             "Document",
             "a-simple-page",
-            title=u"A simple page",
-            description=u"A description",
+            title="A simple page",
+            description="A description",
         )
         self.page = self.portal[page_id]
         self.pageURL = self.portal[page_id].absolute_url()
@@ -101,7 +100,7 @@ class TestLayoutTiles(TestCase):
         self.assertEqual(len(nodes), 0)
 
     def test_analytics_tile(self):
-        snippet = u"<script type='text/javascript'> var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-XXXXX-X']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();</script>"  # noqa
+        snippet = "<script type='text/javascript'> var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-XXXXX-X']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();</script>"  # noqa
         site_settings = self.registry.forInterface(ISiteSchema, prefix="plone")
         site_settings.webstats_js = snippet
         transaction.commit()

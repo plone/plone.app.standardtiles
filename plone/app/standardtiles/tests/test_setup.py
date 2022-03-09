@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone import api
 from plone.app.standardtiles.testing import PASTANDARDTILES_INTEGRATION_TESTING  # noqa: E501
 

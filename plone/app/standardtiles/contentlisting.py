@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from operator import itemgetter
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.standardtiles import PloneMessageFactory as _
@@ -30,91 +29,91 @@ from zope.schema.vocabulary import SimpleVocabulary
 class IContentListingTile(Schema):
     """A tile that displays a listing of content items"""
 
-    title = schema.TextLine(title=_(u"label_title", default=u"Title"), required=False)
+    title = schema.TextLine(title=_("label_title", default="Title"), required=False)
 
     description = schema.Text(
-        title=_(u"label_description", default=u"Summary"),
+        title=_("label_description", default="Summary"),
         description=_(
-            u"help_description", default=u"Used in item listings and search results."
+            "help_description", default="Used in item listings and search results."
         ),
         required=False,
-        missing_value=u"",
+        missing_value="",
     )
 
     use_context_query = schema.Bool(
         title=_(
-            u"label_use_context_query", default=u"Use query parameters from content"
+            "label_use_context_query", default="Use query parameters from content"
         ),
         description=_(
-            u"If your content is a collection you can use the already existing listing configuration."
+            "If your content is a collection you can use the already existing listing configuration."
         ),
         required=False,
     )
 
     widget(query=QueryStringFieldWidget)
     query = schema.List(
-        title=_(u"Search terms"),
+        title=_("Search terms"),
         value_type=schema.Dict(value_type=schema.Field(), key_type=schema.TextLine()),
         description=_(
-            u"Define the search terms for the items "
-            u"you want to list by choosing what to match on. The "
-            u"list of results will be dynamically updated"
+            "Define the search terms for the items "
+            "you want to list by choosing what to match on. The "
+            "list of results will be dynamically updated"
         ),
         required=False,
     )
 
     ignore_request_params = schema.Bool(
         title=_(
-            u"label_ignore_request_params",
-            default=u"Ignore query parameters from request",
+            "label_ignore_request_params",
+            default="Ignore query parameters from request",
         ),
         description=_(
-            u"Check this box if you do not want the results changed based on request parameters."
+            "Check this box if you do not want the results changed based on request parameters."
         ),
         required=False,
         default=False,
     )
 
     sort_on = schema.TextLine(
-        title=_(u"label_sort_on", default=u"Sort on"),
-        description=_(u"Sort the collection on this index"),
+        title=_("label_sort_on", default="Sort on"),
+        description=_("Sort the collection on this index"),
         required=False,
     )
 
     sort_reversed = schema.Bool(
-        title=_(u"label_sort_reversed", default=u"Reversed order"),
-        description=_(u"Sort the results in reversed order"),
+        title=_("label_sort_reversed", default="Reversed order"),
+        description=_("Sort the results in reversed order"),
         required=False,
     )
 
     limit = schema.Int(
-        title=_(u"Limit"),
-        description=_(u"Limit Search Results"),
+        title=_("Limit"),
+        description=_("Limit Search Results"),
         required=False,
         default=100,
         min=1,
     )
 
     item_count = schema.Int(
-        title=_(u"label_item_count", default=u"Item count"),
-        description=_(u"Number of items that will show up in one batch."),
+        title=_("label_item_count", default="Item count"),
+        description=_("Number of items that will show up in one batch."),
         required=False,
         default=30,
         min=1,
     )
 
     tile_class = schema.TextLine(
-        title=_(u"Tile additional styles"),
+        title=_("Tile additional styles"),
         description=_(
-            u"Insert a list of additional CSS classes that will"
-            + u" be added to the tile"
+            "Insert a list of additional CSS classes that will"
+            + " be added to the tile"
         ),
-        default=u"",
+        default="",
         required=False,
     )
 
     view_template = schema.Choice(
-        title=_(u"Display mode"), source=_(u"Available Listing Views"), required=True
+        title=_("Display mode"), source=_("Available Listing Views"), required=True
     )
 
 
@@ -124,7 +123,7 @@ class IContentListingTileLayer(Interface):
 
 @implementer(IValue)
 @adapter(None, None, None, getSpecification(IContentListingTile["query"]), None)
-class DefaultQuery(object):
+class DefaultQuery:
     def __init__(self, context, request, form, field, widget):
         self.context = context
 
@@ -144,7 +143,7 @@ class DefaultQuery(object):
 
 @implementer(IValue)
 @adapter(None, None, None, getSpecification(IContentListingTile["sort_on"]), None)
-class DefaultSortOn(object):
+class DefaultSortOn:
     def __init__(self, context, request, form, field, widget):
         pass
 
@@ -174,7 +173,7 @@ class ContentListingTile(Tile):
 
         # use our custom b_start_str to enable multiple
         # batchings on one context
-        self.b_start_str = "{}-b_start".format(self.id)
+        self.b_start_str = f"{self.id}-b_start"
         self.b_start = int(request.get(self.b_start_str, 0))
         # batch url manipulation to original_context
         self.request["ACTUAL_URL"] = self.context.absolute_url()
@@ -266,9 +265,9 @@ def availableListingViewsVocabulary(context):
     listing_views = registry.get("plone.app.standardtiles.listing_views", {})
     if len(listing_views) == 0:
         listing_views = {
-            "listing_view": u"Listing view",
-            "summary_view": u"Summary view",
-            "tabular_view": u"Tabular view",
+            "listing_view": "Listing view",
+            "summary_view": "Summary view",
+            "tabular_view": "Tabular view",
         }
     voc = []
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):

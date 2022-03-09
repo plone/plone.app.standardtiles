@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_chain
 from Acquisition import aq_inner
@@ -21,7 +20,7 @@ def getNavigationRoot(context):
     return obj
 
 
-class PermissionChecker(object):
+class PermissionChecker:
     def __init__(self, permissions, context):
         self.permissions = permissions
         self.context = context
@@ -47,16 +46,16 @@ def _getWidgetName(field, widgets, request):
         factory = widgets[field.__name__]
     else:
         factory = getMultiAdapter((field, request), IFieldWidget)
-    if isinstance(factory, six.string_types):
+    if isinstance(factory, str):
         return factory
     if not isinstance(factory, type):
         factory = factory.__class__
-    return "%s.%s" % (factory.__module__, factory.__name__)
+    return f"{factory.__module__}.{factory.__name__}"
 
 
 def isVisible(name, omitted):
     value = omitted.get(name, False)
-    if isinstance(value, six.string_types):
+    if isinstance(value, str):
         return value == "false"
     else:
         return not bool(value)

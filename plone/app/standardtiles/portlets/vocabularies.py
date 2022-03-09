@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.portlets.interfaces import IPortletManager
 from zope.component import getUtility
@@ -12,7 +11,7 @@ PORTLET_MANAGER = "plone.app.standardtiles.portletManager"
 
 
 @implementer(IVocabularyFactory)
-class BaseVocabulary(object):
+class BaseVocabulary:
     def __call__(self, context):
         terms = self.get_terms(context)
         return SimpleVocabulary(list(terms))
@@ -47,7 +46,7 @@ class PortletsVocab(BaseVocabulary):
         # )
         # portlets = manager_renderer.addable_portlets()
         portlets = manager.getAddablePortletTypes()
-        yield SimpleTerm(value=None, token="", title=_(u"-- select type --"))
+        yield SimpleTerm(value=None, token="", title=_("-- select type --"))
         for item in portlets:
             title = item.title
             token = value = item.addview

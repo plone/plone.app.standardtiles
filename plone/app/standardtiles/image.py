@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.standardtiles import _PMF as _
 from plone.autoform.directives import widget
 from plone.namedfile.field import NamedBlobFile
@@ -36,13 +35,13 @@ def image_scales(context):
 class IImageTile(Schema):
 
     image = NamedBlobFile(
-        title=_(u"Please, upload an image"),
+        title=_("Please, upload an image"),
     )
 
-    title = schema.TextLine(title=_(u"Set optional title"), required=False)
+    title = schema.TextLine(title=_("Set optional title"), required=False)
 
     widget(scale=RadioFieldWidget)
-    scale = schema.Choice(title=_(u"Select maximum display size"), source=image_scales)
+    scale = schema.Choice(title=_("Select maximum display size"), source=image_scales)
 
 
 class ImageTile(PersistentTile):

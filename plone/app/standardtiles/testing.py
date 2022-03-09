@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone import api
 from plone.app.testing import applyProfile
 from plone.app.testing import login
@@ -39,7 +38,7 @@ MANAGER_USER_NAME = "manager"
 MANAGER_USER_PASSWORD = "topsecret"
 
 
-class RequestsGetMock(object):
+class RequestsGetMock:
 
     ok = True
     url = None
@@ -48,7 +47,7 @@ class RequestsGetMock(object):
         self.url = url
 
     def json(self):
-        return {"html": u"<p>%s</p>" % self.url}
+        return {"html": "<p>%s</p>" % self.url}
 
 
 class IFunkyWidget(interfaces.IWidget):
@@ -59,11 +58,11 @@ class IFunkyWidget(interfaces.IWidget):
 class FunkyWidget(widget.HTMLTextInputWidget, Widget):
     """Funky widget implementation."""
 
-    klass = u"funky-widget"
-    value = u""
+    klass = "funky-widget"
+    value = ""
 
     def update(self):
-        super(FunkyWidget, self).update()
+        super().update()
         widget.addFieldClass(self)
 
 
@@ -76,28 +75,28 @@ def FunkyFieldWidget(field, request):
 
 class ITestType1(Schema):
     test_text = schema.TextLine(
-        title=u"Test text field",
+        title="Test text field",
     )
 
     test_int = schema.Int(
-        title=u"Integer test field",
+        title="Integer test field",
     )
 
     test_bool = schema.Bool(
-        title=u"Boolean test field",
+        title="Boolean test field",
     )
 
     directives.widget(
         funky=FunkyFieldWidget,
     )
     funky = schema.TextLine(
-        title=u"Test funky field",
+        title="Test funky field",
     )
 
     directives.read_permission(topsecret="cmf.ModifyPortalContent")
     directives.write_permission(topsecret="cmf.ManagePortal")
     topsecret = schema.TextLine(
-        title=u"Top secret field",
+        title="Top secret field",
     )
 
 
@@ -294,16 +293,16 @@ class PAStandardtilesTestType(PloneSandboxLayer):
 
         # define the dexterity "junk" type
         fti = DexterityFTI("DecoTestType1")
-        fti.schema = u"plone.app.standardtiles.testing.ITestType1"
+        fti.schema = "plone.app.standardtiles.testing.ITestType1"
         fti.behaviors = ("plone.app.dexterity.behaviors.metadata.IDublinCore",)
         portal.portal_types._setObject("DecoTestType1", fti)
 
         # inserts the content of the types defined above
         login(portal, MANAGER_USER_NAME)
         content = portal[portal.invokeFactory("DecoTestType1", "deco-test-type1")]
-        content.title = u"Test content"
-        content.description = u"Just a test content"
-        content.contributors = (u"Jane Doe", u"John Doe")
+        content.title = "Test content"
+        content.description = "Just a test content"
+        content.contributors = ("Jane Doe", "John Doe")
         logout()
 
 

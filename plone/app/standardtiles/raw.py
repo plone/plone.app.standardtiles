@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.standardtiles.html import HTMLTile
 from plone.app.standardtiles.html import IHTMLTile
 from zope.deprecation import deprecated

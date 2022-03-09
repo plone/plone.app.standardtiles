@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.dexterity.behaviors.metadata import IDublinCore
 from plone.app.standardtiles.utils import PermissionChecker
 from plone.app.tiles.interfaces import ITilesFormLayer
@@ -69,7 +68,7 @@ class DexterityFieldTile(WidgetsView, Tile):
             self.fields = Fields(self.schema).omit(self.schema.names())
             for schema in self.additionalSchemata:
                 if self.field in schema:
-                    self.field = "%s.%s" % (schema.__name__, self.field)
+                    self.field = f"{schema.__name__}.{self.field}"
                     self.fields += Fields(schema, prefix=schema.__name__).omit(
                         self.field
                     )
@@ -92,10 +91,10 @@ class DexterityFieldTile(WidgetsView, Tile):
         ).allowed(self.field)
 
     def _wrap_widget(self, render):
-        if render.rstrip().endswith(u"</html>"):
+        if render.rstrip().endswith("</html>"):
             return render
         else:
-            return "".join([u"<html><body>", render, u"</body></html>"])
+            return "".join(["<html><body>", render, "</body></html>"])
 
     def updateWidgets(self, prefix=None):
         if self.field is not None:
@@ -111,7 +110,7 @@ class DexterityFieldTile(WidgetsView, Tile):
                 else:
                     group.fields = Fields()
 
-        super(DexterityFieldTile, self).updateWidgets(prefix)
+        super().updateWidgets(prefix)
 
     def __call__(self):
         if self.field and self.isVisible:
@@ -126,7 +125,7 @@ class DexterityFieldTile(WidgetsView, Tile):
                 widget = group.widgets.get(self.field)
                 if widget is not None:
                     return self._wrap_widget(widget.render())
-        return u"<html></html>"
+        return "<html></html>"
 
 
 _titleDisplayTemplate = ViewPageTemplateFile(

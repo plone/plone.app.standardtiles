@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.standardtiles import _PMF as _
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.supermodel.model import Schema
@@ -12,21 +11,21 @@ class IRawEmbedTile(Schema):
     """Raw Embed Tile"""
 
     tile_title = schema.TextLine(
-        title=_(u"Title"),
+        title=_("Title"),
         description=_(
-            u"""The title will also be used to create
+            """The title will also be used to create
             identifying class on that tile"""
         ),
         required=True,
     )
 
-    show_title = schema.Bool(title=_(u"Show tile title"), default=True)
+    show_title = schema.Bool(title=_("Show tile title"), default=True)
 
     ignore_querystring("html_snippet")
     html_snippet = schema.SourceText(
-        title=_(u"HTML Snippet"),
+        title=_("HTML Snippet"),
         description=_(
-            u"""Be CAREFUL what you paste here, no security
+            """Be CAREFUL what you paste here, no security
             checks or transforms to safe_html will be done!"""
         ),
         required=False,

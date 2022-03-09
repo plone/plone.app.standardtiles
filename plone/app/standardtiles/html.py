@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from plone.app.standardtiles import _PMF as _
 from plone.subrequest import ISubRequest
 from plone.supermodel.directives import primary
@@ -15,7 +14,7 @@ class IHTMLTile(Schema):
     ignore_querystring("content")
     primary("content")
     content = schema.Text(
-        title=_(u"HTML"),
+        title=_("HTML"),
         required=True,
     )
 
@@ -42,5 +41,5 @@ class HTMLTile(Tile):
                 )
                 content = data.getData()
         else:
-            content = u"<p></p>"
-        return u"<html><body>%s</body></html>" % safe_unicode(content)
+            content = "<p></p>"
+        return "<html><body>%s</body></html>" % safe_unicode(content)

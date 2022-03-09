@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from lxml import html
 from plone.app.standardtiles.testing import EDITOR_USER_NAME
 from plone.app.standardtiles.testing import EDITOR_USER_PASSWORD
@@ -60,8 +59,8 @@ class ContentTileTests(TestCase):
         page_id = self.portal.invokeFactory(
             "Document",
             "a-simple-page",
-            title=u"A simple page",
-            description=u"A description",
+            title="A simple page",
+            description="A description",
         )
         self.page = self.portal[page_id]
         self.pageURL = self.portal[page_id].absolute_url()

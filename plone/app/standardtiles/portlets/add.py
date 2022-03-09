@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -101,14 +100,14 @@ class PortletTileAddForm(DefaultAddForm):
         add_portlet_url = "/".join(
             [
                 self.context.absolute_url(),
-                "++contextportlets++{0}/+".format(mgr_name),
+                f"++contextportlets++{mgr_name}/+",
                 data["portlet_type"],
             ]
         )
         add_portlet_url = addTokenToUrl(add_portlet_url, self.request)
         self.request.response.redirect(add_portlet_url)
 
-    @button.buttonAndHandler(_(u"Cancel"), name="cancel")
+    @button.buttonAndHandler(_("Cancel"), name="cancel")
     def handleCancel(self, action):
         # TODO
         tileDataJson = {}

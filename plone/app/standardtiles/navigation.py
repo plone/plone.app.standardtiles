@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -56,65 +55,65 @@ class INavigationTile(Schema):
     """A tile which can render the navigation tree."""
 
     name = schema.TextLine(
-        title=_(u"Title"),
-        description=_(u"The title of the navigation tree."),
-        default=u"",
+        title=_("Title"),
+        description=_("The title of the navigation tree."),
+        default="",
         required=False,
     )
 
     root = schema.Choice(
-        title=_(u"Root node"),
+        title=_("Root node"),
         description=_(
-            u"You may search for and choose a folder to act as the root "
-            u"of the navigation tree. Leave blank to use the Plone site "
-            u"root."
+            "You may search for and choose a folder to act as the root "
+            "of the navigation tree. Leave blank to use the Plone site "
+            "root."
         ),
         source=CatalogSource(),
         required=False,
     )
 
     includeTop = schema.Bool(
-        title=_(u"Include top node"),
+        title=_("Include top node"),
         description=_(
-            u'Whether or not to show the top, or "root", node in the '
-            u'navigation tree. This is affected by the "Start level" '
-            u"setting."
+            'Whether or not to show the top, or "root", node in the '
+            'navigation tree. This is affected by the "Start level" '
+            "setting."
         ),
         default=False,
         required=False,
     )
 
     currentFolderOnly = schema.Bool(
-        title=_(u"Only show the contents of the current folder."),
+        title=_("Only show the contents of the current folder."),
         description=_(
-            u"If selected, the navigation tree will only show the current "
-            u"folder and its children at all times."
+            "If selected, the navigation tree will only show the current "
+            "folder and its children at all times."
         ),
         default=False,
         required=False,
     )
 
     topLevel = schema.Int(
-        title=_(u"Start level"),
+        title=_("Start level"),
         description=_(
-            u"An integer value that specifies the number of folder levels "
-            u"below the site root that must be exceeded before the "
-            u"navigation tree will display. 0 means that the navigation "
-            u"tree should be displayed everywhere including pages in the "
-            u"root of the site. 1 means the tree only shows up inside "
-            u"folders located in the root and downwards, never showing at "
-            u"the top level."
+            "An integer value that specifies the number of folder levels "
+            "below the site root that must be exceeded before the "
+            "navigation tree will display. 0 means that the navigation "
+            "tree should be displayed everywhere including pages in the "
+            "root of the site. 1 means the tree only shows up inside "
+            "folders located in the root and downwards, never showing at "
+            "the top level."
         ),
         default=0,
         required=False,
     )
 
     bottomLevel = schema.Int(
-        title=_(u"Navigation tree depth"),
+        title=_("Navigation tree depth"),
         description=_(
-            u"How many folders should be included before the navigation "
-            u"tree stops. 0 means no limit. 1 only includes the root "
-            u"folder."
+            "How many folders should be included before the navigation "
+            "tree stops. 0 means no limit. 1 only includes the root "
+            "folder."
         ),
         default=0,
         required=False,
@@ -123,7 +122,7 @@ class INavigationTile(Schema):
 
 @implementer(IValue)
 @adapter(None, None, None, getSpecification(INavigationTile["root"]), None)
-class DefaultRoot(object):
+class DefaultRoot:
     def __init__(self, context, request, form, field, widget):
         self.context = context
 
@@ -141,11 +140,11 @@ class NavigationTile(Tile):
         # Fix issue where context is a template based view class
         while IBrowserView.providedBy(context) and context is not None:
             context = aq_parent(aq_inner(context))
-        super(NavigationTile, self).__init__(context, *args, **kwargs)
+        super().__init__(context, *args, **kwargs)
         self.urltool = getToolByName(self.context, "portal_url")
 
     def title(self):
-        return self.data.get("name", u"")
+        return self.data.get("name", "")
 
     @property
     def available(self):
@@ -177,7 +176,7 @@ class NavigationTile(Tile):
         return ""
 
     def root_icon(self):
-        ploneview = getMultiAdapter((self.context, self.request), name=u"plone")
+        ploneview = getMultiAdapter((self.context, self.request), name="plone")
         icon = ploneview.getIcon(self.getNavRoot())
         return icon.url
 
@@ -238,7 +237,7 @@ class QueryBuilder(NavtreeQueryBuilder):
     """
 
     def __init__(self, context, tile):
-        super(QueryBuilder, self).__init__(context)
+        super().__init__(context)
 
         portal_properties = getToolByName(context, "portal_properties")
         navtree_properties = getattr(portal_properties, "navtree_properties")
