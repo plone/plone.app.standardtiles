@@ -60,6 +60,20 @@
 
     <!-- layout tiles -->
     <plone:tile
+        name="plone.app.standardtiles.anontools"
+        class=".common.AnonToolsTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
+        name="plone.app.standardtiles.membertools"
+        class=".common.PersonalBarTile"
+        for="*"
+        permission="zope2.View"
+        />
+
+    <plone:tile
         name="plone.app.standardtiles.personal_bar"
         class=".common.PersonalBarTile"
         for="*"
@@ -69,13 +83,6 @@
     <plone:tile
         name="plone.app.standardtiles.searchbox"
         class=".common.SearchBoxTile"
-        for="*"
-        permission="zope2.View"
-        />
-
-    <plone:tile
-        name="plone.app.standardtiles.anontools"
-        class=".common.AnonToolsTile"
         for="*"
         permission="zope2.View"
         />

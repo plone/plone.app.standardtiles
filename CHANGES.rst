@@ -4,6 +4,9 @@ Changelog
 2.4.1 (unreleased)
 ------------------
 
+- Fix membertools tile
+  [agitator]
+
 - Hide uninstall profile from install view.
   [jensens]
 
@@ -17,7 +20,7 @@ Changelog
   Batching support
   Drop support for Plone 5.0.x - no get_top_request available
   [agitator]
-  
+
 - Upgrade tests to github actions
   [djay]
 
