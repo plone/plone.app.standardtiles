@@ -100,7 +100,7 @@ class TestLayoutTiles(TestCase):
         self.assertEqual(len(nodes), 0)
 
     def test_analytics_tile(self):
-        snippet = "<script type='text/javascript'> var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-XXXXX-X']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();</script>"  # noqa
+        snippet = "<script type='text/javascript'> var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-XXXXX-X']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })();</script>"
         site_settings = self.registry.forInterface(ISiteSchema, prefix="plone")
         site_settings.webstats_js = snippet
         transaction.commit()
@@ -261,11 +261,11 @@ class TestLayoutTiles(TestCase):
         # previous is still disabled (default configuration).
         self.assertFalse(
             page1.restrictedTraverse("@@plone_nextprevious_view").enabled()
-        )  # noqa
+        )
 
         self.unprivileged_browser.open(
             self.portalURL
-            + "/next-previous-folder/page-one/@@plone.app.standardtiles.nextprevious"  # noqa
+            + "/next-previous-folder/page-one/@@plone.app.standardtiles.nextprevious"
         )
 
         self.assertNotIn("div", self.unprivileged_browser.contents)
@@ -280,13 +280,11 @@ class TestLayoutTiles(TestCase):
         folder.nextPreviousEnabled = True
         transaction.commit()
 
-        self.assertTrue(
-            page1.restrictedTraverse("@@plone_nextprevious_view").enabled()
-        )
+        self.assertTrue(page1.restrictedTraverse("@@plone_nextprevious_view").enabled())
 
         self.unprivileged_browser.open(
             self.portalURL
-            + "/next-previous-folder/page-one/@@plone.app.standardtiles.nextprevious"  # noqa
+            + "/next-previous-folder/page-one/@@plone.app.standardtiles.nextprevious"
         )
 
         self.assertIn("<link", self.unprivileged_browser.contents)
@@ -309,7 +307,7 @@ class TestLayoutTiles(TestCase):
 
         self.unprivileged_browser.open(
             self.portalURL
-            + "/next-previous-folder/page-two/@@plone.app.standardtiles.nextprevious"  # noqa
+            + "/next-previous-folder/page-two/@@plone.app.standardtiles.nextprevious"
         )
 
         self.assertIn("<link", self.unprivileged_browser.contents)
@@ -332,7 +330,7 @@ class TestLayoutTiles(TestCase):
 
         self.unprivileged_browser.open(
             self.portalURL
-            + "/next-previous-folder/page-three/@@plone.app.standardtiles.nextprevious"  # noqa
+            + "/next-previous-folder/page-three/@@plone.app.standardtiles.nextprevious"
         )
 
         self.assertIn("<link", self.unprivileged_browser.contents)

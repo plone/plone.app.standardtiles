@@ -178,14 +178,10 @@ class ContentListingTile(Tile):
 
         if self.data.get(
             "use_context_query", None
-        ) and ISyndicatableCollection.providedBy(
-            self.context
-        ):
+        ) and ISyndicatableCollection.providedBy(self.context):
             self.query = self.context.query
             self.sort_on = self.context.sort_on
-            self.sort_order = (
-                "reverse" if self.context.sort_reversed else "ascending"
-            )
+            self.sort_order = "reverse" if self.context.sort_reversed else "ascending"
             if not self.limit:
                 self.limit = self.context.limit
             if not self.item_count:

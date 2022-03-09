@@ -7,6 +7,7 @@ from zope import schema
 from zope.component import getUtility
 from zope.interface import implementer
 
+
 class ISitemapTile(Schema):
     """A tile which can render the sitemap."""
 
