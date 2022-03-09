@@ -39,7 +39,7 @@ setup(
         "plone.app.tiles>=3.1.2",
         "plone.subrequest",
         "plone.tiles>=1.8.0.dev0",
-        "Products.CMFPlone>=6.0",
+        "Products.CMFPlone>=6.0.0a3",
         "requests",
         "setuptools",
     ],

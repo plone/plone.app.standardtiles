@@ -1,0 +1,20 @@
+###############################################################################
+# mxdev combined constraints
+-c constraints-mxdev.txt
+
+
+###############################################################################
+# mxdev development sources
+-e ./sources/plone.app.mosaic --install-option="--pre"
+-e ./sources/plone.app.tiles --install-option="--pre"
+
+###############################################################################
+# begin requirements from: requirements.txt
+
+-e .[test]
+
+# WSGI: A system for configuration of WSGI web components in declarative .ini format.
+Paste
+
+# end requirements from: requirements.txt
+###############################################################################
