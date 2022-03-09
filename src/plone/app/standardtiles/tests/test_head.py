@@ -88,11 +88,8 @@ class TestHeadTiles(TestCase):
         self.unprivileged_browser.open(
             self.portalURL + "/@@plone.app.standardtiles.faviconlink"
         )
-
-        self.assertIn("<link", self.unprivileged_browser.contents)
-
         root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//head/link[@rel="shortcut icon"]')
+        nodes = root.xpath('//head/link[@rel="preload icon"]')
         self.assertEqual(len(nodes), 1)
 
     def test_search_link_tile(self):

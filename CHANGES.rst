@@ -8,6 +8,9 @@ Changelog
   Fixes `issue 100 <https://github.com/plone/plone.app.standardtiles/issues/100>`_.
   [maurits]
 
+- Fix tests to respect BS5 Markup of Plone 6.
+  [jensens]
+
 - Fix membertools tile
   [agitator]
 

@@ -103,14 +103,11 @@ class ContentTileTests(TestCase):
         self.assertNotIn("category", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//body//*[@id="category"]')
+        nodes = root.xpath('//body//*[@id="section-category"]')
         self.assertEqual(len(nodes), 0)
 
         # If we now add some keywords to it:
-        try:
-            self.page.setSubject(("Statues", "Sprint"))  # AT
-        except AttributeError:
-            self.page.subject = ("Statues", "Sprint")  # DX
+        self.page.subject = ("Statues", "Sprint")
         transaction.commit()
 
         # The tile will show them:
@@ -123,16 +120,14 @@ class ContentTileTests(TestCase):
         self.assertIn("Statues", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//body//*[@id="category"]')
+        nodes = root.xpath('//body//*[@id="section-category"]')
         self.assertEqual(len(nodes), 1)
 
     def test_related_items_tiles(self):
         self.browser.open(self.pageURL + "/@@plone.app.standardtiles.related_items")
 
-        self.assertNotIn("relatedItems", self.browser.contents)
-
         root = fromstring(self.browser.contents)
-        nodes = root.xpath('//body//*[@class="relatedItems"]')
+        nodes = root.xpath('//body//*[@id="section-related"]')
         self.assertEqual(len(nodes), 0)
 
         self.portal.invokeFactory("Document", "doc1", title="Document 1")
@@ -147,15 +142,14 @@ class ContentTileTests(TestCase):
 
         self.browser.open(self.pageURL + "/@@plone.app.standardtiles.related_items")
 
-        self.assertIn("relatedItems", self.browser.contents)
         self.assertIn("Document 1", self.browser.contents)
         self.assertIn("Document 2", self.browser.contents)
 
         root = fromstring(self.browser.contents)
-        nodes = root.xpath('//body//*[@class="relatedItems"]')
+        nodes = root.xpath('//body//*[@id="section-related"]')
         self.assertEqual(len(nodes), 1)
 
-        nodes = root.xpath('//body//*[@class="relatedItems"]//ul/li')
+        nodes = root.xpath('//body//*[@id="section-related"]/div')
         self.assertEqual(len(nodes), 2)
 
     def test_history_tile(self):

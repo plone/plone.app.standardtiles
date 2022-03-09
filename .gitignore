@@ -6,11 +6,6 @@
 .installed.txt
 .coverage
 .mr.developer.cfg
-bin
-develop-eggs
-eggs
-parts
-build
 pip-selfcheck.json
 /.tox/
 /instance/
@@ -18,11 +13,10 @@ pip-selfcheck.json
 /.make-sentinels/
 /.coverage.
 /.coverage.*
+/*-mxdev.txt
 /reports/
 /sources/
 /venv/
 /coverage.xml
 /plone/app/standardtiles/utils.py.bak
 pyvenv.cfg
-annotate.txt
-requirements.txt

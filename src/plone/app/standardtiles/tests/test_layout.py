@@ -168,10 +168,7 @@ class TestLayoutTiles(TestCase):
         self.assertEqual(len(nodes), 1)
 
     def test_table_of_contents_tile(self):
-        try:
-            self.page.setTableContents(True)  # AT
-        except AttributeError:
-            self.page.table_of_contents = True  # DX
+        self.page.table_of_contents = True
 
         transaction.commit()
 
@@ -288,8 +285,10 @@ class TestLayoutTiles(TestCase):
         )
 
         self.assertIn("<link", self.unprivileged_browser.contents)
-        self.assertIn('class="next"', self.unprivileged_browser.contents)
-        self.assertNotIn('class="previous"', self.unprivileged_browser.contents)
+        self.assertIn('title="Go to next item"', self.unprivileged_browser.contents)
+        self.assertNotIn(
+            'title="Go to previous item"', self.unprivileged_browser.contents
+        )
 
         root = fromstring(self.unprivileged_browser.contents)
 
@@ -297,12 +296,6 @@ class TestLayoutTiles(TestCase):
         self.assertEqual(len(nodes), 1)
 
         nodes = root.xpath('//head/link[@rel="previous"]')
-        self.assertEqual(len(nodes), 0)
-
-        nodes = root.xpath('//body//*[@class="next"]')
-        self.assertEqual(len(nodes), 1)
-
-        nodes = root.xpath('//body//*[@class="previous"]')
         self.assertEqual(len(nodes), 0)
 
         self.unprivileged_browser.open(
@@ -311,8 +304,8 @@ class TestLayoutTiles(TestCase):
         )
 
         self.assertIn("<link", self.unprivileged_browser.contents)
-        self.assertIn('class="next"', self.unprivileged_browser.contents)
-        self.assertIn('class="previous"', self.unprivileged_browser.contents)
+        self.assertIn('title="Go to next item"', self.unprivileged_browser.contents)
+        self.assertIn('title="Go to previous item"', self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
 
@@ -320,12 +313,6 @@ class TestLayoutTiles(TestCase):
         self.assertEqual(len(nodes), 1)
 
         nodes = root.xpath('//head/link[@rel="previous"]')
-        self.assertEqual(len(nodes), 1)
-
-        nodes = root.xpath('//body//*[@class="next"]')
-        self.assertEqual(len(nodes), 1)
-
-        nodes = root.xpath('//body//*[@class="previous"]')
         self.assertEqual(len(nodes), 1)
 
         self.unprivileged_browser.open(
@@ -334,8 +321,8 @@ class TestLayoutTiles(TestCase):
         )
 
         self.assertIn("<link", self.unprivileged_browser.contents)
-        self.assertNotIn('class="next"', self.unprivileged_browser.contents)
-        self.assertIn('class="previous"', self.unprivileged_browser.contents)
+        self.assertNotIn('title="Go to next item"', self.unprivileged_browser.contents)
+        self.assertIn('title="Go to previous item"', self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
 
@@ -343,12 +330,6 @@ class TestLayoutTiles(TestCase):
         self.assertEqual(len(nodes), 0)
 
         nodes = root.xpath('//head/link[@rel="previous"]')
-        self.assertEqual(len(nodes), 1)
-
-        nodes = root.xpath('//body//*[@class="next"]')
-        self.assertEqual(len(nodes), 0)
-
-        nodes = root.xpath('//body//*[@class="previous"]')
         self.assertEqual(len(nodes), 1)
 
     def test_login_tile(self):
