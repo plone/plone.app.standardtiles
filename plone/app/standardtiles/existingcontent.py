@@ -243,6 +243,13 @@ class ExistingContentTile(Tile):
         return " ".join([css_class, additional_classes])
 
     def __getattr__(self, name):
+        if name == self.id:
+            # We are traversing to this tile, for example via
+            # @@plone.app.standardtiles.existingcontent/3033115c0421469382d4d5297435f1ed
+            # See also Tile.__getitem__.
+            # Note that we are always anonymous at this point.
+            # This caused authorization problems before adding this check.
+            return self
         # proxy attributes for this view to the selected view of the content
         # item so views work
         if (
