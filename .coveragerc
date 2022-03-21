@@ -1,8 +1,0 @@
-[run]
-relative_files = True
-
-[report]
-include =
-    plone/*
-omit =
-    */test*
