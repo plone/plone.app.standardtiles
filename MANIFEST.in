@@ -1,7 +1,4 @@
 exclude .coveragerc
-exclude bootstrap.py buildout.cfg
-exclude bootstrap.sh
-exclude test-*.x.cfg
-global-exclude *.pyc
-include setup.py *.txt *.rst *.GPL
+global-exclude *.pyc __pycache__
+include setup.py LICENSE.txt *.rst *.GPL
 recursive-include plone *

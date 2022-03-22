@@ -25,4 +25,3 @@ pip-selfcheck.json
 /plone/app/standardtiles/utils.py.bak
 pyvenv.cfg
 annotate.txt
-requirements.txt

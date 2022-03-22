@@ -137,7 +137,7 @@
         component="plone.app.standardtiles.contentlisting.availableListingViewsVocabulary"
         name="Available Listing Views"
         />
-    
+
     <utility
         component="plone.app.standardtiles.existingcontent.availableContentViewsVocabulary"
         name="Available Content Views"
