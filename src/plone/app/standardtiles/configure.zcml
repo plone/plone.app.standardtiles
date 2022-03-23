@@ -1,0 +1,131 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
+
+  <!-- Include our dependencies -->
+  <include package="plone.tiles" />
+  <include package="plone.app.tiles" />
+
+  <!-- Register an extension profile to make the product installable -->
+  <genericsetup:registerProfile
+      name="default"
+      title="Standard tiles"
+      description="Standard available tiles."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/default"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="plone.app.standardtiles:uninstall"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/uninstall"
+      post_handler="plone.app.standardtiles.setuphandlers.run_after"
+      />
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="plone.app.standardtiles-hiddenprofiles"
+      />
+  <!-- Tiles are divided in four zcml files -->
+  <include file="content.zcml" />
+  <include file="head.zcml" />
+  <include file="layout.zcml" />
+  <include file="media.zcml" />
+
+  <include package=".portlets" />
+
+  <plone:tile
+      name="plone.app.standardtiles.viewletmanager"
+      title="Viewlet Manager Tile"
+      description="A tile which displays a specified viewlet manager"
+      for="*"
+      schema=".viewletmanager.IViewletManagerTile"
+      class=".viewletmanager.ViewletManagerTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.title"
+      title="Title"
+      description="A tile which displays the context title"
+      for="*"
+      class=".metadata.DefaultTitleTile"
+      template="templates/title.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.title"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      class=".metadata.DexterityTitleTile"
+      template="templates/title.pt"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.title"
+      for="Products.CMFCore.interfaces.IMinimalDublinCore"
+      class=".metadata.DublinCoreTitleTile"
+      template="templates/title.pt"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.description"
+      title="Description"
+      description="A tile which displays the context description"
+      for="*"
+      class=".metadata.DefaultDescriptionTile"
+      template="templates/description.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.description"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      class=".metadata.DexterityDescriptionTile"
+      template="templates/description.pt"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.description"
+      for="Products.CMFCore.interfaces.IMinimalDublinCore"
+      class=".metadata.DublinCoreDescriptionTile"
+      template="templates/description.pt"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.field"
+      title="Field"
+      description="A tile which displays a field"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      class=".field.DexterityFieldTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <adapter
+      factory=".field.titleDisplayTemplate"
+      name="display"
+      />
+  <adapter
+      factory=".field.descriptionDisplayTemplate"
+      name="display"
+      />
+  <adapter
+      factory=".field.namedImageDisplayTemplate"
+      name="display"
+      />
+
+  <include file="upgrades.zcml" />
+
+</configure>

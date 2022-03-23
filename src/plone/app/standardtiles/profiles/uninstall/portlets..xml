@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<portlets>
+  <portletmanager name="plone.app.standardtiles.portletManager"
+                  remove="true"
+                  type="plone.app.standardtiles.interfaces.IPortletManager"
+  />
+</portlets>

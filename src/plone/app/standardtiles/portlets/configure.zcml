@@ -1,0 +1,77 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="plone"
+    >
+
+  <include package="plone.app.portlets" />
+
+  <plone:tile
+      name="plone.app.standardtiles.portletmanager"
+      title="Portlet Manager Tile"
+      description="A tile which displays a specified portlet manager"
+      for="*"
+      schema=".portletmanager.IPortletManagerTile"
+      class=".portletmanager.PortletManagerTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.portlet"
+      title="Portlet Tile"
+      description="A tile which displays a specified portlet"
+      for="*"
+      schema=".portlet.IPortletTile"
+      class=".portlet.PortletTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <!-- Adding view for portlet assignments -->
+  <browser:view
+      name="+"
+      for="plone.app.standardtiles.interfaces.IPortletManagerAssignment"
+      class=".add.PortletAdding"
+      allowed_interface="plone.app.portlets.browser.interfaces.IPortletAdding"
+      permission="plone.app.portlets.ManagePortlets"
+      />
+
+  <!-- override assignment adapter for our portlet manager -->
+  <adapter factory=".assignment.localPortletAssignmentMappingAdapter" />
+
+  <utility
+      factory=".vocabularies.PortletsVocab"
+      provides="zope.schema.interfaces.IVocabularyFactory"
+      name="standardtiles.available_portlets"
+      />
+
+  <adapter
+      factory=".add.PortletTileAddView"
+      provides="plone.app.tiles.interfaces.ITileAddView"
+      for="zope.annotation.interfaces.IAnnotatable
+           zope.publisher.interfaces.browser.IDefaultBrowserLayer
+           plone.tiles.interfaces.ITileType"
+      name="plone.app.standardtiles.portlet"
+      />
+
+  <adapter
+      factory=".edit.PortletTileEditView"
+      provides="plone.app.tiles.interfaces.ITileEditView"
+      for="zope.annotation.interfaces.IAnnotatable
+           zope.publisher.interfaces.browser.IDefaultBrowserLayer
+           plone.tiles.interfaces.ITileType"
+      name="plone.app.standardtiles.portlet"
+      />
+
+  <adapter
+      factory=".delete.PortletTileDeleteView"
+      provides="plone.app.tiles.interfaces.ITileDeleteView"
+      for="zope.annotation.interfaces.IAnnotatable
+           zope.publisher.interfaces.browser.IDefaultBrowserLayer
+           plone.tiles.interfaces.ITileType"
+      name="plone.app.standardtiles.portlet"
+      />
+
+</configure>

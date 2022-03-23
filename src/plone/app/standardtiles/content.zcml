@@ -1,0 +1,180 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
+
+  <plone:tile
+      name="plone.app.standardtiles.existingcontent"
+      title="Existing content"
+      description="A tile which displays a content object"
+      for="*"
+      schema=".existingcontent.IExistingContentTile"
+      class=".existingcontent.ExistingContentTile"
+      template="templates/existingcontent_view.pt"
+      permission="zope.Public"
+      add_permission="cmf.ModifyPortalContent"
+      />
+  <adapter factory=".existingcontent.SameContentValidator" />
+
+  <plone:tile
+      name="plone.app.standardtiles.document_byline"
+      title="Document byline"
+      description="Shows the document byline with author name and date"
+      for="*"
+      class=".common.DocumentBylineTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.tableofcontents"
+      title="Table of contents"
+      description="Display a Table of contents from the page headers"
+      class=".common.TableOfContentsTile"
+      permission="zope.Public"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <configure package="plone.app.contenttypes.behaviors">
+    <plone:tile
+        name="plone.app.standardtiles.leadimage"
+        title="Lead image"
+        description="Display the lead image of the current item, if any"
+        class="plone.app.standardtiles.common.LeadImageTile"
+        template="leadimage.pt"
+        permission="zope2.View"
+        add_permission="cmf.ModifyPortalContent"
+        />
+  </configure>
+
+  <plone:tile
+      name="plone.app.standardtiles.keywords"
+      title="Context keywords"
+      description="Display the keywords defined in the categorization tab of this item"
+      for="*"
+      class=".common.KeywordsTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.related_items"
+      title="Related items"
+      description="Display the related items selected in the categorization tab of this item"
+      for="*"
+      class=".common.RelatedItemsTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.history"
+      title="History"
+      description="Show the edit history on content"
+      for="*"
+      class=".common.HistoryTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.lockinfo"
+      title="Lock info"
+      description="Shows the lock info on content"
+      for="*"
+      class=".common.LockInfoTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.rss"
+      title="RSS Feed"
+      description="Show the items from a content feed like https://plone.org/RSS"
+      for="*"
+      schema=".rss.IRSSTile"
+      class=".rss.RSSTile"
+      template="templates/rss.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.rawhtml"
+      title="Rich text"
+      description=""
+      for="*"
+      schema=".html.IHTMLTile"
+      class=".html.HTMLTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+  <plone:tile
+      name="plone.app.standardtiles.html"
+      title="Rich text"
+      description=""
+      for="*"
+      schema=".html.IHTMLTile"
+      class=".html.HTMLTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.contentlisting"
+      title="Content listing"
+      description="Display the results of a saved search of the site content"
+      for="*"
+      schema=".contentlisting.IContentListingTile"
+      class=".contentlisting.ContentListingTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <utility
+      name="Available Listing Views"
+      component="plone.app.standardtiles.contentlisting.availableListingViewsVocabulary"
+      />
+
+  <utility
+      name="Available Content Views"
+      component="plone.app.standardtiles.existingcontent.availableContentViewsVocabulary"
+      />
+
+  <adapter
+      factory=".contentlisting.DefaultQuery"
+      name="default"
+      />
+  <adapter
+      factory=".contentlisting.DefaultSortOn"
+      name="default"
+      />
+
+  <browser:page
+      name="tabular_view"
+      for="*"
+      template="templates/tabular_view.pt"
+      permission="zope2.View"
+      layer=".contentlisting.IContentListingTileLayer"
+      />
+
+  <browser:page
+      name="listing_view"
+      for="*"
+      template="templates/listing_view.pt"
+      permission="zope2.View"
+      layer=".contentlisting.IContentListingTileLayer"
+      />
+
+  <browser:page
+      name="summary_view"
+      for="*"
+      template="templates/summary_view.pt"
+      permission="zope2.View"
+      layer=".contentlisting.IContentListingTileLayer"
+      />
+
+</configure>

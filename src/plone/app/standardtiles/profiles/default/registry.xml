@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<registry>
+  <record name="plone.app.tiles">
+    <field type="plone.registry.field.List">
+      <title>Tiles</title>
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value purge="false">
+      <element>plone.app.standardtiles.analytics</element>
+      <element>plone.app.standardtiles.anontools</element>
+      <element>plone.app.standardtiles.authorlink</element>
+      <element>plone.app.standardtiles.canonical_url</element>
+      <element>plone.app.standardtiles.colophon</element>
+      <element>plone.app.standardtiles.contentlisting</element>
+      <element>plone.app.standardtiles.description</element>
+      <element>plone.app.standardtiles.discussion</element>
+      <element>plone.app.standardtiles.document_actions</element>
+      <element>plone.app.standardtiles.document_byline</element>
+      <element>plone.app.standardtiles.dublincore</element>
+      <element>plone.app.standardtiles.edit_bar</element>
+      <element>plone.app.standardtiles.embed</element>
+      <element>plone.app.standardtiles.rawembed</element>
+      <element>plone.app.standardtiles.existingcontent</element>
+      <element>plone.app.standardtiles.faviconlink</element>
+      <element>plone.app.standardtiles.field</element>
+      <element>plone.app.standardtiles.footer</element>
+      <element>plone.app.standardtiles.global_sections</element>
+      <element>plone.app.standardtiles.headtitle</element>
+      <element>plone.app.standardtiles.history</element>
+      <element>plone.app.standardtiles.javascripts</element>
+      <element>plone.app.standardtiles.keywords</element>
+      <element>plone.app.standardtiles.languageselector</element>
+      <element>plone.app.standardtiles.lockinfo</element>
+      <element>plone.app.standardtiles.login</element>
+      <element>plone.app.standardtiles.logo</element>
+      <element>plone.app.standardtiles.navigation</element>
+      <element>plone.app.standardtiles.navigationlink</element>
+      <element>plone.app.standardtiles.nextprevious</element>
+      <element>plone.app.standardtiles.path_bar</element>
+      <element>plone.app.standardtiles.personal_bar</element>
+      <element>plone.app.standardtiles.portlet</element>
+      <element>plone.app.standardtiles.portletmanager</element>
+      <element>plone.app.standardtiles.related_items</element>
+      <element>plone.app.standardtiles.rss</element>
+      <element>plone.app.standardtiles.rsslink</element>
+      <element>plone.app.standardtiles.searchbox</element>
+      <element>plone.app.standardtiles.searchlink</element>
+      <element>plone.app.standardtiles.site_actions</element>
+      <element>plone.app.standardtiles.sitemap</element>
+      <element>plone.app.standardtiles.skip_links</element>
+      <element>plone.app.standardtiles.stylesheets</element>
+      <element>plone.app.standardtiles.tableofcontents</element>
+      <element>plone.app.standardtiles.title</element>
+      <element>plone.app.standardtiles.toolbar</element>
+      <element>plone.app.standardtiles.viewletmanager</element>
+    </value>
+  </record>
+
+  <record name="plone.app.standardtiles.listing_views">
+    <field type="plone.registry.field.Dict">
+      <title>Listing Views</title>
+      <key_type type="plone.registry.field.TextLine" />
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value purge="false">
+      <element key="listing_view">Listing view</element>
+      <element key="summary_view">Summary view</element>
+      <element key="tabular_view">Tabular view</element>
+    </value>
+  </record>
+
+  <record name="plone.app.standardtiles.content_views">
+    <field type="plone.registry.field.Dict">
+      <title>Content Views</title>
+      <required>False</required>
+      <key_type type="plone.registry.field.TextLine" />
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+  </record>
+
+  <records interface="plone.app.querystring.interfaces.IQueryField"
+           prefix="plone.app.querystring.field.getObjPositionInParent"
+  >
+    <value key="sortable">True</value>
+  </records>
+
+  <record name="plone.app.portlets.PortletManagerBlacklist">
+    <field type="plone.registry.field.List">
+      <title>Toolbar Portlet Manager Blacklist</title>
+      <description>A list of portlet manager names that will not be shown in the toolbar dropdown</description>
+      <value_type type="plone.registry.field.TextLine" />
+    </field>
+    <value purge="false">
+      <element>plone.app.standardtiles.portletManager</element>
+    </value>
+  </record>
+</registry>

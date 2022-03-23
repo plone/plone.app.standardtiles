@@ -1,15 +1,29 @@
 Changelog
 =========
 
-2.4.1 (unreleased)
+3.0.0 (unreleased)
 ------------------
 
 - Fix showing private content while editing a tile.
   Fixes `issue 100 <https://github.com/plone/plone.app.standardtiles/issues/100>`_.
   [maurits]
 
+- Fix tests to respect BS5 Markup of Plone 6.
+  [jensens]
+
 - Fix membertools tile
   [agitator]
+
+- Breaking: Drop code marked as deprecated for 3.0.
+  This includes ``plone.app.standardtiles.image``.
+  If anyone for any reason has still these long deprecated tile around, custom upgrades are needed.
+  [jensens]
+
+- Manual code cleanup.
+  [jensens]
+
+- Breaking: Drop Support for Python 2.7 and Plone 5.
+  [jensens]
 
 - Hide uninstall profile from install view.
   [jensens]

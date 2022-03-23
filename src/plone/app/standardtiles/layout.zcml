@@ -1,0 +1,178 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
+
+  <plone:tile
+      name="plone.app.standardtiles.navigation"
+      title="Navigation tree"
+      description="A tile which displays a navigation tree"
+      schema=".navigation.INavigationTile"
+      class=".navigation.NavigationTile"
+      template="templates/navigation.pt"
+      permission="zope.Public"
+      add_permission="cmf.ManagePortal"
+      />
+  <adapter
+      factory=".navigation.DefaultRoot"
+      name="default"
+      />
+  <adapter factory=".navigation.QueryBuilder" />
+  <adapter factory=".navigation.NavtreeStrategy" />
+
+  <plone:tile
+      name="plone.app.standardtiles.sitemap"
+      title="Sitemap"
+      description="Display the navigation map of this site"
+      schema=".sitemap.ISitemapTile"
+      class=".sitemap.SitemapTile"
+      template="templates/navigation.pt"
+      permission="zope.Public"
+      add_permission="cmf.ManagePortal"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.colophon"
+      for="*"
+      class=".common.ColophonTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.footer"
+      for="*"
+      class=".common.FooterTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.site_actions"
+      for="*"
+      class=".common.SiteActionsTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.analytics"
+      for="*"
+      class=".common.AnalyticsTile"
+      permission="zope2.View"
+      />
+
+  <!-- layout tiles -->
+  <plone:tile
+      name="plone.app.standardtiles.anontools"
+      for="*"
+      class=".common.AnonToolsTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.membertools"
+      for="*"
+      class=".common.PersonalBarTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.personal_bar"
+      for="*"
+      class=".common.PersonalBarTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.searchbox"
+      for="*"
+      class=".common.SearchBoxTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.logo"
+      for="*"
+      class=".common.LogoTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.global_sections"
+      for="*"
+      class=".common.GlobalSectionsTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.global_statusmessage"
+      for="*"
+      class=".common.GlobalStatusMessageTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.path_bar"
+      for="*"
+      class=".common.PathBarTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.edit_bar"
+      for="*"
+      class=".common.ToolbarTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.toolbar"
+      for="*"
+      class=".common.ToolbarTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.nextprevious"
+      for="*"
+      class=".common.NextPreviousTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.document_actions"
+      for="*"
+      class=".common.DocumentActionsTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.languageselector"
+      for="*"
+      class=".common.LanguageSelectorTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.login"
+      title="Login"
+      description="A tile which displays a loginbox"
+      for="*"
+      class=".common.LoginTile"
+      template="templates/login.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.discussion"
+      title="Discussion"
+      description="Displays comments associated with the current item"
+      for="*"
+      class=".discussion.DiscussionTile"
+      permission="zope.Public"
+      add_permission="zope2.View"
+      />
+
+</configure>

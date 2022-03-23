@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rdf:RDF xmlns="http://purl.org/rss/1.0/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+>
+
+
+
+
+
+
+
+
+  <channel rdf:about="http://localhost:55440/plone/collection/RSS">
+    <title>Collection for RSS</title>
+    <link>http://localhost:55440/plone</link>
+
+    <description>
+
+
+
+    </description>
+
+
+
+
+    <syn:updatePeriod>daily</syn:updatePeriod>
+    <syn:updateFrequency>1</syn:updateFrequency>
+    <syn:updateBase>2011-09-22T10:23:57Z</syn:updateBase>
+
+
+    <image rdf:resource="http://localhost:55440/plone/logo.png" />
+
+    <items>
+      <rdf:Seq>
+
+        <rdf:li rdf:resource="http://localhost:55440/plone/doc-one" />
+
+
+        <rdf:li rdf:resource="http://localhost:55440/plone/doc-two" />
+
+
+        <rdf:li rdf:resource="http://localhost:55440/plone/doc-three" />
+
+
+        <rdf:li rdf:resource="http://localhost:55440/plone/a-simple-page" />
+
+      </rdf:Seq>
+    </items>
+
+  </channel>
+
+
+  <item rdf:about="http://localhost:55440/plone/doc-one">
+    <title>Doc one</title>
+    <link>http://localhost:55440/plone/doc-one</link>
+    <description />
+    <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    </content:encoded>
+    <dc:publisher>No publisher</dc:publisher>
+    <dc:creator>test_user_1_</dc:creator>
+    <dc:rights />
+    <dc:date>2011-09-22T10:24:20Z</dc:date>
+    <dc:type>Page</dc:type>
+  </item>
+
+
+  <item rdf:about="http://localhost:55440/plone/doc-two">
+    <title>Doc two</title>
+    <link>http://localhost:55440/plone/doc-two</link>
+    <description />
+    <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    </content:encoded>
+    <dc:publisher>No publisher</dc:publisher>
+    <dc:creator>test_user_1_</dc:creator>
+    <dc:rights />
+    <dc:date>2011-09-22T10:24:20Z</dc:date>
+    <dc:type>Page</dc:type>
+  </item>
+
+
+  <item rdf:about="http://localhost:55440/plone/doc-three">
+    <title>Doc three</title>
+    <link>http://localhost:55440/plone/doc-three</link>
+    <description />
+    <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    </content:encoded>
+    <dc:publisher>No publisher</dc:publisher>
+    <dc:creator>test_user_1_</dc:creator>
+    <dc:rights />
+    <dc:date>2011-09-22T10:24:20Z</dc:date>
+    <dc:type>Page</dc:type>
+  </item>
+
+
+  <item rdf:about="http://localhost:55440/plone/a-simple-page">
+    <title>A simple page</title>
+    <link>http://localhost:55440/plone/a-simple-page</link>
+    <description>A description</description>
+    <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    </content:encoded>
+    <dc:publisher>No publisher</dc:publisher>
+    <dc:creator>test_user_1_</dc:creator>
+    <dc:rights />
+    <dc:date>2011-09-22T10:24:17Z</dc:date>
+    <dc:type>Page</dc:type>
+  </item>
+
+
+
+
+
+</rdf:RDF>

@@ -1,0 +1,25 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    >
+
+  <genericsetup:upgradeStep
+      title="Upgrade registry"
+      description="provide additional registry configuration"
+      profile="plone.app.standardtiles:default"
+      source="1"
+      destination="1000"
+      handler="plone.app.standardtiles.upgrades.upgrade_registry"
+      sortkey="1"
+      />
+
+  <genericsetup:upgradeStep
+      title="Upgrade registry"
+      description="add content_views entry in registry"
+      profile="plone.app.standardtiles:default"
+      source="1000"
+      destination="1001"
+      handler="plone.app.standardtiles.upgrades.upgrade_registry"
+      sortkey="2"
+      />
+</configure>
