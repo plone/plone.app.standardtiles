@@ -29,6 +29,10 @@ jobs:
         run: |
           make VENV=off install
 
+      - name: Run Lint
+        run: |
+          make VENV=off lint
+
       - name: Run tests
         run: |
           make VENV=off test-ignore-warnings
