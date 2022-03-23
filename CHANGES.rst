@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.0.0 (unreleased)
-------------------
+3.0.0a1 (2022-03-23)
+--------------------
 
 - Fix showing private content while editing a tile.
   Fixes `issue 100 <https://github.com/plone/plone.app.standardtiles/issues/100>`_.
