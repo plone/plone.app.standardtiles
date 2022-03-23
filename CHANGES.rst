@@ -4,7 +4,7 @@ Changelog
 2.4.1 (unreleased)
 ------------------
 
-- Fixed CI: tests pass on Plonew 5.1 and 5.2, on all supported Plone versions.
+- Fixed CI: tests pass on Plone 5.1 and 5.2, on all supported Plone versions.
   [maurits]
 
 - Fix showing private content while editing a tile.
