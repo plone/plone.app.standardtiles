@@ -79,7 +79,8 @@
   </record>
 
   <records interface="plone.app.querystring.interfaces.IQueryField"
-           prefix="plone.app.querystring.field.getObjPositionInParent">
+           prefix="plone.app.querystring.field.getObjPositionInParent"
+  >
     <value key="sortable">True</value>
   </records>
 

@@ -1,24 +1,31 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:z3c="http://namespaces.zope.org/z3c"
     xmlns:browser="http://namespaces.zope.org/browser"
-    i18n_domain="plone.app.standardtiles">
+    xmlns:z3c="http://namespaces.zope.org/z3c"
+    i18n_domain="plone.app.standardtiles"
+    >
 
-  <include package="." file="configure.zcml" />
+  <include
+      package="."
+      file="configure.zcml"
+      />
 
-  <include package="z3c.form" file="meta.zcml" />
+  <include
+      package="z3c.form"
+      file="meta.zcml"
+      />
 
   <z3c:widgetTemplate
-      mode="display"
       widget=".testing.IFunkyWidget"
-      layer="z3c.form.interfaces.IFormLayer"
       template="tests/funky_display.pt"
+      layer="z3c.form.interfaces.IFormLayer"
+      mode="display"
       />
 
   <browser:page
-    name="custom_existingcontent_layout"
-    template="tests/custom_existingcontent_layout.pt"
-    permission="zope2.View"
-    for="*"
-    />
+      name="custom_existingcontent_layout"
+      for="*"
+      template="tests/custom_existingcontent_layout.pt"
+      permission="zope2.View"
+      />
 </configure>
