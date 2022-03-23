@@ -25,7 +25,7 @@ setup(
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    keywords="",
+    keywords="tiles content plone",
     author="Rob Gietema",
     author_email="rob@fourdigits.nl",
     url="https://github.com/plone/plone.app.standardtiles",
