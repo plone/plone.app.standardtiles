@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.1 (unreleased)
+2.4.1 (2022-03-23)
 ------------------
 
 - Fixed CI: tests pass on Plone 5.1 and 5.2, on all supported Plone versions.
