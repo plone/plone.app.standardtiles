@@ -14,7 +14,9 @@ Changelog
 - Fix membertools tile
   [agitator]
 
-- Breaking: Drop code marked as deprecated for  3.0.
+- Breaking: Drop code marked as deprecated for 3.0.
+  This includes ``plone.app.standardtiles.image``.
+  If anyone for any reason has still these long deprecated tile around, custom upgrades are needed.
   [jensens]
 
 - Manual code cleanup.
