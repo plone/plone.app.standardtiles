@@ -266,7 +266,7 @@ lint-isort: ${ISORT_SENTINEL} ## lint code-style isort (sorted imports in Python
 lint-zpretty: ${ZPRETTY_SENTINEL}   ## lint code-style zpretty (to XML/ZCML files)
 	@echo "$(OK_COLOR)Apply style zpretty rules to code in ${ADDONFOLDER}/*$(NO_COLOR)"
 	@find ${ADDONFOLDER} -name '*.zcml' -exec ${PYBIN}zpretty --check -z {} +
-	@find ${ADDONFOLDER} -name '*.xml'|grep -v locales|xargs zpretty --check -x
+	@find ${ADDONFOLDER} -name '*.xml'|grep -v locales|xargs ${PYBIN}zpretty --check -x
 
 .PHONY: lint ## lint all: check if complies with code-styles black, isort and zpretty
 lint: lint-black lint-isort lint-zpretty
