@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0.0a2 (unreleased)
+3.0.0a2 (2022-04-01)
 --------------------
 
 - Fixed KeyError ``results`` in tabular view.  Should have been ``batch``.
