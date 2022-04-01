@@ -12,7 +12,7 @@
                          registry original_context/portal_registry;
                          view_types python: registry.get('plone.types_use_view_action_in_listings', []);
                          view_about python: registry.get('plone.allow_anon_views_about', False)">
-            <div tal:condition="not: results">
+            <div tal:condition="not: batch">
                 <p><strong>Nothing to list</strong></p>
             </div>
 

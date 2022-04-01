@@ -4,7 +4,9 @@ Changelog
 2.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed KeyError ``results`` in tabular view.  Should have been ``batch``.
+  Fixes `issue 122 <https://github.com/plone/plone.app.standardtiles/issues/122>`_.
+  [maurits]
 
 
 2.4.1 (2022-03-23)
