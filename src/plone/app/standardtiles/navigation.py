@@ -1,13 +1,13 @@
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from plone.app.layout.navigation.defaultpage import isDefaultPage
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
 from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
+from plone.base.defaultpage import is_default_page
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.supermodel.model import Schema
@@ -169,7 +169,7 @@ class NavigationTile(Tile):
         root = self.getNavRoot()
         container = aq_parent(context)
         if aq_base(root) is aq_base(context) or (
-            aq_base(root) is aq_base(container) and isDefaultPage(container, context)
+            aq_base(root) is aq_base(container) and is_default_page(container, context)
         ):
             return "navTreeCurrentItem"
         return ""
