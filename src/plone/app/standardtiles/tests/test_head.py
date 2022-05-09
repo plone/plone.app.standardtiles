@@ -62,22 +62,20 @@ class TestHeadTiles(TestCase):
         nodes = root.xpath("//head/title")
         self.assertEqual(len(nodes), 1)
 
-    def test_stylesheets_tile(self):
-        self.unprivileged_browser.open(
-            self.portalURL + "/@@plone.app.standardtiles.stylesheets"
-        )
+    # def test_stylesheets_tile(self):
+    #     self.unprivileged_browser.open(
+    #         self.portalURL + "/@@plone.app.standardtiles.stylesheets"
+    #     )
+    #     self.assertIn("<link", self.unprivileged_browser.contents)
 
-        self.assertIn("<link", self.unprivileged_browser.contents)
-
-        root = fromstring(self.unprivileged_browser.contents)
-        nodes = root.xpath('//head/link[@rel="stylesheet"]')
-        self.assertGreaterEqual(len(nodes), 1)
+    #     root = fromstring(self.unprivileged_browser.contents)
+    #     nodes = root.xpath('//head/link[@rel="stylesheet"]')
+    #     self.assertGreaterEqual(len(nodes), 1)
 
     def test_javascripts_tile(self):
         self.unprivileged_browser.open(
             self.portalURL + "/@@plone.app.standardtiles.javascripts"
         )
-
         self.assertIn("<script", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)
