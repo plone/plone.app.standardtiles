@@ -4,7 +4,8 @@ Changelog
 3.0.0a3 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Fix ``isDefaultPage`` import which was moved to ``plone.base.defaultpage``
+  [petschki]
 
 
 3.0.0a2 (2022-04-01)
