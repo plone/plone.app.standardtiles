@@ -20,3 +20,4 @@ pip-selfcheck.json
 /coverage.xml
 /plone/app/standardtiles/utils.py.bak
 pyvenv.cfg
+/.vscode/settings.json
