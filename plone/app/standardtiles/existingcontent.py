@@ -162,11 +162,19 @@ class ExistingContentTile(Tile):
     def content_view(self):
         context = self.content_context
         if context is not None:
-            view_name = self.data.get("view_template") or context.getLayout()
             return api.content.get_view(
-                name=view_name, context=context, request=self.request
+                name=self.content_view_name, context=context, request=self.request
             )
         return None
+
+    @property
+    def content_view_name(self):
+        context = self.content_context
+        if context is not None:
+            view_name = self.data.get("view_template") or context.getLayout()
+        else:
+            view_name = ""
+        return view_name
 
     @property
     def item_macros(self):
@@ -174,7 +182,8 @@ class ExistingContentTile(Tile):
         if view and IBrowserView.providedBy(view):
             # IBrowserView
             if getattr(view, "index", None):
-                return view.index.macros
+                if hasattr(view.index, "macros"):
+                    return view.index.macros
         elif view:
             # FSPageTemplate
             return view.macros
@@ -241,32 +250,6 @@ class ExistingContentTile(Tile):
         if not additional_classes:
             return css_class
         return " ".join([css_class, additional_classes])
-
-    def __getattr__(self, name):
-        if name == self.id:
-            # We are traversing to this tile, for example via
-            # @@plone.app.standardtiles.existingcontent/3033115c0421469382d4d5297435f1ed
-            # See also Tile.__getitem__.
-            # Note that we are always anonymous at this point.
-            # This caused authorization problems before adding this check.
-            return self
-        # proxy attributes for this view to the selected view of the content
-        # item so views work
-        if (
-            name
-            in (
-                "data",
-                "content_context",
-                "content_view",
-                "item_macros",
-                "item_panels",
-                "getPhysicalPath",
-                "index_html",
-            )
-            or name.startswith(("_", "im_", "func_"))
-        ):
-            return Tile.__getattr__(self, name)
-        return getattr(self.content_view, name)
 
 
 @provider(IVocabularyFactory)
