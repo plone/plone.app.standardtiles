@@ -27,6 +27,8 @@ from zope.interface import provider
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
 
+import copy
+
 
 def uuidToObject(uuid):
     """Given a UUID, attempt to return a content object. Will return
@@ -185,10 +187,10 @@ class ExistingContentTile(Tile):
         if isinstance(html, str):
             html = html.encode("utf-8")
         serializer = getHTMLSerializer([html], pretty_print=False, encoding="utf-8")
-        panels = {
-            node.attrib["data-panel"]: node
+        panels = [
+            node
             for node in utils.panelXPath(serializer.tree)
-        }
+            ]
         if panels:
             request = self.request.clone()
             request.URL = self.content_context.absolute_url() + "/"
@@ -197,15 +199,25 @@ class ExistingContentTile(Tile):
             except RuntimeError:  # maximum recursion depth exceeded
                 return []
             clear = '<div style="clear: both;"></div>'
-            return [
-                "".join(
-                    [
-                        safe_unicode(serializer.serializer(child))
-                        for child in node.getchildren()
-                    ]
-                )
-                for name, node in panels.items()
-            ] + [clear]
+
+            result = []
+            serializer = serializer.serializer
+            for panel in panels:
+                panel_html = []
+                for child in panel.getchildren():
+                    # lxml element needs to be copied
+                    # to put it out of context of the root tree it comes from.
+                    # If this is not done, serializer will keep on serializing
+                    # after element is closed until last
+                    # element of the root tree.
+                    child_copy = copy.deepcopy(child)
+                    child_html = safe_unicode(serializer(child_copy))
+                    panel_html.append(child_html)
+                panel_html = "".join(panel_html)
+                result.append(panel_html)
+            result.append(clear)
+            return result
+
         return []
 
     @property
