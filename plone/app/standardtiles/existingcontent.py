@@ -173,9 +173,10 @@ class ExistingContentTile(Tile):
         context = self.content_context
         if context is not None:
             view_name = self.data.get("view_template") or context.getLayout()
-        else:
-            view_name = ""
-        return view_name
+            return view_name
+        return ""
+
+    _marker = dict()
 
     @property
     def item_macros(self):
@@ -183,7 +184,8 @@ class ExistingContentTile(Tile):
         if view and IBrowserView.providedBy(view):
             # IBrowserView
             if getattr(view, "index", None):
-                if hasattr(view.index, "macros"):
+                macros = getattr(view.index, "macros", self._marker)
+                if macros is not self._marker:
                     return view.index.macros
         elif view:
             # FSPageTemplate
