@@ -189,10 +189,7 @@ class ExistingContentTile(Tile):
         if isinstance(html, str):
             html = html.encode("utf-8")
         serializer = getHTMLSerializer([html], pretty_print=False, encoding="utf-8")
-        panels = [
-            node
-            for node in utils.panelXPath(serializer.tree)
-            ]
+        panels = [node for node in utils.panelXPath(serializer.tree)]
         if panels:
             request = self.request.clone()
             request.URL = self.content_context.absolute_url() + "/"
