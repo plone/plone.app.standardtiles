@@ -4,7 +4,8 @@ Changelog
 2.4.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Cleanup and fix ExistingContentTile in 5.2
+  [gotcha, Mychae1]
 
 
 2.4.2 (2022-04-01)
