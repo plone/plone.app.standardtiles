@@ -7,6 +7,9 @@ Changelog
 - Fix ``isDefaultPage`` import which was moved to ``plone.base.defaultpage``
   [petschki]
 
+- Cleanup and fix ExistingContentTile in 5.2
+  [gotcha, Mychae1]
+
 
 3.0.0a2 (2022-04-01)
 --------------------
