@@ -53,17 +53,13 @@
         <tal:block tal:condition="not:item_macro">
           <tal:comment tal:replace="nothing">
             This is a fallback if your default_view has no "content-core"
-            macro defined ... for historical reasons we fallback to listing view
-            because "summary_view" was the only case for that.
-            with latest p.a.contenttypes this is fixed...
+            macro defined.
+
+            Displays an error message for the developer.
           </tal:comment>
-          <metal:block use-macro="context/@@listing_view/macros/listing">
-            <metal:entries fill-slot="entries">
-              <metal:block use-macro="context/@@listing_view/macros/entries">
-              </metal:block>
-            </metal:entries>
-          </metal:block>
-        </tal:block>
+          <div>The template of the "<tal:view_name
+          replace="python:view.content_view_name" />" view of <tal:path
+          replace="python:context.absolute_url()" /> does not define a "content-core" macro.</div></tal:block>
       </tal:text>
       <div class="content-comments" tal:condition="show_comments"
            tal:define="comments view/comments_count">
@@ -76,13 +72,15 @@
   </body>
   </tal:block>
   <tal:block condition="not:nocall:view/item_macros">
-    <tal:panels define="panels view/item_panels">
+    <body>
+    <tal:panels define="panels python:view.item_panels">
       <div tal:condition="panels"
-           tal:repeat="panel view/item_panels" tal:replace="structure panel">
+           tal:repeat="panel panels" tal:replace="structure panel">
           content
       </div>
       <p tal:condition="not:panels">Selected view is not available for the content.</p>
     </tal:panels>
+    </body>
   </tal:block>
   </tal:block>
   <body tal:condition="not:nocall:view/content_context"></body>
