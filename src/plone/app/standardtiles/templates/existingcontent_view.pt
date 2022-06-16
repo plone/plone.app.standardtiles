@@ -58,8 +58,8 @@
             Displays an error message for the developer.
           </tal:comment>
           <div>The template of the "<tal:view_name
-          replace="view/content_view_name" />" view of <tal:path
-          replace="context/absolute_url" /> does not define a "content-core" macro.</div></tal:block>
+          replace="python:view.content_view_name" />" view of <tal:path
+          replace="python:context.absolute_url()" /> does not define a "content-core" macro.</div></tal:block>
       </tal:text>
       <div class="content-comments" tal:condition="show_comments"
            tal:define="comments view/comments_count">
@@ -73,7 +73,7 @@
   </tal:block>
   <tal:block condition="not:nocall:view/item_macros">
     <body>
-    <tal:panels define="panels view/item_panels">
+    <tal:panels define="panels python:view.item_panels">
       <div tal:condition="panels"
            tal:repeat="panel panels" tal:replace="structure panel">
           content
