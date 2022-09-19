@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4.3 (unreleased)
+2.4.3 (2022-09-19)
 ------------------
 
 - Cleanup and fix ExistingContentTile in 5.2
