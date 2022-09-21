@@ -74,11 +74,11 @@ class IContentListingTile(Schema):
 
     event_listing = schema.Bool(
         title=_(
-            u"label_event_listing",
-            default=u"Show results as event listing",
+            "label_event_listing",
+            default="Show results as event listing",
         ),
         description=_(
-            u"If enabled only events and their recurring occurrences are shown",
+            "If enabled only events and their recurring occurrences are shown",
         ),
         required=False,
         default=False,
@@ -248,7 +248,8 @@ class ContentListingTile(Tile):
             results = event_listing_view.events()
         else:
             results = self.results(
-                b_start=self.b_start, custom_query=contentFilter,
+                b_start=self.b_start,
+                custom_query=contentFilter,
             )
 
         results.b_start_str = self.b_start_str
@@ -259,9 +260,16 @@ class ContentListingTile(Tile):
         return getMultiAdapter((results, self.request), name=view)(**options)
 
     # Implementation of ICollection.results
-    def results(self, batch=True, b_start=0, b_size=None,
-                sort_on=None, limit=None, brains=False,
-                custom_query=None):
+    def results(
+        self,
+        batch=True,
+        b_start=0,
+        b_size=None,
+        sort_on=None,
+        limit=None,
+        brains=False,
+        custom_query=None,
+    ):
 
         if not b_size:
             b_size = self.item_count
@@ -275,9 +283,15 @@ class ContentListingTile(Tile):
         )
 
         return builder(
-            query=self.query, batch=batch, b_start=b_start, b_size=b_size,
-            sort_on=sort_on, sort_order=self.sort_order,
-            limit=limit, brains=brains, custom_query=custom_query
+            query=self.query,
+            batch=batch,
+            b_start=b_start,
+            b_size=b_size,
+            sort_on=sort_on,
+            sort_order=self.sort_order,
+            limit=limit,
+            brains=brains,
+            custom_query=custom_query,
         )
 
     @property
