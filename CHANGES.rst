@@ -4,7 +4,10 @@ Changelog
 2.4.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Added linkintegrity for html and existingcontent tile.
+  Code was moved here from ``plone.app.blocks``, and is only active when version 5.1.0 or higher is used.
+  Fixes `issue 95 <https://github.com/plone/plone.app.blocks/issues/95>`_.
+  [maurits]
 
 
 2.4.3 (2022-09-19)

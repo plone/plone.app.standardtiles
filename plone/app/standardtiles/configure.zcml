@@ -115,6 +115,11 @@
     <adapter factory=".field.titleDisplayTemplate" name="display" />
     <adapter factory=".field.descriptionDisplayTemplate" name="display" />
     <adapter factory=".field.namedImageDisplayTemplate" name="display" />
+    <!-- Linkintegrity in plone.app.blocks is available since 5.1.0. -->
+    <configure zcml:condition="installed plone.app.blocks.linkintegrity">
+      <adapter factory=".linkintegrity.HTMLTile" />
+      <adapter factory=".linkintegrity.ExistingContentTile" />
+    </configure>
 
     <include file="upgrades.zcml" />
 
