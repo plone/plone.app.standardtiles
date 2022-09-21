@@ -4,7 +4,10 @@ Changelog
 3.0.0b2 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Added linkintegrity for html and existingcontent tile.
+  Code is ported form version 2.5.0, and is only active when
+  plone.app.blocks version 6.0.2 or higher is used.
+  [petschki]
 
 
 3.0.0b1 (2022-06-24)
