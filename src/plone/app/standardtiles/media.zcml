@@ -1,0 +1,53 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
+
+  <plone:tile
+      name="plone.app.standardtiles.embed"
+      title="Embed"
+      description="Paste a URL here to embed external multimedia content. Supported sites can be found at http://noembed.com/#supported-sites"
+      for="*"
+      schema=".embed.IEmbedTile"
+      class=".embed.EmbedTile"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.rawembed"
+      title="Raw Embed"
+      description="Paste a raw html snippet for embedding in the page"
+      for="*"
+      schema=".rawembed.IRawEmbedTile"
+      class=".rawembed.RawEmbedTile"
+      template="templates/rawembed.pt"
+      permission="zope2.View"
+      add_permission="cmf.ModifyPortalContent"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.attachment"
+      title="Attachment"
+      description="A tile which displays a link to an uploaded file"
+      for="*"
+      schema=".attachment.IAttachmentTile"
+      class=".attachment.AttachmentTile"
+      template="templates/attachment_listing.pt"
+      permission="zope.Public"
+      add_permission="cmf.ModifyPortalContent"
+      zcml:condition="installed plone.formwidget.multifile"
+      />
+
+  <browser:page
+      name="download"
+      for=".attachment.AttachmentTile"
+      class=".attachment.AttachmentTileDownload"
+      permission="zope2.View"
+      zcml:condition="installed plone.formwidget.multifile"
+      />
+
+</configure>

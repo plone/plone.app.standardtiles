@@ -1,7 +1,4 @@
-exclude .coveragerc
-exclude bootstrap.py buildout.cfg
-exclude bootstrap.sh
-exclude test-*.x.cfg
-global-exclude *.pyc
-include setup.py *.txt *.rst *.GPL
-recursive-include plone *
+exclude .coveragerc .installed.txt constraints-mxdev.txt requirements-mxdev.txt
+global-exclude *.pyc __pycache__
+include setup.py LICENSE.txt *.rst *.GPL
+recursive-include src *

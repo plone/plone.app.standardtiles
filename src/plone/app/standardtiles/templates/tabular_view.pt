@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      i18n:domain="plone">
+    <body>
+        <div tal:define="batch context;
+                         original_context nocall:options/original_context|context;
+                         pas_member original_context/@@pas_member;
+                         registry original_context/portal_registry;
+                         view_types python: registry.get('plone.types_use_view_action_in_listings', []);
+                         view_about python: registry.get('plone.allow_anon_views_about', False)">
+            <div tal:condition="not: batch">
+                <p><strong>Nothing to list</strong></p>
+            </div>
+
+            <div tal:condition="batch">
+
+                    <table class="listing" summary="Content listing" i18n:attributes="summary">
+                    <thead>
+                        <tr>
+                            <th class="nosort">&nbsp;
+                                <tal:title i18n:translate="">
+                                    Title
+                                </tal:title>&nbsp;
+                            </th>
+                            <th class="nosort" tal:condition="view_about">&nbsp;
+                                <tal:title i18n:translate="">
+                                    Author
+                                </tal:title>
+                                &nbsp;
+                            </th>
+                            <th class="nosort">
+                                &nbsp;
+                                <tal:title i18n:translate="">
+                                    Type
+                                </tal:title>
+                                &nbsp;
+                            </th>
+                            <th class="nosort">
+                                &nbsp;
+                                <tal:modified i18n:translate="">
+                                    Modified
+                                </tal:modified>&nbsp;
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tal:results repeat="item batch">
+                            <tal:block tal:define="item_url item/getURL|item/absolute_url;
+                                                   item_view_url python: item_url + '/view' if item.portal_type in view_types else item_url;
+                                                   item_title_or_id item/Title|item/title_or_id;
+                                                   item_type item/portal_type;
+                                                   item_description item/Description;
+                                                   item_creator item/Creator|item/creator;
+                                                   item_modified item/ModificationDate|item/modified">
+
+                            <tr tal:define="oddrow repeat/item/odd;"
+                                tal:attributes="class python:oddrow and 'even' or 'odd'" >
+                                <td>
+                                    <a href="#" tal:attributes="href item_view_url" tal:content="item_title_or_id">
+                                        Item Title
+                                    </a>
+                                </td>
+                                <td tal:condition="view_about">
+                                    <tal:name tal:condition="item_creator" tal:define="author python:pas_member.info(item_creator)">
+                                        <a href="#"
+                                           tal:attributes="href string:author/${author/username}"
+                                           tal:content="author/username"
+                                           tal:omit-tag="not:author">
+                                            Bob Dobalina
+                                        </a>
+                                    </tal:name>
+                                </td>
+                                <td tal:content="item_type">
+                                    Page
+                                </td>
+                                <td class="pat-moment" tal:content="python: item.modified.fCommon()"
+                                   data-pat-moment="format:MMMM Do, YYYY h:mm a;"
+                                   data-date="${python: item.modified.ISO8601()}" />
+                        </tal:block>
+
+                        </tal:results>
+                    </tbody>
+                </table>
+                <div metal:use-macro="original_context/batch_macros/macros/navigation" />
+            </div>
+        </div>
+    </body>
+</html>

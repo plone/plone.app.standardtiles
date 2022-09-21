@@ -1,11 +1,57 @@
 Changelog
 =========
 
-2.4.1 (unreleased)
-------------------
+3.0.0b2 (unreleased)
+--------------------
 
 - Content listing: Expand recurring events
   [petschki]
+
+
+3.0.0b1 (2022-06-24)
+--------------------
+
+- Fix ``isDefaultPage`` import which was moved to ``plone.base.defaultpage``
+  [petschki]
+
+- Cleanup and fix ExistingContentTile in 5.2
+  [gotcha, Mychae1]
+
+
+3.0.0a2 (2022-04-01)
+--------------------
+
+- Fixed KeyError ``results`` in tabular view.  Should have been ``batch``.
+  Fixes `issue 122 <https://github.com/plone/plone.app.standardtiles/issues/122>`_.
+  [maurits]
+
+
+3.0.0a1 (2022-03-23)
+--------------------
+
+- Fix showing private content while editing a tile.
+  Fixes `issue 100 <https://github.com/plone/plone.app.standardtiles/issues/100>`_.
+  [maurits]
+
+- Fix tests to respect BS5 Markup of Plone 6.
+  [jensens]
+
+- Fix membertools tile
+  [agitator]
+
+- Breaking: Drop code marked as deprecated for 3.0.
+  This includes ``plone.app.standardtiles.image``.
+  If anyone for any reason has still these long deprecated tile around, custom upgrades are needed.
+  [jensens]
+
+- Manual code cleanup.
+  [jensens]
+
+- Breaking: Drop Support for Python 2.7 and Plone 5.
+  [jensens]
+
+- Hide uninstall profile from install view.
+  [jensens]
 
 
 2.4.0 (2021-03-24)

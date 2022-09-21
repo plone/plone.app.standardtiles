@@ -1,0 +1,86 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
+
+  <plone:tile
+      name="plone.app.standardtiles.headtitle"
+      for="*"
+      class=".head.TitleTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.stylesheets"
+      for="*"
+      class=".head.StylesheetsTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.javascripts"
+      for="*"
+      class=".head.JavascriptsTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.faviconlink"
+      for="*"
+      class=".head.FaviconLinkTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.authorlink"
+      for="*"
+      class=".head.AuthorLinkTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.dublincore"
+      for="*"
+      class=".head.DublinCoreTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.navigationlink"
+      for="*"
+      class=".head.NavigationLinkTile"
+      template="templates/navigationlink.pt"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.searchlink"
+      for="*"
+      class=".head.SearchLinkTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.rsslink"
+      for="*"
+      class=".head.RSSLinkTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.canonical_url"
+      for="*"
+      class=".head.CanonicalUrlTile"
+      permission="zope2.View"
+      />
+
+  <plone:tile
+      name="plone.app.standardtiles.socialtags"
+      for="*"
+      class=".head.SocialTile"
+      permission="zope2.View"
+      />
+
+</configure>
