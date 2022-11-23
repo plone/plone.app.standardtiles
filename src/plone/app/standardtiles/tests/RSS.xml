@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <rdf:RDF xmlns="http://purl.org/rss/1.0/"
          xmlns:dc="http://purl.org/dc/elements/1.1/"
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -57,7 +57,7 @@
     <link>http://localhost:55440/plone/doc-one</link>
     <description />
     <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/">
-    </content:encoded>
+</content:encoded>
     <dc:publisher>No publisher</dc:publisher>
     <dc:creator>test_user_1_</dc:creator>
     <dc:rights />
@@ -71,7 +71,7 @@
     <link>http://localhost:55440/plone/doc-two</link>
     <description />
     <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/">
-    </content:encoded>
+</content:encoded>
     <dc:publisher>No publisher</dc:publisher>
     <dc:creator>test_user_1_</dc:creator>
     <dc:rights />
@@ -85,7 +85,7 @@
     <link>http://localhost:55440/plone/doc-three</link>
     <description />
     <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/">
-    </content:encoded>
+</content:encoded>
     <dc:publisher>No publisher</dc:publisher>
     <dc:creator>test_user_1_</dc:creator>
     <dc:rights />
@@ -99,7 +99,7 @@
     <link>http://localhost:55440/plone/a-simple-page</link>
     <description>A description</description>
     <content:encoded xmlns:content="http://purl.org/rss/1.0/modules/content/">
-    </content:encoded>
+</content:encoded>
     <dc:publisher>No publisher</dc:publisher>
     <dc:creator>test_user_1_</dc:creator>
     <dc:rights />

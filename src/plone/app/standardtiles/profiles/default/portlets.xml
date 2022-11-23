@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <portlets>
   <portletmanager name="plone.app.standardtiles.portletManager"
                   type="plone.app.standardtiles.interfaces.IPortletManager"
