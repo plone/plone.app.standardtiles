@@ -126,6 +126,12 @@
       name="display"
       />
 
+  <!-- Linkintegrity in plone.app.blocks is available since 6.0.2. -->
+  <configure zcml:condition="installed plone.app.blocks.linkintegrity">
+    <adapter factory=".linkintegrity.HTMLTile" />
+    <adapter factory=".linkintegrity.ExistingContentTile" />
+  </configure>
+
   <include file="upgrades.zcml" />
 
 </configure>
