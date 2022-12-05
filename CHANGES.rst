@@ -1,8 +1,8 @@
 Changelog
 =========
 
-3.0.0b2 (unreleased)
---------------------
+3.0.0 (2022-12-05)
+------------------
 
 - Added linkintegrity for html and existingcontent tile.
   Code is ported form version 2.5.0, and is only active when
