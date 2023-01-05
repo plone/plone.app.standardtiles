@@ -270,9 +270,8 @@ class GlobalStatusMessageTile(ProxyViewletTile):
 
 class DocumentBylineTile(ProxyViewletTile):
     """A document byline tile."""
-
-    manager = "plone.belowcontenttitle"
-    viewlet = "plone.belowcontenttitle.documentbyline"
+    manager = 'plone.belowcontenttitle'
+    viewlet = 'plone.documentbyline'
 
 
 class LockInfoTile(ProxyViewletTile):
