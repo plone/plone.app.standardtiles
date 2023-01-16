@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "3.0.0b2.dev0"
+version = "3.0.1.dev0"
 
 
 setup(
@@ -18,9 +18,10 @@ setup(
         "Framework :: Plone :: 6.0",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
         "Topic :: Software Development :: Libraries :: Python Modules",
@@ -35,11 +36,12 @@ setup(
     namespace_packages=["plone", "plone.app"],
     include_package_data=True,
     zip_safe=False,
+    python_requires=">=3.8",
     install_requires=[
         "plone.app.blocks",
         "plone.app.tiles>=3.1.2",
         "plone.subrequest",
-        "plone.tiles>=1.8.0.dev0",
+        "plone.tiles>=1.8.0",
         "Products.CMFPlone>=6.0.0a3",
         "requests",
         "setuptools",

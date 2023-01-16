@@ -272,7 +272,7 @@ class DocumentBylineTile(ProxyViewletTile):
     """A document byline tile."""
 
     manager = "plone.belowcontenttitle"
-    viewlet = "plone.belowcontenttitle.documentbyline"
+    viewlet = "plone.documentbyline"
 
 
 class LockInfoTile(ProxyViewletTile):

@@ -1,10 +1,22 @@
 Changelog
 =========
 
-3.0.0b2 (unreleased)
---------------------
+3.0.1 (unreleased)
+------------------
 
 - Content listing: Expand recurring events
+  [petschki]
+
+- Fix byline viewlet name
+  [frapell]
+
+
+3.0.0 (2022-12-05)
+------------------
+
+- Added linkintegrity for html and existingcontent tile.
+  Code is ported form version 2.5.0, and is only active when
+  plone.app.blocks version 6.0.2 or higher is used.
   [petschki]
 
 

@@ -255,17 +255,17 @@ FORMATTING: style
 
 .PHONY: lint-black
 lint-black: ${BLACK_SENTINEL}  ## lint code-style black (to Python files)
-	@echo "$(OK_COLOR)Lint black rules to code in ${ADDONFOLDER}/*$(NO_COLOR)"
+	@echo "$(OK_COLOR)Check style black rules of code in ${ADDONFOLDER}/*$(NO_COLOR)"
 	@${PYBIN}black --check ${ADDONFOLDER}
 
 .PHONY: lint-isort
 lint-isort: ${ISORT_SENTINEL} ## lint code-style isort (sorted imports in Python files)
-	@echo "$(OK_COLOR)Apply style isort rules to code in ${ADDONFOLDER}/*$(NO_COLOR)"
+	@echo "$(OK_COLOR)Check style isort rules of code in ${ADDONFOLDER}/*$(NO_COLOR)"
 	@${PYBIN}isort --check-only ${ADDONFOLDER}
 
 .PHONY: lint-zpretty
 lint-zpretty: ${ZPRETTY_SENTINEL}   ## lint code-style zpretty (to XML/ZCML files)
-	@echo "$(OK_COLOR)Apply style zpretty rules to code in ${ADDONFOLDER}/*$(NO_COLOR)"
+	@echo "$(OK_COLOR)Check style zpretty rules of code in ${ADDONFOLDER}/*$(NO_COLOR)"
 	@find ${ADDONFOLDER} -name '*.zcml' -exec ${PYBIN}zpretty --check -z {} +
 	@find ${ADDONFOLDER} -name '*.xml'|grep -v locales|xargs ${PYBIN}zpretty --check -x
 
