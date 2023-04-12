@@ -15,7 +15,7 @@ from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
 from Products.CMFCore.interfaces import IFolderish
 from Products.CMFCore.utils import getToolByName
-from Products.CMFDynamicViewFTI.interface import IBrowserDefault
+from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
 from Products.CMFPlone.interfaces import INonStructuralFolder
