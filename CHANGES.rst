@@ -4,6 +4,9 @@ Changelog
 3.0.1 (unreleased)
 ------------------
 
+- Fix broken CMFDynamicViewFTI import.
+  [thet]
+
 - Fix byline viewlet name
   [frapell]
 
