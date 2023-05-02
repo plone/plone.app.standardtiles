@@ -1,11 +1,18 @@
 Changelog
 =========
 
-3.0.1 (unreleased)
+3.0.2 (unreleased)
 ------------------
 
 - Content listing: Expand recurring events
   [petschki]
+
+
+3.0.1 (2023-04-22)
+------------------
+
+- Fix broken CMFDynamicViewFTI import.
+  [thet]
 
 - Fix byline viewlet name
   [frapell]
