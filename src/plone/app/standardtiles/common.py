@@ -70,7 +70,6 @@ class BaseViewletTile(Tile):
 
 
 class ProxyViewletTile(BaseViewletTile):
-
     section = "body"
     manager = None
     viewlet = None

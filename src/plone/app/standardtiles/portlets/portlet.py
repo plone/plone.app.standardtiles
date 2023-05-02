@@ -14,7 +14,6 @@ from zope.interface import Interface
 
 
 class IPortletTile(Interface):
-
     form.omitted("portlet_hash")
     portlet_hash = schema.TextLine(title=_("Portlet hash"), required=False)
 

@@ -12,7 +12,6 @@ import Acquisition
 
 
 class IViewletManagerTile(Interface):
-
     manager = schema.TextLine(title=_("Name of the viewlet manager."), required=True)
 
     view = schema.TextLine(title=_("Name of the view"), required=False)

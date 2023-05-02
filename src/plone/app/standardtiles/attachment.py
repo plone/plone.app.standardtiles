@@ -17,7 +17,6 @@ from zope.publisher.interfaces import NotFound
 
 
 class IAttachmentTile(Schema):
-
     widget(files=MultiFileFieldWidget)
     files = schema.List(
         title=_("Upload files"),

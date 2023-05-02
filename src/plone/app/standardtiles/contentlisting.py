@@ -270,7 +270,6 @@ class ContentListingTile(Tile):
         brains=False,
         custom_query=None,
     ):
-
         if not b_size:
             b_size = self.item_count
         if not sort_on:
