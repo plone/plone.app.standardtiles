@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1.0 (unreleased)
+3.1.0 (2023-05-04)
 ------------------
 
 - Add option to enable the Eventlisting view (this expands recurring events).
