@@ -1,10 +1,12 @@
 Changelog
 =========
 
-3.0.2 (unreleased)
+3.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add option to enable the Eventlisting view (this expands recurring events).
+  NOTE: The listing will only show Event types.
+  [petschki]
 
 
 3.0.1 (2023-04-22)

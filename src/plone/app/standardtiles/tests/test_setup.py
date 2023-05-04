@@ -11,7 +11,6 @@ PROJECTNAME = "plone.app.standardtiles"
 
 
 class InstallTestCase(unittest.TestCase):
-
     layer = PASTANDARDTILES_INTEGRATION_TESTING
 
     def setUp(self):
@@ -23,7 +22,6 @@ class InstallTestCase(unittest.TestCase):
 
 
 class UninstallTestCase(unittest.TestCase):
-
     layer = PASTANDARDTILES_INTEGRATION_TESTING
 
     def setUp(self):
@@ -44,7 +42,6 @@ class UninstallTestCase(unittest.TestCase):
         return [v for v in self.registry[record] if v.startswith(PROJECTNAME)]
 
     def test_registry_cleaned(self):
-
         self.assertEqual(self.filter_record("plone.app.tiles"), [])
 
         self.assertNotIn("plone.app.standardtiles.listing_views", self.registry)

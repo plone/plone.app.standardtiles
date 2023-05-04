@@ -96,7 +96,6 @@ class DexterityFieldTile(WidgetsView, Tile):
 
     def updateWidgets(self, prefix=None):
         if self.field is not None:
-
             if self.field in self.fields:
                 self.fields = self.fields.select(self.field)
             else:

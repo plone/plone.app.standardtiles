@@ -17,23 +17,27 @@
         <dl>
           <tal:entry repeat="item batch">
             <dt tal:define="item_has_image python:item.getIcon;
-                            item_url python: item.portal_type in view_types and item.getURL() + '/view' or item.getURL()">
+                            item_url item/getURL|item/absolute_url;
+                            item_type item/portal_type;
+                            item_creator item/Creator|item/creator;
+                            item_modified item/ModificationDate|item/modified;
+                            item_view_url python: item_url + '/view' if item.portal_type in view_types else item_url">
               <span class="summary">
                 <img tal:condition="item_has_image"
-                             tal:attributes="src string:${item/getURL}/@@images/image/tile" />
+                             tal:attributes="src string:${item_url}/@@images/image/tile" />
                 <a href="#"
-                   tal:attributes="href item_url;
+                   tal:attributes="href item_view_url;
                                    class string:${item/ContentTypeClass} ${item/review_state}"
                    tal:content="item/Title|item/getId" />
               </span>
               <span class="documentByLine">
-                <tal:comment condition="python:item.Type() == 'Event'">
+                <tal:comment condition="python:item_type == 'Event'">
                   <!-- Removed special handling for Event type for now.-->
                 </tal:comment>
                 <tal:byline condition="show_about">
                   &mdash;
                   <span class="documentAuthor"
-                        tal:define="author python:pas_member.info(item.Creator())"
+                        tal:define="author python:pas_member.info(item_creator)"
                         i18n:translate="label_by_author">
                     by
                     <a href="#"
@@ -44,12 +48,12 @@
                       Bob Dobalina
                     </a>
                   </span>
-                  <tal:modified condition="python: item.Type() != 'Event'">
+                  <tal:modified condition="python: item_type != 'Event'">
                     &mdash;
                     <tal:mod i18n:translate="">
                       last modified
                     </tal:mod>
-                    <span tal:replace="python:toLocalizedTime(item.ModificationDate())">
+                    <span tal:replace="python:toLocalizedTime(item_modified)">
                       August 16, 2001 at 23:35:59
                     </span>
                   </tal:modified>

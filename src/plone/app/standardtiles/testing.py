@@ -39,7 +39,6 @@ MANAGER_USER_PASSWORD = "topsecret"
 
 
 class RequestsGetMock:
-
     ok = True
     url = None
 

@@ -72,6 +72,18 @@ class IContentListingTile(Schema):
         default=False,
     )
 
+    event_listing = schema.Bool(
+        title=_(
+            "label_event_listing",
+            default="Show results as event listing",
+        ),
+        description=_(
+            "If enabled only events and their recurring occurrences are shown",
+        ),
+        required=False,
+        default=False,
+    )
+
     sort_on = schema.TextLine(
         title=_("label_sort_on", default="Sort on"),
         description=_("Sort the collection on this index"),
@@ -214,33 +226,73 @@ class ContentListingTile(Tile):
 
     def contents(self):
         """Search results"""
-        builder = getMultiAdapter(
-            (self.context, self.request), name="querybuilderresults"
-        )
 
         # Include query parameters from request if not set to ignore
         contentFilter = {}
         if not self.ignore_request_params:
             contentFilter = dict(self.request.get("contentFilter", {}))
 
-        accessor = builder(
-            query=self.query,
-            sort_on=self.sort_on or "getObjPositionInParent",
-            sort_order=self.sort_order,
-            limit=self.limit,
-            batch=True,
-            b_start=self.b_start,
-            b_size=self.item_count or 30,
-            brains=False,
-            custom_query=contentFilter,
-        )
+        # This should be an event listing
+        # -> re-use plone.app.event.browser.event_listing logic
+        if self.data.get("event_listing"):
+            # Get results from plone.app.event.browser.event_listing
+            event_listing_view = getMultiAdapter(
+                (self, self.request), name="event_listing"
+            )
+            # Enable contentlisting query lookup
+            event_listing_view.is_collection = True
+            # Mandatory information for batching
+            event_listing_view.b_start = self.b_start
+            event_listing_view.b_size = self.item_count
+            event_listing_view.limit = self.limit
 
-        accessor.b_start_str = self.b_start_str
+            results = event_listing_view.events()
+        else:
+            results = self.results(
+                b_start=self.b_start,
+                custom_query=contentFilter,
+            )
+
+        results.b_start_str = self.b_start_str
 
         view = self.view_template or "listing_view"
         options = dict(original_context=self.context)
         alsoProvides(self.request, IContentListingTileLayer)
-        return getMultiAdapter((accessor, self.request), name=view)(**options)
+        return getMultiAdapter((results, self.request), name=view)(**options)
+
+    # Implementation of ICollection.results
+    def results(
+        self,
+        batch=True,
+        b_start=0,
+        b_size=None,
+        sort_on=None,
+        limit=None,
+        brains=False,
+        custom_query=None,
+    ):
+        if not b_size:
+            b_size = self.item_count
+        if not sort_on:
+            sort_on = self.sort_on
+        if not limit:
+            limit = self.limit
+
+        builder = getMultiAdapter(
+            (self.context, self.request), name="querybuilderresults"
+        )
+
+        return builder(
+            query=self.query,
+            batch=batch,
+            b_start=b_start,
+            b_size=b_size,
+            sort_on=sort_on,
+            sort_order=self.sort_order,
+            limit=limit,
+            brains=brains,
+            custom_query=custom_query,
+        )
 
     @property
     def tile_class(self):

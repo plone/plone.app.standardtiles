@@ -10,7 +10,6 @@ from zope import schema
 
 
 class IHTMLTile(Schema):
-
     ignore_querystring("content")
     primary("content")
     content = schema.Text(

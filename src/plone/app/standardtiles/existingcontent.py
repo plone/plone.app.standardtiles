@@ -64,7 +64,6 @@ def uuidToCatalogBrainUnrestricted(uuid):
 
 
 class IExistingContentTile(model.Schema):
-
     content_uid = schema.Choice(
         title=_("Select an existing content"),
         required=True,

@@ -14,7 +14,6 @@ from zope.interface import Interface
 
 
 class IPortletTile(Interface):
-
     form.omitted("portlet_hash")
     portlet_hash = schema.TextLine(title=_("Portlet hash"), required=False)
 
@@ -63,4 +62,4 @@ class PortletTile(Tile):
             # if this is a deferred load, prepare now the data
             renderer.deferred_update()
 
-        return f"<html><body>%s</body></html>"
+        return f"<html><body>{renderer.render()}</body></html>"
