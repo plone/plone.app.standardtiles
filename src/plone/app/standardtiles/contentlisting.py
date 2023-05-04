@@ -244,6 +244,7 @@ class ContentListingTile(Tile):
             # Mandatory information for batching
             event_listing_view.b_start = self.b_start
             event_listing_view.b_size = self.item_count
+            event_listing_view.limit = self.limit
 
             results = event_listing_view.events()
         else:
