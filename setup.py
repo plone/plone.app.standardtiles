@@ -2,7 +2,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = "3.0.2.dev0"
+version = "3.1.0.dev0"
 
 
 setup(
@@ -39,10 +39,10 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "plone.app.blocks",
-        "plone.app.tiles>=3.1.2",
+        "plone.app.tiles>=4.0.0",
         "plone.subrequest",
         "plone.tiles>=1.8.0",
-        "Products.CMFPlone>=6.0.0a3",
+        "Products.CMFPlone>=6.0.0",
         "requests",
         "setuptools",
     ],

@@ -1,10 +1,11 @@
 Changelog
 =========
 
-3.0.2 (unreleased)
+3.1.0 (unreleased)
 ------------------
 
-- Content listing: Expand recurring events
+- Add option to enable the Eventlisting view (this expands recurring events).
+  NOTE: The listing will only show Event types.
   [petschki]
 
 
