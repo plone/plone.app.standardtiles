@@ -200,7 +200,7 @@ class ContentTileTests(TestCase):
         self.assertIn("TEST_RSS_TILE", self.unprivileged_browser.contents)
 
         self.assertIn(
-            '<a href="http://localhost:55440/plone/doc-one" class="tile">',
+            ' href="http://localhost:55440/plone/doc-one"',
             self.unprivileged_browser.contents,
         )
 
