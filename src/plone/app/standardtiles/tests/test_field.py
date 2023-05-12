@@ -185,7 +185,7 @@ class TestFieldTile(TestCase):
                 "funky",
             )
         )
-        self.assertIn('<h1 ', self.browser.contents)
+        self.assertIn("<h1 ", self.browser.contents)
         self.assertIn(' id="form-widgets-funky"', self.browser.contents)
         self.assertIn(' class="funky-widget', self.browser.contents)
         self.assertIn(">Oh yeah, baby!</h1>", self.browser.contents)
