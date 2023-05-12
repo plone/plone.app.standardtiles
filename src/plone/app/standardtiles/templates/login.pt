@@ -1,136 +1,191 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="plone">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      xml:lang="en"
+      i18n:domain="plone"
+>
   <body>
     <tal:block condition="view/show">
       <dl class="portlet portletLogin"
-          tal:condition="view/available">
+          tal:condition="view/available"
+      >
         <dt class="portletHeader">
           <span class="portletTopLeft"></span>
-          <a href="#"
-             class="tile"
-             tal:attributes="href view/login_form"
-             i18n:translate="">
+          <a class="tile"
+             href="#"
+             tal:attributes="
+               href view/login_form;
+             "
+             i18n:translate=""
+          >
             Log in
           </a>
           <span class="portletTopRight"></span>
         </dt>
         <dd class="portletItem odd"
-            tal:define="ac_name view/login_name;
-                        ac_password view/login_password">
-          <form action="login_form"
-                id="loginform"
+            tal:define="
+              ac_name view/login_name;
+              ac_password view/login_password;
+            "
+        >
+          <form id="loginform"
+                action="login_form"
                 method="post"
-                tal:attributes="action view/login_form">
+                tal:attributes="
+                  action view/login_form;
+                "
+          >
             <div>
-              <input type="hidden"
-                     name="form.submitted"
-                     value="1" />
-              <input type="hidden"
-                     name="came_from"
+              <input name="form.submitted"
+                     type="hidden"
+                     value="1"
+              />
+              <input name="came_from"
+                     type="hidden"
                      value=""
-                     tal:attributes="value context/@@plone_context_state/current_page_url" />
-              <input type="hidden"
+                     tal:attributes="
+                       value context/@@plone_context_state/current_page_url;
+                     "
+              />
+              <input id="js_enabled"
                      name="js_enabled"
-                     id="js_enabled"
-                     value="0" />
-              <input type="hidden"
+                     type="hidden"
+                     value="0"
+              />
+              <input id="cookies_enabled"
                      name="cookies_enabled"
-                     id="cookies_enabled"
-                     value="" />
-              <input type="hidden"
+                     type="hidden"
+                     value=""
+              />
+              <input id="login_name"
                      name="login_name"
-                     id="login_name"
-                     value="" />
-              <input type="hidden"
+                     type="hidden"
+                     value=""
+              />
+              <input id="pwd_empty"
                      name="pwd_empty"
-                     id="pwd_empty"
-                     value="0" />
+                     type="hidden"
+                     value="0"
+              />
             </div>
             <div class="field"
-                 tal:define="use_email_as_login context/portal_properties/site_properties/use_email_as_login|nothing;">
+                 tal:define="
+                   use_email_as_login context/portal_properties/site_properties/use_email_as_login|nothing;
+                 "
+            >
               <tal:loginname condition="not:use_email_as_login">
                 <label for=""
-                       tal:attributes="for ac_name"
-                       i18n:translate="">
+                       tal:attributes="
+                         for ac_name;
+                       "
+                       i18n:translate=""
+                >
                   Login Name
                 </label>
                 <br />
-                <input type="text"
+                <input alt="Login Name"
                        size="10"
-                       alt="Login Name"
-                       tal:attributes="name ac_name; id ac_name;
-                                       value python:request.get(ac_name, '');"
-                       i18n:attributes="alt" />
+                       type="text"
+                       tal:attributes="
+                         name ac_name;
+                         id ac_name;
+                         value python:request.get(ac_name, '');
+                       "
+                       i18n:attributes="alt"
+                />
               </tal:loginname>
               <tal:email condition="use_email_as_login">
                 <label for=""
-                       tal:attributes="for ac_name"
-                       i18n:translate="">
+                       tal:attributes="
+                         for ac_name;
+                       "
+                       i18n:translate=""
+                >
                   E-mail
                 </label>
                 <br />
-                <input type="text"
+                <input alt="E-mail"
                        size="10"
-                       alt="E-mail"
-                       tal:attributes="name ac_name; id ac_name;
-                                       value python:request.get(ac_name, '');"
-                       i18n:attributes="alt" />
+                       type="text"
+                       tal:attributes="
+                         name ac_name;
+                         id ac_name;
+                         value python:request.get(ac_name, '');
+                       "
+                       i18n:attributes="alt"
+                />
               </tal:email>
             </div>
             <div class="field">
               <label for=""
-                     tal:attributes="for ac_password"
-                     i18n:translate="">
+                     tal:attributes="
+                       for ac_password;
+                     "
+                     i18n:translate=""
+              >
                 Password
               </label>
               <br />
-              <input type="password"
+              <input alt="Password"
                      size="10"
-                     alt="Password"
-                     tal:attributes="name ac_password; id ac_password;"
-                     i18n:attributes="alt" />
+                     type="password"
+                     tal:attributes="
+                       name ac_password;
+                       id ac_password;
+                     "
+                     i18n:attributes="alt"
+              />
             </div>
-            <div i18n:translate=""
-                 class="cookiesMessage portalMessage"
-                 style="display:none">
+            <div class="cookiesMessage portalMessage"
+                 style="display:none"
+                 i18n:translate=""
+            >
               Cookies are not enabled. You must enable cookies before you
               can log in.
             </div>
             <div class="formControls">
               <input class="context"
-                     type="submit"
-                     name="submit"
-                     value="Log in"
                      alt="Log in"
-                     i18n:attributes="value alt"/>
+                     name="submit"
+                     type="submit"
+                     value="Log in"
+                     i18n:attributes="value alt"
+              />
             </div>
           </form>
         </dd>
         <dd class="portletItem even"
-            tal:condition="view/can_request_password">
-          <a href="mail_password_form"
-             class="tile"
-             tal:attributes="href view/mail_password_form">
+            tal:condition="view/can_request_password"
+        >
+          <a class="tile"
+             href="mail_password_form"
+             tal:attributes="
+               href view/mail_password_form;
+             "
+          >
             <tal:block replace="structure context/info_icon.png" />
             <span tal:omit-tag=""
-                  i18n:translate="">
+                  i18n:translate=""
+            >
               Forgot your password?
             </span>
           </a>
         </dd>
         <dd class="portletItem lastItem"
-            tal:condition="view/can_register">
-          <a href=""
-             class="tile"
-             tal:attributes="href view/join_action">
-            <tal:block replace="structure context/user.png"/>
+            tal:condition="view/can_register"
+        >
+          <a class="tile"
+             href=""
+             tal:attributes="
+               href view/join_action;
+             "
+          >
+            <tal:block replace="structure context/user.png" />
             <span tal:omit-tag=""
-                  i18n:translate="">
+                  i18n:translate=""
+            >
               New user?
             </span>
           </a>
@@ -139,16 +194,19 @@
         </dd>
       </dl>
       <dl class="portlet portletLogin"
-          tal:condition="not:view/available">
+          tal:condition="not:view/available"
+      >
         <dt class="portletHeader">
-          <a href="#"
-             class="tile"
-             i18n:translate="">
+          <a class="tile"
+             href="#"
+             i18n:translate=""
+          >
             Log in
           </a>
         </dt>
         <dd class="portletItem"
-            i18n:translate="">
+            i18n:translate=""
+        >
           Cookie authentication is disabled.
           Login portlet not available.
         </dd>

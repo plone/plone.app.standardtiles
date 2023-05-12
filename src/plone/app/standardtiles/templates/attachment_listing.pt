@@ -1,37 +1,48 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="plone">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      xml:lang="en"
+      i18n:domain="plone"
+>
   <body>
     <ul class="tileAttachment">
       <li tal:repeat="attachment view/data/files">
         <tal:file tal:condition="attachment">
           <a href="#"
-             tal:attributes="href string:${view/url}/@@download/${repeat/attachment/index}">
-            <img tal:condition="icon"
-                 class="icon"
-                 src="pdf.png"
+             tal:attributes="
+               href string:${view/url}/@@download/${repeat/attachment/index};
+             "
+          >
+            <img class="icon"
                  alt=""
-                 tal:define="icon python:view.get_icon_for(attachment)"
-                 tal:attributes="src string:${context/portal_url}/$icon"/>
+                 src="pdf.png"
+                 tal:define="
+                   icon python:view.get_icon_for(attachment);
+                 "
+                 tal:condition="icon"
+                 tal:attributes="
+                   src string:${context/portal_url}/$icon;
+                 "
+            />
             <tal:filename tal:replace="attachment/filename" />
           </a>
-          <span class="discreet byLine">
+          <span class="byLine">
             <span class="separator">
               -
             </span>
             <span class="contentType"
-                  tal:replace="python:view.lookupMime(attachment.contentType)">
+                  tal:replace="python:view.lookupMime(attachment.contentType)"
+            >
               PDF document
             </span>
             <span class="separator">
               -
             </span>
             <span class="fileSize"
-                  tal:replace="python:view.file_size(attachment)">
+                  tal:replace="python:view.file_size(attachment)"
+            >
               100
             </span>
             <span class="fileSizeUnit">
@@ -40,8 +51,9 @@
           </span>
         </tal:file>
         <tal:no_file tal:condition="not:attachment">
-          <span class="discreet noFile"
-                i18n:translate="">
+          <span class="noFile"
+                i18n:translate=""
+          >
             No file
           </span>
         </tal:no_file>

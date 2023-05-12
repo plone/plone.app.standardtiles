@@ -1,37 +1,55 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="plone">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      xml:lang="en"
+      i18n:domain="plone"
+>
   <body>
-    <dl tal:condition="view/enabled"
-        class="rsstile">
+    <dl class="rsstile"
+        tal:condition="view/enabled"
+    >
       <dt class="header rss-title">
-        <a href=""
-           tal:attributes="href view/siteurl"
+        <a class="tile"
+           href=""
            tal:content="view/title"
-           class="tile">
+           tal:attributes="
+             href view/siteurl;
+           "
+        >
           Tags
         </a>
       </dt>
-      <tal:rss tal:condition="view/feedAvailable"
-               tal:define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
-               tal:repeat="item view/items">
+      <tal:rss tal:define="
+                 toLocalizedTime nocall:context/@@plone/toLocalizedTime;
+               "
+               tal:condition="view/feedAvailable"
+               tal:repeat="item view/items"
+      >
         <dd class="oddrow"
-            tal:define="oddrow repeat/item/odd"
-            tal:attributes="class python:oddrow and 'even' or 'odd'">
-          <a href="#"
-             tal:attributes="href string:${item/url}"
-             class="tile">
+            tal:define="
+              oddrow repeat/item/odd;
+            "
+            tal:attributes="
+              class python:oddrow and 'even' or 'odd';
+            "
+        >
+          <a class="tile"
+             href="#"
+             tal:attributes="
+               href string:${item/url};
+             "
+          >
             <span tal:replace="item/title">
               Title
             </span>
             <span class="itemDetails"
-                  tal:condition="exists:item/updated">
-              <span tal:omit-tag=""
-                    tal:content="python:toLocalizedTime(item['updated'])">
+                  tal:condition="exists:item/updated"
+            >
+              <span tal:content="python:toLocalizedTime(item['updated'])"
+                    tal:omit-tag=""
+              >
                 19.02.2007
               </span>
             </span>
@@ -39,10 +57,14 @@
         </dd>
       </tal:rss>
       <dd class="footer rss-more"
-          tal:condition="view/feedAvailable">
+          tal:condition="view/feedAvailable"
+      >
         <a href=""
-           tal:attributes="href view/siteurl"
-           i18n:translate="box_morelink">
+           tal:attributes="
+             href view/siteurl;
+           "
+           i18n:translate="box_morelink"
+        >
           More&hellip;
         </a>
       </dd>

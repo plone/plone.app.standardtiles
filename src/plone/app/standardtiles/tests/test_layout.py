@@ -221,7 +221,7 @@ class TestLayoutTiles(TestCase):
             self.portalURL + "/@@plone.app.standardtiles.languageselector"
         )
 
-        # langauge selector is empty by default in Plone 5
+        # language selector is empty by default in Plone 5
         self.assertNotIn("portal-languageselector", self.unprivileged_browser.contents)
 
         root = fromstring(self.unprivileged_browser.contents)

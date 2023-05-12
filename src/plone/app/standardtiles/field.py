@@ -76,7 +76,7 @@ class DexterityFieldTile(WidgetsView, Tile):
 
     @property
     def isVisible(self):
-        """Checks wheter the user has read permission of the field: if this is
+        """Checks whether the user has read permission of the field: if this is
         not the case, then the field is not displayed
         """
         try:

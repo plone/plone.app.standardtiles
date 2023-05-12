@@ -353,7 +353,7 @@ Refactoring:
 - Enable coveralls and code analysis.
   [gforcada]
 
-- Adapt travis to all other mosaic realted packages.
+- Adapt travis to all other mosaic related packages.
   [gforcada]
 
 - Remove unused function.

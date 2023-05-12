@@ -1,16 +1,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      lang="en"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal">
-  <body tal:define="title context/Title|nothing"
-                    i18n:domain="plone">
+      lang="en"
+      xml:lang="en"
+>
+  <body tal:define="
+          title context/Title|nothing;
+        "
+        i18n:domain="plone"
+  >
 
-  <div class="tileItem clearfix"
-       tal:attributes="class string:tileItem tile-id-${view/tile_id}">
-      <div class="tileHeading" tal:condition="view/show_title">
-          <h2 tal:content="view/tile_title">Title</h2>
+    <div class="tileItem clearfix"
+         tal:attributes="
+           class string:tileItem tile-id-${view/tile_id};
+         "
+    >
+      <div class="tileHeading"
+           tal:condition="view/show_title"
+      >
+        <h2 tal:content="view/tile_title">Title</h2>
       </div>
       <div class="tileBody">
         <div tal:replace="structure view/html_snippet">snippet</div>

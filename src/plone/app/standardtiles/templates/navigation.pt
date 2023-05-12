@@ -1,30 +1,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="plone">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      xml:lang="en"
+      i18n:domain="plone"
+>
   <body>
     <div class="navigationTile"
-         tal:define="root view/navigation_root">
+         tal:define="
+           root view/navigation_root;
+         "
+    >
       <h2 class="tileHeader"
           tal:condition="view/title"
-          tal:content="view/title">
+          tal:content="view/title"
+      >
         Navigation
       </h2>
       <ul class="navTree navTreeLevel0">
-        <li tal:define="selectedClass view/root_item_class;
-                        li_class python:selectedClass and ' navTreeCurrentNode' or '';"
+        <li tal:define="
+              selectedClass view/root_item_class;
+              li_class python:selectedClass and ' navTreeCurrentNode' or '';
+            "
             tal:condition="view/include_top"
-            tal:attributes="class string:navTreeItem navTreeTopNode${li_class}">
-          <tal:block tal:define="rootIsPortal view/root_is_portal;">
-            <a tal:attributes="href root/absolute_url;
-                               title root/Description;
-                               class string:contenttype-plone-site $selectedClass;">
+            tal:attributes="
+              class string:navTreeItem navTreeTopNode${li_class};
+            "
+        >
+          <tal:block tal:define="
+                       rootIsPortal view/root_is_portal;
+                     ">
+            <a tal:attributes="
+                 href root/absolute_url;
+                 title root/Description;
+                 class string:contenttype-plone-site $selectedClass;
+               ">
               <span tal:condition="rootIsPortal"
-                    i18n:translate="">Home</span><span tal:condition="not:rootIsPortal"
-                    tal:content="root/Title">Root item title</span></a>
+                    i18n:translate=""
+              >Home</span><span tal:condition="not:rootIsPortal"
+                    tal:content="root/Title"
+              >Root item title</span></a>
           </tal:block>
         </li>
         <li tal:replace="structure view/createNavTree">

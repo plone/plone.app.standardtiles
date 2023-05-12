@@ -1,4 +1,8 @@
-exclude .coveragerc .installed.txt constraints-mxdev.txt requirements-mxdev.txt
+exclude Makefile *.cfg *.in *.nix *.sh *.conf *.md *-mxdev.txt .jshintrc .installed.txt
+exclude sources.ini
+exclude instance.yaml
+exclude constraints.txt
+exclude requirements.txt
 global-exclude *.pyc __pycache__
 include setup.py LICENSE.txt *.rst *.GPL
 recursive-include src *

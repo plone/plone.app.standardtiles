@@ -1,48 +1,67 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="plone">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      xml:lang="en"
+      i18n:domain="plone"
+>
   <body>
-    <tal:controlpanel tal:define="controlPanel view/controlPanel;
-                                  groups python:controlPanel.getGroups('site');
-                                  portal_url context/portal_url;">
+    <tal:controlpanel tal:define="
+                        controlPanel view/controlPanel;
+                        groups python:controlPanel.getGroups('site');
+                        portal_url context/portal_url;
+                      ">
 
       <dl class="portlet"
-          id="portlet-prefs">
+          id="portlet-prefs"
+      >
         <dt class="portletHeader">
           <span class="portletTopLeft"></span>
           <a href=""
-             tal:attributes="href string:${portal_url}/plone_control_panel"
-             i18n:translate="">
+             tal:attributes="
+               href string:${portal_url}/plone_control_panel;
+             "
+             i18n:translate=""
+          >
             Site Setup
           </a>
           <span class="portletTopRight"></span>
         </dt>
 
         <dd class="portletItem"
-            tal:repeat="group groups">
-          <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])"
-                     tal:condition="configlets">
+            tal:repeat="group groups"
+        >
+          <tal:block tal:define="
+                       configlets python:controlPanel.enumConfiglets(group=group['id']);
+                     "
+                     tal:condition="configlets"
+          >
             <strong tal:content="group/title"
-                    i18n:translate="">
+                    i18n:translate=""
+            >
               Plone Configlet Group Title
             </strong>
             <ul class="configlets">
               <tal:configlets tal:repeat="configlet configlets">
                 <li tal:condition="configlet/visible">
                   <a href=""
-                     tal:attributes="href configlet/url">
-                    <img src=""
-                         alt=""
-                         tal:attributes="src configlet/icon;
-                                         alt configlet/description"
+                     tal:attributes="
+                       href configlet/url;
+                     "
+                  >
+                    <img alt=""
+                         src=""
+                         tal:attributes="
+                           src configlet/icon;
+                           alt configlet/description;
+                         "
+                         tal:on-error="string:"
                          i18n:attributes="alt"
-                         tal:on-error="string:" />
+                    />
                     <tal:configletname tal:content="configlet/title"
-                                       i18n:translate=""></tal:configletname>
+                                       i18n:translate=""
+                    />
                   </a>
                 </li>
               </tal:configlets>
