@@ -4,7 +4,8 @@ Changelog
 3.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix boolean fields title/description/text to not be required.
+  [petschki]
 
 
 3.1.0 (2023-05-04)
@@ -352,7 +353,7 @@ Refactoring:
 - Enable coveralls and code analysis.
   [gforcada]
 
-- Adapt travis to all other mosaic realted packages.
+- Adapt travis to all other mosaic related packages.
   [gforcada]
 
 - Remove unused function.

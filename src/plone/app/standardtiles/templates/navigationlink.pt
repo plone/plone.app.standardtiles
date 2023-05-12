@@ -1,20 +1,27 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      lang="en"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      i18n:domain="plone">
-<head>
-  <link rel="home"
-        href=""
-        title="Front page"
-        i18n:attributes="title"
-        tal:attributes="href string:${view/navigation_root_url}" />
-  <link rel="contents"
-        href=""
-        title="Site Map"
-        i18n:attributes="title"
-        tal:attributes="href string:${view/navigation_root_url}/sitemap" />
-</head>
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      xml:lang="en"
+      i18n:domain="plone"
+>
+  <head>
+    <link href=""
+          rel="home"
+          title="Front page"
+          tal:attributes="
+            href string:${view/navigation_root_url};
+          "
+          i18n:attributes="title"
+    />
+    <link href=""
+          rel="contents"
+          title="Site Map"
+          tal:attributes="
+            href string:${view/navigation_root_url}/sitemap;
+          "
+          i18n:attributes="title"
+    />
+  </head>
 </html>

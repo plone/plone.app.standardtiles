@@ -8,7 +8,7 @@ from zope.interface import implementer
 
 @implementer(IRetriever)
 @adapter(html.HTMLTile)
-class HTMLTile(object):
+class HTMLTile:
     def __init__(self, context):
         self.context = context
 
@@ -22,11 +22,11 @@ class HTMLTile(object):
 
 @implementer(IRetriever)
 @adapter(existingcontent.ExistingContentTile)
-class ExistingContentTile(object):
+class ExistingContentTile:
     def __init__(self, context):
         self.context = context
 
     def retrieveLinks(self):
         content_uid = self.context.data["content_uid"]
-        links = set(["../resolveuid/%s" % content_uid])
+        links = {"../resolveuid/%s" % content_uid}
         return links

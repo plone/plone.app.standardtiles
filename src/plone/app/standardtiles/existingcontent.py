@@ -76,11 +76,23 @@ class IExistingContentTile(model.Schema):
         pattern_options={"recentlyUsed": True},
     )
 
-    show_title = schema.Bool(title=_("Show content title"), default=True)
+    show_title = schema.Bool(
+        title=_("Show content title"),
+        default=True,
+        required=False,
+    )
 
-    show_description = schema.Bool(title=_("Show content description"), default=True)
+    show_description = schema.Bool(
+        title=_("Show content description"),
+        default=True,
+        required=False,
+    )
 
-    show_text = schema.Bool(title=_("Show content text"), default=True)
+    show_text = schema.Bool(
+        title=_("Show content text"),
+        default=True,
+        required=False,
+    )
 
     show_image = schema.Bool(
         title=_("Show content image (if available)"),

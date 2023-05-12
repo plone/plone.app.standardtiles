@@ -29,6 +29,4 @@ class PortletTileEditView(DefaultEditView):
             self.context.absolute_url(), typeName, tileId, portlet_hash
         )
         self.request.form["referer"] = tile_url
-        self.request.response.redirect(
-            "{0}?referer={1}".format(url, urllib.parse.quote(tile_url))
-        )
+        self.request.response.redirect(f"{url}?referer={urllib.parse.quote(tile_url)}")

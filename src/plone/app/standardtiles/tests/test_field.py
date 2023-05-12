@@ -185,9 +185,9 @@ class TestFieldTile(TestCase):
                 "funky",
             )
         )
-        self.assertIn(
-            '<h1 id="form-widgets-funky" class="funky-widget', self.browser.contents
-        )
+        self.assertIn("<h1 ", self.browser.contents)
+        self.assertIn(' id="form-widgets-funky"', self.browser.contents)
+        self.assertIn(' class="funky-widget', self.browser.contents)
         self.assertIn(">Oh yeah, baby!</h1>", self.browser.contents)
 
         root = fromstring(self.browser.contents)
@@ -200,20 +200,20 @@ class TestFieldTile(TestCase):
         """Another thing that can be hinted in schemas is field-level
         permissions. That is, you might have a field within a schema that needs
         a special permission to be viewed, a pewrmission that might be stricter
-        than the permission neede to view the object.
+        than the permission needed to view the object.
 
         The ``topsecret`` field is an example, as you need to have the
         ``cmf.ModifyPortalContent`` permission to be able to see it.
 
         """
         # Let's first insert some value into it:
-        self.content.topsecret = "Santa Claus does not exist!"
+        self.content.topsecret = "Santa Clause does not exist!"
         transaction.commit()
 
         # And then let's try to invoke the tile via our browser. Let's keep
         # in mind we are logged out, so we should see an empty tile, because no
         # value should be made visible to normal user (which can be kids and
-        # really should not be spoiled about Santa Claus' identity).
+        # really should not be spoiled about Santa Clause' identity).
 
         self.browser.open(
             "{}/@@plone.app.standardtiles.field?field={}".format(
@@ -244,12 +244,12 @@ class TestFieldTile(TestCase):
             )
         )
         self.assertIn('<span id="form-widgets-topsecret"', self.browser.contents)
-        self.assertIn(">Santa Claus does not exist!</span>", self.browser.contents)
+        self.assertIn(">Santa Clause does not exist!</span>", self.browser.contents)
 
         root = fromstring(self.browser.contents)
         nodes = root.xpath('//body//*[@id="form-widgets-topsecret"]')
         self.assertEqual(len(nodes), 1)
-        self.assertEqual("Santa Claus does not exist!", nodes[0].text)
+        self.assertEqual("Santa Clause does not exist!", nodes[0].text)
 
     def test_behavior_field(self):
         """Right now, we have always operated on fields that were, in Dexterity
