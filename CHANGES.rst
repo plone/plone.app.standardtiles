@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1.1 (unreleased)
+3.1.1 (2023-05-13)
 ------------------
 
 - Fix boolean fields title/description/text to not be required.
