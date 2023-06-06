@@ -272,7 +272,7 @@ class ContentListingTile(Tile):
         custom_query=None,
     ):
         if not b_size:
-            b_size = self.item_count
+            b_size = self.item_count or 30
         if not sort_on:
             sort_on = self.sort_on
         if not limit:
