@@ -4,7 +4,8 @@ Changelog
 3.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix missing `item_count` value when coming from older versions.
+  [petschki]
 
 
 3.1.1 (2023-05-13)
