@@ -458,7 +458,7 @@ Refactoring:
   [datakurre]
 - Add title field for image tile
   [datakurre]
-- Refactor most layout tiles to re-use viewlets' for shared codebase
+- Refactor most layout tiles to reuse viewlets' for shared codebase
   [datakurre]
 - Fix issue where byline tile was broken on Plone 5
   [datakurre]
