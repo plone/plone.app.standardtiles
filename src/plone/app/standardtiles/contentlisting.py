@@ -233,7 +233,7 @@ class ContentListingTile(Tile):
             contentFilter = dict(self.request.get("contentFilter", {}))
 
         # This should be an event listing
-        # -> re-use plone.app.event.browser.event_listing logic
+        # -> reuse plone.app.event.browser.event_listing logic
         if self.data.get("event_listing"):
             # Get results from plone.app.event.browser.event_listing
             event_listing_view = getMultiAdapter(

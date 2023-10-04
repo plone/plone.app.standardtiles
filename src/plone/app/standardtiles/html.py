@@ -21,7 +21,7 @@ class IHTMLTile(Schema):
 class HTMLTile(Tile):
     """
     A persistent HTML content tile that can be used for
-    re-usable layouts in the mosaic editor
+    reusable layouts in the mosaic editor
     """
 
     def __call__(self):
