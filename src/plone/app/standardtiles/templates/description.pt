@@ -7,7 +7,7 @@
       i18n:domain="plone"
 >
   <body>
-    <div class="documentDescription"
+    <div class="documentDescription lead"
          tal:content="view/value"
     >
       Description here
