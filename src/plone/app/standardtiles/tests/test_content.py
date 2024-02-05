@@ -156,9 +156,9 @@ class ContentTileTests(TestCase):
         # First edit a page so we have an edit history:
         self.browser.open(self.pageURL + "/edit")
 
-        self.browser.getControl(
-            name="form.widgets.IDublinCore.title"
-        ).value = "A different title"  # noqa
+        self.browser.getControl(name="form.widgets.IDublinCore.title").value = (
+            "A different title"  # noqa
+        )
         self.browser.getControl(label="Save").click()
         self.assertIn("A different title", self.browser.contents)
 
