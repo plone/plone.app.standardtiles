@@ -227,9 +227,9 @@ class TestFieldTile(TestCase):
         # engine, will result in the field simply not being present.
         self.browser.open(self.layer["portal"].absolute_url() + "/login_form")
         self.browser.getControl(name="__ac_name").value = EDITOR_USER_NAME
-        self.browser.getControl(
-            name="__ac_password"
-        ).value = EDITOR_USER_PASSWORD  # noqa
+        self.browser.getControl(name="__ac_password").value = (
+            EDITOR_USER_PASSWORD  # noqa
+        )
         submit_button_name = PVERSION < "5.2" and "submit" or "buttons.login"
         self.browser.getControl(name=submit_button_name).click()
 
