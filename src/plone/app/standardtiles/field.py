@@ -10,8 +10,6 @@ from plone.protect.interfaces import IDisableCSRFProtection
 from plone.supermodel.utils import mergedTaggedValueDict
 from plone.tiles import Tile
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from z3c.form.browser.text import TextWidget
-from z3c.form.browser.textarea import TextAreaWidget
 from z3c.form.field import Fields
 from z3c.form.interfaces import IAddForm
 from z3c.form.interfaces import IEditForm
@@ -22,6 +20,13 @@ from zope.interface import alsoProvides
 from zope.interface import implementer
 from zope.interface import Interface
 from zope.pagetemplate.interfaces import IPageTemplate
+
+try:
+    from plone.app.z3cform.widgets.text import TextWidget
+    from plone.app.z3cform.widgets.text import TextAreaWidget
+except ImportError:
+    from z3c.form.browser.text import TextWidget
+    from z3c.form.browser.textarea import TextAreaWidget
 
 
 class IDexterityFieldTileFormOrGroup(Interface):
