@@ -21,9 +21,10 @@ from zope.interface import implementer
 from zope.interface import Interface
 from zope.pagetemplate.interfaces import IPageTemplate
 
+
 try:
-    from plone.app.z3cform.widgets.text import TextWidget
     from plone.app.z3cform.widgets.text import TextAreaWidget
+    from plone.app.z3cform.widgets.text import TextWidget
 except ImportError:
     from z3c.form.browser.text import TextWidget
     from z3c.form.browser.textarea import TextAreaWidget
