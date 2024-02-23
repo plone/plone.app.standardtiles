@@ -4,7 +4,11 @@ Changelog
 3.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix rawembed Boolean field required
+- sanitize description field css class (same as Classic-UI default: lead)
+- add icons global to existing content tile to avoid tracebacks when content-core macros use it
+- prepare for upcoming plone.app.z3cform 4.4.x features
+  [petschki]
 
 
 3.1.2 (2023-06-06)

@@ -9,6 +9,7 @@
     <tal:block condition="nocall:view/item_macros">
       <body tal:define="
               context nocall:view/content_context;
+              icons nocall:context/@@iconresolver;
               item_macro nocall:view/item_macros/content-core|nothing;
               data view/data;
               show_title python: data.get('show_title', True);

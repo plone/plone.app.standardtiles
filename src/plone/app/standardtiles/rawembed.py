@@ -19,7 +19,11 @@ class IRawEmbedTile(Schema):
         required=True,
     )
 
-    show_title = schema.Bool(title=_("Show tile title"), default=True)
+    show_title = schema.Bool(
+        title=_("Show tile title"),
+        default=True,
+        required=False,
+    )
 
     ignore_querystring("html_snippet")
     html_snippet = schema.SourceText(
