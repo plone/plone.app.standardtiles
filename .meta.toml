@@ -4,3 +4,12 @@
 [meta]
 template = "default"
 commit-id = "1c2155e4"
+
+[github]
+jobs = [
+    "qa",
+    "test",
+    "coverage",
+    "release_ready",
+    "circular",
+    ]
