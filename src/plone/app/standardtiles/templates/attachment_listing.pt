@@ -45,7 +45,9 @@
             >
               100
             </span>
-            <span class="fileSizeUnit">
+            <span class="fileSizeUnit"
+                  i18n:translate=""
+            >
               KB
             </span>
           </span>

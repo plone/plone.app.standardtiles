@@ -4,6 +4,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       lang="en"
       xml:lang="en"
+      i18n:domain="plone"
 >
   <tal:block condition="nocall:view/content_context">
     <tal:block condition="nocall:view/item_macros">
@@ -72,7 +73,7 @@
 
             Displays an error message for the developer.
               </tal:comment>
-              <div>The template of the "<tal:view_name replace="python:view.content_view_name" />" view of
+              <div i18n:translate="">The template of the "<tal:view_name replace="python:view.content_view_name" />" view of
                 <tal:path replace="python:context.absolute_url()" />
                 does not define a "content-core" macro.</div></tal:block>
           </tal:text>
@@ -101,7 +102,9 @@
           >
           content
           </div>
-          <p tal:condition="not:panels">Selected view is not available for the content.</p>
+          <p tal:condition="not:panels"
+             i18n:translate=""
+          >Selected view is not available for the content.</p>
         </tal:panels>
       </body>
     </tal:block>

@@ -14,7 +14,7 @@
 
     <metal:content-core fill-slot="content-core">
       <metal:block define-macro="content-core">
-        <span>This is a custom layout</span>
+        <span i18n:translate="">This is a custom layout</span>
         <div tal:condition="context/text"
              tal:replace="context/text/output"
         >
