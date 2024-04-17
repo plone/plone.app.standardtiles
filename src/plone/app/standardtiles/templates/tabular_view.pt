@@ -17,7 +17,7 @@
            view_about python: registry.get('plone.allow_anon_views_about', False);
          ">
       <div tal:condition="not: batch">
-        <p><strong>Nothing to list</strong></p>
+        <p><strong i18n:translate="">Nothing to list</strong></p>
       </div>
 
       <div tal:condition="batch">
