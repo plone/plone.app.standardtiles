@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1.3 (unreleased)
+3.1.3 (2024-04-17)
 ------------------
 
 - Fix rawembed Boolean field required
