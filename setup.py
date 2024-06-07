@@ -45,6 +45,7 @@ setup(
         "Products.CMFPlone>=6.0.0",
         "requests",
         "setuptools",
+        "Zope",
     ],
     extras_require={
         "test": [
