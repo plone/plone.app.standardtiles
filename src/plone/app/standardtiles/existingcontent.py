@@ -124,7 +124,7 @@ class IExistingContentTile(model.Schema):
 
     view_template = schema.Choice(
         title=_("Display mode"),
-        source=_("Available Content Views"),
+        source="Available Content Views",
         required=True,
     )
 
@@ -174,8 +174,10 @@ class ExistingContentTile(Tile):
     def content_view_name(self):
         context = self.content_context
         if context is not None:
-            view_name = self.data.get("view_template") or context.getLayout()
-            return view_name
+            if self.data.get("view_template") == "default_layout":
+                return context.getLayout()
+            else:
+                return self.data.get("view_template") or context.getLayout()
         return ""
 
     _marker = dict()
@@ -269,7 +271,9 @@ def availableContentViewsVocabulary(context):
 
     registry = getUtility(IRegistry)
     listing_views = registry.get("plone.app.standardtiles.content_views", {}) or {}
-    voc = [SimpleVocabulary.createTerm("", "", "Default view")]
+    voc = [
+        SimpleVocabulary.createTerm("default_layout", "default_layout", "Default view")
+    ]
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):
         voc.append(SimpleVocabulary.createTerm(key, key, label))
     return SimpleVocabulary(voc)
