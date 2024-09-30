@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1.4 (unreleased)
+3.1.4 (2024-09-30)
 ------------------
 
 - Fix existing_content tile for Plone 6.1 without portal_properties.
