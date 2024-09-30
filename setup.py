@@ -40,9 +40,9 @@ setup(
     install_requires=[
         "plone.app.blocks",
         "plone.app.tiles>=4.0.0",
+        "plone.base",
         "plone.subrequest",
         "plone.tiles>=1.8.0",
-        "Products.CMFPlone>=6.0.0",
         "requests",
         "setuptools",
         "Zope",
