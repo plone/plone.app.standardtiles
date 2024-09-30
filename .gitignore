@@ -46,6 +46,7 @@ local.cfg
 /venv/
 .installed.txt
 
+forest.*
 
 ##
 # Add extra configuration options in .meta.toml:

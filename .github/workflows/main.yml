@@ -11,23 +11,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python:
-          - "3.8"
-          - "3.11"
         plone:
-          - "6.0-dev"
-          - "6.1-dev"
+          - ["3.11", "6.0-dev"]
+          - ["3.12", "6.1-dev"]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Plone ${{ matrix.plone }} with Python ${{ matrix.python }}
+      - name: Setup Plone ${{ matrix.plone[1] }} with Python ${{ matrix.plone[0] }}
         id: setup
         uses: plone/setup-plone@v2.0.0
         with:
-          python-version: ${{ matrix.python }}
-          plone-version: ${{ matrix.plone }}
-
+          python-version: ${{ matrix.plone[0] }}
+          plone-version: ${{ matrix.plone[1] }}
+          setuptools-version: "74.0.0"
       - name: Install package
         run: |
           make VENV=off install

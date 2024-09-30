@@ -8,12 +8,12 @@ from plone.app.discussion.interfaces import IConversation
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives as form
+from plone.base.utils import safe_text
 from plone.memoize.view import memoize
 from plone.registry.interfaces import IRegistry
 from plone.supermodel import model
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
-from Products.CMFPlone.utils import safe_unicode
 from repoze.xmliter.utils import getHTMLSerializer
 from z3c.form import validator
 from zExceptions import Unauthorized
@@ -124,7 +124,7 @@ class IExistingContentTile(model.Schema):
 
     view_template = schema.Choice(
         title=_("Display mode"),
-        source=_("Available Content Views"),
+        source="Available Content Views",
         required=True,
     )
 
@@ -174,8 +174,10 @@ class ExistingContentTile(Tile):
     def content_view_name(self):
         context = self.content_context
         if context is not None:
-            view_name = self.data.get("view_template") or context.getLayout()
-            return view_name
+            if self.data.get("view_template") == "default_layout":
+                return context.getLayout()
+            else:
+                return self.data.get("view_template") or context.getLayout()
         return ""
 
     _marker = dict()
@@ -221,7 +223,7 @@ class ExistingContentTile(Tile):
                     # after element is closed until last
                     # element of the root tree.
                     child_copy = copy.deepcopy(child)
-                    child_html = safe_unicode(serializer(child_copy))
+                    child_html = safe_text(serializer(child_copy))
                     panel_html.append(child_html)
                 panel_html = "".join(panel_html)
                 result.append(panel_html)
@@ -269,7 +271,9 @@ def availableContentViewsVocabulary(context):
 
     registry = getUtility(IRegistry)
     listing_views = registry.get("plone.app.standardtiles.content_views", {}) or {}
-    voc = [SimpleVocabulary.createTerm("", "", "Default view")]
+    voc = [
+        SimpleVocabulary.createTerm("default_layout", "default_layout", "Default view")
+    ]
     for key, label in sorted(listing_views.items(), key=itemgetter(1)):
         voc.append(SimpleVocabulary.createTerm(key, key, label))
     return SimpleVocabulary(voc)

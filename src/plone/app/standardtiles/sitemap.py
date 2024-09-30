@@ -1,8 +1,8 @@
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.standardtiles.navigation import NavigationTile
+from plone.base.interfaces.controlpanel import INavigationSchema
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
-from Products.CMFPlone.interfaces.controlpanel import INavigationSchema
 from zope import schema
 from zope.component import getUtility
 from zope.interface import implementer
