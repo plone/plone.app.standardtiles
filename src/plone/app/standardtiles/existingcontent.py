@@ -8,12 +8,12 @@ from plone.app.discussion.interfaces import IConversation
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives as form
+from plone.base.utils import safe_text
 from plone.memoize.view import memoize
 from plone.registry.interfaces import IRegistry
 from plone.supermodel import model
 from plone.tiles import Tile
 from plone.uuid.interfaces import IUUID
-from Products.CMFPlone.utils import safe_unicode
 from repoze.xmliter.utils import getHTMLSerializer
 from z3c.form import validator
 from zExceptions import Unauthorized
@@ -223,7 +223,7 @@ class ExistingContentTile(Tile):
                     # after element is closed until last
                     # element of the root tree.
                     child_copy = copy.deepcopy(child)
-                    child_html = safe_unicode(serializer(child_copy))
+                    child_html = safe_text(serializer(child_copy))
                     panel_html.append(child_html)
                 panel_html = "".join(panel_html)
                 result.append(panel_html)

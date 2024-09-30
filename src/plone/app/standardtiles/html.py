@@ -1,11 +1,11 @@
 from plone.app.standardtiles import _PMF as _
+from plone.base.utils import safe_text
 from plone.subrequest import ISubRequest
 from plone.supermodel.directives import primary
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from plone.tiles.directives import ignore_querystring
 from Products.CMFCore.utils import getToolByName
-from Products.CMFPlone.utils import safe_unicode
 from zope import schema
 
 
@@ -34,11 +34,11 @@ class HTMLTile(Tile):
                 transforms = getToolByName(self.context, "portal_transforms")
                 data = transforms.convertTo(
                     "text/x-html-safe",
-                    safe_unicode(content),
+                    safe_text(content),
                     mimetype="text/html",
                     context=self.context,
                 )
                 content = data.getData()
         else:
             content = "<p></p>"
-        return f"<html><body>{safe_unicode(content)}</body></html>"
+        return f"<html><body>{safe_text(content)}</body></html>"

@@ -8,6 +8,7 @@ from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
 from plone.base.defaultpage import is_default_page
+from plone.base.interfaces import INonStructuralFolder
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.supermodel.model import Schema
@@ -18,7 +19,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDynamicViewFTI.interfaces import IBrowserDefault
 from Products.CMFPlone.browser.navtree import NavtreeQueryBuilder
 from Products.CMFPlone.browser.navtree import SitemapNavtreeStrategy
-from Products.CMFPlone.interfaces import INonStructuralFolder
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.interfaces import IValue
 from z3c.form.util import getSpecification

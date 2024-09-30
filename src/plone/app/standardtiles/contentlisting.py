@@ -3,12 +3,12 @@ from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.z3cform.widget import QueryStringFieldWidget
 from plone.autoform.directives import widget
+from plone.base.utils import get_top_request
 from plone.registry.interfaces import IRegistry
 from plone.supermodel.model import Schema
 from plone.tiles import Tile
 from plone.tiles.interfaces import ITileType
 from Products.CMFCore.interfaces import IFolderish
-from Products.CMFPlone.utils import get_top_request
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form.interfaces import IValue
 from z3c.form.util import getSpecification
