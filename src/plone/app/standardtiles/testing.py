@@ -240,11 +240,12 @@ class PAStandardtilesTestType(PloneSandboxLayer):
             "configure.zcml", plone.app.dexterity, context=configurationContext
         )
 
-        import plone.app.widgets
+        if api.env.plone_version() < "5.2":
+            import plone.app.widgets
 
-        xmlconfig.file(
-            "configure.zcml", plone.app.widgets, context=configurationContext
-        )
+            xmlconfig.file(
+                "configure.zcml", plone.app.widgets, context=configurationContext
+            )
 
         import plone.app.standardtiles
 

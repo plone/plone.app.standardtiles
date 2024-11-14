@@ -1,10 +1,17 @@
 Changelog
 =========
 
-3.1.5 (unreleased)
+3.2.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- existingcontent tile:
+  Introduce new "main" macro lookup to enable full layout control within
+  registered "content_views" templates.
+  [petschki]
+
+- Use the new contentbrowser from Plone 6.1 for existing_content tile.
+  Fallback for Plone 6.0 is relateditems widget.
+  [petschki]
 
 
 3.1.4 (2024-09-30)

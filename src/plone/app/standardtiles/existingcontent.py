@@ -1,12 +1,10 @@
 from Acquisition import aq_parent
 from operator import itemgetter
 from plone import api
-from plone.api.exc import InvalidParameterError
 from plone.app.blocks import utils
 from plone.app.blocks.tiles import renderTiles
 from plone.app.discussion.interfaces import IConversation
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.app.z3cform.widget import RelatedItemsFieldWidget
 from plone.autoform import directives as form
 from plone.base.utils import safe_text
 from plone.memoize.view import memoize
@@ -28,6 +26,17 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
 
 import copy
+
+
+try:
+    from plone.app.z3cform.widgets.contentbrowser import (
+        ContentBrowserFieldWidget as ExistingContentBrowserWidget,
+    )
+except ImportError:
+    # fallback for Plone 6.0
+    from plone.app.z3cform.widgets.relateditems import (
+        RelatedItemsFieldWidget as ExistingContentBrowserWidget,
+    )
 
 
 def uuidToObject(uuid):
@@ -71,7 +80,7 @@ class IExistingContentTile(model.Schema):
     )
     form.widget(
         "content_uid",
-        RelatedItemsFieldWidget,
+        ExistingContentBrowserWidget,
         vocabulary="plone.app.vocabularies.Catalog",
         pattern_options={"recentlyUsed": True},
     )
@@ -166,18 +175,23 @@ class ExistingContentTile(Tile):
     def content_view(self):
         context = self.content_context
         if context is not None:
-            return api.content.get_view(
-                name=self.content_view_name, context=context, request=self.request
-            )
+            try:
+                return api.content.get_view(
+                    name=self.content_view_name, context=context, request=self.request
+                )
+            except api.exc.InvalidParameterError:
+                # view is not yet created
+                pass
 
     @property
     def content_view_name(self):
         context = self.content_context
         if context is not None:
-            if self.data.get("view_template") == "default_layout":
+            # note: "view_template" is None during tests with missing parameter
+            if self.data.get("view_template") in ["default_layout", None]:
                 return context.getLayout()
             else:
-                return self.data.get("view_template") or context.getLayout()
+                return self.data.get("view_template")
         return ""
 
     _marker = dict()
@@ -198,6 +212,10 @@ class ExistingContentTile(Tile):
     @property
     def item_panels(self):
         content_view = self.content_view
+
+        if content_view is None:
+            return []
+
         html = content_view()
         if isinstance(html, str):
             html = html.encode("utf-8")
@@ -243,7 +261,7 @@ class ExistingContentTile(Tile):
             )
             scale = self.data.get("image_scale", "thumb")
             return scale_view.scale("image", scale=scale).tag()
-        except (InvalidParameterError, POSKeyError, AttributeError):
+        except (api.exc.InvalidParameterError, POSKeyError, AttributeError):
             # The object doesn't have an image field
             return ""
 
