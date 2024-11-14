@@ -24,7 +24,9 @@
         If there is a `metal:define-macro="main"` in the template
         it takes over the complete representation of the existing content
         -->
-        <div class="${view/tile_class}" tal:condition="main_macro">
+        <div class="${view/tile_class}"
+             tal:condition="main_macro"
+        >
           <div metal:use-macro="main_macro"
                tal:define="
                  view nocall:view/content_view;

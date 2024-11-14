@@ -8,13 +8,15 @@
 >
   <body>
 
-      <metal:block define-macro="main">
-        <h1 tal:condition="show_title" i18n:translate="">Custom title</h1>
-        <span i18n:translate="">This is a complete custom representation of an existing content</span>
-        <div tal:condition="show_text"
-             tal:replace="context/text/output"
-        ></div>
-      </metal:block>
+    <metal:block define-macro="main">
+      <h1 tal:condition="show_title"
+          i18n:translate=""
+      >Custom title</h1>
+      <span i18n:translate="">This is a complete custom representation of an existing content</span>
+      <div tal:condition="show_text"
+           tal:replace="context/text/output"
+      ></div>
+    </metal:block>
 
   </body>
 </html>
