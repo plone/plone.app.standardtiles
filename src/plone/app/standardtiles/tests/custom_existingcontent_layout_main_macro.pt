@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      lang="en"
+      xml:lang="en"
+      i18n:domain="plone"
+>
+  <body>
+
+    <metal:block define-macro="main">
+      <h1 tal:condition="show_title"
+          i18n:translate=""
+      >Custom title</h1>
+      <span i18n:translate="">This is a complete custom representation of an existing content</span>
+      <div tal:condition="show_text"
+           tal:replace="context/text/output"
+      ></div>
+    </metal:block>
+
+  </body>
+</html>

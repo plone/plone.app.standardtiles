@@ -23,9 +23,16 @@
       />
 
   <browser:page
-      name="custom_existingcontent_layout"
+      name="custom_existingcontent_layout_content_core_macro"
       for="*"
-      template="tests/custom_existingcontent_layout.pt"
+      template="tests/custom_existingcontent_layout_content_core_macro.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      name="custom_existingcontent_layout_main_macro"
+      for="*"
+      template="tests/custom_existingcontent_layout_main_macro.pt"
       permission="zope2.View"
       />
 </configure>

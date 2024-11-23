@@ -11,7 +11,8 @@
       <body tal:define="
               context nocall:view/content_context;
               icons nocall:context/@@iconresolver;
-              item_macro nocall:view/item_macros/content-core|nothing;
+              main_macro nocall:view/item_macros/main|nothing;
+              content_core_macro nocall:view/item_macros/content-core|nothing;
               data view/data;
               show_title python: data.get('show_title', True);
               show_description python: data.get('show_description', True);
@@ -19,8 +20,32 @@
               show_image python: data.get('show_image', False);
               show_comments python: data.get('show_comments', False);
             ">
+        <!--!
+        If there is a `metal:define-macro="main"` in the template
+        it takes over the complete representation of the existing content
+        -->
+        <div class="${view/tile_class}"
+             tal:condition="main_macro"
+        >
+          <div metal:use-macro="main_macro"
+               tal:define="
+                 view nocall:view/content_view;
+                 plone_view context/@@plone;
+                 portal_state context/@@plone_portal_state;
+                 context_state context/@@plone_context_state;
+                 plone_layout context/@@plone_layout;
+                 lang portal_state/language;
+                 dummy python: plone_layout.mark_view(view);
+                 portal_url portal_state/portal_url;
+                 checkPermission nocall: context/portal_membership/checkPermission;
+                 fix python:request.set('ACTUAL_URL', context.absolute_url());
+               "
+          >main macro</div>
+        </div>
 
-        <section class="${view/tile_class}">
+        <section class="${view/tile_class}"
+                 tal:condition="not:main_macro"
+        >
           <h2 tal:define="
                 title context/Title|nothing;
               "
@@ -47,8 +72,9 @@
             </div>
           </tal:image>
           <tal:text condition="show_text">
-            <tal:block condition="item_macro">
-              <div tal:define="
+            <tal:block condition="content_core_macro">
+              <div metal:use-macro="content_core_macro"
+                   tal:define="
                      view nocall:view/content_view;
                      plone_view context/@@plone;
                      portal_state context/@@plone_portal_state;
@@ -59,21 +85,21 @@
                      portal_url portal_state/portal_url;
                      checkPermission nocall: context/portal_membership/checkPermission;
                      fix python:request.set('ACTUAL_URL', context.absolute_url());
-                   ">
-                <div metal:use-macro="item_macro">
-                  content
-                </div>
-              </div>
+                   "
+              >content core</div>
             </tal:block>
-            <tal:block tal:condition="not:item_macro">
-              <tal:comment tal:replace="nothing">
-            This is a fallback if your default_view has no "content-core"
-            macro defined.
 
-            Displays an error message for the developer.
-              </tal:comment>
-              <div i18n:translate="">The template of the "<tal:view_name replace="python:view.content_view_name" />" view of
-                <tal:path replace="python:context.absolute_url()" />
+            <tal:block tal:condition="not:content_core_macro">
+              <!--!
+              This is a fallback if your default_view has no "content-core"
+              macro defined. Displays an error message for the developer.
+              -->
+              <div class="alert alert-warning"
+                   i18n:translate=""
+              >The template of the
+                <b i18n:name="view_name">${view/content_view_name}</b>
+                 view of
+                <b i18n:name="content_url">${context/absolute_url}</b>
                 does not define a "content-core" macro.</div></tal:block>
           </tal:text>
           <div class="content-comments"
@@ -101,9 +127,13 @@
           >
           content
           </div>
-          <p tal:condition="not:panels"
-             i18n:translate=""
-          >Selected view is not available for the content.</p>
+          <div class="alert alert-warning"
+               tal:condition="not:panels"
+               i18n:translate=""
+          >Selected view
+            <b i18n:name="view_name">${view/data/view_template}</b>
+            is not available for
+            <b i18n:name="content_title">${view/content_context/title_or_id}</b>.</div>
         </tal:panels>
       </body>
     </tal:block>

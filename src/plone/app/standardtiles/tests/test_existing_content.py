@@ -395,16 +395,7 @@ class ExistingContentTileTests(TestCase):
 
         transaction.commit()
 
-        self.unprivileged_browser.open(
-            "{portal_url}/@@plone.app.standardtiles.existingcontent/unique?"
-            "content_uid={page_uuid}&show_text=True&view_template="
-            "custom_existingcontent_layout".format(
-                portal_url=self.portalURL, page_uuid=page_uuid
-            )
-        )
-        self.assertIn("This is a custom layout", self.unprivileged_browser.contents)
-        self.assertIn("Hello World!", self.unprivileged_browser.contents)
-
+        # default layout
         self.unprivileged_browser.open(
             "{portal_url}/@@plone.app.standardtiles.existingcontent/unique?"
             "content_uid={page_uuid}&show_text=True".format(
@@ -413,4 +404,37 @@ class ExistingContentTileTests(TestCase):
         )
 
         self.assertNotIn("This is a custom layout", self.unprivileged_browser.contents)
+
+        # custom layout with content-core macro
+        self.unprivileged_browser.open(
+            "{portal_url}/@@plone.app.standardtiles.existingcontent/unique?"
+            "content_uid={page_uuid}&show_text=True&view_template="
+            "custom_existingcontent_layout_content_core_macro".format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
+        )
+        self.assertIn("This is a custom layout", self.unprivileged_browser.contents)
+
+        # custom layout with main macro but disabled title
+        self.unprivileged_browser.open(
+            "{portal_url}/@@plone.app.standardtiles.existingcontent/unique?"
+            "content_uid={page_uuid}&show_text=True&view_template="
+            "custom_existingcontent_layout_main_macro".format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
+        )
+        self.assertNotIn("An another page", self.unprivileged_browser.contents)
+        self.assertNotIn("Custom title", self.unprivileged_browser.contents)
         self.assertIn("Hello World!", self.unprivileged_browser.contents)
+
+        # custom layout with main macro and disabled text
+        self.unprivileged_browser.open(
+            "{portal_url}/@@plone.app.standardtiles.existingcontent/unique?"
+            "content_uid={page_uuid}&show_title=True&view_template="
+            "custom_existingcontent_layout_main_macro".format(
+                portal_url=self.portalURL, page_uuid=page_uuid
+            )
+        )
+        self.assertNotIn("An another page", self.unprivileged_browser.contents)
+        self.assertIn("Custom title", self.unprivileged_browser.contents)
+        self.assertNotIn("Hello World!", self.unprivileged_browser.contents)
