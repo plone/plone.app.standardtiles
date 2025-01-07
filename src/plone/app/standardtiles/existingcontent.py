@@ -3,7 +3,6 @@ from operator import itemgetter
 from plone import api
 from plone.app.blocks import utils
 from plone.app.blocks.tiles import renderTiles
-from plone.app.discussion.interfaces import IConversation
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.autoform import directives as form
 from plone.base.utils import safe_text
@@ -37,6 +36,12 @@ except ImportError:
     from plone.app.z3cform.widgets.relateditems import (
         RelatedItemsFieldWidget as ExistingContentBrowserWidget,
     )
+
+try:
+    from plone.app.discussion.interfaces import IConversation
+except ImportError:
+    # plone.app.discussion is optional since Plone 6.1.
+    IConversation = None
 
 
 def uuidToObject(uuid):
@@ -267,6 +272,8 @@ class ExistingContentTile(Tile):
 
     @property
     def comments_count(self):
+        if IConversation is None:
+            return 0
         context = self.content_context
         try:
             conversation = IConversation(context)

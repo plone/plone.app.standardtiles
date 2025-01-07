@@ -173,6 +173,7 @@
       class=".discussion.DiscussionTile"
       permission="zope.Public"
       add_permission="zope2.View"
+      zcml:condition="installed plone.app.discussion"
       />
 
 </configure>
