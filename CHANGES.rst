@@ -4,6 +4,9 @@ Changelog
 3.2.0 (unreleased)
 ------------------
 
+- Load ``plone.app.discussion`` code conditionally.
+  This package is optional since Plone 6.1.  [maurits]
+
 - existingcontent tile:
   Introduce new "main" macro lookup to enable full layout control within
   registered "content_views" templates.
