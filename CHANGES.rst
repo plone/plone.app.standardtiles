@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1.6 (unreleased)
+3.2.0 (2025-01-08)
 ------------------
 
 - Rerelease 3.1.5 as 3.2.0, because it has new features.  [maurits]
