@@ -1,10 +1,26 @@
 Changelog
 =========
 
-3.1.5 (unreleased)
+3.1.6 (2025-01-08)
 ------------------
 
-- Nothing changed yet.
+- Rerelease 3.1.4 as 3.1.6, because 3.1.5 contained new features.  [maurits]
+
+
+3.1.5 (2025-01-08)
+------------------
+
+- Load ``plone.app.discussion`` code conditionally.
+  This package is optional since Plone 6.1.  [maurits]
+
+- existingcontent tile:
+  Introduce new "main" macro lookup to enable full layout control within
+  registered "content_views" templates.
+  [petschki]
+
+- Use the new contentbrowser from Plone 6.1 for existing_content tile.
+  Fallback for Plone 6.0 is relateditems widget.
+  [petschki]
 
 
 3.1.4 (2024-09-30)
