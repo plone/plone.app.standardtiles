@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.2.0 (unreleased)
+3.1.5 (2025-01-08)
 ------------------
 
 - Load ``plone.app.discussion`` code conditionally.
