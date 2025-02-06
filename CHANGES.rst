@@ -1,6 +1,22 @@
 Changelog
 =========
 
+3.2.2 (unreleased)
+------------------
+
+Breaking changes:
+
+- *add item here*
+
+New features:
+
+- *add item here*
+
+Bug fixes:
+
+- *add item here*
+
+
 3.2.1 (2025-02-06)
 ------------------
 
