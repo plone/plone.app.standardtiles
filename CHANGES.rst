@@ -4,7 +4,8 @@ Changelog
 3.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix for PlonePAS changes. Do not call `@@pas_member` view.
+  [petschki]
 
 
 3.2.0 (2025-01-08)

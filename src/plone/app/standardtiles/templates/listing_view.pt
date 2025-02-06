@@ -11,7 +11,7 @@
                    batch context;
                    original_context nocall:options/original_context|context;
                    toLocalizedTime nocall:original_context/@@plone/toLocalizedTime;
-                   pas_member original_context/@@pas_member;
+                   pas_member nocall:original_context/@@pas_member;
                    show_about python:True;
                    registry original_context/portal_registry;
                    view_types python: registry.get('plone.types_use_view_action_in_listings', []);

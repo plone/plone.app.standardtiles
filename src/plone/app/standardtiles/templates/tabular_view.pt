@@ -11,7 +11,7 @@
     <div tal:define="
            batch context;
            original_context nocall:options/original_context|context;
-           pas_member original_context/@@pas_member;
+           pas_member nocall:original_context/@@pas_member;
            registry original_context/portal_registry;
            view_types python: registry.get('plone.types_use_view_action_in_listings', []);
            view_about python: registry.get('plone.allow_anon_views_about', False);
