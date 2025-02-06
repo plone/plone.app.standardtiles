@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.2.1 (unreleased)
+3.2.1 (2025-02-06)
 ------------------
 
 - Fix for PlonePAS changes. Do not call `@@pas_member` view.
