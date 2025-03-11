@@ -4,17 +4,8 @@ Changelog
 3.2.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
-Bug fixes:
-
-- *add item here*
+- Add ``tile.id`` to contentlisting css classes to make it unique selectable.
+  [petschki]
 
 
 3.2.1 (2025-02-06)
