@@ -1,4 +1,3 @@
-from plone import api
 from plone.app.testing import applyProfile
 from plone.app.testing import login
 from plone.app.testing import logout
