@@ -1,12 +1,12 @@
 Changelog
 =========
 
-3.2.2 (unreleased)
-------------------
+.. You should *NOT* be adding new change log entries to this file.
+   You should create a file in the news directory instead.
+   For helpful instructions, please see:
+   https://github.com/plone/plone.releaser/blob/master/ADD-A-NEWS-ITEM.rst
 
-- Add ``tile.id`` to contentlisting css classes to make it unique selectable.
-  [petschki]
-
+.. towncrier release notes start
 
 3.2.1 (2025-02-06)
 ------------------
