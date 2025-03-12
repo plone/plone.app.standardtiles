@@ -296,11 +296,11 @@ class ContentListingTile(Tile):
 
     @property
     def tile_class(self):
-        css_class = "contentlisting-tile"
+        css_classes = ["contentlisting-tile", f"tile-{self.id}"]
         additional_classes = self.data.get("tile_class", "")
-        if not additional_classes:
-            return css_class
-        return " ".join([css_class, additional_classes])
+        if additional_classes:
+            css_classes.append(additional_classes)
+        return " ".join(css_classes)
 
 
 @provider(IVocabularyFactory)
