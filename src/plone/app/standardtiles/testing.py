@@ -1,4 +1,3 @@
-from plone import api
 from plone.app.testing import applyProfile
 from plone.app.testing import login
 from plone.app.testing import logout
@@ -135,14 +134,6 @@ class PAStandardtiles(PloneSandboxLayer):
             "configure.zcml", plone.app.dexterity, context=configurationContext
         )
 
-        if api.env.plone_version() < "5.2":
-            # since Plone 5.2 plone.app.widgets is a dummy package only
-            import plone.app.widgets
-
-            xmlconfig.file(
-                "configure.zcml", plone.app.widgets, context=configurationContext
-            )
-
         import plone.app.standardtiles
 
         xmlconfig.file(
@@ -170,9 +161,7 @@ class PAStandardtiles(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         # install into the Plone site
         applyProfile(portal, "plone.app.dexterity:default")
-        if api.env.plone_version() < "5.2":
-            # since Plone 5.2 plone.app.widgets is a dummy package only
-            applyProfile(portal, "plone.app.widgets:default")
+        applyProfile(portal, "plone.app.discussion:default")
         applyProfile(portal, "plone.app.standardtiles:default")
         applyProfile(portal, "plone.app.contenttypes:default")
 
@@ -240,13 +229,6 @@ class PAStandardtilesTestType(PloneSandboxLayer):
             "configure.zcml", plone.app.dexterity, context=configurationContext
         )
 
-        if api.env.plone_version() < "5.2":
-            import plone.app.widgets
-
-            xmlconfig.file(
-                "configure.zcml", plone.app.widgets, context=configurationContext
-            )
-
         import plone.app.standardtiles
 
         xmlconfig.file(
@@ -259,6 +241,7 @@ class PAStandardtilesTestType(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         # install into the Plone site
         applyProfile(portal, "plone.app.dexterity:default")
+        applyProfile(portal, "plone.app.discussion:default")
         applyProfile(portal, "plone.app.standardtiles:default")
 
         # ensure plone.app.theming disabled

@@ -38,6 +38,7 @@ setup(
     zip_safe=False,
     python_requires=">=3.8",
     install_requires=[
+        "plone.api>=2.3.0",
         "plone.app.blocks",
         "plone.app.tiles>=4.0.0",
         "plone.base",
@@ -52,7 +53,6 @@ setup(
             "plone.app.testing",
             "plone.app.dexterity",
             "plone.app.discussion",
-            "plone.app.widgets",
             "lxml",
         ],
         "attachment": [

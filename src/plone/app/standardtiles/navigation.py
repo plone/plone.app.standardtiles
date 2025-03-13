@@ -238,9 +238,6 @@ class QueryBuilder(NavtreeQueryBuilder):
     def __init__(self, context, tile):
         super().__init__(context)
 
-        portal_properties = getToolByName(context, "portal_properties")
-        navtree_properties = getattr(portal_properties, "navtree_properties")
-
         tileRoot = uuidToFolderishPath(context, tile.data.get("root"))
         rootPath = getNavigationRoot(context, relativeRoot=tileRoot)
         currentPath = "/".join(context.getPhysicalPath())
@@ -251,9 +248,8 @@ class QueryBuilder(NavtreeQueryBuilder):
         else:
             self.query["path"] = {"query": currentPath, "navtree": 1}
 
-        topLevel = tile.data.get("topLevel") or navtree_properties.getProperty(
-            "topLevel", 0
-        )
+        topLevel = tile.data.get("topLevel", 0)
+
         if topLevel and topLevel > 0:
             self.query["path"]["navtree_start"] = topLevel + 1
 
@@ -265,19 +261,11 @@ class NavtreeStrategy(SitemapNavtreeStrategy):
 
     def __init__(self, context, tile):
         SitemapNavtreeStrategy.__init__(self, context, tile)
-        portal_properties = getToolByName(context, "portal_properties")
-        navtree_properties = getattr(portal_properties, "navtree_properties")
 
         # XXX: We can't do this with a 'depth' query to EPI...
-        self.bottomLevel = tile.data.get(
-            "bottomLevel"
-        ) or navtree_properties.getProperty("bottomLevel", 0)
-        currentFolderOnly = tile.data.get(
-            "currentFolderOnly"
-        ) or navtree_properties.getProperty("currentFolderOnlyInNavtree", False)
-        topLevel = tile.data.get("topLevel") or navtree_properties.getProperty(
-            "topLevel", 0
-        )
+        self.bottomLevel = tile.data.get("bottomLevel", 0) or 0
+        currentFolderOnly = tile.data.get("currentFolderOnly", False) or False
+        topLevel = tile.data.get("topLevel", 0) or 0
         tileRoot = uuidToFolderishPath(context, tile.data.get("root"))
         self.rootPath = getRootPath(context, currentFolderOnly, topLevel, tileRoot)
 
