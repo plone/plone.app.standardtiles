@@ -1,3 +1,5 @@
+from importlib.metadata import distribution
+from importlib.metadata import PackageNotFoundError
 from lxml import html
 from persistent.dict import PersistentDict
 from PIL import Image
@@ -17,7 +19,6 @@ from zope.annotation import IAnnotations
 
 import io
 import os
-import pkg_resources
 import plone.app.standardtiles.tests as test_dir
 import random
 import transaction
@@ -25,8 +26,8 @@ import unittest
 
 
 try:
-    pkg_resources.get_distribution("plone.formwidget.multifile")
-except pkg_resources.DistributionNotFound:
+    distribution("plone.formwidget.multifile")
+except PackageNotFoundError:
     HAS_MULTIFILE = False
 else:
     HAS_MULTIFILE = True
