@@ -44,6 +44,7 @@ class UninstallTestCase(unittest.TestCase):
         self.assertEqual(self.filter_record("plone.app.tiles"), [])
 
         self.assertNotIn("plone.app.standardtiles.listing_views", self.registry)
+        self.assertNotIn("plone.app.standardtiles.content_views", self.registry)
 
         record = "plone.app.portlets.PortletManagerBlacklist"
         self.assertEqual(self.filter_record(record), [])

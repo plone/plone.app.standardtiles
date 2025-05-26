@@ -3,4 +3,7 @@
   <record name="plone.app.standardtiles.listing_views"
           remove="true"
   />
+  <record name="plone.app.standardtiles.content_views"
+          remove="true"
+  />
 </registry>
