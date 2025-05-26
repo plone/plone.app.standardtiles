@@ -22,4 +22,14 @@
       handler="plone.app.standardtiles.upgrades.upgrade_registry"
       sortkey="2"
       />
+
+  <genericsetup:upgradeStep
+      title="Upgrade profile to 1002"
+      description="Remove deprecated plone.app.tiles registry values."
+      profile="plone.app.standardtiles:default"
+      source="1001"
+      destination="1002"
+      handler="plone.app.standardtiles.upgrades.to_1002"
+      />
+
 </configure>
