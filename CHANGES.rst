@@ -8,6 +8,25 @@ Changelog
 
 .. towncrier release notes start
 
+3.2.2 (2025-06-19)
+------------------
+
+Bug fixes:
+
+
+- Add ``tile.id`` to contentlisting css classes to make it unique selectable.
+  [petschki] (#168)
+- Fix the uninstall profile to better cleanup the registry and portlet registration.
+  [thet]
+
+
+Internal:
+
+
+- Remove the plone.app.tiles registry record which is deprecated since plone.app.tiles 3.0.
+  [thet]
+
+
 3.2.1 (2025-02-06)
 ------------------
 
