@@ -4,11 +4,11 @@ from Acquisition import aq_parent
 from plone.app.layout.navigation.interfaces import INavigationQueryBuilder
 from plone.app.layout.navigation.interfaces import INavtreeStrategy
 from plone.app.layout.navigation.navtree import buildFolderTree
-from plone.app.layout.navigation.root import getNavigationRoot
 from plone.app.standardtiles import PloneMessageFactory as _
 from plone.app.vocabularies.catalog import CatalogSource as CatalogSourceBase
 from plone.base.defaultpage import is_default_page
 from plone.base.interfaces import INonStructuralFolder
+from plone.base.navigationroot import get_navigation_root
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from plone.memoize.instance import memoize
 from plone.supermodel.model import Schema
@@ -239,7 +239,7 @@ class QueryBuilder(NavtreeQueryBuilder):
         super().__init__(context)
 
         tileRoot = uuidToFolderishPath(context, tile.data.get("root"))
-        rootPath = getNavigationRoot(context, relativeRoot=tileRoot)
+        rootPath = get_navigation_root(context, relativeRoot=tileRoot)
         currentPath = "/".join(context.getPhysicalPath())
 
         # override query path with tile path if needed
@@ -295,7 +295,7 @@ def getRootPath(context, currentFolderOnly, topLevel, root):
             return "/".join(parent.getPhysicalPath())
         return "/".join(context.getPhysicalPath())
 
-    rootPath = getNavigationRoot(context, relativeRoot=root)
+    rootPath = get_navigation_root(context, relativeRoot=root)
 
     # Adjust for topLevel
     if topLevel > 0:
