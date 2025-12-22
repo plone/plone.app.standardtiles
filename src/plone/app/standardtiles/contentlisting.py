@@ -1,7 +1,7 @@
 from operator import itemgetter
 from plone.app.contenttypes.behaviors.collection import ISyndicatableCollection
 from plone.app.standardtiles import PloneMessageFactory as _
-from plone.app.z3cform.widget import QueryStringFieldWidget
+from plone.app.z3cform.widgets.querystring import QueryStringFieldWidget
 from plone.autoform.directives import widget
 from plone.base.utils import get_top_request
 from plone.registry.interfaces import IRegistry

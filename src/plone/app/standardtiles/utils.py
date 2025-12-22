@@ -1,18 +1,8 @@
 from AccessControl import getSecurityManager
-from Acquisition import aq_chain
-from Acquisition import aq_inner
-from plone.app.layout.navigation.interfaces import INavigationRoot
 from z3c.form.interfaces import IFieldWidget
 from zope.component import getMultiAdapter
 from zope.component import queryUtility
 from zope.security.interfaces import IPermission
-
-
-def getNavigationRoot(context):
-    for obj in aq_chain(aq_inner(context)):
-        if INavigationRoot.providedBy(obj):
-            break
-    return obj
 
 
 class PermissionChecker:
