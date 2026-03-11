@@ -26,7 +26,6 @@ from zope.schema.vocabulary import SimpleVocabulary
 
 import copy
 
-
 try:
     from plone.app.z3cform.widgets.contentbrowser import (
         ContentBrowserFieldWidget as ExistingContentBrowserWidget,

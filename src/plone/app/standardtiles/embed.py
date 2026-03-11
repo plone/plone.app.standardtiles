@@ -6,7 +6,6 @@ from zope import schema
 
 import requests
 
-
 NOEMBED_ENDPOINT = "https://noembed.com/embed?url="
 
 
