@@ -6,7 +6,6 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
 
-
 PORTLET_MANAGER = "plone.app.standardtiles.portletManager"
 
 
