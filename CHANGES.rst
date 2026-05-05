@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+4.0.0 (2026-05-05)
+------------------
+
+Bug fixes:
+
+
+- Fix issue with new `plone.app.blocks` deserializer from `plone.restapi` in `existingcontent` tile.
+  @petschki
+
+
 4.0.0a2 (2026-03-27)
 --------------------
 
