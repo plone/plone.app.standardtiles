@@ -4,6 +4,8 @@ from plone import api
 from plone.app.blocks import utils
 from plone.app.blocks.tiles import renderTiles
 from plone.app.standardtiles import PloneMessageFactory as _
+from plone.app.vocabularies.catalog import CatalogSource
+from plone.app.z3cform.widgets.contentbrowser import ContentBrowserFieldWidget
 from plone.autoform import directives as form
 from plone.base.utils import safe_text
 from plone.memoize.view import memoize
@@ -25,16 +27,6 @@ from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleVocabulary
 
 import copy
-
-try:
-    from plone.app.z3cform.widgets.contentbrowser import (
-        ContentBrowserFieldWidget as ExistingContentBrowserWidget,
-    )
-except ImportError:
-    # fallback for Plone 6.0
-    from plone.app.z3cform.widgets.relateditems import (
-        RelatedItemsFieldWidget as ExistingContentBrowserWidget,
-    )
 
 try:
     from plone.app.discussion.interfaces import IConversation
@@ -80,12 +72,11 @@ class IExistingContentTile(model.Schema):
     content_uid = schema.Choice(
         title=_("Select an existing content"),
         required=True,
-        vocabulary="plone.app.vocabularies.Catalog",
+        source=CatalogSource(),
     )
     form.widget(
         "content_uid",
-        ExistingContentBrowserWidget,
-        vocabulary="plone.app.vocabularies.Catalog",
+        ContentBrowserFieldWidget,
         pattern_options={"recentlyUsed": True},
     )
 
