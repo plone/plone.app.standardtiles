@@ -3,7 +3,6 @@ from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 from zope.component import getUtility
 
-
 logger = getLogger(__name__)
 
 

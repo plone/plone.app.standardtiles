@@ -5,7 +5,6 @@ from zope.component import getUtility
 
 import unittest
 
-
 PROJECTNAME = "plone.app.standardtiles"
 
 

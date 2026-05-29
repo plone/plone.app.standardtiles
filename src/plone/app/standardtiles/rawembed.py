@@ -12,10 +12,8 @@ class IRawEmbedTile(Schema):
 
     tile_title = schema.TextLine(
         title=_("Title"),
-        description=_(
-            """The title will also be used to create
-            identifying class on that tile"""
-        ),
+        description=_("""The title will also be used to create
+            identifying class on that tile"""),
         required=True,
     )
 
@@ -28,10 +26,8 @@ class IRawEmbedTile(Schema):
     ignore_querystring("html_snippet")
     html_snippet = schema.SourceText(
         title=_("HTML Snippet"),
-        description=_(
-            """Be CAREFUL what you paste here, no security
-            checks or transforms to safe_html will be done!"""
-        ),
+        description=_("""Be CAREFUL what you paste here, no security
+            checks or transforms to safe_html will be done!"""),
         required=False,
     )
 

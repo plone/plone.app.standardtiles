@@ -24,7 +24,6 @@ import random
 import transaction
 import unittest
 
-
 try:
     distribution("plone.formwidget.multifile")
 except PackageNotFoundError:

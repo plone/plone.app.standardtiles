@@ -28,7 +28,6 @@ from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IBrowserView
 
-
 NORMAL_USER_NAME = "user"
 NORMAL_USER_PASSWORD = "secret"
 EDITOR_USER_NAME = "editor"

@@ -6,7 +6,6 @@ from zope.interface import alsoProvides
 
 import logging
 
-
 logger = logging.getLogger("plone.app.standardtiles")
 
 
