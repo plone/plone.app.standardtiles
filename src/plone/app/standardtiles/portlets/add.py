@@ -18,7 +18,6 @@ from zope.lifecycleevent import ObjectAddedEvent
 from zope.lifecycleevent import ObjectCreatedEvent
 from zope.traversing.browser.absoluteurl import absoluteURL
 
-
 _ = MessageFactory("plone")
 
 

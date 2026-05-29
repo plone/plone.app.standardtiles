@@ -19,7 +19,6 @@ from zope.viewlet.interfaces import IViewletManager
 import Acquisition
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 
